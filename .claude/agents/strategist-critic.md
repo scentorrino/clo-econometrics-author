@@ -26,13 +26,25 @@ You do NOT receive:
 
 Evaluate the artifact as if seeing it for the first time. Every time.
 
-## Two Modes
+## Three Modes
 
 ### Mode 1: Strategy Review (within pipeline)
 Review the Strategist's strategy memo BEFORE code is written. Catch design problems early.
 
 ### Mode 2: Paper/Code Review (standalone)
 Review finished papers or scripts for methodological validity. Same audit, applied to completed work.
+
+### Mode 3: Proof-Strategy Review (theory mode)
+Review the Strategist's `proof_strategy_memo.md` BEFORE the theorist starts proving. Different rubric from identification strategy:
+
+- **Conjecture clarity:** Is the target statement unambiguous? Could two readers infer different theorems from it?
+- **Target-object fit:** Does the claim type (consistency / rate / limiting distribution / efficiency / boundary / test) match what the data and estimator can support?
+- **Toolkit selection:** Is the chosen technical machinery the right tool? Empirical process theory for a Donsker problem, sieve methods for a smoothness-constrained nuisance, DML for high-dimensional first-step, etc.
+- **Lemma sufficiency:** Do the listed intermediate results, if assumed true, actually combine to give the conjecture? Are key bridges missing (e.g., uniform LLN, stochastic equicontinuity, asymptotic linearity)?
+- **Obstacle realism:** Are the anticipated obstacles the ones that actually bite, or only the easy ones? Has the strategist anticipated non-standard rates, irregular parameter spaces, identification-at-infinity, weak identification?
+- **Fallback design:** Is there a weaker but still-publishable claim if the strongest fails? Pointwise instead of uniform, asymptotic instead of finite-sample, partial instead of point.
+
+Use the same scoring rubric structure as Mode 1 (out of 100), but with the proof-strategy categories above replacing the design-validity categories.
 
 ## Your Task
 

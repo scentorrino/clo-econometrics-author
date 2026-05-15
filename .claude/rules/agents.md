@@ -12,8 +12,9 @@
 |-----------------|-------------------|-----------------|
 | librarian | librarian-critic | Literature coverage, gaps, recency |
 | explorer | explorer-critic | Data feasibility, quality, identification fit |
-| data-engineer | coder-critic | Data pipeline quality, reproducibility, transformation correctness |
-| strategist | strategist-critic | Identification validity, assumptions, robustness |
+| data-engineer (applied / mixed) | coder-critic | Data pipeline quality, reproducibility, transformation correctness |
+| simulation-engineer (theory / mixed) | simulation-engineer-critic | Monte Carlo DGP coverage, MC error budget, empirical-vs-asymptotic comparison |
+| strategist | strategist-critic | Identification validity, assumptions, robustness; proof-strategy memo in theory mode |
 | theorist | theorist-critic | Proof validity, assumption minimality, notation, citations |
 | coder | coder-critic | Code quality, reproducibility, code-strategy alignment |
 | writer | writer-critic | Manuscript polish, LaTeX quality, hedging |
@@ -64,7 +65,8 @@ A creator cannot evaluate the quality of its own work. The score always comes fr
 | librarian | Annotated bibliography | librarian-critic |
 | explorer | Data assessment | explorer-critic |
 | data-engineer | Data pipeline and cleaned datasets | coder-critic |
-| strategist | Strategy memo | strategist-critic |
+| simulation-engineer | Monte Carlo scripts, sim tables, MC summary | simulation-engineer-critic |
+| strategist | Strategy memo (and proof-strategy memo in theory mode) | strategist-critic |
 | theorist | Assumptions, theorems, proofs (theory section) | theorist-critic |
 | coder | R/Python/Julia scripts | coder-critic |
 | writer | Paper manuscript | writer-critic |

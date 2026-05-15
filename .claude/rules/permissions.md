@@ -49,6 +49,7 @@ Adding a new agent: create the agent file in `.claude/agents/`, add an entry her
 - **CONDITIONAL:** Only for paper types with formal theory: econometric methods, theory+empirics, structural identification, methodological reduced-form. Excluded and weight renormalized for applied papers using off-the-shelf estimators.
 
 ## data-engineer
+- **AGENT FILE:** `.claude/agents/applied/data-engineer.md` (kept under `applied/` so theory pipelines do not dispatch it by default)
 - **PHASE:** Execution
 - **PARALLEL_GROUP:** execution-data
 - **REQUIRES:** `quality_reports/strategy/{project}/strategy_memo.md` AND strategist-critic score >= 80
@@ -56,6 +57,18 @@ Adding a new agent: create the agent file in `.claude/agents/`, add an entry her
 - **CRITIC:** coder-critic
 - **ESCALATION_TARGET:** strategist-critic — re-evaluates whether the data specification is tractable
 - **QUALITY_WEIGHT:** Included in code quality weight (not scored separately)
+- **CONDITIONAL:** Dispatched for `PROJECT_TYPE: applied` and `PROJECT_TYPE: mixed`. Not dispatched for `PROJECT_TYPE: theory` papers without empirical data work.
+
+## simulation-engineer
+- **PHASE:** Execution
+- **PARALLEL_GROUP:** execution-sim
+- **REQUIRES:** `quality_reports/theory/{project}/theory_memo.md` AND theorist-critic score >= 80
+- **PRODUCES:** `scripts/simulations/`, `paper/tables/sim/`, `paper/figures/sim/`, `quality_reports/sim/`
+  - Required files (per theorem under test): a runnable simulation script, a results table, and a one-page summary with the empirical-vs-asymptotic verdict
+- **CRITIC:** simulation-engineer-critic
+- **ESCALATION_TARGET:** theorist (when persistent mismatch suggests the proof or limit is wrong) or simulation-engineer (when only the design needs fixing) — the simulation-engineer-critic chooses
+- **QUALITY_WEIGHT:** 10% (theory / mixed); 0% (applied — agent not dispatched)
+- **CONDITIONAL:** Dispatched for `PROJECT_TYPE: theory` and `PROJECT_TYPE: mixed`. Not dispatched for `PROJECT_TYPE: applied`. When dispatched, the weight reallocates from the proof-completeness (theorist-critic) bucket if no simulation section is present — see `quality.md` theory weight schedule.
 
 ## coder
 - **PHASE:** Execution
@@ -132,7 +145,8 @@ Agents in the same parallel group can run concurrently when their REQUIRES are m
 |-------|--------|------|
 | discovery | librarian, explorer | From the start (only needs research idea) |
 | strategy | strategist, theorist | After Discovery (literature OR data assessment) |
-| execution-data | data-engineer | After Strategy (approved strategy memo) |
+| execution-data | data-engineer | After Strategy (approved strategy memo). Applied / mixed only. |
+| execution-sim | simulation-engineer | After Strategy (approved theory memo). Theory / mixed only. |
 | execution-code | coder | After Strategy (approved strategy memo) |
 | execution-write | writer | After Code (approved code output) |
 | peer-review | editor, domain-referee, methods-referee | After Execution (approved paper + code) |
