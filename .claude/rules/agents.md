@@ -20,6 +20,20 @@
 | writer | writer-critic | Manuscript polish, LaTeX quality, hedging |
 | storyteller | storyteller-critic | Talk structure, audience calibration, visual quality |
 
+### Narrow Theory Critics (Unpaired)
+
+Five orchestration-level critics are dispatched directly by `/audit`, `/prove`, and related theory skills against theory artifacts. They have no paired worker — they exist to audit the theorist's output along narrow, mechanical axes that the broader theorist-critic does not focus on:
+
+| Critic | Audits | Output |
+|--------|--------|--------|
+| notation-warden | Symbol consistency, define-before-use, typography | `quality_reports/notation/notation-table.md` |
+| assumption-auditor | Assumption-usage matrix, unused / over-strong / unstated | `quality_reports/assumptions/usage-matrix.md` |
+| regularity-checker | Silently invoked regularity conditions in proofs | `quality_reports/regularity/regularity-audit.md` |
+| counterexample-hunter | Boundary cases, degenerate distributions, weak identification | `quality_reports/counterexamples/probe-results.md` |
+| derivation-verifier | Mechanical symbolic verification via SymPy | `quality_reports/derivations/verify-{claim_id}.md` |
+
+These critics are read-only. They report; the dispatching skill persists the reports. A confirmed counterexample is a CRITICAL gate (see `quality.md` Section 3).
+
 ### Peer Review (Special Case)
 
 Peer Review uses a different structure — the Orchestrator dispatches two independent referees:

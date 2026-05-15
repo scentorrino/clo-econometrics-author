@@ -137,6 +137,52 @@ Adding a new agent: create the agent file in `.claude/agents/`, add an entry her
 
 ---
 
+## Narrow Theory Critics
+
+These critics are not paired with a worker — they are dispatched directly by `/audit`, `/prove`, and `/conjecture` against theory artifacts. They are read-only (the dispatching skill persists their reports). Active only when `PROJECT_TYPE: theory` or `mixed`.
+
+### notation-warden
+- **PHASE:** Strategy / Execution (re-runnable any time theory artifacts change)
+- **REQUIRES:** Any of `quality_reports/theory/{project}/{results.tex,proofs.tex,assumptions.tex}` OR `paper/sections/theorems/*.tex`
+- **PRODUCES:** `quality_reports/notation/notation-table.md`
+- **PAIRED WORKER:** None (orchestration-level critic)
+- **ESCALATION_TARGET:** theorist (when collisions or undefined symbols block proof readability)
+- **QUALITY_WEIGHT:** Contributes to notation-consistency component (see `quality.md` theory weight schedule)
+
+### assumption-auditor
+- **PHASE:** Strategy / Execution
+- **REQUIRES:** `quality_reports/theory/{project}/assumptions.tex` AND `proofs.tex`
+- **PRODUCES:** `quality_reports/assumptions/usage-matrix.md`
+- **PAIRED WORKER:** None
+- **ESCALATION_TARGET:** theorist
+- **QUALITY_WEIGHT:** Contributes to assumption-parsimony component
+
+### regularity-checker
+- **PHASE:** Strategy / Execution
+- **REQUIRES:** `quality_reports/theory/{project}/proofs.tex` AND `assumptions.tex`
+- **PRODUCES:** `quality_reports/regularity/regularity-audit.md`
+- **PAIRED WORKER:** None
+- **ESCALATION_TARGET:** theorist
+- **QUALITY_WEIGHT:** Contributes to proof-completeness component (via theorist-critic bucket)
+
+### counterexample-hunter
+- **PHASE:** Strategy / Execution
+- **REQUIRES:** `quality_reports/theory/{project}/results.tex` AND `assumptions.tex`
+- **PRODUCES:** `quality_reports/counterexamples/probe-results.md`
+- **PAIRED WORKER:** None
+- **ESCALATION_TARGET:** theorist (a confirmed counterexample is a CRITICAL escalation)
+- **QUALITY_WEIGHT:** Binary gate — a confirmed counterexample blocks the submission gate regardless of weighted aggregate (see `quality.md` Section 3: Hard Binary Gate)
+
+### derivation-verifier
+- **PHASE:** Strategy / Execution (called by the theorist or other critics on demand)
+- **REQUIRES:** A spec file at `scripts/symbolic/specs/*.yaml` and the SymPy harness at `scripts/symbolic/verify.py`
+- **PRODUCES:** `quality_reports/derivations/verify-{claim_id}.md`
+- **PAIRED WORKER:** None
+- **ESCALATION_TARGET:** theorist (when symbolic verification fails — note: not a proof that the paper is wrong, only that manual review is required)
+- **QUALITY_WEIGHT:** Advisory (mismatch ≠ proof of error)
+
+---
+
 ## Parallel Groups
 
 Agents in the same parallel group can run concurrently when their REQUIRES are met:
