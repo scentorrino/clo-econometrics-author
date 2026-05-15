@@ -9,6 +9,21 @@
 **Institution:** [YOUR INSTITUTION]
 **Field:** [YOUR FIELD — Economics by default. Can be adapted to Finance, Accounting, Marketing, etc.]
 **Branch:** main
+**PROJECT_TYPE:** applied
+<!-- One of: applied | theory | mixed.
+     - applied (default): empirical pipeline. Dispatches data-engineer, coder, writer.
+       Theorist + simulation-engineer + the five narrow theory critics are NOT dispatched.
+     - theory: methods / theoretical-econometrics paper. Dispatches theorist + simulation-engineer
+       + notation-warden, assumption-auditor, regularity-checker, counterexample-hunter,
+       derivation-verifier. Activates /conjecture, /prove, /audit, /simulate.
+       Data-engineer is NOT dispatched. Quality weights shift to favor proof completeness
+       and assumption parsimony — see .claude/rules/quality.md §3.
+     - mixed: theory paper with a Monte Carlo or empirical illustration. Both pipelines
+       active. Weight schedule in quality.md §3 splits across both.
+     Switching this flag never changes paper/, scripts/, or data/ — only which agents are
+     dispatched and which weight schedule applies. -->
+
+
 
 ---
 

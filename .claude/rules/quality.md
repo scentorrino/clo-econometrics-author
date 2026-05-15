@@ -81,3 +81,86 @@ The same issue may have different deductions by phase:
 ### Principle
 
 Early phases are about getting the direction right. Late phases are about getting the details right. Critics should match their tone and rigor to the phase.
+
+---
+
+## 3. PROJECT_TYPE Weight Schedules
+
+`CLAUDE.md` declares `PROJECT_TYPE: applied | theory | mixed`. The Orchestrator selects the weight schedule below. Component weights still live in `permissions.md` per-agent; this section governs which agents enter the aggregate and how their weights are reshuffled.
+
+### PROJECT_TYPE: applied (default)
+
+Use the weights declared in `permissions.md` directly. Theorist and simulation-engineer are not dispatched; their weights drop out and the remainder is renormalized per Section 1.
+
+Typical applied composition:
+
+| Component | Weight |
+|---|---|
+| Literature (librarian-critic) | 10% |
+| Data (explorer-critic) | 10% |
+| Strategy (strategist-critic) | 25% |
+| Code (coder-critic) | 15% |
+| Manuscript (writer-critic) | 10% |
+| Referees (domain + methods) | 25% |
+| Verifier | 5% |
+
+### PROJECT_TYPE: theory
+
+The theorist pair is dispatched; the applied data pipeline is not. The composition shifts toward proof completeness, assumption parsimony, and notation consistency.
+
+| Component | Weight | Source |
+|---|---|---|
+| Proof completeness | 30% | theorist-critic |
+| Assumption parsimony and tightness | 20% | assumption-auditor |
+| Notation consistency | 10% | notation-warden |
+| Novelty and literature placement | 15% | librarian-critic and domain-referee (averaged) |
+| Exposition | 15% | writer-critic |
+| Simulation evidence | 10% | simulation-engineer-critic (REALLOCATES to proof completeness if no simulation section is present) |
+
+Notes:
+- regularity-checker contributes deductions into the proof-completeness bucket via the theorist-critic's rubric — it does not have a separate weight.
+- counterexample-hunter is not a weighted component; it is a binary gate (Section 4).
+- derivation-verifier is advisory (mismatch ≠ paper wrong).
+
+When no simulation is present, simulation-engineer-critic's 10% reallocates to theorist-critic, making proof completeness 40%.
+
+### PROJECT_TYPE: mixed
+
+Both schedules are active. Use this for theory papers with a Monte Carlo or an empirical illustration:
+
+| Component | Weight |
+|---|---|
+| Proof completeness | 25% |
+| Assumption parsimony | 15% |
+| Notation consistency | 5% |
+| Empirical strategy | 15% |
+| Code (applied) | 10% |
+| Simulation evidence | 10% |
+| Manuscript | 10% |
+| Referees | 10% |
+
+If a section is absent (no simulation, no empirical illustration), reallocate proportionally to proof completeness.
+
+### Renormalization
+
+In all PROJECT_TYPE schedules: if a declared component has no critic score (because the agent was not dispatched), exclude it and renormalize the remaining weights to sum to 100. The Orchestrator computes this from `permissions.md` and the `PROJECT_TYPE` flag — no other file hardcodes the rule.
+
+---
+
+## 4. Hard Binary Submission Gates (Theory and Mixed Mode)
+
+Independent of the weighted aggregate, the submission gate (overall >= 95) requires **all** of the following binary conditions when `PROJECT_TYPE` is `theory` or `mixed`:
+
+1. **Every theorem proved.** Every file under `paper/sections/theorems/*.tex` contains a complete proof (or a `\begin{proof}...\end{proof}` block sourced from `quality_reports/theory/{project}/proofs.tex`). Stubs and TODOs block the gate.
+
+2. **theorist-critic cleared.** The most recent theorist-critic score in the research journal is >= 80, with no unresolved CRITICAL findings.
+
+3. **counterexample-hunter cleared.** The most recent `/audit --counter` (or `/audit --all`) run has no **confirmed counterexample**. A "probe captured by assumption" outcome is fine; a confirmed counterexample is a block until the theorem or assumption block is updated.
+
+4. **No unresolved escalation.** The research journal shows no open escalation from the theorist or any narrow theory critic.
+
+5. **(If simulation is present)** simulation-engineer-critic verdict is "Matches" or "Matches at large n only" — not "Persistent mismatch."
+
+If any binary check fails, the submission gate is **blocked regardless of the aggregate weighted score.** The Verifier reports this explicitly in `quality_reports/verification_report.md` Section "Theory Binary Gates."
+
+These checks are independent of the weighted aggregate so that a high overall score cannot mask a broken proof or an unresolved counterexample.

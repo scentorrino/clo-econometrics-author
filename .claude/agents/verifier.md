@@ -92,6 +92,54 @@ Rscript scripts/R/FILENAME.R 2>&1 | tail -20
 
 ---
 
+## Theory Binary Gates (PROJECT_TYPE: theory or mixed)
+
+Read `PROJECT_TYPE` from `CLAUDE.md`. If `theory` or `mixed`, also run these five binary checks per `.claude/rules/quality.md` §4. **Any failure blocks the submission gate regardless of the weighted aggregate score.**
+
+### TG1. Every theorem proved
+- Walk `paper/sections/theorems/*.tex`. For each file, confirm a `\begin{proof}` ... `\end{proof}` block exists (either inline or via `\input{}` from `quality_reports/theory/{project}/proofs.tex`).
+- Stub files containing only a theorem statement without a proof block FAIL this check.
+
+### TG2. theorist-critic cleared
+- Read `quality_reports/research_journal.md`. Locate the most recent theorist-critic entry.
+- PASS if score >= 80 and no CRITICAL findings are open.
+- FAIL otherwise.
+
+### TG3. counterexample-hunter cleared
+- Read `quality_reports/counterexamples/probe-results.md` (most recent).
+- PASS if no entry has outcome "Confirmed counterexample."
+- FAIL on any confirmed counterexample.
+
+### TG4. No unresolved escalation
+- Scan the research journal for open escalations from theorist, theorist-critic, or any narrow theory critic.
+- PASS if all are marked resolved.
+- FAIL if any escalation is open.
+
+### TG5. Simulation verdict (when present)
+- If `quality_reports/sim/` is non-empty, read the latest summary's verdict line.
+- PASS for "Matches" or "Matches at large n only."
+- FAIL for "Persistent mismatch at largest n."
+- N/A if no simulation section is present.
+
+### Report Format Addition
+
+When PROJECT_TYPE is `theory` or `mixed`, the verification report includes a "Theory Binary Gates" section:
+
+```markdown
+### Theory Binary Gates
+| # | Check | Status | Details |
+|---|-------|--------|---------|
+| TG1 | Every theorem proved | PASS/FAIL | <n>/<N> theorems have proofs |
+| TG2 | theorist-critic cleared | PASS/FAIL | Latest score: <score>/100 |
+| TG3 | counterexample-hunter cleared | PASS/FAIL | <n> confirmed counterexamples |
+| TG4 | No unresolved escalation | PASS/FAIL | <n> open |
+| TG5 | Simulation verdict | PASS/FAIL/N/A | <verdict> |
+```
+
+If any TG fails, the submission verdict is **FAIL** regardless of standard checks 1–10.
+
+---
+
 ## Scoring
 
 **Pass/fail per check.** Binary for aggregation: 0 (any failure) or 100 (all pass).
