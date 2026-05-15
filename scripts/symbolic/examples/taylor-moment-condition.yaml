@@ -1,0 +1,20 @@
+claim_id: taylor-moment-condition
+source: example/taylor-derivation.tex:L1
+
+# Second-order Taylor expansion of a smooth moment condition g(theta) at theta_0 = 0.
+# Let g(theta) = sin(theta) + theta**2. Then around theta_0 = 0:
+#   g(0) = 0
+#   g'(0) = 1
+#   g''(0) = 2  (from theta**2 term; sin's second derivative at 0 is 0)
+# So g(theta) ≈ theta + theta**2 + O(theta**3).
+#
+# We use the taylor operation to compute the order-3 expansion (which removes O(theta**3))
+# and check against the claimed truncated expansion.
+
+variables:
+  theta:
+    domain: real
+
+start: sin(theta) + theta**2
+operation: taylor(theta, 0, 3)
+claimed_end: theta + theta**2

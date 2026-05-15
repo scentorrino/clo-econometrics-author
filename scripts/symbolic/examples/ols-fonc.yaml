@@ -1,0 +1,18 @@
+claim_id: ols-fonc
+source: example/ols-derivation.tex:L1
+
+# Scalar OLS first-order condition.
+# Objective: (Y - theta * X)^2
+# Derivative with respect to theta should give -2 * X * (Y - theta * X).
+
+variables:
+  X:
+    domain: real
+  Y:
+    domain: real
+  theta:
+    domain: real
+
+start: (Y - theta * X)**2
+operation: diff(theta)
+claimed_end: -2 * X * (Y - theta * X)

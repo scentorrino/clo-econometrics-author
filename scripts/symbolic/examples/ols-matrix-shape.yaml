@@ -1,0 +1,26 @@
+claim_id: ols-matrix-shape
+source: example/ols-matrix-derivation.tex:L1
+
+# Matrix OLS estimator shape check.
+# beta_hat = (X^T X)^{-1} X^T Y
+# X is (n x p); Y is (n x 1); beta_hat is (p x 1).
+#
+# This example is intended for dim_check.py — it verifies that all matrix
+# multiplications and the inverse are dimensionally consistent. verify.py
+# would either trivially match (since start == claimed_end) or fall back
+# on SymPy's MatrixSymbol handling, which is not the point here.
+
+variables:
+  X:
+    domain: matrix
+    dims: [n, p]
+  Y:
+    domain: matrix
+    dims: [n, 1]
+  beta_hat:
+    domain: matrix
+    dims: [p, 1]
+
+start: inv(transpose(X) * X) * transpose(X) * Y
+operation: none
+claimed_end: inv(transpose(X) * X) * transpose(X) * Y

@@ -1,0 +1,18 @@
+claim_id: score-gaussian
+source: example/score-derivation.tex:L1
+
+# Derivative of the Gaussian log-likelihood with respect to its mean.
+# log f(X | theta, sigma^2) = -1/2 log(2 pi sigma^2) - (X - theta)^2 / (2 sigma^2)
+# d/dtheta of that should give (X - theta) / sigma^2.
+
+variables:
+  X:
+    domain: real
+  theta:
+    domain: real
+  sigma:
+    domain: positive
+
+start: log((2*pi*sigma**2)**(-1/2) * exp(-(X - theta)**2 / (2 * sigma**2)))
+operation: diff(theta)
+claimed_end: (X - theta) / sigma**2
