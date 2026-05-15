@@ -39,6 +39,16 @@ Claude reads the config, plans the approach, you approve, it runs. Works in the 
 
 ---
 
+## Theory Track
+
+For theoretical-econometrics papers (asymptotic theory, identification, semi/nonparametric efficiency, etc.), set `PROJECT_TYPE: theory` in `CLAUDE.md`. This activates a second pipeline: `/conjecture`, `/prove`, `/audit`, `/simulate`, plus five narrow critics (notation-warden, assumption-auditor, regularity-checker, counterexample-hunter, derivation-verifier) and a SymPy-based symbolic-verification harness at `scripts/symbolic/`. The applied pipeline (`/analyze`, `/write`, `/review`) continues to work unchanged in `theory` and `mixed` modes.
+
+Quality weights shift to favor proof completeness, assumption parsimony, and notation consistency. Five hard binary submission gates are added independent of the weighted aggregate.
+
+See [`THEORY_TRACK.md`](THEORY_TRACK.md) for the full walkthrough and a worked example.
+
+---
+
 ## Commands
 
 13 skills, each with modes:

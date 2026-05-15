@@ -6,6 +6,85 @@ All notable changes to the Clo-Author are documented here.
 
 ---
 
+## [26.05.1] — 2026-05-15 — Theory Track Adaptation
+
+A second pipeline for theoretical-econometrics papers (proofs, asymptotic theory, identification results, semi/nonparametric efficiency). Activates when `PROJECT_TYPE: theory` (or `mixed`) is set in `CLAUDE.md`. The applied pipeline continues to work in `applied` mode (default) and in `mixed` mode.
+
+### PROJECT_TYPE Flag
+
+- New top-level field in `CLAUDE.md`: `PROJECT_TYPE: applied | theory | mixed`.
+- `applied` (default) — existing behavior preserved.
+- `theory` — dispatches theorist + simulation-engineer + five narrow theory critics; data-engineer not dispatched.
+- `mixed` — both pipelines active.
+
+### Agents Added
+
+- **simulation-engineer** + **simulation-engineer-critic** — Monte Carlo verification of asymptotic claims. Mandatory empirical-vs-asymptotic comparison with MC SEs. Verdict line: "Matches" / "Matches at large n only" / "Persistent mismatch" (last is CRITICAL).
+- **notation-warden** — symbol-by-symbol audit; builds notation table; flags collisions, undefined-on-first-use, typography inconsistency.
+- **assumption-auditor** — usage matrix mapping each named assumption (A1, A2, …) to every theorem invoking it. Flags unused / over-strong / unstated.
+- **regularity-checker** — catches silently invoked regularity conditions (measurability of suprema, integrability of envelopes, DCT, Fubini/Tonelli, uniform vs pointwise, parameter on boundary).
+- **counterexample-hunter** — adversarial probes at boundary parameter, degenerate distributions, heavy tails, non-iid relaxations, weak identification. Confirmed counterexample = CRITICAL escalation.
+- **derivation-verifier** — symbolic-computation critic invoking SymPy via the harness. Honors that SymPy is incomplete; mismatch is "manual review required," not "paper wrong."
+
+The existing **theorist** + **theorist-critic** pair (26.04.3) continues to handle assumptions, theorems, and proofs — kept by name (not renamed to proof-author per the user's review of the recon report).
+
+### Agents Reorganized
+
+- `data-engineer` moved to `.claude/agents/applied/data-engineer.md`. `permissions.md` marks it `CONDITIONAL: applied | mixed`.
+
+### Skills Added
+
+- **`/conjecture`** — strategist (proof-strategy mode) produces a scoping memo; drafts theorem stub.
+- **`/prove`** — iterative loop: theorist → theorist-critic → regularity-checker + derivation-verifier (parallel) → counterexample-hunter. Max 3 strikes per pair.
+- **`/audit`** — batch run of notation-warden + assumption-auditor + regularity-checker. `--counter` adds counterexample-hunter; `--derive` runs SymPy verifications across `scripts/symbolic/specs/`.
+- **`/simulate`** — simulation-engineer + critic. Persistent-mismatch verdict escalates to theorist.
+
+### Skills Modified
+
+- **`/strategize`** — strategist now produces a *proof-strategy memo* in theory mode (Conjecture / Target object / Toolkit / Intermediate lemmas / Obstacles / Fallback claims). strategist-critic gains Mode 3 (Proof-Strategy Review).
+- **`/write`** — files under `paper/sections/theorems/` route to the **theorist** via `/prove` or `/conjecture`. Writer never rewrites proofs; theorist never writes prose.
+- **`/tools validate-bib`** — theory mode allows book entries without DOIs but requires explicit `edition` field.
+
+### References Added (`.claude/references/`)
+
+- `theorem-environment-style.md` — required two-sentence form for theorems / propositions / lemmas / corollaries; LaTeX environment set; remarks-after-proof rule.
+- `proof-style.md` — banned filler phrases; every step justified by cross-reference; strategy-in-one-sentence; step labels; cleveref usage.
+- `asymptotic-conventions.md` — o/O vs o_p/O_p; modes of convergence; pointwise vs uniform; Slutsky / CMT / delta-method invocation; empirical-process notation.
+- `latex-math-conventions.md` — project [CHOOSE ONE] picks for expectation, probability, vectors, matrices, transpose; reserved indices; project preamble additions.
+- `verify-derivation.md` — when to symbolically verify; spec format; three worked examples; interpretation of mismatch.
+- `simulation-protocol.md` — n grid, B and MC SE rules, DGPs, tabulation, mandatory empirical-vs-asymptotic comparison, verdict line.
+
+### Domain Profile
+
+`domain-profile.md` extended with a "Theoretical Econometrics Profile" block: theory journals (Econometrica theory track, Annals of Statistics, JoE, ET, QE, JEM, Econometrics Journal), framework menu (M-estimation, GMM, sieve, empirical process, semiparametric efficiency, U/V-statistics, kernel, DML, bootstrap, boundary/weak ID), foundational references (van der Vaart, Newey & McFadden, BKRW, vdV & Wellner, Pollard, Andrews, Hansen GMM, Hall bootstrap, Chernozhukov DML), and theory-paper referee concerns.
+
+### Symbolic Tooling
+
+`scripts/symbolic/`:
+
+- `verify.py` — CLI; loads YAML/JSON spec; builds SymPy symbols with declared assumptions; applies declarative operation (diff, integrate, expand, simplify, taylor, substitute); runs a battery of simplifiers; 60-second timeout; reports MATCH / MISMATCH / DIM_MISMATCH.
+- `dim_check.py` — recursive-descent dimension flow on matrix expressions. Decidable; a dim mismatch IS a hard error.
+- Four runnable examples: Gaussian score function, OLS first-order condition, Taylor expansion of a moment condition, OLS matrix shape check.
+- README with install (`pip install sympy pyyaml`), CLI usage, spec schema, limitations.
+
+### Quality Gates
+
+`quality.md` §3 — three weight schedules (applied / theory / mixed) selected by `PROJECT_TYPE`. Theory schedule: proof completeness 30%, assumption parsimony 20%, notation 10%, novelty 15%, exposition 15%, simulation 10% (reallocates to proof completeness if absent).
+
+`quality.md` §4 — five **hard binary** submission gates for theory/mixed: every theorem proved; theorist-critic score >= 80; no confirmed counterexample; no unresolved escalation; simulation verdict not "persistent mismatch." Any failure blocks submission regardless of aggregate score. `verifier.md` implements TG1–TG5 in a new section.
+
+### Documentation
+
+- `docs/theory-track.md` — new walkthrough with worked example (WLLN for the sample mean: `/conjecture` → `/prove` → `/audit` → `/simulate`).
+- `README.md` — Theory Track section pointing to the walkthrough.
+- `MEMORY.md` — theory-track learnings.
+
+### Recon and Process
+
+`quality_reports/theory-adaptation-recon.md` — Phase 0 reconnaissance against the actual repo state, documenting the spec/repo mismatches (the spec was written against vanilla `clo-author`; the repo had already absorbed the paper-type architecture (26.04) and the theorist pair (26.04.3)). User reviewed the recon and chose to keep the `theorist` name rather than renaming to `proof-author`.
+
+---
+
 ## [26.05] — May 2026
 
 ### HTML Report Pipeline

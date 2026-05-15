@@ -70,3 +70,15 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:meta] Dogfooding principles must be enforced: plan-first, spec-then-plan, quality gates, session logs → we follow our own guide.
 
 [LEARN:meta] Template development work (building infrastructure, docs) doesn't create session logs in quality_reports/ → those are for user work (slides, analysis), not meta-work. Keeps template clean for users who fork.
+
+## Theory Track
+
+[LEARN:theory-track] PROJECT_TYPE flag in CLAUDE.md (applied|theory|mixed) selects a parallel pipeline. `theory` activates /conjecture, /prove, /audit, /simulate + 5 narrow theory critics + SymPy harness. `applied` (default) preserves existing behavior. `mixed` runs both. See docs/theory-track.md.
+
+[LEARN:theory-track] The theorist pair (kept, not renamed to proof-author) handles assumptions/theorems/proofs. simulation-engineer is the theory-mode analogue of data-engineer for Monte Carlo verification of asymptotic claims with mandatory MC SE reporting.
+
+[LEARN:theory-track] Five narrow critics (notation-warden, assumption-auditor, regularity-checker, counterexample-hunter, derivation-verifier) are unpaired and read-only. The dispatching skill (/audit, /prove) persists their reports.
+
+[LEARN:theory-track] SymPy verification is incomplete by construction: mismatch is reported as "manual review required," never "paper is wrong." dim_check.py is decidable and reports hard errors. Both ship with 4 runnable examples under scripts/symbolic/examples/.
+
+[LEARN:theory-track] Theory-mode quality gates: weighted schedule (proof completeness 30, assumption parsimony 20, notation 10, novelty 15, exposition 15, simulation 10) plus FIVE binary gates (every theorem proved, theorist-critic clear, no confirmed counterexample, no unresolved escalation, simulation verdict not "persistent mismatch"). Binary failures block submission regardless of aggregate.
