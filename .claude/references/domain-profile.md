@@ -125,3 +125,72 @@ If no field is specified, agents default to applied economics.
 | Point estimates | [e.g., 1e-6] | [Numerical precision] |
 | Standard errors | [e.g., 1e-4] | [MC variability] |
 | Coverage rates | [e.g., ± 0.01] | [Simulation with B reps] |
+
+---
+
+## Theoretical Econometrics Profile (when PROJECT_TYPE: theory or mixed)
+
+<!-- This block is the default profile for theoretical-econometrics papers.
+     The librarian and domain-referee read it; the theorist and theorist-critic
+     fall back to it when the per-project anchors above are empty.
+     Uncomment / edit the sections you need. -->
+
+### Target Journals (theory track)
+
+| Tier | Journals |
+|------|----------|
+| Top methods | Econometrica (theory track), Annals of Statistics |
+| Strong methods | Journal of Econometrics, Econometric Theory, Quantitative Economics |
+| Field methods | Journal of Econometric Methods, Econometrics Journal |
+| Adjacent | JASA (Theory and Methods), Biometrika |
+
+### Frameworks (replacing "identification strategies" in theory mode)
+
+| Framework | Use for |
+|---|---|
+| M-estimation / Z-estimation | Extremum estimators with smooth or non-smooth objective |
+| GMM and generalized empirical likelihood | Moment-based estimators with overidentification |
+| Sieve methods | Infinite-dimensional parameter, semiparametric estimation |
+| Empirical process theory | Uniform laws, weak convergence on function spaces |
+| Semiparametric efficiency theory | Efficiency bounds, influence functions, adaptivity |
+| U- and V-statistics | Symmetric kernels, distributional results for $\sum_{i<j}$ statistics |
+| Kernel and local methods | Nonparametric estimation, bandwidth selection |
+| Double / debiased machine learning | High-dimensional or ML nuisance with Neyman orthogonality |
+| Bootstrap consistency | Distribution approximation, higher-order refinements |
+| Parameter on boundary / weak identification | Andrews-type irregularities, identification at infinity |
+
+### Foundational References
+
+These are loaded by default when the per-project Theoretical Foundational References table above is empty.
+
+| Topic | Anchor references |
+|-------|------------------|
+| Asymptotic statistics (general) | van der Vaart (1998), *Asymptotic Statistics*; Lehmann (1999), *Elements of Large-Sample Theory* |
+| M- and Z-estimation, large-sample theory | Newey & McFadden (1994), Handbook of Econometrics ch. 36 |
+| Semiparametric efficiency | Bickel, Klaassen, Ritov & Wellner (1993), *Efficient and Adaptive Estimation*; Newey (1990, 1994) |
+| Empirical process theory | van der Vaart & Wellner (1996), *Weak Convergence and Empirical Processes*; Pollard (1984), *Convergence of Stochastic Processes* |
+| GMM | Hansen (1982); Newey & West (1987); Newey (1991) |
+| Boundary / non-standard inference | Andrews (1999, 2000, 2001) — parameter on boundary series |
+| Bootstrap | Hall (1992), *The Bootstrap and Edgeworth Expansion*; Mammen (1992) |
+| DiD with staggered adoption | Callaway & Sant'Anna (2021); Sant'Anna & Zhao (2020); de Chaisemartin & D'Haultfœuille (2020) |
+| Debiased / double ML | Chernozhukov et al. (2018, 2022) |
+| Modern econometric theory textbook | Hansen (2022), *Econometrics* |
+
+### Theory-Paper Conventions
+
+- Explicitly state the asymptotic framework (iid, weakly dependent, panel with fixed-$T$ vs large-$T$, triangular array).
+- Distinguish weak vs strong consistency in claims and theorem statements.
+- Conditions are stated as named, numbered assumptions (A1, A2, …). Theorems cite by tag.
+- Every regularity step is justified — DCT/Fubini/uniform LLN invocations name the result.
+- Pointwise vs uniform is always qualified.
+- Rates are named ($\sqrt{n}$, $n^{1/3}$) rather than described as "fast" or "slow."
+- Identification arguments precede estimation arguments.
+
+### Theory-Paper Referee Concerns (domain + methods)
+
+- "How does this compare to <Hansen 1982 / vdV 1998 / BKRW 1993>?" — always have an answer.
+- "Why isn't this just a special case of <existing framework>?" — be explicit about novelty.
+- "Where is uniformity needed and where is it proved?" — point to the lemma.
+- "What happens on the boundary?" — even if the answer is "ruled out by A3," say so explicitly.
+- "Is the rate tight or just an upper bound?" — be explicit about which.
+- "Bootstrap validity argument?" — required when CIs are bootstrapped.

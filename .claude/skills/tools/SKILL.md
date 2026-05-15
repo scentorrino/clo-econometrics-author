@@ -52,8 +52,21 @@ cd paper/talks && latexmk [file]
 Note: `paper/latexmkrc` configures XeLaTeX, TEXINPUTS, and BIBINPUTS. Falls back to manual 3-pass if latexmk is unavailable.
 
 ### `/tools validate-bib` — Bibliography Validation
-Cross-reference all \cite{} keys in paper and talk files against Bibliography_base.bib.
+Cross-reference all `\cite{}` keys in paper and talk files against `Bibliography_base.bib`.
 Report: missing entries, unused entries, duplicate keys.
+
+**Theory-mode entries.** When `PROJECT_TYPE: theory` or `mixed` is set in `CLAUDE.md`, the validator applies different completeness rules for book entries (because theory papers cite seminal books that may lack DOIs):
+
+| Entry type | Required fields | Notes |
+|---|---|---|
+| `@article` | author, year, title, journal | DOI recommended when available |
+| `@book` (theory mode) | author / editor, year, title, **edition**, publisher | DOI NOT required; explicit `edition` field is required so a referee can verify page numbers |
+| `@incollection`, `@inbook` (theory mode) | author, year, title, booktitle, editor, pages, publisher | DOI NOT required |
+| `@unpublished`, `@misc` | author, year, title, note (or url) | Working papers always allowed |
+
+In applied mode (default), DOIs are recommended for all journal articles but books still don't require them — the theory-mode tightening only adds the `edition` field requirement for books and explicitly tolerates DOI absence.
+
+Implementation: the validator reads `PROJECT_TYPE` from `CLAUDE.md` and applies the rule above. Both modes report missing-entry, unused-entry, and duplicate-key issues identically.
 
 ### `/tools lint [file|dir]` — Mechanical Code Linting
 Run grep-based checks on R/Python/Julia scripts against the coding standards' prohibited patterns. Catches mechanical violations before the coder-critic's judgment review.
