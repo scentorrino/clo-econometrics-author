@@ -55,7 +55,29 @@ Based on `$ARGUMENTS`:
 - **`abstract`**: Draft abstract (must have other sections first)
 - **`data`**: Draft data section — expanded for descriptive/measurement papers
 - **`model`**: Draft model section (structural or theory+empirics papers only)
+- **`theorems`** / **`theory`** / any path under `paper/sections/theorems/`: Route to the **Theorist**, not the Writer. Mathematical statements and proofs are the theorist's deliverable; the Writer is for prose. See "Theorem Routing" below.
 - **No argument**: Ask user which section to draft
+
+##### Theorem Routing (theory and mixed mode)
+
+If `PROJECT_TYPE` is `theory` or `mixed` AND the target is a theorem block, dispatch differently:
+
+| Target | Route to | References |
+|---|---|---|
+| `paper/sections/theorems/{slug}.tex` | **Theorist** (via `/strategize theory` or `/prove`) | `proof-style.md`, `theorem-environment-style.md`, `asymptotic-conventions.md` |
+| `paper/sections/{anything-else}.tex` | **Writer** (default) | `section-templates.md`, `paragraph-moves.md` |
+| `paper/sections/introduction.tex` referencing theorems | **Writer** with theorem statements quoted (Writer reads `paper/sections/theorems/*.tex` for citation) | same |
+
+Recommended workflow for theory papers:
+
+```
+/conjecture <topic>          → strategist (proof-strategy memo) + theorem stub
+/prove <theorem path>        → theorist (statement + proof) + critics
+/write intro                 → writer (prose, citing the theorist's results)
+/write results               → writer (narrating the theorem's content) — NOT the proof itself
+```
+
+The Writer never rewrites a proof. The Theorist never writes prose paragraphs. If asked to draft a file under `paper/sections/theorems/`, this skill **delegates to `/prove`** (or, for first-time creation of the theorem stub, to `/conjecture`).
 
 #### 4. Dispatch Writer
 
