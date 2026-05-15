@@ -1,0 +1,18 @@
+% Proof of Theorem \ref{thm:dummy-wlln} (Khinchin's WLLN).
+% Project: theory-track-smoke
+
+\begin{proof}[Proof of \cref{thm:dummy-wlln}]
+The argument proceeds by characteristic functions: by A1 the joint characteristic function of $\bar X_n$ factorises, and by A2 a first-order Taylor expansion of the marginal characteristic function at the origin shows that its $n$-fold product converges pointwise to the characteristic function of the constant $\mu$, whence L\'evy's continuity theorem yields convergence in distribution to a constant, which is equivalent to convergence in probability. Let $\varphi(t) := \mathbb{E}[e^{itX}]$ denote the common characteristic function of the $X_i$. By A2, $\mathbb{E}|X| < \infty$, so $\varphi$ is differentiable at $0$ with $\varphi'(0) = i\mu$, and a first-order expansion gives
+\begin{equation}\label{eq:cf-expansion}
+\varphi(t) = 1 + i\mu t + o(t) \quad \text{as } t \to 0,
+\end{equation}
+where the remainder is $o(t)$ in the deterministic sense (see, e.g., \textcite[Lemma 2.3.1]{vaart1998}). By A1 the $X_i$ are iid, so the characteristic function of $\bar X_n = n^{-1}\sum_{i=1}^n X_i$ at any fixed $t \in \mathbb{R}$ equals
+\begin{equation}\label{eq:cf-mean}
+\varphi_{\bar X_n}(t) = \mathbb{E}\!\left[\exp\!\left(\tfrac{it}{n}\sum_{i=1}^n X_i\right)\right] = \varphi(t/n)^n.
+\end{equation}
+Substituting \eqref{eq:cf-expansion} into \eqref{eq:cf-mean} with $t/n \to 0$ as $n \to \infty$,
+\[
+\varphi_{\bar X_n}(t) = \left(1 + \frac{i\mu t}{n} + o(1/n)\right)^{n} \longrightarrow e^{i\mu t},
+\]
+the limit being the characteristic function of the degenerate distribution at $\mu$. By L\'evy's continuity theorem \parencite[Theorem 2.13]{vaart1998}, $\bar X_n \xrightarrow{d} \mu$. Since convergence in distribution to a constant is equivalent to convergence in probability to that constant \parencite[Theorem 2.7(iii)]{vaart1998}, $\bar X_n \xrightarrow{p} \mu = \mathbb{E}[X]$, which is the conclusion of \cref{thm:dummy-wlln}.
+\end{proof}

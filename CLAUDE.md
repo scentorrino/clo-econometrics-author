@@ -1,4 +1,4 @@
-# CLAUDE.MD -- Empirical Economics Research with Claude Code
+# CLAUDE.MD -- Econometrics Research with Claude Code
 
 <!-- HOW TO USE: Replace [BRACKETED PLACEHOLDERS] with your project info.
      Customize Beamer environments for your talk preamble.
@@ -9,7 +9,7 @@
 **Institution:** [YOUR INSTITUTION]
 **Field:** [YOUR FIELD — Economics by default. Can be adapted to Finance, Accounting, Marketing, etc.]
 **Branch:** main
-**PROJECT_TYPE:** applied
+**PROJECT_TYPE:** theory
 <!-- One of: applied | theory | mixed.
      - applied (default): empirical pipeline. Dispatches data-engineer, coder, writer.
        Theorist + simulation-engineer + the five narrow theory critics are NOT dispatched.
