@@ -1,0 +1,60 @@
+claim_id: bdiff-clause-i-penalty
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:bdiff, 'Why (ii) and not (i) at the site that consumes it': clause (i) 'applied to an average of summands of range B gives exp(-2 s^2 N/B^2), with B SQUARED ... that is the difference between a union bound over e^{O(L_x)} net points surviving under L_x = o(n^{1/3}) and surviving under L_x = o(n^{1/2}), which is A8's own upper end') and proofs.tex ('The exponent is linear in n_m/L_x; lem:bdiff(i) would give n_m/L_x^2')"
+# WHAT THIS CHECKS.  The counterfactual half of lem:bdiff's own justification for
+# adding clause (ii): that the VARIANCE-BLIND clause (i) would have delivered
+# L_x = o(n^{1/3}) and not A8's upper end.
+#
+# Clause (i) applied to an average of N = n_m summands of range B gives
+# exp(-2 s^2 n_m/B^2); with B asymp L_x that exponent is linear in n_m/L_x^2, so
+# against the same net cardinality 9^{L_x} the union-bound exponent factorises as
+#
+#     L_x ln 9  -  c n_m / L_x^2   =   L_x ( ln 9  -  c n_m / L_x^3 ) ,
+#
+# which is negative and divergent if and only if n_m/L_x^3 -> infinity, i.e.
+# L_x^3 = o(n_m), i.e. -- under A9's n_m asymp n -- L_x = o(n^{1/3}).
+#
+# COMPARE bdiff-union-exponent, where clause (ii)'s exponent linear in n_m/L_x
+# factorises as L_x ( ln 9 - c n_m/L_x^2 ) and gives L_x^2 = o(n_m), i.e.
+# L_x = o(n^{1/2}).  THE TWO SPECS TOGETHER ARE THE LEMMA'S CLAIM AS ALGEBRA: one
+# factor of the range bound B, replaced by the mean bound K, moves the surviving
+# condition from L_x = o(n^{1/3}) to L_x = o(n^{1/2}).  A8 is
+# n^{1/(2s)} << L_x << n^{1/2} (assumptions.tex), so clause (ii) lands
+# exactly on A8's upper end and clause (i) would have cut strictly inside it.
+#
+# WHY THE COUNTERFACTUAL IS WORTH MECHANISING.  lem:bdiff(ii) is a NEW clause this
+# round, added because a round-11 draft used a Markov bound at each point of an
+# epsilon-net and did not survive the union bound (proofs.tex).  The
+# lemma's statement now carries a prose justification for preferring (ii) that ends
+# "the exponent is what decides whether the tool matches the entropy, and clause (i)
+# alone does not match it."  That is a quantitative claim about two exponents, and
+# an assumption-auditor asked to price the new clause needs it as arithmetic: this
+# spec is the price tag.  It also guards against the opposite error -- adding a
+# Bernstein clause that buys nothing -- by making the gain (n^{1/3} to n^{1/2})
+# checkable.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.  (a) It does not derive
+# exp(-2 s^2 n_m/B^2) from lem:bdiff(i); that is the lemma's Steps 1-3 and the
+# substitution b = B/n_m, which is arithmetic in the lemma and not re-encoded here.
+# (b) It does not check that B asymp L_x on the sieve; that is the B-spline inverse
+# inequality of lem:unifop(3d) via proofs.tex, an analytic bound.  (c) The
+# constant c here is generic and is NOT c_18: the clause-(i) constant differs, and
+# the spec is deliberately written with an unnamed positive c so it cannot be read
+# as asserting the two routes share a constant.
+#
+# FALSIFICATION (hand-computed).  claimed_end "L_x*(log(9) - c*n_m/L_x**2)" leaves
+# residual c*n_m/L_x**2 - c*n_m/L_x**3 ... nonzero; MISMATCH -- and that is
+# clause (ii)'s factorisation, so the spec discriminates the two clauses in the
+# opposite direction from bdiff-union-exponent.  claimed_end
+# "L_x*(log(9) - c*n_m/L_x**4)" likewise MISMATCHes.
+#
+# PREDICTED: MATCH.  Pure rational algebra; `expand` suffices.
+variables:
+  L_x:
+    domain: positive
+  n_m:
+    domain: positive
+  c:
+    domain: positive
+start: "L_x*log(9) - c*n_m/L_x**2"
+operation: none
+claimed_end: "L_x*(log(9) - c*n_m/L_x**3)"

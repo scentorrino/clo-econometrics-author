@@ -1,0 +1,72 @@
+claim_id: frontier-table-mu2-dz4-printed
+source: "*** RENDERING WITHDRAWN: the mu = 2 row of the A5(iii) table NO LONGER PRINTS '3.33'. *** Current table: quality_reports/theory/panel-npiv-discrete/assumptions.tex (the mu = 2 row now reads 'r > 5/2  r > 10/3  r > 25/6', EXACT FRACTIONS). The withdrawal and its reason: assumptions.tex. General formula: eq:frontier at assumptions.tex. The '3.33' still appears, as a quoted historical defect, at assumptions.tex and at theory_memo.md:2180 ('(2,5) -> r > 4.17')."
+# ===========================================================================
+# ===  BY-DESIGN MISMATCH (exit 1), AND THE SUBJECT IS NOW A WITHDRAWN      ===
+# ===  RENDERING.  Re-verified round 12: still by design, NOT a real        ===
+# ===  mismatch -- but the thing it verifies is no longer printed.          ===
+# ===========================================================================
+#
+# WHAT THIS SPEC DOES.  It recomputes the (mu, d_Z) = (2, 4) entry of the
+# eighteen-entry A5(iii) substitution table from the general formula
+# r > d_Z(2 mu + 1)/(2(2 mu - 1)) and compares it with the TWO-DECIMAL rendering
+# 3.33.  The exact value is 10/3 = 3.3333..., so the comparison MUST fail; the
+# residual 10/3 - 333/100 = 1/300 IS the output, and exit 1 is the intended result.
+# The companion frontier-table-mu2-dz4-exact.yaml makes the same recomputation
+# against the exact value and MATCHes.
+#
+# ROUND-12 RE-VERIFICATION -- WHY THE MISMATCH IS STILL BY DESIGN, AND WHAT
+# CHANGED ANYWAY.  Two questions have to be kept apart.
+#
+#   (1) IS THE MISMATCH STILL DELIBERATE?  YES.  Nothing in the round touched
+#       eq:frontier: it is still
+#           2mu/(2mu+1) * r/(2r+d_Z) > 1/4  <=>  r > d_Z(2mu+1)/(2(2mu-1))
+#       at assumptions.tex, so d_Z(2mu+1)/(2(2mu-1)) at (2, 4) is still
+#       exactly 10/3, and 10/3 != 333/100 remains a rounding gap and not an error.
+#       Nor was the frontier-clearing configuration (mu, s, a, alpha) =
+#       (2, 3, 3/4, 0.32) retired: it is still named as THE admissible design at
+#       proofs.tex and is still used at results.tex.  The
+#       "retirement of (mu, s, a) = (2, 3, 3/4)" recorded in the memo is CONDITIONAL
+#       on the derivative reparameterisation of dispatch 8, which was ASSESSED AND
+#       DECLINED -- derivative_route_assessment.md:430 retires it only under a route
+#       the memo's own pointer says was not taken, and states "Nothing in the live
+#       theory files was edited."  So the frontier arithmetic this spec rests on is
+#       untouched, and the by-design status stands.
+#
+#   (2) IS THE SUBJECT STILL IN THE PAPER?  NO.  The mu = 2 row of the table now
+#       prints EXACT FRACTIONS -- 'r > 5/2   r > 10/3   r > 25/6' -- and
+#       assumptions.tex says why, in terms:
+#           "THE mu = 2 ROW IS PRINTED AS EXACT FRACTIONS, DELIBERATELY.  Round 2
+#            wrote 'r > 3.33' against a true threshold of 10/3 = 3.333...,
+#            ROUNDING A STRICT LOWER BOUND DOWN: every r in (3.33, 10/3] passes the
+#            printed test and fails the frontier.  ('4.17' rounded 25/6 = 4.1666...
+#            UP and was safe, but the two must not be printed to different
+#            conventions.)  All other entries in the table are exact."
+#       So the defect this spec was written to exhibit HAS BEEN FIXED IN THE PAPER.
+#       The spec no longer verifies a printed value; it verifies the size of a
+#       rounding error that the paper cites as its reason for not rounding.
+#
+# WHAT THAT MEANS FOR HOW THIS SPEC SHOULD BE READ.  It is now a RETIREMENT RECORD
+# of the same species as phirate-operator-noise-budget, with one difference that
+# matters: this one exits 1, not 0, so it cannot silently inflate a MATCH count.
+# It is retained because (a) its residual 1/300 is exactly the quantity
+# assumptions.tex cites when it justifies printing fractions, so the spec
+# is now the mechanised form of that justification; (b) the DIRECTION of the error
+# is the substantive point -- 1/300 > 0 means the printed bound was BELOW the true
+# bound, so the rounding was in the UNSAFE direction, admitting every r in
+# (3.33, 10/3]; and (c) frontier-table-rounding-dz4.yaml asserts that residual
+# POSITIVELY (start 10/3 - 333/100, claimed_end 1/300, exit 0), so the pair
+# "inferred residual + asserted residual" is the record of both the defect and its
+# size.
+#
+# ANY TALLY MUST REPORT THIS AS 'BY-DESIGN MISMATCH', NOT AS A FAILURE, AND SHOULD
+# NOTE THAT THE RENDERING IT PRICES IS WITHDRAWN.
+#
+# EXPECTED EXIT CODE: 1.  Residual: 1/300.
+variables:
+  mu:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "d_Z*(2*mu+1)/(2*(2*mu-1))"
+operation: "substitute(mu=2, d_Z=4)"
+claimed_end: "333/100"

@@ -1,0 +1,35 @@
+\begin{tabular}{lrrrrrrrr}
+\toprule
+& & & & & \multicolumn{2}{c}{Bootstrap envelope} & \multicolumn{2}{c}{Counties within $\pm5\,\mu$g/m$^3$} \\
+\cmidrule(lr){6-7} \cmidrule(lr){8-9}
+Pctile of $X$ & TSP & $\hat\varphi(x)-\hat\varphi(x_{0.5})$ & Bootstrap median & Bootstrap s.d. & 5th & 95th & 1970 & 1980 \\
+\midrule
+\multicolumn{9}{l}{\textit{Panel A: $\hat\varphi$ at deciles of the pooled $X$ distribution}} \\
+\midrule
+5 & 31.4 & 0.0157 & 0.0124 & 0.0205 & -0.0230 & 0.0468 & 61 & 67 \\
+10 & 37.5 & -0.0036 & -0.0080 & 0.0184 & -0.0357 & 0.0187 & 94 & 124 \\
+20 & 44.9 & -0.0183 & -0.0217 & 0.0161 & -0.0478 & 0.0009 & 138 & 206 \\
+30 & 49.6 & -0.0189 & -0.0230 & 0.0134 & -0.0447 & -0.0027 & 170 & 272 \\
+40 & 53.6 & -0.0097 & -0.0098 & 0.0084 & -0.0259 & 0.0006 & 184 & 280 \\
+50 (anchor) & 58.0 & 0.0000 & 0.0000 & 0.0019 & -0.0025 & 0.0033 & 187 & 253 \\
+60 & 62.8 & 0.0085 & 0.0093 & 0.0087 & -0.0022 & 0.0236 & 178 & 210 \\
+70 & 68.1 & 0.0135 & 0.0148 & 0.0145 & -0.0039 & 0.0393 & 168 & 154 \\
+80 & 75.4 & 0.0079 & 0.0108 & 0.0182 & -0.0171 & 0.0413 & 135 & 96 \\
+90 & 87.7 & 0.0046 & 0.0075 & 0.0218 & -0.0293 & 0.0441 & 76 & 28 \\
+95 & 100.2 & 0.0152 & 0.0167 & 0.0242 & -0.0263 & 0.0563 & 46 & 9 \\
+\addlinespace
+\multicolumn{9}{l}{\textit{Panel B: multiplier design and convergence}} \\
+\midrule
+Replications drawn & \multicolumn{8}{l}{99} \\
+Replications with a finite curve & \multicolumn{8}{l}{99} \\
+Failures: error / non-finite & \multicolumn{8}{l}{0 / 0} \\
+$\hat m_\varphi$: median [min, max] & \multicolumn{8}{l}{60 [60, 60]} \\
+Retained with $\hat m_\varphi = 1$ & \multicolumn{8}{l}{0} \\
+Retained with $\hat m_\varphi = \bar m$ & \multicolumn{8}{l}{99} \\
+S.d.\ of the anchor across replications & \multicolumn{8}{l}{0.71} \\
+Weight s.d.\ (population value 1): median & \multicolumn{8}{l}{1.000} \\
+\addlinespace
+Coordinate map rebuilt ($B=25$): replications & \multicolumn{8}{l}{25, 25 finite} \\
+Coordinate map rebuilt: band width on the same draws & \multicolumn{8}{l}{0.0391 vs.\ 0.0374} \\
+\bottomrule
+\end{tabular}

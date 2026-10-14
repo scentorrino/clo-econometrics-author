@@ -1,0 +1,14 @@
+claim_id: h1-mu-half-equiv
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (H1: mu = s/(2a)); proofs_review.md:L33 ('H1's mu > 1/2 <=> s > a')"
+# CLAIM.  Under H1 (mu = s/(2a), a > 0), the frontier's necessary condition
+# mu > 1/2 translates into s > a.  Mechanised as the identity
+#     s/(2a) - 1/2 = (s - a)/(2a),
+# whose sign is the sign of s - a because a > 0.
+variables:
+  s:
+    domain: positive
+  a:
+    domain: positive
+start: "s/(2*a) - 1/2"
+operation: none
+claimed_end: "(s-a)/(2*a)"

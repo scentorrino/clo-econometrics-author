@@ -1,0 +1,38 @@
+\begin{tabular}{lrrrcrrcc}
+\toprule
+ & & & & \multicolumn{3}{c}{Pre-committed criterion: 95\% coverage} & Whole battery & \\
+\cmidrule(lr){5-7}
+DGP & $c_\delta$ & $n$ & Budget & Coverage (MC SE) & Gap (SE) & Verdict & Worst $|z|$ & Verdict \\
+\midrule
+\multicolumn{9}{l}{\textit{Panel A: every core cell with realised budget below one}} \\
+\midrule
+HA & 0.35 & 64,000 & 0.932 & 0.948 (0.003) & -0.57 & within 2 SE & 1.73 & within 2 SE \\
+HA & 0.35 & 181,019 & 0.778 & 0.944 (0.003) & -1.85 & within 2 SE & 2.58 & outside 2 SE \\
+HA & 0.25 & 125 & 0.635 & 0.940 (0.003) & -2.98 & outside 2 SE & 11.50 & outside 2 SE \\
+HA & 0.25 & 354 & 0.707 & 0.948 (0.003) & -0.64 & within 2 SE & 6.35 & outside 2 SE \\
+HA & 0.25 & 1,000 & 0.721 & 0.950 (0.003) & 0.13 & within 2 SE & 2.12 & outside 2 SE \\
+HA & 0.25 & 2,828 & 0.690 & 0.946 (0.003) & -1.37 & within 2 SE & 1.79 & within 2 SE \\
+HA & 0.25 & 8,000 & 0.631 & 0.948 (0.003) & -0.64 & within 2 SE & 1.89 & within 2 SE \\
+HA & 0.25 & 22,627 & 0.556 & 0.953 (0.003) & 1.00 & within 2 SE & 1.00 & within 2 SE \\
+HA & 0.25 & 64,000 & 0.475 & 0.950 (0.003) & 0.00 & within 2 SE & 3.28 & outside 2 SE \\
+HA & 0.25 & 181,019 & 0.397 & 0.947 (0.003) & -0.82 & within 2 SE & 1.01 & within 2 SE \\
+HB & 0.35 & 64,000 & 0.932 & 0.950 (0.003) & 0.13 & within 2 SE & 1.77 & within 2 SE \\
+HB & 0.35 & 181,019 & 0.778 & 0.953 (0.003) & 1.00 & within 2 SE & 1.53 & within 2 SE \\
+HB & 0.25 & 125 & 0.635 & 0.940 (0.003) & -2.98 & outside 2 SE & 17.26 & outside 2 SE \\
+HB & 0.25 & 354 & 0.707 & 0.947 (0.003) & -1.07 & within 2 SE & 7.35 & outside 2 SE \\
+HB & 0.25 & 1,000 & 0.721 & 0.947 (0.003) & -0.89 & within 2 SE & 3.74 & outside 2 SE \\
+HB & 0.25 & 2,828 & 0.690 & 0.949 (0.003) & -0.19 & within 2 SE & 2.10 & outside 2 SE \\
+HB & 0.25 & 8,000 & 0.631 & 0.951 (0.003) & 0.46 & within 2 SE & 1.15 & within 2 SE \\
+HB & 0.25 & 22,627 & 0.556 & 0.949 (0.003) & -0.45 & within 2 SE & 1.02 & within 2 SE \\
+HB & 0.25 & 64,000 & 0.475 & 0.955 (0.003) & 1.85 & within 2 SE & 2.19 & outside 2 SE \\
+HB & 0.25 & 181,019 & 0.397 & 0.952 (0.003) & 0.59 & within 2 SE & 0.86 & within 2 SE \\
+\addlinespace
+\multicolumn{9}{l}{\textit{Panel B: zero-remainder anchor (nuisances exact)}} \\
+\midrule
+HA & --- & 181,019 & 0.000 & 0.949 (0.003) & -0.45 & within 2 SE & --- & --- \\
+HA & --- & 22,627 & 0.000 & 0.951 (0.003) & 0.20 & within 2 SE & --- & --- \\
+HA & --- & 1,000 & 0.000 & 0.950 (0.003) & -0.06 & within 2 SE & --- & --- \\
+\midrule
+\multicolumn{9}{l}{$B=5,000$ at every cell; coverage MC SE $\approx0.003$ at nominal 95\%. Bar fixed before the run. Worst $|z|$ is the largest of five measures. Cells: 51 of 51.} \\
+\bottomrule
+\end{tabular}

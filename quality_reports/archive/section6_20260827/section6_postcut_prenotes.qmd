@@ -1,0 +1,461 @@
+# Empirical application
+
+Hedonic price regressions read the value of a local amenity off the
+cross-section of property values \citep[see][]{rosen1974,bishop2020}, and
+regulatory designations are a standard source of exogenous variation in them
+\citep[see][]{greenstonegallagher2008}. Air quality is the amenity with the
+longest such literature. The regressor of interest is almost always entered
+linearly, and we relax that here, on a two-period county panel whose instrument
+is discrete because the regulation that generates it is a rule on thresholds.
+The section illustrates the estimator of Section 3 and claims nothing beyond the
+illustration; what it does not establish is set out in the last subsection
+rather than left to be discovered there.
+
+The data are the county panel \citet{chay2005} assembled to measure how the 1970
+Clean Air Act Amendments capitalised into property values. The file holds 989
+counties. One candidate control, per-capita expenditure on pollution abatement,
+is missing in all 989 rows and is dropped as an empty column rather than as item
+non-response, which leaves 22 usable controls and not 23; six more are missing
+the local-fiscal block, which leaves an analysis sample of $n=983$ (Table S34 of
+the supplement).
+
+Write $Y_{ij}$ for the log of county $i$'s median property value in
+$j\in\{1970,1980\}$, $X_{ij}$ for its mean concentration of total suspended
+particulates in $\mu$g/m$^3$, $W_i$ for its 1975 nonattainment designation, and
+$\Delta Z_i$ for an intercept together with $d_Z$ differenced county
+characteristics, at $d_Z=5$ throughout. That is the differenced model of
+Section 2 term by term: a continuous endogenous scalar entering through
+$\vdagger$, a discrete instrument, a differenced control vector, and a county
+effect the differencing removes. Descriptive statistics are in Table S35 of the
+supplement, where just under a third of the sample is designated, at a mean of
+$0.303$. The intercept is not decoration and A4(ii) requires it: read against
+A1b(iv), that clause forces $\Delta Z$ to carry exactly one constant coordinate,
+which in a differenced equation is the period effect.
+
+The object of economic interest here is $\vdagger$ and not $\theta_\dagger$,
+which inverts \cref{thm:rootn}, whose $\sqrt n$ statement is about
+$\theta_\dagger$: the structural function is the hedonic price of air quality,
+while $\theta_\dagger$ collects coefficients on demographic and fiscal
+controls. Which of the two roles carries the question is a property of the
+application rather than of the model.
+
+## The instrument
+
+The designation rule fires on either of two triggers: a county is designated if
+its annual geometric mean exceeds the standard, or if its second-highest daily
+reading does. We read $W$ as the pair of triggers rather than as their
+disjunction, which gives a four-valued instrument: $685$ counties trigger
+neither, $114$ the bad-day rule alone, $66$ the annual mean alone, and $118$
+both, the last three being the cell sizes \cref{tab:app-localise} prints. The
+four cells are ordered in baseline particulates and are not ordered in the
+decadal change, so they are not a ladder in the regressor. The refinement
+discards nothing, since the binary reading is the indicator of the first cell's
+complement.
+
+The reason for reading the designation at $\mathsf L=4$ is methodological and
+not empirical. Four cells are what the rule says, so the binary indicator is a
+coarsening of the datum rather than the datum itself, and under A1 the three
+contrasts the four cells generate are further restrictions on the same
+$\vdagger$, by \cref{prp:localise}. What the extra cells do not buy should be
+said in the same breath: not identification, since a coarsening imposes fewer
+restrictions; not testability, which is present already at $\mathsf L=2$; and
+not instrument strength, since splitting an instrument creates no variation.
+What they buy is the decomposition \cref{prp:localise} describes, in which a
+piece far from zero at the common fit is a cell where the four-valued reading
+conflicts with $\hat\varphi$.
+
+All three cells exceed their own reference, at $p=0.039$ for the bad-day cell,
+$0.006$ for the annual-mean cell and $0.003$ for the joint cell, against a null
+that redraws $W$ from the fitted propensity (\cref{tab:app-localise}). The
+reading runs one way only, since a small $p$
+localises a conflict to that cell while a large one exonerates nothing:
+consistency across cells is necessary and not sufficient for A1 by
+\cref{prp:localise}(iii). We report the three cells and draw no ordering from
+them.
+
+The instrument moves the regressor. Nonattainment lowers the decadal change in
+mean particulates by $8.37$ to $9.11\,\mu$g/m$^3$ across the four control sets,
+and does so at the $1$ per cent level at every one of them
+(\cref{tab:app-firststage}, Panel A). We read that table on the state-clustered
+standard error, because designation was made at the level of the Air Quality
+Control Region and A0 assumes independent sampling. Clustered, $F$ runs from
+$10.6$ with no controls to $13.1$ at the widest set, so the first stage clears
+the conventional threshold of ten at every control set, with little room at the
+narrowest. Linear instrumental variables
+give $-5.519\times10^{-3}$ log points per $\mu$g/m$^3$, which at the 1970 mean
+of $66.0\,\mu$g/m$^3$ is an elasticity of $-0.364$, against the $-0.20$ to
+$-0.35$ \citet{chay2005} report on this design; it sits just past the more
+negative end of that range and reproduces the sign and the order of magnitude
+rather than falling inside it.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% 286.9pt at the stock 6pt \tabcolsep and \footnotesize, against a \textwidth of
+% 469.8pt.  Measured, not guessed; no size or \tabcolsep surgery is needed here.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The instrument: first stage, reduced form, and the linear benchmark}
+\label{tab:app-firststage}
+\footnotesize
+\input{../tables/app_tsp_firststage}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Chay--Greenstone county panel, $T=2$, first differenced;
+$n=983$ counties in every column. Columns vary the control set, indexed by the
+number $d_Z$ of differenced controls entered: none, five core hedonic demand
+shifters, those plus five demographic variables, and all twenty-two usable
+controls. Table S36 of the supplement names all twenty-two, and Table S38 of
+the supplement prints ten of them as rows. $W$ is the county's imputed
+1975 nonattainment designation, entered here as the binary coarsening of the
+four cells the text reads it as; $\Delta X$ is the 1970--1980 change in mean
+total suspended particulates in $\mu$g/m$^3$, and $\Delta Y$ the change in log
+median property value. Robust standard errors in parentheses and state-clustered
+standard errors in square brackets; stars are computed from the state-clustered
+standard error, which is the conservative of the two and the one this section
+reports. Panel C is the just-identified linear instrumental-variables
+coefficient of $\Delta Y$ on $\Delta X$ using $W$, scaled by $10^{3}$, which is
+the linear specification the nonparametric estimate of Table S43 of the
+supplement replaces. $F$ is the first-stage $F$ statistic on $W$, computed once from the
+robust and once from the clustered variance. $^{*}$ $p<0.10$, $^{**}$ $p<0.05$,
+$^{***}$ $p<0.01$. Source:
+\texttt{scripts/application/app\_tsp\_01\_diagnostics.R}; table
+\texttt{paper/tables/app\_tsp\_firststage.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+% Eight columns at \footnotesize and the stock 6pt \tabcolsep, three body rows
+% and a four-row sensitivity block.  Upright with room; no surgery.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The localisation diagnostic, cell by cell}
+\label{tab:app-localise}
+\footnotesize
+\input{../tables/app_tsp_localise}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Chay--Greenstone county panel, $n=983$, at the headline
+control set $d_Z=5$ and $\varepsilon_\varrho=0.01$, with the instrument entered
+as its four trigger cells. Rows are the three non-base cells; the base cell,
+$685$ counties triggering neither rule, carries no contrast and is not tested.
+At the common fit $(\hat\varphi,\hat\theta)$ the statistic is the
+$L^{2}(\Pi_u\otimes\Pi_t)$ norm of
+$\mathbb E_n[\widetilde W_l\,\un\{\Delta\hat U\le u\}\,w(t'\Phi(\Delta Z))]$, which A1
+sends to zero up to sampling error at every cell. \emph{The reference
+distribution redraws $W$ from the fitted multinomial $\hat\varrho(\Delta Z)$},
+which imposes A1 by construction while holding the propensity fixed, so it is
+the null the diagnostic is about and not a permutation that would also destroy
+the conditioning. ``$\#\{\ge\}$'' counts the null draws at or above the observed
+norm out of $B=2{,}000$, and $p=(\#\{\ge\}+1)/(B+1)$, whose smallest attainable
+value at this $B$ is $1/2{,}001$; no cell here reaches it. $p_{\mathrm{cf}}$
+repeats the calculation at the cross-fitted propensity on the same null draws,
+and which of the two \cref{prp:localise}'s diagnostic should use is not settled
+here. No multiplicity adjustment is applied and three cells are tested at once.
+\emph{A large $p$ does not exonerate a cell}: consistency across cells is
+necessary and not sufficient for A1, and the false-negative rate of the
+attribution is unpriced. The last block re-draws the Bierens $t$-grid at three
+further seeds with the null draws held fixed, the grid being a free constant
+under B1(iv). \emph{The base cell is not a row here and its size is the
+complement}, $685$ of the $983$; that count is the \texttt{cell\_counts} entry
+of the run object named below. The two orderings the text reads off these
+cells, in baseline particulates and in the decadal change, come from the same
+trigger constructor on the same sample and are printed in no table. Source: \texttt{scripts/application/app\_tsp\_08\_localise.R} and
+\texttt{app\_tsp\_common.R}; table
+\texttt{paper/tables/app\_tsp\_localise.tex}; run object
+\texttt{quality\_reports/application/app\_tsp\_localise.rds}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+```
+:::
+
+A4(i) holds in an in-sample fit and binds in the fit the estimator uses. The
+multinomial propensity, projected onto the truncation set of \cref{def:hatT} at
+$\varepsilon_\varrho=0.01$, has in-sample minimum $\min_l\hat\varrho_l=0.0115$;
+over the $29{,}500$ cross-fitted evaluations one estimation run makes, the
+projection binds on $0.997$ per cent of them, at a pre-projection minimum of
+$4.3\times10^{-5}$, and at the binary coarsening on none
+(\cref{tab:app-theta}). Where it binds, A1 holds at $\hat\varrho$ and fails at
+the truncated propensity substituted for it, so those evaluations are outside
+the assumption; the theory prices that as a bias term rather than excluding it.
+The implied covariance clears \eqref{eq:omegafloor} with room, at
+$\lambda_{\min}(\hat\Omega)=0.0113$ against $\varepsilon_\varrho/\mathsf
+L=0.0025$, so no cells need merging, which matters because merging strengthens
+A1b(iii) and gives back the restrictions the refinement was taken for.
+
+The designation in hand is not the designation that was made. Between 1972 and
+1978 nonattainment status was assigned at the level of the Air Quality Control
+Region, and the county-level variable in this file is an imputation from monitor
+readings. \citet{cropper2023} quantify the discrepancy: the estimated reduction
+in total suspended particulates attenuates from $10.2$ and $9.1\,\mu$g/m$^{3}$
+across their two panels under the official designation to $6.0$ and $7.7$ under
+the county-level definition this section adopts. The imputed variable is
+admissible here under non-differential misclassification, so that the
+probability of a mislabelling does not depend on $\Delta U$ given $\Delta Z$.
+Under it $W$ remains valid and is merely less relevant; under the alternative
+the estimator is inconsistent rather than imprecise, so no sample size repairs
+it. We assume the condition and do not test it.
+
+## The estimator on this panel
+
+One property of the estimator changed between the diagnostics above and the
+estimates below, and it is a hypothesis the theory consumes rather than a tuning
+choice. The $x$-direction kernel is the supplement's boundary family at $p_K=8$,
+which enforces every truncated moment \eqref{eq:truncmom} asks for, and with it
+the clause $\int_{\mathcal X}\hat\nu\,dx=0$ that places the adjoint's range
+inside $\mathcal V$. The engine it replaces satisfied neither (Table S47 of the
+supplement).
+
+\Cref{tab:app-theta} reports $\hat\theta$ at the headline control set, at
+$\mathsf L=4$ and at the binary coarsening, on one cross-fitting stream and at a
+common truncation level and iteration cap, so the two columns vary the
+cardinality alone. The two agree on sign and on order of magnitude at every
+coordinate, and we put the agreement no more strongly than that: measured in
+units of the four-cell column's own clustered standard error, no coordinate
+moves by as much as $0.53$ of a standard error and four of the six move by less
+than a quarter of one. That is the expected direction of no effect rather than a null
+result: under A1 the surplus contrasts are further restrictions on the same
+$\vdagger$, so they buy localisation and not a different answer, and a large
+shift would have been evidence against A1 or against the binary estimate. They
+do not buy precision either, the clustered standard error being larger in the
+four-cell column at per capita income.
+
+Holding the cap fixed across the two columns is what makes them a one-factor
+contrast, and that is not a second-order detail: a third arm at the $\bar m=15$
+the binary cardinality would itself have set moves that column further than the
+cardinality moves it, by $0.1930$ at its largest coordinate, and the two
+contrasts are opposite in sign at five of the six coordinates, so a design that
+varied both at once would net them against each other (Table S39 of the
+supplement).
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% Three columns at \footnotesize and the stock 6pt \tabcolsep.  No \tabcolsep
+% surgery; the NOTES are set \scriptsize and the reason is measured, below.
+%
+% "FITS UPRIGHT WITH ROOM" WAS FALSE AND IS WITHDRAWN, 2026-08-20: the float
+% overflowed by 74.1pt.  THE 2026-08-20 RULING THAT WENT WITH IT -- "an ordinary
+% float overflows the margin rather than clipping, and pdftotext confirms no
+% printed text is lost" -- WAS TRUE AT 74.1pt AND FALSE AT 86.1pt, WHICH IS
+% WHERE THE OBES CUT OF 2026-08-27 PUT IT.
+%
+% WHAT HAPPENED, RECORDED BECAUSE THE MECHANISM IS THE POINT.  The cut moved
+% tab:app-theta-cap to the supplement, so two \cref renderings in these notes
+% became by-name pointers -- "\cref{tab:app-theta-cap}" (11 printed characters)
+% to "Table S39 of the supplement" (26).  Two substitutions of fifteen characters
+% each added about two \footnotesize lines, the overrun went 74.09 -> 86.09pt,
+% and 86.09 is past the 72.27pt at which a float's bottom edge leaves the sheet.
+% THE SOURCE LINE WAS SHED.  `pdftotext | grep -c app_tsp_localise_theta.tex'
+% returned 1 before the cut and 0 after, while quarto exited 0, the caption
+% census found no gap, no reference was undefined and the caption still printed
+% -- because the caption is at the HEAD of the box and only the TAIL was lost.
+%
+% REPAIR, AND IT REMOVES THE OVERRUN RATHER THAN MANAGING IT, per tab:sim-n1defect.
+% The notes go \footnotesize -> \scriptsize.  NO CLAUSE IS CUT.  Re-measured
+% after the change, from the rendered PDF and not from the log: the float raises
+% no "Float too large" at all, and BOTH canaries return 1 --
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'The slope vector at four instrument cells'          -> 1  (head)
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'app_tsp_localise_theta.tex'                         -> 1  (tail)
+% RUN BOTH AFTER ANY EDIT TO THIS BLOCK.  A one-ended check cannot see a
+% two-ended failure, and these notes grow whenever a float leaves the article.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The slope vector at four instrument cells and at the binary coarsening}
+\label{tab:app-theta}
+\footnotesize
+\input{../tables/app_tsp_localise_theta}
+\begin{tablenotes}\scriptsize
+\item \textit{Notes:} Chay--Greenstone county panel, $n=983$, first differenced,
+at the headline control set $d_Z=5$. Each column is the cross-fitted one-step
+estimator of \eqref{eq:onestep} with clustered standard errors in parentheses,
+clustered on state. \emph{There is no $\Delta$TSP coordinate in $\theta$}: the
+endogenous regressor enters the model through $\vdagger$ only, so the rows are
+the intercept and the five differenced controls, which are per capita income,
+population, the unemployment rate, manufacturing employment and the share with a
+high-school education. $\mathsf L=4$ reads the 1975 nonattainment designation as
+the pair of triggers that produces it; $\mathsf L=2$ is its binary coarsening,
+which agrees with $\{W>0\}$ at all $983$ counties. \emph{The two columns run on
+identical cross-fitting partition streams, at a common
+$\varepsilon_\varrho=0.01$ and at a common Landweber iteration cap
+$\bar m=60$}, so the cardinality is the one factor that varies and what it does
+to the propensity travels with it; every fold solve in both columns runs to that
+cap. Table S39 of the supplement varies the cap instead.
+\emph{Neither column is comparable with the ladder of Table S38 of the
+supplement, and the difference is three factors and not one}: the ladder runs a
+different cross-fitting stream, a different truncation level
+($\varepsilon_\varrho=0.03$ against $0.01$ here) and a different iteration cap
+($\bar m=15$ at its binary arm against $\bar m=60$ here). The third of those is
+the factor Table S39 of the supplement isolates, where it alone moves a
+coordinate by $0.1930$. No significance stars are computed
+for this table. The last four rows report what A4(i) costs at
+$\varepsilon_\varrho=0.01$: the share of cross-fitted propensity evaluations at
+which the projection onto \eqref{eq:trunset} binds, the number of such
+evaluations one estimation run makes, the smallest fitted $\hat\varrho_l$ before
+the projection, and the mean relative balance of the estimating equations. Both
+columns run the boundary-adjusted $x$-kernel described in the text, whose
+ablation against the unadjusted engine is
+\texttt{scripts/application/app\_tsp\_09\_boundary.R} and
+\texttt{paper/tables/app\_tsp\_boundary.tex}.
+Source:
+\texttt{scripts/application/app\_tsp\_08\_localise.R}; table
+\texttt{paper/tables/app\_tsp\_localise\_theta.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+```
+:::
+
+The standard errors in both columns are conditional on a hypothesis the
+estimator does not impose. \Cref{cor:centarity} makes N1 a condition on a
+$p\times(\mathsf L-1)$ matrix, hence $p(\mathsf L-1)$ scalar conditions rather
+than $p$, and the anchor this estimator removes is a constant per $(j,l)$ rather
+than a function of $\Delta Z$, so it imposes no version of N1 beyond the
+unconditional one. What the supplement measures is the smallest defect any
+constant anchor can reach, and at $\mathsf L=4$ it is not resolvable from zero,
+as it is not at either binary arm (Table S41 of the supplement). That is not
+evidence of absence but a statement about the power of the check at $n=983$, and
+no moment-level diagnostic could have substituted for it, since
+$E[\widetilde W_l\hat L_{jl}\mid\Delta Z]=0$ holds automatically under A1
+whatever the anchor is. Inference here is conditional on N1, and by
+\cref{prp:orthog}(iii) its failure would cost the propensity direction of the
+orthogonality, at the full rate $r_n$ and undamped.
+
+\Cref{fig:app-phi} draws $\hat\varphi$ at the headline control set. The curve
+drawn is the four-cell fit, and the binary-coarsening curve does not sit on top
+of it: at the common cap the sup gap between the two is $0.0327$, or $85$ per
+cent of the four-cell curve's own range of $0.0383$, against a root-mean-square
+gap of $0.0136$, so the two separate at some points of the support and not on
+average. Letting the cap move with the
+cardinality instead would put that sup gap at $0.0081$ and license the sentence
+that the two cardinalities agree. That number measures nothing: it nets two
+effects that nearly cancel, the cap alone moving the binary curve by $0.0380$.
+
+The curve is not monotone, and the sign the hedonic reading asks for is
+delivered on part of the support and not on the rest. It rises at $32$ of its
+$59$ grid steps and falls at $27$, in four monotone stretches: it descends to
+$-0.0174$ at $48.7\,\mu$g/m$^3$, the 28th percentile; climbs to $+0.0150$ at
+$68.5$, the 71st; falls to $+0.0001$ at $86.4$, the 89th; and rises again over
+the last four steps. Its whole range is $0.0349$, and its largest sustained
+movement, at $+1.64\times10^{-3}$ log points per $\mu$g/m$^3$ between the trough
+and the peak, runs the wrong way for the hedonic reading.
+
+The linear slope of the preceding subsection delivers $0.380$ log points over
+the $68.8\,\mu$g/m$^3$ separating the 5th and the 95th percentiles of $X$, and
+the nonparametric estimate's whole range is under a tenth of that. It is nowhere
+as steep either: its steepest single descending step is $-3.28\times10^{-3}$, or
+$59.5$ per cent of the linear slope. *The two estimates therefore disagree about
+the level of the gradient and not only about its shape.* Every sentence of this
+reading is a statement about the point estimate: the constant slope is not a
+feature of $\hat\varphi$ anywhere on the support, and the sign it imposes fails
+on the two rising stretches, which carry $48.8$ per cent of the pooled
+distribution of $X$ between them. We do not call that a negative result, because
+the envelope of the next subsection is wide enough that nothing here rules a
+constant slope out.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{../figures/app_tsp_phi.pdf}
+\caption{The estimated hedonic price function and its variability}
+\label{fig:app-phi}
+\begin{minipage}{0.92\textwidth}\footnotesize
+\textit{Notes:} $\hat\varphi(x)-\hat\varphi(x_{0.5})$ against mean total
+suspended particulates, at the headline control set $d_Z=5$, on the $983$-county
+Chay--Greenstone panel, with the instrument entered as its four trigger cells.
+The vertical axis is in log points of median property
+value and the curve is normalised at the pooled median of $X$,
+$58.0\,\mu$g/m$^3$, so the figure carries the shape of the price function and
+not its level. The solid line is the point estimate and the dashed line the
+median of $99$ bootstrap replications; the two track each other to within
+$0.0049$ log points everywhere on the grid, which is the absence of shrinkage
+discussed in the text. Every one of those $99$ replications ran to the
+iteration cap $\bar m=60$, so none of them returned its initial condition and
+none of them selected an index. The two shaded regions are the
+twenty-fifth-to-seventy-fifth and fifth-to-ninety-fifth percentiles of the
+replications at each evaluation point, the outer one bounded by dotted lines.
+\emph{They illustrate variability and are not confidence sets; no coverage is
+claimed for them and none is computed}, following
+\citet{centorrinofeveflorens2019} for the same estimator on the same equation.
+The rug at the foot marks the county-level marginal distribution of $X$ in each
+of the two periods, so the thinning of the $1980$ rug above
+$80\,\mu$g/m$^3$ is where the right-hand tail of the curve is supported by few
+counties. The levels drawn are tabulated in Table S43 of the supplement,
+whose Panel C names the pooled-rank coordinate these magnitudes are in. Source:
+\texttt{scripts/application/app\_tsp\_02\_ladder.R} and
+\texttt{app\_tsp\_05\_phi\_band.R}; figure
+\texttt{paper/figures/app\_tsp\_phi.pdf}.
+\end{minipage}
+\end{figure}
+```
+:::
+
+## The bootstrap
+
+Valid uniform inference on $\hat\varphi$ does not exist in this model, and the
+obstruction is a property of the estimator rather than of this application.
+Uniform bands for ill-posed problems are built on a source condition written in
+the spectral calculus of $T^\ast T$ and on completeness of the instrument, and
+neither is available here: the operator equation of Section 2 is nonlinear in
+$\varphi$, so there is no adjoint in which to write the condition, and a $W$
+with four values delivers completeness no more than a two-valued one does
+\citep[see][]{severini2006,babiiflorens2025}. Pointwise sets do exist under
+nonlinear ill-posedness \citep[see][]{chen2012b}, but they are indexed by a
+sieve dimension where the regularisation index of \cref{def:lfstep} is a
+Landweber iteration count. We therefore follow the
+companion paper \citep{centorrinofeveflorens2019}, which estimates the same
+operator equation from a discrete instrument under the same regularisation: a point estimate, a bootstrap band drawn to show variability,
+and one sentence saying what the band is not. *The envelope in
+\cref{fig:app-phi} illustrates the variability of $\hat\varphi$ and is not a
+confidence set. No coverage is claimed for it and none is computed.*
+
+The $99$ replications resample counties with replacement and re-run the
+regularisation in each, holding $\hat\theta$ fixed, and the envelope they give
+is wide against the curve it surrounds: its median width over the sixty-point
+grid is $1.33$ times everything the curve does. Three further schemes ask
+whether that width is an artefact of the resampling or a property of the
+estimator, since a resample of $n$ counties leaves roughly $37$ per cent of the
+draw as duplicates while halving the information: $\mathrm{Exp}(1)$ multiplier
+weights, which have the same first two moments and the same effective sample
+size but duplicate nothing, and subsamples of $621$ and of $492$ distinct
+counties. *That comparison is not evaluable, and we report it as such*: the
+three criteria that would have separated the two mechanisms are all statements
+about the realised stopping index, and that index equals the cap in every
+replication of every scheme, because the discrepancy rule of Section 3 is run at
+$\tau_{\mathrm{DP}}=0$ here and the patience is set equal to the cap. What the
+schemes do show is agreement on the size of the band, the multiplier arm being
+$8.1$ per cent narrower over the grid as a whole and wider at the ends of the
+support. The five schemes are set out in Table S44 of the supplement, the
+multiplier envelope in Table S45 of the supplement, and the eleven levels this
+figure draws, together with the bootstrap's convergence record, in Table S43 of
+the supplement.
+
+## What the illustration shows
+
+The estimator runs on this panel and returns the two objects it is built to
+return: a slope vector with a clustered standard error, at either cardinality of
+the instrument, and a structural curve whose shape contradicts the constant
+slope the linear specification imposes. That is the whole of what the section
+claims.
+
+At $n=983$ it claims nothing about the asymptotics, and there are two reasons
+for that rather than one. Evaluated at $(\mu,r)=(2,\tfrac83)$, the
+frontier-clearing configuration the Monte Carlo names, the frontier
+\eqref{eq:frontier} is met at no control set that also satisfies A4(ii): it
+fails once any control is entered, and the one rung at which it holds is the
+intercept-only rung, which A4(ii) excludes because at $\alpha=\tfrac12$ the
+sieve-entropy condition admits no integer sieve dimension (Table S49 of the
+supplement). The second is
+the cardinality arm of the Monte Carlo, which finds the limit law's own
+remainder failing to vanish at $\mathsf L=4$ on the paper's named design (Table
+S22 of the supplement), in a propensity direction whose price this panel cannot
+bound because the N1 defect above is not resolvable from zero. The object that
+describes this estimator at this sample size is therefore \cref{cor:ratefloor}
+and not \cref{thm:rootn}. *The application illustrates the procedure on a design
+the method was built for; it does not demonstrate that the asymptotics bind at
+this sample size*, and we would rather say so than let the section be read as
+though they did.
+

@@ -1,0 +1,47 @@
+claim_id: l21-threshold-binding
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (eq:embedconst, the condition mu'' > 3/2)"
+# WHAT THIS CHECKS.  That the threshold mu'' > 3/2 in A2c and in eq:embedconst is
+# BINDING and not a convenient margin: at the boundary mu'' = 3/2 the defining
+# integral DIVERGES, so c_{mu''} is not defined there and the embedding argument
+# of Step 1 has no dominating function.  Concretely, at mu'' = 3/2,
+#     INT_R (1 + xi^2)^{1 - 3/2} d xi  =  INT_R (1 + xi^2)^{-1/2} d xi  =  +oo,
+# the integrand behaving like 1/|xi| at infinity.
+#
+# WHY THE THRESHOLD MATTERS ENOUGH TO CHECK.  A2c's index is not a free parameter
+# an author may set conveniently: 3/2 is the one-dimensional C^1 embedding
+# threshold, and it is what A2'(i.b) -- the DERIVATIVE clause -- costs over
+# A2'(i.a).  At mu'' > 1/2 one gets (i.a) alone; the extra 1 in the exponent is
+# exactly the derivative.  If the threshold were 1/2 the smoothness-budget table
+# would be charging the representer a full order too much, and if it were larger
+# than 3/2 lem:reprsmooth would be under-hypothesised.
+#
+# THE FORM USED, AND ONE COST STATED IN ADVANCE SO IT CANNOT BE MISQUOTED.
+# This spec follows the device recorded at theory_memo.md Sec.D-000000.5 for
+# secondord-shift-nonintegrable, and for the same reason.  Writing
+#   start: integrate(...), claimed_end: oo
+# would REPORT MISMATCH ON A TRUE CLAIM, because verify.py compares by
+# `end_actual - end_claimed` and oo - oo is S.NaN, which is_zero rejects.  So the
+# spec instead checks the RECIPROCAL: with I := INT_R (1+xi^2)^{-1/2} d xi in
+# [0, +oo], well defined because the integrand is positive, one has 1/I = 0 if
+# and only if I = +oo -- a finite I is strictly positive, the integrand being
+# strictly positive on a set of positive measure, and a finite positive number
+# has a strictly positive reciprocal.
+#
+# THE COST.  verify.py evaluates `start` at parse time, so the printed report
+# reads "Start: 0 / Claimed end: 0 / MATCH".  THAT LOOKS VACUOUS AND IS NOT: the
+# substantive step is that SymPy reduced 1/INT to 0, which it does only by
+# evaluating the integral to +oo.  There is no form under this harness that both
+# certifies the divergence and prints an uncollapsed left-hand side, because
+# parse-time evaluation IS the assertion.  Anyone quoting this spec should quote
+# this paragraph with it.
+#
+# PREDICTED: MATCH.  If SymPy returns an unevaluated Integral rather than oo, the
+# report will read MISMATCH with a non-zero residual; that is a HARNESS outcome,
+# not a refutation, and the divergence is elementary
+# (INT_1^oo dxi / sqrt(1 + xi^2) >= INT_1^oo dxi / (xi sqrt 2) = +oo).
+variables:
+  xi:
+    domain: real
+start: "1/integrate(1/sqrt(1 + xi**2), (xi, -oo, oo))"
+operation: none
+claimed_end: "0"

@@ -1,0 +1,2476 @@
+% ============================================================================
+%  RESULTS -- MAIN TEXT, SECTION 2: LOCAL IDENTIFICATION UNDER INDEPENDENCE
+%  project `panel-npiv-discrete`
+%
+%  WHAT THIS FILE HOLDS.  The 18 statements that belong under Section 2:
+%  the model and the spaces, the operator equation and its linearisation, the
+%  Bierens device, the identification results, the negative result on
+%  varphi-free moments, THE LOCALISATION RESULT, the representer/weight/anchor
+%  definition, and Neyman orthogonality.
+%  Nothing else.  In order: def:model, def:spaces, def:operator, def:admissible, prp:frechet, prp:compact, lem:shiftinv, lem:bierens, cor:opsol, prp:nophifree, cor:udep, prp:kerchar, def:cellsets, prp:localise, rem:localise, rem:a1cwithdrawn, def:weight, prp:orthog.
+%
+%  PHASE 2c ADDED THREE NUMBERED ENVIRONMENTS -- def:cellsets, prp:localise,
+%  rem:localise -- AFTER prp:kerchar.  THE COUNTER COST IS STATED AT THEIR OWN
+%  COMMENT BLOCK AND IS NOT HIDDEN: every numbered environment after the
+%  insertion point advances by THREE.  NO NUMBERED EQUATION WAS ADDED, so the
+%  equation counter is untouched in every file.
+%
+%  WHY THREE FILES AND NOT ONE.  results_main.tex printed all 23 core statements
+%  in one block, which the article had to \input somewhere; it went under
+%  Section 4, so Section 2's prose forward-referenced statements forty pages
+%  later.  The three files are \input under the three sections that discuss
+%  them.  The split is a PARTITION: results_s2 + results_s3 + results_s4 +
+%  results_supp = the undivided results.tex, every \label declared exactly once
+%  across the four, no statement rewritten, retitled or renumbered.  Relative
+%  order inside each file is the order of the parent file.
+%
+%%  DO NOT \input THIS FILE ALONGSIDE results.tex OR assumptions.tex.
+%%  results.tex and assumptions.tex SURVIVE UNDIVIDED and remain the source of
+%%  record: scripts/build-theory/build.sh compiles them, scripts/render-sync/
+%%  check_rendering_sync.py reads them, and ~100 files under scripts/symbolic/
+%%  specs/ cite them BY LINE NUMBER.  Neither was edited.  Every \label in this
+%%  file is therefore declared TWICE on disk -- here and in its parent -- and the
+%%  two must never reach the same document.
+%
+%  SUPPLEMENT POINTERS.  A statement kept here may cite a statement that lives
+%  in the supplement.  Those calls are written \suppref{Kind}{name} ->
+%  "Kind S:name" and \suppeq{name} -> "(S:name)", both defined in
+%  paper_header.tex.  They are not \cref calls and cannot render "??".
+% ============================================================================
+
+
+% ===========================================================================
+%  PART A.  SETUP
+% ===========================================================================
+
+\begin{definition}[Model and differencing]\label{def:model}
+The structural model is
+\begin{equation}\label{eq:levels}
+Y_{ij} \;=\; \vdagger(X_{ij}) \;+\; Z_{ij}'\theta_\dagger \;+\; \eta_i \;+\; U_{ij},
+\qquad j\in\{1,2\},
+\end{equation}
+with $X_{ij}\in\mathcal X\subset\IR$ scalar and continuously distributed, $Z_{ij}\in\IR^{p}$,
+$W_i\in\{0,1,\dots,\mathsf L-1\}$ with $\mathsf L\ge2$ fixed and known, and $\eta_i$ an individual effect
+that may depend on $(X,Z,W)$. Differencing across
+the two periods,
+\begin{equation}\label{eq:diffs}
+% \Delta\vdagger_i was a DOUBLE SUBSCRIPT error: \vdagger expands to
+% \varphi_{\dagger}, which already carries one.  Written out here; the reading is
+% fixed by the convention on the next line.  See preamble.tex at \vdagger.
+\Delta Y_i \;=\; \Delta\varphi_{\dagger i} \;+\; \Delta Z_i'\theta_\dagger \;+\; \Delta U_i,
+\qquad \Delta\varphi_i:=\varphi(X_{i2})-\varphi(X_{i1}),
+\end{equation}
+and, for a trial pair $(\varphi,\theta)$, the residual at trial values is
+\begin{equation}\label{eq:trialres}
+\Delta U_i(\theta,\varphi)\;:=\;\Delta Y_i-\Delta\varphi_i-\Delta Z_i'\theta ,
+\qquad \Delta U_i \;=\; \Delta U_i(\theta_\dagger,\vdagger).
+\end{equation}
+The subscript $i$ is suppressed whenever a statement concerns the population distribution $P$.
+\end{definition}
+
+\begin{definition}[Spaces, and the domain of the operator]\label{def:spaces}
+Let $\pi$ be the reference density on $\mathcal X$ of Assumption~C1, namely the \emph{pooled design
+density} of the regressor across the two periods,
+$\pi:=\tfrac12\big(f_{X_1}+f_{X_2}\big)$.
+\emph{It is an \textbf{unknown} feature of $P$ and not a measure the analyst selects}: the estimator of
+\cref{def:lfstep} divides by an \emph{estimate} $\hat\pi$ of it. \emph{It is fixed at $P$ once and is
+not re-indexed by a restriction of the sample}, which is the reading at which
+\cref{rem:localise}\textup{(2)}'s sub-population transfer is stated. What that declaration costs, what
+it delivers for free and the one thing it does not settle are
+\suppref{Remark}{spacesread}\textup{(4)}.
+% PHASE 4d, 2026-08-26.  pi's STATUS IS FIXED HERE BECAUSE THIS IS WHERE THE
+% SYMBOL IS FIRST MET, AND BECAUSE IT WAS FIXED NOWHERE.  Through dispatch 27 the
+% corpus said only "the reference density of Assumption C1" and no file said
+% whether pi was known, chosen, or unknown -- an unstated condition on an object
+% eq:hatAadj DIVIDES BY, and one def:lfstep(b) runs every Landweber step through.
+% AUTHOR'S RULING, 2026-08-26: pi is the POOLED DESIGN DENSITY, an unknown feature
+% of P, estimated in implementation.  scripts/R/lf_panel.R:780-788 builds pi-hat as
+% the equal-weight kernel mixture of the two period marginals, which is this
+% object; the ruling describes the shipped estimator rather than changing it.
+%   WHAT IS NOT DONE HERE, DELIBERATELY.  C1(ii) is NOT weakened and NOT re-spelled:
+% it is a POPULATION condition, it is correct as it stands, and the sample-level
+% condition the ruling forces is ADDITIONAL and lives at def:lfstep.  No numbered
+% display and no numbered environment is added in this file, so no counter in
+% files 2--8 moves; the pooled identity is written inline for that reason, on the
+% precedent of the inner-product display below.
+Set
+\[
+\mathcal V\;:=\;\Big\{\varphi\in L^{2}(\mathcal X,\pi):\ \textstyle\int_{\mathcal X}\varphi\,d\pi=0\Big\},
+\qquad
+L^{2}(\Pi)\;:=\;L^{2}\big(\IR\times\mathcal T\times\{1,\dots,\mathsf L-1\},\ \Pi\big),
+\]
+with $\Pi=\Pi_u\otimes\Pi_t\otimes\Pi_{\mathsf w}$ as in Assumption~B1(iv), the base carrying
+$\mathfrak B(\IR)\otimes\mathfrak B(\mathcal T)\otimes2^{\{1,\dots,\mathsf L-1\}}$, \emph{the third
+factor is a finite set with its power set}, which is what makes B1(iv.d)'s
+$\varpi_{\mathsf w}(l):=\Pi_{\mathsf w}(\{l\})$ well posed and what makes $\Pi$-measurability equivalent
+to measurability of the $\mathsf L-1$ sections.
+The elements of $L^{2}(\Pi)$ are
+\emph{scalar} functions of $(u,t,l)$; \emph{and, for an integer $q\ge1$, $L^{2}(\Pi;\IR^{q})$ denotes the
+same space with $\IR^{q}$-valued elements}, normed by $\big(\int\|\cdot\|^{2}d\Pi\big)^{1/2}$ with
+$\|\cdot\|$ the Euclidean norm on $\IR^{q}$, so that $L^{2}(\Pi;\IR^{1})=L^{2}(\Pi)$. The \emph{range} of
+the operator is the scalar one, which is why the pairing below is written on scalars; the
+\emph{representer} $\ell^\Pi$ of A$2'$, A2b and A2c is $\IR^{p}$-valued and lives in this space at
+$q=p$, with $\mathcal A^\ast_{\mathrm{cond}}$ read coordinatewise, as \cref{def:weight} spells out. At
+$p=1$ the two spellings are one symbol.
+% PHASE 4c, 2026-08-10.  TWO PRINTED DEBTS CLOSED HERE, AND NEITHER IS COSMETIC.
+%   (1) THE POWER SET.  proofs.tex twice credits def:spaces with declaring the
+%       third factor "a finite set with its power set" -- at Step 0 of
+%       lem:reprsmooth and again in that proof's closing accounting, where the
+%       claim is that the third factor enters ONLY through def:spaces.  The corpus
+%       printed the phrase (results_s3_supp.tex), and B1(iv.d) presupposes it by
+%       writing varpi_w(l) := Pi_w({l}), but def:spaces did not.  REPOINTING THE
+%       CITATIONS WAS THE ALTERNATIVE AND WAS NOT AVAILABLE: proofs.tex is closed
+%       to this phase except one granted sentence, and repointing would in any case
+%       falsify "only through def:spaces".  Adding the declaration here makes both
+%       proofs.tex sentences true where they stand and costs no assumption.
+%   (2) THE TYPING.  This definition printed that the elements of L^2(Pi) are
+%       SCALAR; A2c prints ell^Pi in L^2(Pi) with ell^Pi_star(u,t,l) in R^p and
+%       slices in H^{mu''}(R;R^p); and lem:reprsmooth Step 0 leans on "each section
+%       of an element of L^2(Pi)" with an R^p-VALUED section in hand.  The argument
+%       is unaffected -- the completion/representative device is value-space blind
+%       -- but the corpus printed two incompatible typings of one space, an INV-7
+%       collision across two files.  L^2(Pi; R^p) was ALREADY in use, at def:weight
+%       in this file -- ITS ONLY SITE IN THE CORPUS, swept -- and the same
+%       value-space notation is used for the FIRST factor, L^2(Pi_u; R^p), at
+%       rem:l21route(c) in the supplement.  The space is now declared once, where it
+%       is introduced.  A2c's substance is untouched: nothing
+%       about its condition, its index range or its budget changes, and no
+%       assumption file is edited.
+Inner products are
+$\langle h,h'\rangle_{L^2(\pi)}=\int hh'\,\pi\,dx$ and
+% BROKEN ACROSS TWO LINES ON PURPOSE.  On one line this display runs to roughly
+% 6.2in of a 6.5in text block before the \; spacing, which is the width at which
+% eq:PsiL overflowed and had to be split in the 2026-08-05 pass.  aligned inside
+% \[ \] is the UNNUMBERED analogue of the split eq:PsiL uses, and it advances no
+% counter.
+\[
+\begin{aligned}
+\langle\Xi,\Xi'\rangle_{L^{2}(\Pi)}\;&=\;\int\Xi\,\Xi'\,d\Pi\\
+&=\;\sum_{l=1}^{\mathsf L-1}\varpi_{\mathsf w}(l)\int_{\IR\times\mathcal T}\Xi(u,t,l)\,\Xi'(u,t,l)\,\Pi_u(du)\,\Pi_t(dt),
+\end{aligned}
+\]
+where $h,h'$ denote
+elements of the domain and $\Xi,\Xi'$ elements of the range. This pairing is where the masses
+$\varpi_{\mathsf w}(l)$ of B1(iv.d) act, and every adjoint taken in it carries them.
+\suppeq{Wdef} \emph{displays} them because $\mathcal W$ absorbs what the pairing
+\emph{supplies}; they are not applied twice. Write
+$P_{\mathcal V}$ for the $L^{2}(\pi)$-orthogonal projection onto $\mathcal V$. \emph{At $\mathsf L=2$ the
+third factor is the one-point set $\{1\}$ and $\Pi_{\mathsf w}$ the point mass at it}, under the
+canonical identification of $\IR\times\mathcal T\times\{1\}$ with $\IR\times\mathcal T$.
+% NO NUMBERED ENVIRONMENT AND NO NUMBERED DISPLAY IS ADDED HERE, DELIBERATELY.
+% The inner-product display would be worth a \label -- it is the one printed site
+% at which varpi_w acts, and the eq:adjclosed question of Phase 2a turns on it --
+% but numbering it would advance every equation counter in files 2--8, and
+% nothing cites it yet.  It is written \[ ... \] for that reason; a later phase
+% that needs to cite it can promote it and pay the renumber then.
+% GLOSSES RESTORED 2026-08-03 AFTER THE NOTATION WARDEN'S ROUND 19, AND THE
+% REASON IS ORDERING, NOT TASTE.  The 2026-08-03 extraction pass moved these two
+% declarations into rem:spacesread, which compiles in results_supp.tex at
+% position 7 of the build's eight inputs.  This file is position 2.  So
+% P_{\mathcal V} and Xi, Xi' were used BEFORE they were defined -- P_{\mathcal V}
+% at results_s4_asymptotics.tex:59 and :65, inside eq:sharpconst and eq:bracket,
+% which are NUMBERED DISPLAYS IN A PRINTED PROPOSITION three files ahead of the
+% only gloss.  Xi, Xi' were worse: first used at line 73 OF THIS DEFINITION, the
+% statement the declaration had been cut from.
+%
+% THE GENERAL LESSON, WHICH THE EXTRACTION RULE DID NOT COVER.  That pass was
+% governed by a rule about WHAT may sit inside a statement.  It had no rule about
+% WHERE the extracted text may LAND.  Twelve of its thirteen remarks moved only
+% commentary and the omission cost nothing; this one moved a DECLARATION, and a
+% declaration that lands after its first consumer is a defect the compiler cannot
+% see -- every reference still resolves.
+% Proposed clause: a pass that moves text out of a statement must sweep the moved
+% block for ":=", "write ... for", "is the" and "are the ... variables", and any
+% block containing one may not land in a file compiling after its first consumer.
+%
+% rem:spacesread(1) and (3) KEEP their fuller discussion; what returns here is the
+% one-clause declaration, so the remark is still where the reading is argued.
+% EXTRACTED FROM THE STATEMENT OF def:spaces ON 2026-08-03, under the house rule
+% (.claude/references/theorem-environment-style.md) that a definition carries
+% CONSTRUCTION ONLY.  WHICH LETTERS ARE THE BOUND VARIABLES on each side, and what
+% species each names: rem:spacesread(1).
+% THE DECLARATION ITSELF MOVED, so every site that cited def:spaces FOR IT was
+% repointed in the same pass: assumptions_supp.tex / assumptions.tex (H1's
+% pre-image), results_supp.tex / results.tex (the generic element of L^2(Pi)),
+% proofs.tex (prp:tccrepair's Xi, Xi'), and notation_glossary.md's C72, C89, C93,
+% Xi_* and h rows.
+The period-difference
+% ARCHAEOLOGY (moved out of compiled text, shortening pass 2026-08-01).
+% A round-11 draft wrote the two pairings as <a,b>, with a the RESERVED degree of
+% ill-posedness and b the weight anchor b_star -- glossary C72's species, in the
+% one display that defines the pairing.
+operator is
+$\Delta:\mathcal V\to L^{2}(P)$, $\Delta h=h(X_2)-h(X_1)$. For an integrable random variable $g$ write
+\begin{equation}\label{eq:nudef}
+\nu_g(x)\;:=\;E[g\mid X_2=x]\,f_{X_2}(x)\;-\;E[g\mid X_1=x]\,f_{X_1}(x),
+\qquad
+\nu\;:=\;\nu_{\Delta Z}\in\IR^{p} ,
+\end{equation}
+the latter understood coordinatewise.
+
+\emph{Every operator in this paper has domain $\mathcal V$, with one declared exception named below}, and
+the decomposition $L^{2}(\pi)=\mathcal V\oplus\{\text{constants}\}$ is orthogonal.
+% WHY THAT DECOMPOSITION HOLDS, why the restriction costs nothing, and which objects
+% are read at that domain and that singular system: rem:spacesread(2).
+% THE DECOMPOSITION ITSELF STAYS, and this is deliberate: six sites cite def:spaces
+% for the FACT rather than for its proof -- proofs.tex at lem:nusigma, lem:adjoint
+% and lem:pbounds, and results_supp.tex/results.tex at prp:frechet and lem:nusigma.
+% Only the "holds because ... so" derivation moved.
+
+\emph{The exception is the second-order form operator $\mathcal B$ of \suppeq{Bpi}, which is read on
+all of $L^{2}(\pi)$}. No other object in the paper leaves $\mathcal V$.
+% WHY B LEAVES V -- V is not invariant under multiplication by a non-constant
+% function and B contains such a multiplication -- and the compression
+% P_V B_sym P_V|_V that governs the form's own sharp constant: rem:spacesread(3).
+% THE DECLARED EXCEPTION ITSELF STAYS: proofs.tex:3141, results_supp.tex:1099 and
+% :1847, and results.tex:1439 and :2290 all cite def:spaces for it by name.
+\end{definition}
+
+\noindent\emph{Notes on \cref{def:spaces}.} Which letters are the bound variables on each side, why the
+restriction to $\mathcal V$ costs nothing, what governs the sharp constant of the form on the declared
+exception, and what the declaration of $\pi$ as an unknown feature of $P$ costs are
+\suppref{Remark}{spacesread}.
+
+% ---------------------------------------------------------------------------
+%  THE OPERATOR EQUATION.  This is the object missing from the source draft at
+%  `:120--122', where the sentence ends "Then we have that" and the display
+%  never appears.  Everything in draft Section 2 after that point -- the
+%  Frechet derivative at `:124--126', the completeness condition at
+%  `:127--130', the adjoint at `:172--177' -- is a derivative of this
+%  definition and cannot be read without it.
+% ---------------------------------------------------------------------------
+
+\begin{definition}[The operator equation]\label{def:operator}
+Let $\Delta Y_\theta:=\Delta Y-\Delta Z'\theta$, so that $\Delta U(\theta,\varphi)=\Delta Y_\theta-\Delta\varphi$.
+For $(\varphi,\theta)\in\mathcal V\times\IR^{p}$ define the \emph{Bierens moment family}
+\begin{equation}\label{eq:Mdef}
+\mathcal M(u,t,l;\varphi,\theta)
+\;:=\;E\Big[\widetilde W_l\;\un\big\{\Delta Y_\theta-\Delta\varphi\le u\big\}\;w\big(t'\Phi(\Delta Z)\big)\Big],
+\qquad (u,t,l)\in\IR\times\mathcal T\times\{1,\dots,\mathsf L-1\},
+\end{equation}
+with $\widetilde W_l=\un\{W=l\}-\varrho_l(\Delta Z)$ the $l$-th contrast of \eqref{eq:contrast}, and let
+\begin{equation}\label{eq:Tdef}
+T:\ \mathcal V\times\IR^{p}\longrightarrow L^{2}(\Pi),
+\qquad
+T(\varphi,\theta)\;:=\;\big[(u,t,l)\mapsto\mathcal M(u,t,l;\varphi,\theta)\big],
+\end{equation}
+\emph{the contrast index being an argument of $\mathcal M$ and not a coordinate of its value}, so that
+$T(\varphi,\theta)$ is a scalar function on the base set of $\Pi$ fixed in \cref{def:spaces}. The
+\emph{operator equation of the model} is
+\begin{equation}\label{eq:opeq}
+T(\varphi,\theta)\;=\;0 \quad\text{in }L^{2}(\Pi).
+\end{equation}
+We abbreviate $\mathcal M(u,t,l):=\mathcal M(u,t,l;\vdagger,\theta_\dagger)$ and
+$T(\varphi):=T(\varphi,\theta_\dagger)$ when no ambiguity arises. At $\mathsf L=2$ the index takes
+the single value $1$ and $\widetilde W_1=W-\varrho(\Delta Z)$.
+\end{definition}
+
+% ===========================================================================
+%  PHASE 2a.  WHY THE CONTRAST INDEX IS AN ARGUMENT AND NOT A VECTOR VALUE,
+%  AND WHAT IN THIS FILE IS LEFT AT THE OLD ARITY.
+%
+%  THE CHOICE.  eq:Mdef could have been made R^{sans-L - 1}-VALUED at (u,t)
+%  instead of scalar-valued at (u,t,l).  The index form is taken, on three
+%  grounds, the first of which is decisive:
+%   (1) L^2(Pi) IS A SCALAR SPACE OVER A THREE-FACTOR BASE.  def:spaces, as
+%       amended, and B1(iv.d) put Pi_w on {1,...,sans-L - 1}; a vector-valued M
+%       would need L^2(Pi_u x Pi_t; R^{sans-L - 1}) over a TWO-factor base, which
+%       is isometric but is not the space B1(iv) declares, and would leave
+%       Pi_w with nothing to weight.  The two readings differ in exactly the
+%       masses varpi_w(l), which is not a cosmetic difference -- see the
+%       eq:adjclosed note under def:weight.
+%   (2) THE SAMPLE ANALOGUES ARE ALREADY AT THE INDEX FORM, and they were fixed
+%       in Phase 1, not here: eq:hatT writes hat-T(varphi,theta)(u,t,l) and
+%       def:hatA writes the kernel k(u,t,l;x) with g_{u,t,l}, both in
+%       assumptions_main.tex.  hat-T is T's sample analogue; putting the
+%       population object at an arity its own estimator does not share is the
+%       defect Phase 1 recorded against eq:kernel, not a thing to reproduce.
+%   (3) A2'(i), A2b and A2c already carry the contrast index as a THIRD ARGUMENT
+%       of the range-space representer, ell^Pi(u,t,l).  ell^Pi and T(varphi,theta)
+%       live in the same space; they must be written the same way.
+%
+%  WHAT WAS LEFT AT THE OLD ARITY BY 2a AND IS NOW CLOSED BY 2b.  The scope of
+%  Phase 2a was types and definitions; the RESULTS kept their round-1 arity until
+%  2b opened them.  2a's declared list, with 2b's disposition of each:
+%    prp:frechet   eq:Adef wrote A_varphi h(u,t) and a bare Wtilde.
+%                  CLOSED: (u,t,l) and Wtilde_l.  Constants unmoved.
+%    prp:compact   2a declared that the sentence after eq:kernel still wrote
+%                  k(u,t;.) "for every (u,t)".  NOT ON DISK: when 2b opened the
+%                  file it already read k(u,t,l;.) for every (u,t,l).  The
+%                  declaration outlived the defect; see the record under
+%                  prp:compact.  2b printed the index SET in the quantifier,
+%                  which is an explicitness edit and not that repair.
+%    lem:bierens   clause (c) wrote M(u,t) = 0 over R x T.
+%                  CLOSED: M(u,t,l) = 0 over R x T x {1,...,sans-L - 1}.  ITS
+%                  PROOF IS NOT: see the gap declared under lem:bierens.
+%    prp:orthog    eq:PsiL wrote Wtilde L(...), the reverse of the type
+%                  declaration's L Wtilde.  CLOSED, together with eq:orthphi's
+%                  contraction and the retyping of parts (ii)-(iii).
+%  2a ALSO LISTED TWO AS "NEITHER 2a's NOR 2b's" -- cor:udep's
+%  g := Delta Z + Wtilde c and prp:kerchar(ii)'s W = 1 versus W = 0.  THE
+%  DISPATCH PUT BOTH IN 2b's SCOPE AND BOTH ARE CLOSED HERE: cor:udep at
+%  g := Delta Z + c Wtilde with c typed p x (sans-L - 1), and prp:kerchar(ii)(c)
+%  restated cell-against-unconditional by author decision.  Nothing from 2a's
+%  list is carried forward except the two PROOF debts, which are Phase 5's and
+%  are itemised at their own statements.
+% ===========================================================================
+
+\begin{definition}[Admissible sets]\label{def:admissible}
+Restrictions (A) and (B) of plan \S2.1 are
+\[
+\text{(A)}\quad E\big[\widetilde W\,\varsigma(\Delta U)\;\big|\;\Delta Z\big]=0\ \ \text{a.s. for every bounded measurable }\varsigma,
+\qquad
+\text{(B)}\quad E\big[\Delta Z\,\Delta U\big]=0 .
+\]
+Define
+\[
+\mathcal I\;:=\;\Big\{(\varphi,\theta)\in\mathcal V\times\IR^{p}:\ \Delta Y-\Delta\varphi-\Delta Z'\theta\ \upmodels\ W\ \big|\ \Delta Z\Big\},
+\qquad
+\mathcal V_{CI}\;:=\;\big\{\varphi\in\mathcal V:\ (\varphi,0)\in\mathcal I\big\}.
+\]
+Conditional independence $\xi\upmodels W\mid\Delta Z$ is understood in the factorisation sense,
+$P(\xi\in B,\,W=j\mid\Delta Z)=P(\xi\in B\mid\Delta Z)\,P(W=j\mid\Delta Z)$ a.s.\ for all Borel $B$ and
+$j\in\{0,1,\dots,\mathsf L-1\}$. Two features of this form are used below, and at $\mathsf L\ge3$ they
+are features of two \emph{different} sets of values of $\Delta Z$.
+\emph{First}, at a $\Delta Z=z$ at which every $W$-cell is non-null it is equivalent to the
+conditional-expectation form $P(\xi\in B\mid\Delta Z,W)=P(\xi\in B\mid\Delta Z)$ a.s., and where some
+cell is null it is the form that behaves correctly, the factorisation holding at a null cell with both
+sides zero whatever version is taken there. \emph{Second}, it holds automatically, whatever the
+conditional law of $\xi$, exactly where $W$ is \emph{conditionally degenerate}, that is, where
+$\max_{0\le l\le\mathsf L-1}\varrho_l(z)=1$. Both facts are used in the proof of \cref{lem:bierens}.
+\emph{Degeneracy is that condition, and a null cell is not by itself degeneracy}: at $\mathsf L\ge3$ a
+$z$ may have null cells and two or more surviving ones, and there the restriction is not vacuous, it
+still forces the surviving cells to share one conditional law of $\xi$. \emph{At $\mathsf L=2$ the two
+conditions coincide}, one null cell leaving one survivor.
+\end{definition}
+
+% ===========================================================================
+%  PHASE 2a.  THE DEGENERACY CLAUSE, WHY IT SPLITS IN TWO, AND WHAT 2b INHERITS.
+%
+%  WHAT THE CLAUSE SAID: the factorisation form "behaves correctly when W is
+%  conditionally degenerate --- in which case it holds automatically".  At
+%  sans-L = 2 "a cell is null" and "W is degenerate" are the SAME condition, so
+%  one sentence covered both.  At sans-L >= 3 they are not, and a sentence
+%  covering both would be false in one direction: the corpus recorded the false
+%  reading TWICE in Phase 1 -- "the restriction is vacuous wherever some cell is
+%  null" -- and it was corrected at four sites.  The counterexample is
+%  assumptions_supp.tex's: sans-L = 3, varrho(z) = (q, 0)' with q in (0,1).
+%  Cell 2 is null, det Omega(z) = 0, and yet Wtilde != 0 and the restriction
+%  still forces F_1 = F_0.
+%
+%  DEGENERACY IS DEFINED AS max_l varrho_l = 1 AND NOT AS det Omega = 0.
+%  The two coincide at sans-L = 2 and the first is strictly stronger at
+%  sans-L >= 3.  It agrees with {Omega = 0}, which is what assumptions_supp.tex
+%  prints as the sans-L-category reading of the degenerate region.
+%
+%  THE SET IS WRITTEN OUT AND NOT CALLED cal-Z_0, AND THAT IS DELIBERATE.
+%  cal-Z_0 is declared at eq:degenreg in proofs.tex, which is position 8 of the
+%  build's eight inputs; THIS FILE IS POSITION 2.  Citing the symbol here would
+%  use it six files before its declaration -- the defect species the comment
+%  block under def:spaces exists to record, and one no compiler reports because
+%  the reference still resolves.  eq:degenreg's own amendment to the sans-L
+%  form is Phase 4's (proofs.tex), and it is listed with the other cross-file
+%  obligations.
+%
+%  WHAT PHASE 2b INHERITS, PRECISELY.  lem:bierens's proof (proofs.tex Step 3)
+%  consumes this clause TWICE and only one of the two consumptions survives
+%  unchanged:
+%   (1) SURVIVES VERBATIM.  At a degenerate z the proof concludes conditional
+%       independence "automatically", by the factorisation with both sides equal
+%       to P(Delta U in B | z) when varrho_j = 1 and both zero otherwise.  That
+%       argument is written at "P(W=1|z) in {0,1}" and reads verbatim at
+%       max_l varrho_l = 1 for every sans-L.  The SECOND sentence above is its
+%       licence.
+%   (2) DOES NOT SURVIVE.  Off the degenerate region the proof says "since W is
+%       binary, equality of the two conditional distribution functions is
+%       exactly conditional independence at z".  At sans-L >= 3 there are up to
+%       sans-L conditional laws and some cells may be null, so the step needs
+%       the FIRST sentence above plus the two-case argument already derived in
+%       assumptions_supp.tex, paragraph A1, "Third": Omega_A nonsingular when
+%       varrho_0 > 0, ker Omega_A = span{1_A} when varrho_0 = 0, and in both
+%       cases the non-null cells share one conditional law.  That derivation is
+%       PRINTED AND SETTLED; 2b has to cite it, not reproduce it.
+%  ALSO INHERITED, AND NOT 2b's: lem:quantu and eq:binaryquant (results_supp.tex
+%  and proofs.tex) are still stated at the binary prefactor varrho(1-varrho) and
+%  at F_1 - F_0.  Their sans-L form is eq:omegaprefac's Omega d.  Phase 4.
+%
+%  PHASE 2b's DISPOSITION OF THE TWO ITEMS ABOVE.  (1) stands unchanged and is
+%  cited by the Note under lem:bierens, which points at the Discussion paragraph
+%  *A1* in prose (the target is a \paragraph and carries no number, so \suppref
+%  would print a reference resolving to nothing).  (2) IS NOW A DECLARED PROOF
+%  GAP rather than an inherited note: lem:bierens(c) has been amended to quantify
+%  over l while its proof's off-degenerate step is still binary-only.  The full
+%  costing, step by step, is in the block under lem:bierens.  Phase 5.
+% ===========================================================================
+
+\begin{proposition}[Fr\'echet derivative in $\varphi$, with a Lipschitz derivative map]\label{prp:frechet}
+$T$ is Fr\'echet differentiable in $\varphi$ with a quadratic remainder, and the derivative map is
+Lipschitz.
+Suppose B1(i), (ii), (iv.c), (iv.d), C1(ii) and C2$'$(i) hold; \emph{B1(iv) is cited by clause}, its
+factorisation $\Pi=\Pi_u\otimes\Pi_t\otimes\Pi_{\mathsf w}$ being a declaration and not a hypothesis.
+Then, for every $\theta\in\IR^{p}$ and every
+$\varphi\in\mathcal V$, the linear operator $\mathcal A_\varphi:\mathcal V\to L^{2}(\Pi)$ defined, at
+each $(u,t,l)\in\IR\times\mathcal T\times\{1,\dots,\mathsf L-1\}$, by
+\begin{equation}\label{eq:Adef}
+\mathcal A_\varphi h(u,t,l)
+\;=\;E\Big[\widetilde W_l\,w\big(t'\Phi(\Delta Z)\big)\,
+f_{\Delta Y_\theta-\Delta\varphi\mid X_1,X_2,\Delta Z,W}(u)\;\big\{h(X_2)-h(X_1)\big\}\Big]
+\end{equation}
+is bounded, with $\|\mathcal A_\varphi\|\le2\,\bar c_\pi^{1/2}\|\bar f_0\|_\infty c_\Pi$, and:
+\begin{enumerate}
+\item[(i)] \emph{Fr\'echet differentiability with a quadratic remainder:} for all $h\in\mathcal V$,
+\begin{equation}\label{eq:frechetbound}
+\big\|T(\varphi+h,\theta)-T(\varphi,\theta)-\mathcal A_\varphi h\big\|_{L^{2}(\Pi)}
+\;\le\;C_{\!\mathcal A}\,\|h\|_{L^{2}(\pi)}^{2},
+\qquad C_{\!\mathcal A}:=2\,\bar c_\pi\,\|\bar f_1\|_\infty\,c_\Pi ;
+\end{equation}
+\item[(ii)] \emph{Lipschitz derivative map:} for all $h\in\mathcal V$,
+\begin{equation}\label{eq:lipschitz}
+\big\|\mathcal A_{\varphi+h}-\mathcal A_\varphi\big\|\;\le\;2\,C_{\!\mathcal A}\,\|h\|_{L^{2}(\pi)} .
+\end{equation}
+\end{enumerate}
+At the truth we write $\mathcal A_{\mathrm{cond}}:=\mathcal A_{\vdagger}$ with $\theta=\theta_\dagger$,
+in which case the conditional density in \eqref{eq:Adef} is $f_{\Delta U\mid X_1,X_2,\Delta Z,W}$.
+At $\mathsf L=2$ the index takes the single value $1$ and $\widetilde W_1=W-\varrho(\Delta Z)$.
+\end{proposition}
+
+% ***************************************************************************
+% PHASE 2b AMENDED eq:Adef's ARITY.  WHAT MOVED AND WHAT DID NOT.
+%
+% MOVED: A_varphi h(u,t) -> A_varphi h(u,t,l) and the bare Wtilde -> Wtilde_l.
+% This is now the linearisation of eq:Mdef read argument for argument, which is
+% what a Frechet derivative of T must be: T(varphi,theta) is a SCALAR function
+% on R x T x {1,...,sans-L - 1} by def:operator, so its derivative in varphi is
+% a map into the same space and must be evaluated at the same three arguments.
+% Phase 2a declared this clash under def:operator and it is closed here.
+%
+% NEITHER CONSTANT MOVES, AND THE GROUND IS PRINTED ELSEWHERE, NOT RE-DERIVED
+% HERE.  ||A_varphi|| <= 2 bar-c_pi^{1/2} ||bar-f_0||_inf c_Pi and C_A = 2
+% bar-c_pi ||bar-f_1||_inf c_Pi are unchanged at every sans-L: the pointwise
+% bound |Wtilde_l| <= 1 is (P1) read CELL BY CELL and holds at every l, and
+% assumptions_main.tex records that c_Pi of B1(iv.c) is unchanged because Pi_w
+% is a PROBABILITY measure and contributes the factor 1.  A general finite Pi_w
+% would inflate both constants by a factor no result tracks; that is one of the
+% two reasons B1(iv.d) fixes the total mass at 1.
+%   NOTE WHICH BOUND IS USED AND WHICH IS NOT.  What the constants need is the
+% PER-CELL bound |Wtilde_l| <= 1, not a bound on the Euclidean norm of the
+% vector Wtilde -- and the distinction is not idle: ||Wtilde|| can approach
+% sqrt 2 at sans-L >= 3 (take varrho = (eps, 1 - eps - delta) and W = 1), so a
+% derivation routed through the vector norm would NOT reproduce these constants.
+% eq:Adef is scalar-valued at each l and reads the per-cell bound.
+%
+% WHAT PHASE 5 INHERITS.  proofs.tex's proof of prp:frechet is written at the
+% two-argument arity throughout -- eq:incr and eq:remdef print M(u,t;.) and
+% A_varphi h(u,t), and Step 4's measurability argument is stated for Borel
+% functions of (u,t).  The argument is unchanged cell by cell: fix l, run
+% Steps 1-3 with Wtilde_l in place of Wtilde, and integrate against Pi (whose
+% w-factor is a probability measure) instead of against Pi_u tensor Pi_t.  The
+% TOKENS are Phase 5's; the mathematics is not in question.
+% ***************************************************************************
+
+\begin{proposition}[Compactness]\label{prp:compact}
+$\mathcal A_{\mathrm{cond}}$ is Hilbert--Schmidt, hence compact.
+Suppose B1(i), (ii), (iv.c), (iv.d), C1(ii) and C2$'$(i) hold; \emph{B1(iv) is cited by clause}, its
+factorisation being a declaration and not a hypothesis.
+Then $\mathcal A_{\mathrm{cond}}$ is the integral
+operator on $\mathcal V$ with kernel
+\begin{equation}\label{eq:kernel}
+\mathsf k(u,t,l;x)\;=\;\frac{\nu_{g_{u,t,l}}(x)}{\pi(x)},
+\qquad
+g_{u,t,l}\;:=\;\widetilde W_l\,w\big(t'\Phi(\Delta Z)\big)\,f_{\Delta U\mid X_1,X_2,\Delta Z,W}(u),
+\end{equation}
+and $\|\mathcal A_{\mathrm{cond}}\|_{\mathrm{HS}}\le 2\,\bar c_\pi\,\|\bar f_0\|_\infty\,c_\Pi<\infty$.
+Moreover $\mathsf k(u,t,l;\cdot)\in\mathcal V$ for every
+$(u,t,l)\in\IR\times\mathcal T\times\{1,\dots,\mathsf L-1\}$, so $\mathcal A^\ast_{\mathrm{cond}}$ maps
+$L^{2}(\Pi)$ into $\mathcal V$; and $\mathcal A_{\mathrm{cond}}$ admits a singular system
+$(\sigma_j;e_j,\tilde e_j)_{j\in\mathcal J}$, $\mathcal J\subseteq\IN$, with $\{e_j\}_{j\in\mathcal J}$
+an orthonormal basis of $(\ker\mathcal A_{\mathrm{cond}})^{\perp}\cap\mathcal V$ and, when $\mathcal J$ is
+infinite, $\sigma_j\downarrow0$.
+\emph{At $\mathsf L=2$ the index takes the single value $1$ and $\mathsf k(u,t,1;x)=\mathsf k(u,t;x)$},
+the Hilbert--Schmidt constant included, $\Pi_{\mathsf w}$ being a probability measure at every
+$\mathsf L$.
+\end{proposition}
+
+% ***************************************************************************
+% PHASE 2a AMENDED eq:kernel'S ARITY AND NOTHING ELSE IN prp:compact, AND THAT
+% LEAVES ONE ARITY CLASH INSIDE THIS PRINTED STATEMENT.  DECLARED, NOT HIDDEN.
+%
+% WHAT MOVED: k(u,t;x) -> k(u,t,l;x) and g_{u,t} -> g_{u,t,l}, with Wtilde_l in
+% place of the bare contrast.  This is now IDENTICAL to def:hatA in
+% assumptions_main.tex, which was brought to that arity in Phase 1 and which
+% recorded THIS DISPLAY as the site Phase 2 must match.  The declared cross-file
+% inconsistency between def:hatA and prp:compact is therefore CLOSED.  (The
+% censuses in assumptions_main.tex cite this file BY LINE NUMBER -- "results_s2:
+% 226-228" -- and those numbers moved in this pass.  Comment-layer only; it is in
+% the Phase 2a report and is Phase C's to sweep.)
+%
+% AT sans-L = 2 NOTHING IS AMBIGUOUS EITHER WAY: l takes the single value 1 and
+% k(u,t,1;x) = k(u,t;x).
+%
+% PHASE 2b: THE CLASH THIS BLOCK DECLARED WAS NOT ON DISK, AND THAT IS RECORDED
+% RATHER THAN QUIETLY OVERWRITTEN.  The block below used to read "the sentence
+% below eq:kernel still reads k(u,t;.) in V for every (u,t) ... THE REPAIR IS
+% TWO TOKENS".  When 2b opened the file that sentence ALREADY read
+% "k(u,t,l;.) in V for every (u,t,l)": the two tokens had moved with eq:kernel
+% and the declaration outlived the defect.  A stale declaration of a defect is
+% cheaper than an undeclared defect, but it is not free -- a phase that trusts
+% it spends its budget looking for something that is not there -- so the record
+% is corrected here rather than deleted.
+%
+% WHAT 2b DID CHANGE IN THIS STATEMENT, AND IT IS NOT THE DECLARED REPAIR: the
+% quantifier "for every (u,t,l)" carried no index set, while every other site
+% naming the triple -- eq:Mdef, eq:Adef, lem:bierens(c) -- writes it out.  The
+% set is now printed.  This is an explicitness edit, NOT a correction: the
+% statement was true as printed, since l has only one possible range.
+% ***************************************************************************
+
+% prp:compact's own hypotheses do NOT include A1b(iv): compactness, the kernel
+% and the singular system need nothing about Delta Z's moments.  The nu-versus-
+% nu/pi comparison does need E||Delta Z|| < infinity, so it is lifted out of the
+% proof into rem:nupi, where the assumption can be cited.  Round 2 ran the
+% comparison inside prp:compact's proof without listing it.
+%
+% THE RANK CLAUSE IS NEW.  Both counterexample-hunter DGPs produce a RANK-ONE
+% A_cond satisfying every hypothesis above, so finite rank is a live case, not
+% a pathology.  Nothing here breaks -- but the singular system then spans
+% (ker A_cond)^perp, NOT V, and H1's sigma_j asymp j^{-a} is false, which is why
+% H1 now assumes infinite rank explicitly.
+
+% prp:compact closes the gap the round-3 strategist-critic recorded at m-23:
+% compactness of A_cond is a PREMISE of prp:sharpquad(ii) and of every Picard,
+% source-condition and Landweber statement in the project, and it appeared
+% nowhere.  It is proved here rather than assumed.
+%
+% ROUND 2: the clause "k(u,t;.) in V" is new and is not decoration.  It is the
+% internal check that A2 is stated on the right object.  Every element of
+% R(A*_cond) is an integral of kernel slices; every slice lies in V; hence
+% R(A*_cond) is contained in V, which is exactly {zeta : int zeta pi dx = 0}.
+% And nu_g/pi lies in V for every g (int (nu_g/pi) d pi = int nu_g dx = 0),
+% while nu_g does not.  See the note under A2 in assumptions.tex.
+%
+% NOTE THE REASON, which changed in the cleanup pass.  The containment
+% R(A*) subset V follows from the CONSTRUCTION of the adjoint, not from
+% R(A*) subset (ker A)^perp together with Delta 1 = 0: once def:spaces fixes
+% the domain at V, the constants are not in the domain at all and that
+% orthogonality argument is unavailable.  The conclusion is unchanged.
+
+% ===========================================================================
+%  PART B.  STEP 1 -- SHIFT INVARIANCE
+% ===========================================================================
+
+\begin{lemma}[L1: shift invariance]\label{lem:shiftinv}
+Restriction (A) is invariant to the value of $\theta$, so it does not identify $\theta_\dagger$.
+The set $\mathcal I$ of \cref{def:admissible} satisfies, with no assumption beyond that definition,
+\begin{equation}\label{eq:shiftinv}
+\mathcal I\;=\;\mathcal V_{CI}\times\IR^{p};
+\end{equation}
+and if in addition A1 holds, then $\vdagger\in\mathcal V_{CI}$, so $(\vdagger,\theta)\in\mathcal I$ for
+every $\theta\in\IR^{p}$.
+\end{lemma}
+
+% A4(i) IS NOT A HYPOTHESIS HERE, and its removal is a cleanup-pass correction.
+% \eqref{eq:binaryquant} holds for ANY version of the conditional distribution
+% functions, including on the degenerate region D := {z : varrho(z)(1-varrho(z))
+% = 0} where one of the two W-cells is null and F_j(.|z) is an arbitrary
+% version: on D the prefactor varrho(1-varrho) is zero, so both sides vanish
+% whatever version is used.  The extension step needs only the POINTWISE
+% positivity varrho(z)(1-varrho(z)) > 0, which the proof states in exactly that
+% form, and it draws no conclusion on D -- where none is needed, since W is
+% conditionally degenerate there and lem:bierens handles it separately.
+
+\begin{lemma}[Bierens equivalence for the panel restriction]\label{lem:bierens}
+The $\Delta Z$-conditional restriction (A) is equivalent to the vanishing of the unconditional family
+$\{\mathcal M(u,t,l)\}$, so no conditional distribution given $\Delta Z$ ever has to be estimated.
+Suppose B1(i)--(iv) hold. Then the following are equivalent:
+\begin{enumerate}
+\item[(a)] $\Delta U\upmodels W\mid\Delta Z$;
+\item[(b)] $E[\widetilde W\,\varsigma(\Delta U)\mid\Delta Z]=0$ a.s.\ for every bounded measurable $\varsigma$, that is, restriction \textup{(A)};
+\item[(c)] $\mathcal M(u,t,l)=0$ for every $(u,t,l)\in\IR\times\mathcal T\times\{1,\dots,\mathsf L-1\}$;
+\item[(d)] $T(\vdagger,\theta_\dagger)=0$ in $L^{2}(\Pi)$.
+\end{enumerate}
+\end{lemma}
+
+\noindent\emph{Note on \cref{lem:bierens}.} Clause \textup{(b)} is the $\IR^{\mathsf L-1}$-valued
+identity \eqref{eq:contrast} types it as, hence the $\mathsf L-1$ scalar restrictions
+$E[\widetilde W_l\varsigma(\Delta U)\mid\Delta Z]=0$; that \textup{(a)} and \textup{(b)} are
+\emph{equivalent} at every $\mathsf L$, and under \textbf{no} overlap condition, is established in the
+Discussion of the assumptions, under the heading \emph{A1 (conditional exogeneity)}, and is cited and
+not reproved here.
+
+% ===========================================================================
+%  PHASE 2b ON lem:bierens.  ONE CLAUSE AMENDED, ONE POINTER ADDED, AND ONE
+%  GAP OPENED DELIBERATELY.  READ THE THIRD BEFORE COSTING PHASE 5.
+%
+%  1. WHAT MOVED.  The lead line and clause (c): M(u,t) -> M(u,t,l), and the
+%  quantifier "for every (u,t) in R x T" -> "for every (u,t,l) in
+%  R x T x {1,...,sans-L - 1}".  This is forced, not chosen: (d) is
+%  T(varphi_dagger, theta_dagger) = 0 in L^2(Pi), T's value is the SCALAR
+%  function (u,t,l) |-> M(u,t,l;.) by eq:Tdef, and (c) is (d)'s pointwise form.
+%  At the old arity (c) and (d) were statements about different objects.
+%
+%  2. THE POINTER, AND WHY IT IS PROSE.  The dispatch requires lem:bierens to
+%  CITE the replacement argument rather than reproduce it.  The argument is
+%  assumptions_supp.tex, paragraph *A1*, "Third": E[Wtilde varsigma | z] =
+%  Omega(z) d_varsigma(z); fix z and A := {l >= 1 : varrho_l(z) > 0}; if
+%  varrho_0 > 0 then Omega_A is nonsingular and d_{varsigma,A} = 0, while if
+%  varrho_0 = 0 then ker Omega_A = span{1_A} and d_{varsigma,A} is CONSTANT on
+%  A; in both cases the non-null cells share one conditional law, which is
+%  conditional independence at z.  NO OVERLAP CONDITION AT ANY sans-L.
+%    THE POINTER IS PROSE AND NOT \suppref BECAUSE THE TARGET IS A \paragraph,
+%  which carries no number: \suppref{Kind}{name} renders "Kind S:name" and
+%  presumes a numbered target, so a \suppref at a paragraph would print a
+%  reference resolving to nothing that no build would flag.  This is the same
+%  reasoning, and the same wording, that assumptions_main.tex uses for its own
+%  prose pointer to that paragraph under A1.
+%
+%  3. THE GAP THIS PHASE OPENS, STATED PRECISELY SO PHASE 5 INHERITS IT AND NOT
+%  A GESTURE.  Clause (c) now quantifies over l.  Its PROOF (proofs.tex, proof
+%  of lem:bierens) does not yet support the conclusion at sans-L >= 3, and the
+%  defect is in ONE named step:
+%
+%    Step 3, (c) => (a), OFF the degenerate region.  The printed argument runs
+%    "the prefactor is strictly positive, so F_1(.|z) = F_0(.|z); SINCE W IS
+%    BINARY, equality of the two conditional distribution functions is exactly
+%    conditional independence at z."  That last clause is binary-only.  At
+%    sans-L >= 3 there are up to sans-L conditional laws, some cells may be
+%    null, and equality of ONE pair is not conditional independence.  The
+%    replacement is item 2 above, applied at varsigma = 1{. <= u}: it delivers
+%    "all non-null cells share one conditional law", which IS conditional
+%    independence at z, in both the varrho_0 > 0 and varrho_0 = 0 cases.  The
+%    argument exists and is printed; what does not yet exist is the SENTENCE IN
+%    proofs.tex that invokes it.
+%
+%    Step 3, ON the degenerate region: SURVIVES VERBATIM, on def:admissible's
+%    second clause -- the factorisation holds automatically wherever
+%    max_l varrho_l(z) = 1, both sides being P(Delta U in B | z) at the cell of
+%    mass 1 and both zero elsewhere.
+%
+%    Steps 1, 2, 4 and 5: unaffected in substance, tokens only.  Step 1 uses
+%    (P3), E[Wtilde | Delta Z] = 0, which is a vector identity at every sans-L.
+%    Step 2 is the tower property, cell by cell.  Steps 4-5 are the L^2(Pi)-to-
+%    pointwise upgrade and now run over the three-factor Pi; the w-factor is a
+%    FINITE SET with strictly positive masses by B1(iv.d), so "Pi-a.e." already
+%    means "for every l", and the Fubini step needs no new hypothesis.
+%
+%    ONE TOKEN, ALSO PHASE 5's: Step 3's degenerate branch reads "for both j",
+%    which is binary.  It becomes "for every j".
+%
+%  WHY THE GAP IS OPENED RATHER THAN AVOIDED.  Phase order puts the statement in
+%  Phase 2b and the proof in Phase 5, and the alternative -- leaving (c) at the
+%  two-argument arity so that no gap appears -- would print a clause that
+%  CONTRADICTS (d) and eq:Tdef.  A stated clause with a proof owed is a debt on
+%  a schedule; a clause inconsistent with the definition it is derived from is a
+%  defect.  Declared, dated, and costed above.
+% ===========================================================================
+
+\begin{corollary}[to \cref{lem:shiftinv} and \cref{lem:bierens}]\label{cor:opsol}
+The operator equation has the same solution set in $\varphi$ at every $\theta$, and that set is
+$\mathcal V_{CI}$.
+Suppose B1(i)--(iv) hold. Then for every $\theta\in\IR^{p}$,
+\[
+\big\{\varphi\in\mathcal V:\ T(\varphi,\theta)=0\ \text{in }L^{2}(\Pi)\big\}\;=\;\mathcal V_{CI},
+\]
+and under A1b(iii) this set equals $\{\vdagger\}$.
+\end{corollary}
+
+\begin{proposition}[R2: when a weight yields a $\varphi$-free moment]\label{prp:nophifree}
+A moment is free of the structural function exactly when the two periods' $g$-tilted marginals of the
+endogenous regressor coincide.
+Suppose C1(ii) holds and let $g$ be a random variable satisfying
+\begin{equation}\label{eq:gproviso}
+E|g|<\infty,
+\qquad
+E\big|g\,h(X_j)\big|<\infty\ \ (j=1,2)\ \text{for every }h\in\mathcal V,
+\qquad
+E\big|g\,\Delta U(\theta,0)\big|<\infty .
+\end{equation}
+Then the map $\varphi\mapsto E\big[g\,\Delta U(\theta,\varphi)\big]$ is constant on $\mathcal V$, for one
+and hence every $\theta\in\IR^{p}$, if and only if
+\begin{equation}\label{eq:tilted}
+E[g\mid X_2=x]\,f_{X_2}(x)\;=\;E[g\mid X_1=x]\,f_{X_1}(x)
+\qquad\text{for almost every }x\in\mathcal X,
+\end{equation}
+that is, if and only if $\nu_g\equiv0$.
+% ARCHAEOLOGY.  A1b(i) was listed as a hypothesis here through round 7 and is
+% struck.  Why it is not one: rem:nophifree(v).
+\end{proposition}
+
+\begin{corollary}[to \cref{prp:nophifree}: the debiasing weight must vary with the residual]\label{cor:udep}
+If the debiasing weight does not depend on the residual, the debiased moment is not merely
+first-order insensitive to the structural function but exactly free of it.
+Suppose A1, A1b(i), A1b(iv) and C1(ii) hold, let $L$ be differentiable in $u$ \emph{at every} $(u,z)$
+with $\partial_uL(u,z)=c(z)$ for some Borel $c:\IR^{p}\to\IR^{p\times(\mathsf L-1)}$, and write
+% UNNUMBERED ON PURPOSE.  Numbering this display would advance the equation
+% counter in every one of files 2-8, and no site cites it: it is a notational
+% declaration consumed inside this statement only.  Same reasoning, and same
+% treatment, as the inner-product display under def:spaces.
+\[
+c(z)\,\widetilde W\;:=\;\sum_{l=1}^{\mathsf L-1}\widetilde W_l\;c_{\cdot\,l}(z)\;\in\;\IR^{p}
+\]
+for the Euclidean contraction of the $\mathsf L-1$ columns of $c$ against the contrast vector. Suppose
+$g:=\Delta Z+c(\Delta Z)\widetilde W$ satisfies \eqref{eq:gproviso} coordinatewise, and suppose $L$
+satisfies N1. Then
+$L(u,z)=c(z)\,u$, the moment function is $\psi=g\,\Delta U(\theta,\varphi)$ with $g$ measurable with
+respect to $\sigma(W,\Delta Z)$, and the following are equivalent:
+\begin{enumerate}
+\item[(a)] $E[\psi]$ is first-order insensitive to $\varphi$ at $\vdagger$, i.e.\
+$\nu_{\Delta Z+c\widetilde W}\equiv0$;
+\item[(b)] $\varphi\mapsto E[\psi]$ is constant on $\mathcal V$;
+\item[(c)] $\nu_{c\widetilde W}=-\nu$ \emph{for the $c$ of the hypothesis}; equivalently, membership
+$-\nu\in\mathcal N_0:=\{\nu_{\tilde c(\Delta Z)\widetilde W}:\tilde c\in\mathcal C_0\}$ is realised
+\emph{at that} $c$, where $\mathcal C_0$ is the set of $\tilde c$ for which
+$\Delta Z+\tilde c(\Delta Z)\widetilde W$ satisfies \eqref{eq:gproviso} coordinatewise.
+\end{enumerate}
+Moreover $\varphi\mapsto E[\psi]$ is affine on $\mathcal V$, so every term of order two or higher in its
+expansion vanishes identically \emph{whether or not \textup{(a)--(c)} hold}; what \textup{(a)--(c)} add is
+that the first-order term vanishes as well. Contrapositively, if $-\nu\notin\mathcal N_0$, then every
+$\ell_\star$ satisfying $\nu_{\Delta Z+\ell_\star\widetilde W}\equiv0$ has
+$\partial_u\ell_\star\not\equiv0$.
+At $\mathsf L=2$ there is one column, $c(z)\in\IR^{p}$, $\widetilde W$ is the scalar
+$W-\varrho(\Delta Z)$, and $c\widetilde W=\widetilde Wc$.
+\end{corollary}
+
+% ===========================================================================
+%  PHASE 2b ON cor:udep.  THE CONTRACTION, THE ORDER, AND WHAT FORCED BOTH.
+%
+%  WHAT MOVED: c gains the codomain R^{p x (sans-L - 1)}; every occurrence of
+%  "Wtilde c" becomes "c Wtilde", read as the Euclidean contraction over l that
+%  the unnumbered display now declares; N_0 and C_0 move with it; and the
+%  contrapositive's nu_{Delta Z + Wtilde ell_star} becomes
+%  nu_{Delta Z + ell_star Wtilde}.
+%
+%  NEITHER CHOICE IS FREE-STANDING; BOTH ARE FORCED, AND BY DIFFERENT THINGS.
+%
+%  (1) THE CODOMAIN IS FORCED BY THE TYPE DECLARATION.  assumptions_main.tex
+%  declares, once and binding on every statement in this corpus, that L, its
+%  u-derivative ell, the anchor b and their starred and hatted variants are
+%  R^{p x (sans-L - 1)}-valued -- one row per coordinate of theta, one column
+%  per contrast.  c IS partial_u L by this corollary's own hypothesis, so it
+%  inherits that type and cannot be given another.
+%
+%  (2) THE ORDER IS FORCED BY THE CONCLUSION psi = g Delta U, WHICH IS THIS
+%  COROLLARY'S POINT AND NOT AN INCIDENTAL LINE.  Substituting L(u,z) = c(z)u
+%  into psi = Delta Z Delta U + L(Delta U, Delta Z) Wtilde gives
+%      psi = Delta Z Delta U + c(Delta Z) Delta U Wtilde
+%          = {Delta Z + c(Delta Z) Wtilde} Delta U,
+%  and the brace is g.  Written the other way -- "Wtilde c" -- the product is
+%  (sans-L - 1) x 1 against p x (sans-L - 1) and DOES NOT MULTIPLY at
+%  sans-L >= 3; there is no factorisation and no g.  So the order is not a
+%  convention this pass picked: it is the only order under which the corollary
+%  states anything at sans-L >= 3.  At sans-L = 2 both orders are the same
+%  scalar-times-vector product, which is why nothing before this dispatch could
+%  distinguish them.
+%
+%  A DISAGREEMENT THIS CREATES, DECLARED RATHER THAN LEFT TO BE FOUND.
+%  THE PHASE-3 HAND-OFF, COMPLETE.  All five sites are in
+%  results_s3_estimation.tex, four of them inside def:moment, and they are listed
+%  by line because round 1 declared the definition and then named only two of the
+%  things wrong inside it.
+%   (a) :216, eq:psidef -- psi = Delta Z Delta U + Wtilde(varrho) L(Delta U,
+%       Delta Z), the contrast on the LEFT.  Does not multiply at sans-L >= 3 and
+%       already contradicts the type declaration in assumptions_main.tex.
+%       -> L(Delta U, Delta Z) Wtilde(varrho).
+%   (b) :223, eq:psistar -- same, at the truth.  -> L_star(...) Wtilde.
+%   (c) :227, eq:JSig -- J := E[Delta Z Delta Z'] + E[Wtilde ell_star(Delta U,
+%       Delta Z) Delta Z'].  SAME DEFECT, AND ROUND 1 MISSED IT while declaring
+%       the definition that contains it.  -> E[ell_star(Delta U, Delta Z) Wtilde
+%       Delta Z'], which is (p x 1)(1 x p) = p x p, the shape J must have.
+%   (d) :213, def:moment's typing "L: R x R^p -> R^p".  -> R^{p x (sans-L - 1)}.
+%   (e) :213, def:moment's typing "varrho: R^p -> [0,1]", and the display
+%       Wtilde(varrho) := W - varrho(Delta Z) beside it.  THIS IS THE IDENTICAL
+%       DEFECT THIS PASS REPAIRED AT prp:orthog(iii), whose own printed ground is
+%       that [0,1] is not a condition on a vector -- it permits varrho_1 +
+%       varrho_2 > 1 and a negative base cell.  -> varrho: R^p -> the simplex
+%       {q in R^{sans-L - 1} : q_l >= 0 for every l, 1'q <= 1}, and
+%       Wtilde_l(varrho) := 1{W = l} - varrho_l(Delta Z), which is eq:contrast.
+%       A PASS THAT REPAIRS A DEFECT IN ONE FILE AND LEAVES ITS TWIN UNDECLARED
+%       IN ANOTHER HAS NOT FINISHED THE REPAIR; that is why (e) is spelled out.
+%  Until Phase 3 acts, eq:psidef and the statements in THIS file disagree in the
+%  order, agree at sans-L = 2, and only the version here is well formed above it.
+%
+%  WHAT PHASE 5 INHERITS AT THIS COROLLARY -- TOKENS, NOT MATHEMATICS.  ALL FOUR
+%  STEPS, NOT TWO: round 1 wrote "Steps 3 and 4 are unchanged in substance",
+%  which is TRUE and was read as "nothing to do there".  They are unchanged in
+%  substance AND carry four old-order tokens, and an owner reading "Steps 1-2"
+%  would have left them.
+%   * Step 1 (proofs.tex:2617-2623): the mean value argument runs on Lambda_z
+%     with values in R^p; it now runs ENTRYWISE over the p x (sans-L - 1)
+%     entries.  The load-bearing word "coordinatewise" and the Lagrange-point
+%     warning attached to it are unaffected -- indeed the warning STRENGTHENS,
+%     since there is now no single xi serving p(sans-L - 1) entries rather than p.
+%   * Step 2 (:2658-2659): substitutes into psi written at the OLD order.  TWO
+%     tokens; after "L Wtilde" the factorisation displayed in (2) above is the
+%     one line it needs.
+%   * Step 3 (:2670, :2671): nu_g = nu + nu_{Wtilde c}; nu_{Wtilde c} = -nu.
+%     TWO tokens.
+%   * Step 4 (:2692, :2694): nu_{Delta Z + Wtilde ell_star} = 0;
+%     nu_{Wtilde tilde-c} = -nu.  TWO tokens.
+%     Substance in Steps 3-4 is untouched: linearity of g |-> nu_g and the
+%     one-directional use (a) => membership are indifferent to the order.
+% ===========================================================================
+
+\begin{proposition}[Characterisation of the kernel of the linearisation]\label{prp:kerchar}
+A direction is annihilated by the linearised operator exactly when the instrument fails to move its
+period difference, given the residual and the controls.
+Suppose B1(i)--(iv), C1(ii) and C2$'$(i) hold, and let $h\in\mathcal V$. Then
+\begin{enumerate}
+\item[(i)] the following are equivalent:
+\emph{(a)} $\mathcal A_{\mathrm{cond}}h=0$ in $L^{2}(\Pi)$;
+\emph{(b)} $E\big[\widetilde W\,\{h(X_2)-h(X_1)\}\,\big|\,\Delta U,\Delta Z\big]=0$ almost surely;
+\item[(ii)] if in addition A1 and A4(i) hold, \emph{(b)} is equivalent to
+\emph{(c)} $E\big[h(X_2)-h(X_1)\mid\Delta U,\Delta Z,W=l\big]
+=E\big[h(X_2)-h(X_1)\mid\Delta U,\Delta Z\big]$ for every $l\in\{0,1,\dots,\mathsf L-1\}$, almost
+surely on $\{\varrho_l(\Delta Z)>0\}$.
+\end{enumerate}
+\end{proposition}
+
+\noindent\emph{Notes on \cref{prp:kerchar}.} Clause \textup{(b)} is the $\IR^{\mathsf L-1}$-valued
+identity \eqref{eq:contrast} types it as, hence the $\mathsf L-1$ scalar restrictions
+$E[\widetilde W_l\{h(X_2)-h(X_1)\}\mid\Delta U,\Delta Z]=0$. \emph{Clause \textup{(c)} compares each cell
+against the expectation given $(\Delta U,\Delta Z)$ alone, and not the cells against one another}, which
+is the comparison the companion treatment of discrete instruments,
+\citet{centorrinofeveflorens2019}, is stated at; it names no base cell and is well posed where a cell is
+null, on which it says nothing, exactly as the factorisation form of \cref{def:admissible} does.
+\emph{The two readings coincide at every $\mathsf L$}: under A1,
+$P(W=l\mid\Delta U,\Delta Z)=\varrho_l(\Delta Z)$, so $E[h(X_2)-h(X_1)\mid\Delta U,\Delta Z]$ is the
+$\varrho$-weighted average of the cell expectations over the non-null cells, and all cells agreeing with
+one another and all cells agreeing with that average are the same condition. The quantifier over $l$
+runs over the fixed set $\{0,\dots,\mathsf L-1\}$ and the qualification is on the \textbf{event}
+$\{\varrho_l(\Delta Z)>0\}$, so no index set depends on the data; \emph{under \textup{(ii)}'s own
+hypotheses that qualification is vacuous}, A4(i) making each of those events almost sure, and it is
+carried only so that \textup{(c)} remains a statement if A4(i) is relaxed.
+
+% ===========================================================================
+%  PHASE 2b ON prp:kerchar(ii)(c).  AUTHOR DECISION, 2026-08-09.  THE GROUND,
+%  THE ARITHMETIC BEHIND THE "COINCIDE" CLAIM, AND WHAT PHASE 5 INHERITS.
+%
+%  WHAT IT SAID:  E[Delta h | DU, DZ, W = 1] = E[Delta h | DU, DZ, W = 0].
+%  WHAT IT SAYS:  E[Delta h | DU, DZ, W = l] = E[Delta h | DU, DZ] for every l
+%                 with varrho_l > 0.
+%  NOT "all cells equal each other".  The author's ground is that comparing
+%  conditional-on-W against UNCONDITIONAL is the same statement as in Centorrino,
+%  Feve and Florens (centorrinofeveflorens2019 -- the fossil key; the paper is
+%  the 2025 J. Econometrics one), so this formulation matches the companion paper
+%  rather than being invented here; it also handles null cells correctly and
+%  states degeneracy the way def:admissible now does, and those two must not
+%  disagree.
+%    THE CITATION IS A POSITIONING CLAIM AND IS WRITTEN AS ONE.  It says the
+%  companion paper is STATED AT that comparison; it does not attribute a numbered
+%  result, and no step of this proposition rests on it.  The attribution is the
+%  author's, supplied in the dispatch; this pass did not have the companion
+%  paper's text to check it against, and the printed sentence is scoped so that
+%  nothing breaks if the attribution is later refined.  DO NOT let a later pass
+%  upgrade it to "\citet[Prop. N]{...}" without reading the paper.
+%
+%  THE ARITHMETIC, WHICH THE PRINTED NOTE ASSERTS AND WHICH IS WRITTEN OUT HERE
+%  SO THAT THE ASSERTION IS CHECKABLE.  Write m_l := E[Delta h | DU, DZ, W = l]
+%  and m := E[Delta h | DU, DZ].  Under A1, P(W = l | DU, DZ) = varrho_l(DZ), so
+%  m = sum_{l : varrho_l > 0} varrho_l m_l, a convex combination over the
+%  non-null cells.  If m_l = m_{l'} for all non-null l, l', the combination
+%  returns that common value and each m_l = m.  Conversely m_l = m for all
+%  non-null l gives m_l = m_{l'} at once.  Equivalent at every sans-L, hence at
+%  sans-L = 2 IN PARTICULAR, which is what "the two-cell equality earlier rounds
+%  printed" means and is why the reduction is exact and not merely consistent.
+%
+%  WHY THE NEW FORM AND NOT THE OLD, BEYOND MATCHING THE COMPANION PAPER.  The
+%  old form names cells 1 and 0 and so is stated in the base-cell coordinates,
+%  even though the underlying condition is base-invariant (assumptions_supp.tex,
+%  paragraph *A1*, "Second").  The new form quantifies over all sans-L cells and
+%  names no base.  At sans-L >= 3 the old form's literal reading -- one pair --
+%  is strictly weaker than (b) and would make part (ii) FALSE, not merely
+%  awkward; the pairwise-over-all-cells reading would be correct but would still
+%  print the base-cell asymmetry.
+%
+%  WHAT PHASE 5 INHERITS.  proofs.tex's Step 5 is where (b) <=> (c) is proved and
+%  it is binary throughout: it applies (P4c), cites "P(W = 1 | DU, DZ) = varrho",
+%  and produces the prefactor varrho(1 - varrho) times the brace
+%  {E[Delta h | ., W = 1] - E[Delta h | ., W = 0]}.  The sans-L replacement is
+%  ONE line and does not need (P4c)'s two-cell identity:
+%      E[Wtilde_l Delta h | DU, DZ]
+%        = E[1{W = l} Delta h | DU, DZ] - varrho_l m
+%        = varrho_l m_l - varrho_l m = varrho_l (m_l - m),
+%  the middle equality by the tower property on sigma(DU, DZ, W) together with
+%  A1 for P(W = l | DU, DZ) = varrho_l.  So (b) holds iff varrho_l(m_l - m) = 0
+%  for l = 1, ..., sans-L - 1, iff m_l = m at every non-null l >= 1; and the BASE
+%  cell comes free, since m = sum_l varrho_l m_l then forces varrho_0(m_0 - m) =
+%  0.  A4(i) enters exactly twice and nowhere else: it makes every cell non-null
+%  so the m_l are versions of genuine conditional expectations, and it bounds
+%  varrho_l >= eps_varrho so that varrho_l(m_l - m) = 0 gives m_l = m.  Steps 1-4
+%  need neither A1 nor A4(i) and are unchanged in substance; their tokens follow
+%  eq:Adef's new arity.
+%
+%  ONE COMMENT IN A FILE THIS PASS MAY NOT TOUCH, DECLARED FOR PHASE C.
+%  assumptions_main.tex carries, under A1c, a long accounting paragraph written
+%  at sans-L = 2 -- "m_1", "f_1", "the W = 1 cell" -- which says of itself: "It
+%  is left in the binary spelling because prp:kerchar, the theorem it accounts
+%  for, lives in a Phase-2 file and the two must move together or not at all."
+%  prp:kerchar HAS NOW MOVED and that paragraph has not; it is comment layer in
+%  a Phase-1 file, so this pass declares it instead of sweeping it.  Its
+%  CONCLUSION is unaffected -- the paragraph itself records that the obstruction
+%  it describes (m_l = m does not give f_l m_l = f m without A1) is per cell and
+%  does not interact across cells.
+% ===========================================================================
+
+% ===========================================================================
+%  PART E$'$.  WHAT THE EXTRA CELLS BUY: LOCALISATION
+%
+%    def:cellsets  the per-subset restriction sets and the vocabulary
+%    prp:localise  joint consistency, the conflict set, and localisation
+%    rem:localise  the slices of T, the sub-population reading, the statistic
+% ===========================================================================
+
+\begin{definition}[Per-subset restriction sets]\label{def:cellsets}
+For a set of instrument cells $\mathsf S\subseteq\{0,1,\dots,\mathsf L-1\}$ put
+\[
+\begin{aligned}
+\mathcal V_{\mathsf S}\;:=\;\Big\{\varphi\in\mathcal V:\ &\varrho_k(\Delta Z)\,P\big(\Delta Y-\Delta\varphi\in B,\ W=l\mid\Delta Z\big)\\[-2pt]
+&\qquad=\;\varrho_l(\Delta Z)\,P\big(\Delta Y-\Delta\varphi\in B,\ W=k\mid\Delta Z\big)\Big\},
+\end{aligned}
+\]
+the identity holding, \emph{for each Borel $B$ and each pair $l,k\in\mathsf S$}, almost surely; by
+right-continuity in the endpoint of a half-line and a $\pi$--$\lambda$ argument a single null set serves
+every $B$ and every pair, so the stronger simultaneous reading defines the same set. Here
+$\varrho_0=1-\mathbf 1'\varrho$ as in \eqref{eq:contrast}. \emph{The restriction is written in the
+factorisation sense of \cref{def:admissible} and in cross-multiplied form}, so that no conditional law
+at a null cell is ever named: where every cell of $\mathsf S$ is
+non-null it says that $\Delta Y-\Delta\varphi$ has \emph{one} conditional law given $\Delta Z$ across the
+cells of $\mathsf S$, and where a cell of $\mathsf S$ is null it says nothing about that cell.
+\emph{The set is unchanged if $\Delta Y-\Delta\varphi$ is replaced by $\Delta U(\theta,\varphi)$ of
+\eqref{eq:trialres} at any $\theta\in\IR^{p}$}, the two differing by a $\Delta Z$-measurable shift; this
+is the invariance \cref{lem:shiftinv} records for $\mathcal I$, read at a set of cells. Call
+$\mathsf S$ \emph{consistent} if $\mathcal V_{\mathsf S}\neq\emptyset$; and, for a consistent
+$\mathsf S$, call
+\[
+\big\{l\in\{0,1,\dots,\mathsf L-1\}\setminus\mathsf S:\ \mathcal V_{\mathsf S\cup\{l\}}=\emptyset\big\}
+\]
+the set of cells \emph{in conflict with} $\mathsf S$. \emph{Sans-serif $\mathsf S$ is a set of instrument
+cells and nothing else}, on the pattern of $\mathsf L$: the subscript of $\mathcal V_{\mathsf S}$ is
+always a set of cells and never an integer, which separates it from the source-condition ball
+$\mathcal V_n$ of \suppeq{srcball} and from $\mathcal V_{CI}$, whose subscript is a word.
+\end{definition}
+
+\begin{proposition}[Localisation of a violation to a set of cells]\label{prp:localise}
+Extra instrument cells localise a failure of conditional exogeneity to a set of cells, and do so without
+any identification hypothesis on any subset of cells.
+Suppose B1(i)--(iv) hold, and read $\mathcal V_{\mathsf S}$, \emph{consistent} and \emph{in conflict with}
+as in \cref{def:cellsets}. Then
+\begin{enumerate}
+\item[(i)] \emph{Structure of the family.} $\mathcal V_{\mathsf S'}\subseteq\mathcal V_{\mathsf S}$
+whenever $\mathsf S\subseteq\mathsf S'$; $\mathcal V_{\mathsf S}=\mathcal V$ whenever
+$\#\mathsf S\le1$; and
+\[
+\mathcal V_{\{0,1,\dots,\mathsf L-1\}}\;=\;\mathcal V_{CI}\;=\;\big\{\varphi\in\mathcal V:\ T(\varphi,\theta)=0\ \text{in }L^{2}(\Pi)\big\}
+\qquad\text{for every }\theta\in\IR^{p}.
+\]
+\emph{B1\textup{(i)}--\textup{(iv)} is consumed by the second equality of this clause, through
+\cref{cor:opsol}, and by nothing else in this proposition}, so localisation does not rest on the Bierens
+apparatus.
+\item[(ii)] \emph{Joint consistency.} If in addition A1 holds, then $\vdagger\in\mathcal V_{\mathsf S}$
+for every $\mathsf S$, so every set of cells is consistent. \emph{This clause uses no identification
+hypothesis}: A1b(iii) is a hypothesis of no part of this proposition. Contrapositively, if some
+$\mathsf S$ is not consistent then A1 fails.
+\item[(iii)] The conflict set, and what it cannot be freed from. Consistency is inherited by
+subsets, and every $\mathsf S$ with $\#\mathsf S\le1$ is consistent. The cells in conflict with
+$\mathsf S$ are among those in conflict with $\mathsf S'$ whenever $\mathsf S\subseteq\mathsf S'$ are
+both consistent; at a maximal consistent $\mathsf S^{\star}$ they are exactly
+$\{0,1,\dots,\mathsf L-1\}\setminus\mathsf S^{\star}$; and some consistent $\mathsf S$ has a non-empty
+conflict set if and only if $\mathcal V_{CI}=\emptyset$. Moreover there is exactly one maximal consistent
+set of cells if and only if $\mathcal V_{CI}\neq\emptyset$, and no cell is in conflict with \emph{every}
+consistent $\mathsf S$. So wherever there is a violation to attribute, the attribution is relative
+to a reference set of cells. What $P$ determines is the \emph{family} of maximal consistent sets, which
+is a functional of $P$ and is identified; what it does not determine is which member of that family is
+the reference set, and any rule for choosing one is a convention.
+\item[(iv)] \emph{Localisation.} Suppose $\mathcal V_{CI}=\emptyset$ while
+$\mathcal V_{\mathsf S_0}\neq\emptyset$ for some $\mathsf S_0$ with $\#\mathsf S_0\ge2$. Then there is a
+maximal consistent $\mathsf S^{\star}\supseteq\mathsf S_0$, necessarily with
+$\#\mathsf S^{\star}\ge2$, and the cells in conflict with it form a non-empty \emph{proper} subset of
+$\{0,1,\dots,\mathsf L-1\}$ omitting at least two cells. The hypothesis of this clause is
+unsatisfiable at $\mathsf L=2$.
+\end{enumerate}
+\emph{At $\mathsf L=2$ clauses \textup{(i)}--\textup{(iii)} are true and say nothing beyond
+\cref{cor:opsol}}: under a violation the maximal consistent sets are $\{0\}$ and $\{1\}$, the cells in
+conflict with them are $\{1\}$ and $\{0\}$, so the verdict is that the restriction fails and it names no
+channel. \emph{Clause \textup{(iv)} is \textbf{vacuous} at $\mathsf L=2$}, its hypothesis being
+unsatisfiable there, so the $\mathsf L=2$ reading of this proposition is a vacuity and not the verbatim
+reduction the statements around it carry.
+\end{proposition}
+
+\begin{remark}[The slices of $T$, the sub-population reading, and the statistic]\label{rem:localise}~
+\begin{enumerate}
+\item[(1)] The slices of $T$ carry joint consistency and not localisation. Write
+$\mathcal V_{CI}(g(W))$ for the set of \cref{def:admissible} computed at the instrument $g(W)$ in place of
+$W$, so that $\mathcal V_{CI}=\mathcal V_{CI}(W)$. Under B1(i)--(iii), for each
+$l\in\{1,\dots,\mathsf L-1\}$ the set of $\varphi\in\mathcal V$ at which the $l$-th slice of
+$T(\cdot,\theta_\dagger)$ vanishes at every $(u,t)\in\IR\times\mathcal T$ is exactly
+$\mathcal V_{CI}(\un\{W=l\})$, the solution set at the \emph{binary coarsening} that separates cell $l$
+from the rest; and the intersection of those $\mathsf L-1$ sets is $\mathcal V_{CI}$. \emph{So the slices
+carry \cref{prp:localise}\textup{(ii)} exactly}, and what they do not carry is localisation: a coarsening
+imposes fewer restrictions, $\mathcal V_{CI}(W)\subseteq\mathcal V_{CI}(g(W))$, and slice $l$ compares
+cell $l$ against all remaining cells \emph{pooled}, so one deviant cell moves the pooled benchmark and
+with it every slice. \emph{The same two readings meet at \cref{prp:kerchar}\textup{(ii)}\textup{(c)},
+where they coincide}, there the quantifier runs over all $\mathsf L$ cells at once, and the Notes on
+that proposition show cell-against-average and cell-against-cell are then the same condition. They part
+company only at a \emph{proper} subset of cells, which is the object \cref{def:cellsets} supplies and the
+slices do not.
+\item[(2)] Sub-population reading, and exactly what transfers with it. Under A4(i), for
+$\#\mathsf S\ge2$ the set $\mathcal V_{\mathsf S}$ is $\mathcal V_{CI}$ of \cref{def:admissible} computed
+under the law $Q:=P(\,\cdot\mid W\in\mathsf S)$, the same restriction, on the sub-population on which
+the instrument takes its values in $\mathsf S$. \emph{No new operator and no normalisation enters}, and
+the propensities it induces are $\varrho_l/\varrho_{\mathsf S}$ with
+$\varrho_{\mathsf S}:=\sum_{k\in\mathsf S}\varrho_k$. Whether the maintained conditions survive the
+passage to $Q$ is a separate question from the set identity, and it is answered here rather than
+assumed. A0 survives: $\{i:W_i\in\mathsf S\}$ is an i.i.d.\ sample from $Q$. A4(i) survives with the
+\emph{same} $\varepsilon_\varrho$, since $\varrho_l/\varrho_{\mathsf S}\ge\varrho_l\ge\varepsilon_\varrho$
+and $\varepsilon_\varrho<1/\mathsf L\le1/\#\mathsf S$. B1 survives unchanged, being a set of choices made
+by the analyst and not a condition on $P$. C1(ii)'s \emph{upper} bounds survive with $\bar c_\pi$
+inflated to $\bar c_\pi/P(W\in\mathsf S)$. \emph{Two things do not survive, and neither is repaired
+here}: C1(ii)'s \emph{lower} bounds \textbf{on the $X$-densities} $f_{X_1}$, $f_{X_2}$ and
+$f_{X_1,X_2}$, because A4(i) bounds $\varrho_l$ given $\Delta Z$ and says nothing
+about $P(W\in\mathsf S\mid X_j)$, which is what a density of $X_j$ under $Q$ is bounded below by; and the
+source conditions A2, A2$'$ and H1, which are conditions on the linearisation the law induces, and at $Q$
+that is a different operator. \emph{Only the second of the two binds anything}: those three lower bounds
+are consumed by no result in this paper, whereas A2, A2$'$ and H1 carry the whole rate theory, which
+therefore has no counterpart at $Q$ until it is posed there. \emph{The narrowing to the $X$-densities is
+deliberate}: C1(ii) also bounds $\pi$ below, and \emph{that} bound is consumed --- at
+\suppref{Proposition}{hatAprop}\textup{(i)}, at \eqref{eq:normconst} and hence at \eqref{eq:cap}, at
+\suppref{Lemma}{aerr} and at \suppref{Lemma}{levels}\textup{(i)}. \emph{Nothing is claimed here about
+$\pi$.}
+\item[(3)] The statistic is apparatus and is subordinate. \cref{prp:localise} is a statement about
+population sets. The corresponding procedure is a J-type one, the letter is used as a name and not as
+a symbol, italic $J$ being the Jacobian of \eqref{eq:JSig}: for a candidate reference set
+$\mathsf S$, solve for $\varphi$ on the sub-population of clause \textup{(2)}, evaluate at that solution
+the criterion of the cells outside $\mathsf S$, and read a value large relative to its own noise level as
+evidence that the cell is in conflict with $\mathsf S$. \emph{Its construction, its rate under the null
+and its limit law are not established here}, and clause \textup{(iii)} of \cref{prp:localise} bounds what
+any such procedure can deliver: the output is a family of maximal consistent sets of cells, and a
+selection among them, the largest, or the one containing a designated reference cell, is a
+convention and not an identified object. \emph{And if $\mathsf S$ is itself chosen from the data, a
+conflict set read off it is a post-selection object}, whose coverage is not the coverage of the same set
+read off a reference set fixed in advance; nothing here prices that.
+\item[(4)] \emph{Base invariance.} $\mathcal V_{\mathsf S}$ is symmetric in the cells of $\mathsf S$ and
+names no base cell, so the family, the consistent sets and the conflict sets are all invariant to which
+cell \eqref{eq:contrast} omits. This is the invariance established in the Discussion of the assumptions,
+under the heading \emph{A1 (conditional exogeneity)}, and it is cited and not reproved here.
+\item[(5)] \emph{What is \textbf{not} claimed.} Neither \cref{prp:localise} nor this remark asserts that
+extra cells make A1 testable or that they make the instrument stronger. A1 is testable at $\mathsf L=2$
+, the restriction is a continuum of equations against one unknown function, and splitting an
+instrument creates no variation. The separation of testability, instrument strength and localisation is
+argued in that same Discussion paragraph.
+% ===========================================================================
+%  CLAUSES (6) AND (7) MOVED TO results_supp.tex, 2026-08-28, ON THE AUTHOR'S
+%  SHORTENING INSTRUCTION.  ~1,400 PRINTED WORDS OF WORKED CONSTRUCTIONS -- two
+%  full DGPs, the verification of nine maintained conditions against each, the
+%  mechanism, and the scope statement -- which is the largest single block of
+%  in-environment prose in this file and is exactly the "worked counterexamples"
+%  species the instruction names.  THE STATEMENT THEY ILLUSTRATE, prp:localise,
+%  IS UNTOUCHED AND STAYS IN THE ARTICLE.
+%  WHAT REPLACES THEM is one clause (6) carrying: that both constructions exist,
+%  what each delivers, the L = 4 variant's conflict set {2,3} (the shape S6's
+%  chronic-against-transient hypothesis takes), the standing of clause (iv)'s
+%  hypothesis, and the CFF positioning.  NO CLAUSE IS RENUMBERED: (1)-(5) keep
+%  their numbers and the new pointer takes (6); nothing cited (6).
+%  ONE CITATION REPOINTED: results_supp.tex's rem:spacesread(4b) cited
+%  "rem:localise(7)" for the pooled-density check.  It now names the moved
+%  paragraph in prose, the target being a \paragraph and carrying no number.
+%  THE BIBLIOGRAPHY KEY centorrinofeveflorens2019 IS NOT LOST FROM THE ARTICLE:
+%  it survives here and at the Notes on prp:kerchar.
+% ===========================================================================
+\item[(6)] \emph{Two constructions establish that the hypothesis of \cref{prp:localise}\textup{(iv)} is
+not empty}, and they are in the online supplement, under the heading \emph{Two constructions for the
+hypothesis of \cref{prp:localise}\textup{(iv)}}. The first is a witness at $\mathsf L=3$ with an
+\emph{irrelevant} instrument: $W$ independent of $(X_1,X_2)$, so there is no first stage,
+$\mathcal V_{\{0,1\}}=\mathcal V$ precisely because nothing is identified, and
+$\mathcal V_{CI}=\emptyset$ all the same --- which isolates the fact that emptiness of
+$\mathcal V_{CI}$ is settled at the law and not by an identification hypothesis.
+\emph{The companion treatment of discrete instruments says what that regime is}:
+\citet[Remark~2]{centorrinofeveflorens2019} records that when the residual is independent of the
+regressor and the instrument, the relevance condition of that paper reverts to ordinary completeness,
+which a purely discrete instrument cannot satisfy, and the structural function is then only
+\emph{partially} identified. The second is a worked example at $\mathsf L=3$ with a \textbf{relevant}
+instrument --- relevant in all three senses the question has --- in which
+$\vdagger\in\mathcal V_{\{0,1\}}$ while $\mathcal V_{\{0,2\}}=\emptyset$, so that $\{0,1\}$ is a maximal
+consistent set and the cells in conflict with it are exactly $\{2\}$; the same construction at
+$\mathsf L=4$ puts them at exactly $\{2,3\}$, which is the form the application's
+chronic-against-transient hypothesis takes. \emph{The hypothesis of clause \textup{(iv)} is maintained
+nowhere in this paper}: it is the configuration the procedure of clause \textup{(3)} exists to detect,
+and its standing is that of the conditional-relevance condition A1b(iii), the conditional analogue of
+\citet[Assumption~2.2]{centorrinofeveflorens2019} --- a condition on the law whose plausibility is
+discussed and whose scope is bounded, not a theorem. An example illustrates such a hypothesis and is
+not asked to exhaust it.
+\end{enumerate}
+\end{remark}
+
+% ===========================================================================
+%  PHASE 2c.  THE LOCALISATION RESULT.  CENSUS FIRST, THEN THE ONE PLACE THIS
+%  PASS DEPARTED FROM THE DISPATCH'S PROPOSED SHAPE AND WHY, THEN THE PROOF
+%  PASTE-READY FOR proofs.tex, THEN WHAT IS OWED.
+%
+%  ---------------------------------------------------------------------------
+%  0. THE COUNTER COST, STATED BEFORE ANYTHING ELSE.
+%
+%  THREE numbered environments are added -- def:cellsets, prp:localise,
+%  rem:localise -- immediately after the TWELFTH statement of a file at POSITION 2
+%  of the build's eight inputs (scripts/build-theory/driver.tex).  Every
+%  theorem-counter number after the insertion point therefore advances by
+%  THREE.  What shifts, by file and in \input order:
+%    position 2  results_s2_identification.tex -- the THREE statements after the
+%                insertion: rem:a1cwithdrawn, def:weight, prp:orthog.
+%    position 3  results_s3_estimation.tex      -- 5 statements.
+%    position 4  results_s4_asymptotics.tex     -- 4 statements.
+%    position 5  assumptions_supp.tex           -- 5 statements.
+%    position 6  results_s3_supp.tex            -- 0 numbered environments.
+%    position 7  results_supp.tex               -- 70 statements.
+%    position 8  proofs.tex                     -- 21 numbered environments.
+%  EXACTLY 108 printed numbers move.  MEASURED, pattern
+%  `\begin{(theorem|proposition|lemma|corollary|definition|remark)}' over the
+%  eight compiled files, with COMMENTED-OUT occurrences subtracted: the raw
+%  count returns 71 in results_supp.tex and 5 in assumptions_main.tex, of which
+%  results_supp:3865 and assumptions_main:640, :1408 are inside comments and
+%  advance no counter.  A re-measurement that forgets that subtraction will
+%  return 109 and 5, which is why the adjustment is printed here.
+%
+%  NOTHING BREAKS.  Every cross-reference in
+%  this corpus is a \cref or a \suppref at a \label, and no statement is cited
+%  by its printed number anywhere.  The cost is that any EXTERNAL record citing
+%  a printed number -- a referee letter, a slide, a note in a plan file -- is
+%  stale.  Declared, not discovered.
+%
+%  NO NUMBERED EQUATION IS ADDED, DELIBERATELY, and the two displays that would
+%  have earned one are written \[ ... \].  This is the treatment def:spaces and
+%  cor:udep already use in this file and for the same reason: an equation label
+%  here would advance the equation counter in files 2-8 as well, and nothing
+%  cites either display from outside the statement that carries it.  A later
+%  phase needing to cite one can promote it and pay the renumber then.
+%
+%  ---------------------------------------------------------------------------
+%  1. CENSUS A -- WHAT THIS STATEMENT CONSUMES.  Every object it names, where
+%  that object is declared, and whether the declaration precedes it in \input
+%  order.  A declaration landing AFTER its consumer is the defect species the
+%  block under def:spaces records, and it is checked here rather than assumed.
+%
+%   A1. cal-V, the domain             def:spaces, THIS FILE, above.        OK
+%   A2. Delta Y, Delta varphi         def:model / eq:diffs, THIS FILE.     OK
+%   A3. varrho_l, varrho_0, Wtilde    eq:contrast, assumptions_main,
+%                                     position 1.  varrho_0 = 1 - 1'varrho
+%                                     is printed there.                    OK
+%   A4. THE FACTORISATION SENSE and cal-V_CI
+%                                     def:admissible, THIS FILE, above --
+%                                     and it is ALREADY at the sans-L form,
+%                                     quantified over j in {0,...,sans-L-1}.
+%                                     def:cellsets is its CROSS-MULTIPLIED,
+%                                     subset-indexed generalisation and adds
+%                                     no new convention.                    OK
+%   A5. varphi_dagger in cal-V_CI under A1
+%                                     lem:shiftinv, THIS FILE, above.       OK
+%   A6. solution set of eq:opeq = cal-V_CI at every theta
+%                                     cor:opsol, THIS FILE, above,
+%                                     hypotheses B1(i)-(iv).                OK
+%   A7. cal-M(u,t,l;.,.) and T's arity eq:Mdef / eq:Tdef, def:operator, THIS
+%                                     FILE, above, AT THE INDEX FORM closed
+%                                     by Phase 2a.  rem:localise(1) reads the
+%                                     l-th slice and nothing else.          OK
+%   A8. lem:bierenscore               results_supp, POSITION 7 -- AFTER this
+%                                     file.  Cited \suppref{Lemma}{bierenscore},
+%                                     which is the file's established device
+%                                     for a supplement target (def:weight(a)
+%                                     already does it for cor:elldiff, and
+%                                     prp:orthog(i) for lem:secondord).  A
+%                                     forward CITATION is not the def:spaces
+%                                     defect; a forward DECLARATION is.      OK
+%   A9. cal-V_n, the source-condition ball
+%                                     eq:srcball, results_supp, position 7.
+%                                     Named only to state a SEPARATION, and
+%                                     cited \suppeq{srcball}.                OK
+%   A10. cal-V_CI(g(W)), the coarsened set
+%                                     USED at assumptions_supp:340 and :1528,
+%                                     position 5, and DECLARED NOWHERE BEFORE
+%                                     THIS PASS.  rem:localise(1) declares it,
+%                                     at position 2, which is upstream of both
+%                                     uses.  This closes an ordering defect
+%                                     rather than creating one -- see the
+%                                     hand-off at item 5.                    OK
+%   A11. A1, A1b(iii), A4(i), B1(i)-(iv)
+%                                     assumptions_main, position 1, cited by
+%                                     TAG and never by \ref (the build's
+%                                     "assumption refs" check).              OK
+%   A12. the Discussion paragraph *A1*
+%                                     assumptions_supp, position 5, a
+%                                     \paragraph carrying NO NUMBER.  Cited in
+%                                     PROSE, exactly as the Note under
+%                                     lem:bierens does and for the identical
+%                                     reason: \suppref presumes a numbered
+%                                     target and would print a reference
+%                                     resolving to nothing that no build
+%                                     flags.                                 OK
+%   A13. prp:kerchar(ii)(c)           THIS FILE, immediately above.          OK
+%   A14. eq:JSig, named ONLY to state  results_s3_estimation.tex, POSITION 3 --
+%        that italic J is taken         AFTER this file.  A FORWARD \eqref to a
+%                                       MAIN-TEXT display, which resolves on the
+%                                       second pass and is NOT a \suppref site:
+%                                       results_s3_estimation is \input under
+%                                       Section 3 of the article, not the
+%                                       supplement.  Getting that wrong the
+%                                       other way -- \suppref at a main-text
+%                                       target -- would print "(S:JSig)" and
+%                                       send the reader to a document the
+%                                       display is not in.                    OK
+%   A15. eq:trialres, Delta U(theta,varphi)
+%                                       def:model, THIS FILE, above.  Used in
+%                                       rem:localise(1)'s proof only, to shift
+%                                       between Delta Y - Delta varphi and the
+%                                       residual at theta_dagger.             OK
+%
+%  ONE SYMBOL IS CLAIMED AND ONE IS DECLINED.
+%   CLAIMED: sans-serif S, a set of instrument cells, and cal-V_S.  Slot
+%   swept, pattern `\mathsf S', across ALL .tex in
+%   quality_reports/theory/panel-npiv-discrete/ (compiled files AND retired
+%   mirrors): ZERO occurrences.  This agrees with the glossary's own C107
+%   sweep, which prints \mathsf S among the eleven free sans-serif slots.
+%   Separations, each stated in the printed definition: from italic S -- the
+%   glossary records italic S as RESERVED for the number of random partitions
+%   (L-10), a role since taken by \mathsf P at C73, so the italic slot is at
+%   best contested and is NOT used here; from calligraphic cal-S, the selection
+%   functional, by font; from cal-V_n by subscript TYPE (a set of cells against
+%   an integer); from cal-V_CI by subscript type (a set against a word).  The
+%   sans/italic device is the project's own -- sans-L against italic L, sans-r
+%   against italic r, sans-c against italic c.
+%   DECLINED: no symbol for the CONFLICT SET and none for the family of
+%   consistent sets.  Both are WRITTEN OUT, on the write-it-out precedent the
+%   glossary records sixteen applications of, and because the calligraphic
+%   alphabet is exhausted but for cal-O and cal-Y, neither of which carries a
+%   usable mnemonic here.  A conflict set written out is thirty characters and
+%   needs no glossary row.
+%
+%  ---------------------------------------------------------------------------
+%  1b. HYPOTHESIS USAGE, TAG BY TAG, SO THE ASSUMPTION AUDITOR DOES NOT HAVE TO
+%  RECONSTRUCT IT AND SO THAT NO TAG IS CARRIED IDLY.
+%
+%   B1(i)-(iv)  USED ONCE, in Step 2 of the proof of prp:localise, and ONLY for
+%               the third equality of clause (i) -- the identification of
+%               cal-V_CI with the solution set of eq:opeq, which is cor:opsol's
+%               conclusion and cor:opsol's hypothesis list.  CLAUSES (ii), (iii)
+%               AND (iv) USE NO PART OF B1.  The tag is in the global list
+%               because clause (i) is, on the prp:orthog pattern (a global list
+%               that is stronger than some clauses need, with the clause that
+%               consumes it named).  A leaner statement would split clause (i)
+%               in two; it is not split, because the three equalities of (i) are
+%               one fact about the top of the family.
+%   B1(i)-(iii) USED in rem:localise(1), through lem:bierenscore -- B1(ii)'s
+%               w = exp to read eq:Mdef as a Laplace pairing, B1(i)'s bounded
+%               one-to-one Phi and B1(iii)'s index set for the core lemma.
+%               B1(iv) is NOT used there: the slice is read pointwise in
+%               (u,t) and never integrated against Pi.
+%   A1          USED ONCE, in clause (ii) only, through lem:shiftinv.  It is
+%               NOT in the global list, exactly as at prp:orthog.
+%   A4(i)       USED in rem:localise(2), in ONE DIRECTION ONLY (the converse),
+%               for varrho_l > 0; and again in the same clause's TRANSFER
+%               paragraph, where varrho_l/varrho_S >= varrho_l >= eps_varrho and
+%               eps_varrho < 1/sans-L <= 1/#S give A4(i) at Q with the SAME
+%               eps_varrho.  In rem:localise(6) it is VERIFIED of the
+%               construction, not consumed.  It is a hypothesis of no clause
+%               of prp:localise.  In particular the JOINT-CONSISTENCY clause
+%               needs no overlap condition, which matches lem:bierens's own
+%               "under NO overlap condition" and is not an accident: both rest
+%               on the factorisation form of def:admissible, which is version-
+%               free at a null cell.
+%   A1b(iii)    USED NOWHERE, and this is the point of clause (ii) rather than
+%               an economy.  A statement of localisation that consumed it would
+%               be the withdrawn route of assumptions_supp:379-382.
+%   VERIFIED, NOT CONSUMED, IN rem:localise(7).  A construction that is offered
+%               as satisfying the paper's maintained block must be checked
+%               against it, so A0, A1's centring clause, A1b(i), A1b(ii),
+%               A1b(iv), A4(i), B1, C1(i) and C1(ii) are each verified of the
+%               DGP at Step C of that clause's proof.  A1's CONDITIONAL
+%               INDEPENDENCE is deliberately violated -- it must be, since
+%               prp:localise(ii) would otherwise force cal-V_CI non-empty -- and
+%               it is violated ONLY through the cell the construction localises
+%               to.  A1b(iii) is neither claimed nor used.
+%   C2'(i)      NOT CONSUMED ANYWHERE IN THIS PASS, AND THAT IS DELIBERATE.  The
+%               relevance claim of rem:localise(7) could have been routed
+%               through prp:kerchar(i), which consumes C2'(i); it is instead
+%               computed directly from eq:Adef, whose only requirements here are
+%               the existence of the Gaussian conditional density and a Fubini
+%               step with the bounded envelope bar-w(t) ||phi||_inf |Delta h|.
+%               A construction that had to import a smoothness condition to
+%               state its own relevance would be weaker evidence.
+%   eq:tilted, eq:Adef
+%               BOTH IN THIS FILE, ABOVE (prp:nophifree and prp:frechet), so the
+%               declarations precede the consumer.  eq:tilted is named because
+%               the tilt delta_l of rem:localise(7) IS its object read at a
+%               cell; eq:Adef because the operator computation evaluates it.
+%   A0, C1(ii)  NOT hypotheses of any clause; NAMED in rem:localise(2)'s
+%               transfer paragraph, where what is established is that A0 and
+%               C1(ii)'s UPPER bounds pass to Q = P(. | W in S) -- the latter
+%               with bar-c_pi inflated to bar-c_pi / P(W in S) -- and that
+%               C1(ii)'s LOWER bounds DO NOT, because A4(i) constrains varrho_l
+%               given Delta Z and implies nothing about P(W in S | X_j).  That
+%               negative half is this pass's own finding and is printed.
+%   A2, A2', A2b, A2c, H1, N1, C2', C3, C5', A5, A7, A8
+%               USED NOWHERE, and A2, A2' and H1 are additionally stated in
+%               rem:localise(2) NOT to transfer to Q, being conditions on the
+%               linearisation a law induces.  Nothing here touches the
+%               representer, the weight, the sieve or the source condition:
+%               prp:localise is a statement about population sets in cal-V.
+%
+%  ---------------------------------------------------------------------------
+%  2. CENSUS B -- WHAT WILL CONSUME THIS STATEMENT.  It is new, so nothing
+%  cites it yet; what the census has to find is every printed site that
+%  PROMISES it, DUPLICATES it, or must now point at it.  All eight compiled
+%  files swept for: "localis", "joint consistency", "J-type", "cal-V_CI(".
+%
+%   B1. assumptions_supp.tex:389-391, the closing sentence of the paragraph
+%       *A1*:  "The proposition that states the joint-consistency restriction
+%       and the statistic that localises a violation to a cell ARE NOT IN THIS
+%       DISPATCH; they are recorded as owed, and Phase 2 builds them off this
+%       paragraph."  *** THAT SENTENCE IS NOW FALSE AS PRINTED. ***  The
+%       proposition exists.  EXACT REPAIR (Phase 4, results are in a file this
+%       pass may not touch): replace with a pointer -- "The proposition that
+%       states the joint-consistency restriction and localises a violation to a
+%       set of cells is prp:localise; the statistic is rem:localise(3)."  THE
+%       POINTER MUST BE \cref AND NOT PROSE: prp:localise is a NUMBERED
+%       statement in the article, so it is \cref-able from the supplement in
+%       the corpus build and \suppref-able the other way; this is the opposite
+%       case from A12 above and the two must not be confused.
+%   B2. assumptions_supp.tex:366-371, the paragraph's own statement of
+%       localisation -- "at sans-L = 2 the restriction is the single object
+%       d_1(u|z) = 0 ... at sans-L >= 3 the restriction is d_l(u|z) = 0 cell by
+%       cell, so a violation can be ATTRIBUTED to a cell".  RECONCILES, and it
+%       is the SOURCE this proposition formalises.  ONE REFINEMENT IS OWED, and
+%       it is not a token: the paragraph's d_l is CELL-AGAINST-BASE
+%       (d_{varsigma,l} = E[varsigma|W=l,z] - E[varsigma|W=0,z], printed at
+%       :320), which is the pairwise object def:cellsets generalises -- NOT the
+%       raw slice of T, which is cell-against-POOL.  The paragraph is right and
+%       this pass follows it; what is owed is one sentence saying which of the
+%       two the word "cell by cell" means, since the corpus contains both.
+%       Phase 4.
+%   B3. assumptions_supp.tex:379-382, the WITHDRAWN route -- "it pinned
+%       varphi_dagger from a subset of the directions ... which presumes
+%       identification from a SINGLETON contrast".  RECONCILES AND IS
+%       RESPECTED: prp:localise(ii) states in terms that A1b(iii) is a
+%       hypothesis of no clause, and clause (iii)'s last sentence prices what
+%       is lost by not having it -- the attribution is reference-set relative.
+%       Nothing owed.
+%   B4. assumptions_supp.tex:1526-1531, the coarsening warning -- "merging
+%       therefore adopts the STRONGER of the two hypotheses, and it forfeits
+%       the localisation the separated cells were carrying.  Both are to be
+%       stated whenever a design is coarsened".  RECONCILES; rem:localise(1)
+%       is the formal content of the second half (cal-V_CI(W) subset
+%       cal-V_CI(g(W))) and now gives the sentence a target.  A \cref to
+%       rem:localise(1) is worth adding.  Phase 4, OPTIONAL.
+%   B5. assumptions_main.tex:257-258, the standing prohibition -- "NO SENTENCE
+%       IN THIS CORPUS MAY SAY THAT MORE CATEGORIES ARE NEEDED FOR
+%       IDENTIFICATION, OR THAT THEY MAKE A1 TESTABLE."  CHECKED CLAUSE BY
+%       CLAUSE AGAINST THE PRINTED TEXT ADDED HERE.  prp:localise(ii) says
+%       identification is NOT used; rem:localise(5) says in terms that neither
+%       testability nor strength is claimed; the proposition's first sentence
+%       says "localise", not "test".  NOTHING ADDED HERE VIOLATES IT.
+%   B6. assumptions_main.tex:4456-4460, the Phase-2 hand-off -- "prp:orthog's
+%       system ..., lem:adjoint's sum over l, and the NEW LOCALISATION
+%       PROPOSITION are Phase 2."  DISCHARGED by this pass for the third item.
+%       Comment layer; Phase C may strike it.
+%   B7. results_supp.tex:158-162, rem:draftrec-adjacent clause (iii): "It does
+%       not follow that (A) is untestable.  Solvability of the operator
+%       equation remains testable ... cal-V_CI = emptyset is an observable
+%       event, WITNESSED FOR INSTANCE BY Delta Y = W chi + e with chi != 0 and
+%       e independent of W."  RECONCILES EXACTLY: that clause's
+%       "cal-V_CI = emptyset" is prp:localise(iii)'s own trigger condition.
+%       *** ROUND-2 CORRECTION TO THIS ENTRY, AND IT IS THE COSTLIEST MISREAD
+%       OF ROUND 1.  Round 1 recorded this site as "reconciles; nothing owed"
+%       and stopped.  The clause after the ellipsis is a WITNESS -- a location
+%       shift by W making cal-V_CI empty -- i.e. the corpus already printed the
+%       hard half of the satisfiability question round 1 then declared
+%       unanswerable at item N1.  rem:localise(6) is that witness carried to
+%       sans-L = 3 with two cells left un-shifted.  A census entry that reads a
+%       passage only for CONSISTENCY WITH what is being added, and not for what
+%       it SUPPLIES, is how an answer already in the corpus gets recorded as an
+%       open question. ***  A \cref from :159 to prp:localise(iii) is still
+%       worth adding; see O5.
+%   B8. results_s2_identification.tex:920-924, def:weight's columnwise clause,
+%       which already says "localisation needs only the former" and "per-cell
+%       generators are also what let a localisation statement attribute a
+%       violation to a cell" (:972-975, comment).  RECONCILES.  NOTE THE
+%       LIMIT OF THAT CLAIM, now that the statement exists: separately
+%       choosable generators are what make the ESTIMATOR of clause (3) able to
+%       weight cells separately; they are NOT what makes the POPULATION
+%       attribution well defined, which is def:cellsets and needs no
+%       representer at all.  The def:weight clause is not wrong; it is about a
+%       different half.  No token owed; recorded so the two are not conflated.
+%   B9. THE SWEEP, MEASURED AND NOT ASSERTED.  A first draft of this block
+%       printed four counts from memory and THREE OF THE FOUR WERE WRONG --
+%       "localis (7 lines)", "joint consistency (2 lines)", "cal-V_CI( (3
+%       lines)" -- and the fourth carried a wrong locator.  The corrected
+%       figures below were taken by grep over the EIGHT COMPILED FILES, before
+%       this pass's own insertion, and USES ARE SEPARATED FROM MENTIONS
+%       (printed text against comment layer) per the glossary's rule (a.2).
+%       The retired mirrors results.tex / assumptions.tex / results_main.tex
+%       are excluded by construction: no document inputs them.
+%
+%       `localis'  -> 11 lines: 6 printed, 5 comment.
+%          printed  assumptions_supp :350 :366 :379 :390 :1530  (B1, B2, B3, B4)
+%                   results_s2       :922                       (B8)
+%          comment  assumptions_supp :204
+%                   assumptions_main :254 :4457                 (B5, B6)
+%                   results_s2       :973 :1040                 (B8)
+%       `joint consistency' + `joint-consistency' -> 7 lines: 2 printed, 5 comment.
+%          printed  assumptions_supp :373 :389                  (B2's paragraph, B1)
+%          comment  assumptions_supp :109 :404
+%                   assumptions_main :253 :4198 :4439
+%       `J-type'   -> 1 line, COMMENT ONLY: assumptions_main:253.  *** THE
+%          FIRST DRAFT PUT THIS LINE AT B1's SENTENCE AND THAT IS FALSE:
+%          assumptions_supp:389-390 says "the STATISTIC that localises a
+%          violation to a cell" and never writes "J-type".  The phrase exists
+%          in the corpus only in a comment, and rem:localise(3) is the first
+%          PRINTED use of it. ***
+%       `\mathcal V_{CI}(' -> 6 lines, ALL PRINTED, ALL assumptions_supp:
+%          :340 :341 :342 :344 :345 (the coarsening paragraph) and :1528 (B4).
+%          Zero occurrences in the other seven compiled files, which is why
+%          rem:localise(1)'s in-place declaration of the notation is the FIRST
+%          one in \input order and closes A10.
+%
+%   B10. FIVE COMMENT-LAYER SITES, ENUMERATED BECAUSE THEY ARE NOT SCORED AND
+%       WOULD OTHERWISE BE INVISIBLE.  assumptions_supp:109 ("Replaced by the
+%       joint-consistency route"), :204, :404; assumptions_main:4198 ("the
+%       overidentification motivation is restated on the joint-consistency
+%       ..."), :4439 ("LOCALISATION; joint consistency is the apparatus").  All
+%       five are consistent with what is printed here and none is false.  They
+%       are Phase C's, per the rev-2 plan Sec.2.1, and they are listed rather
+%       than swept because this pass may not touch those files.
+%
+%  ---------------------------------------------------------------------------
+%  3. WHERE THIS PASS DEPARTED FROM THE DISPATCH'S PROPOSED SHAPE, AND WHY.
+%  THE DISPATCH IS EXPLICIT THAT THE FORMALISATION IS THE AGENT'S; THE
+%  DEPARTURE IS RECORDED HERE IN FULL BECAUSE IT IS A MATHEMATICAL FINDING AND
+%  NOT A PREFERENCE.
+%
+%  THE PROPOSED SHAPE:  cal-V_l := {varphi in cal-V : T(varphi,theta_dagger)
+%  (u,t,l) = 0 for all (u,t)}, with localisation read off intersections of the
+%  cal-V_l.  THE JOINT-CONSISTENCY HALF OF THAT IS CORRECT AND IS PRINTED, at
+%  rem:localise(1): the intersection of the sans-L - 1 slice sets IS cal-V_CI.
+%  THE ATTRIBUTION HALF IS NOT, AND THE ARITHMETIC IS SHORT ENOUGH TO PRINT.
+%
+%  Write m_l := E[varsigma(Delta U(varphi)) | W = l, Delta Z = z] and
+%  m := E[varsigma(Delta U(varphi)) | Delta Z = z] = sum_j varrho_j m_j.  Then
+%      E[Wtilde_l varsigma | z] = varrho_l m_l - varrho_l m = varrho_l(m_l - m),
+%  so the l-th slice compares cell l against the POOL OF ALL CELLS.  Take
+%  sans-L = 4 and let cells 0, 2 and 3 share a residual law m_A while cell 1
+%  has m_B != m_A.  This is the Section-6 hypothesis with a SINGLE deviant cell
+%  in place of the two chronic ones; the arithmetic below is unchanged if the
+%  deviant set is {2,3} and m_B is read as their mixture.  Then
+%      m = (1 - varrho_1) m_A + varrho_1 m_B,
+%      m_0 - m = m_2 - m = m_3 - m = varrho_1 (m_A - m_B) != 0,
+%  so at varphi_dagger EVERY slice is non-zero -- including the slices of the
+%  three cells that agree with one another.  A SINGLE DEVIANT CELL MOVES THE
+%  BENCHMARK AND CONTAMINATES EVERY SLICE, so {0,2,3} is not a consistent
+%  reference set under the slice reading and the intended attribution is not
+%  recovered.
+%
+%  AND THE DIAGNOSIS IS SHARPER THAN "IT DOES NOT WORK": the slice set IS
+%  cal-V_CI at the binary coarsening 1{W = l} -- proved at rem:localise(1) and
+%  EXACT, prefactor included, since varrho_l(F_l - F) = varrho_l(1 - varrho_l)
+%  (F_l - F_rest).  So building the attribution on slices builds it on
+%  COARSENINGS, and assumptions_supp:1528-1530 already records that a
+%  coarsening FORFEITS localisation.  The proposed shape is the one object the
+%  corpus has already ruled out for this purpose.
+%
+%  WHAT def:cellsets DOES INSTEAD: it compares cells WITH ONE ANOTHER, which is
+%  the d_l = m_l - m_0 of assumptions_supp's paragraph *A1* "Third" read over a
+%  subset rather than over the whole cell set.  In the sans-L = 4 example
+%  {0,2,3} is then consistent -- varphi_dagger is in it -- and IF no other
+%  varphi reconciles all four cells, which is the identification question item
+%  N1 below records and does NOT assume, {0,1,2,3} is inconsistent and the
+%  cells in conflict with {0,2,3} are exactly {1}.  Note what the two halves
+%  cost: the FIRST needs only A1 restricted to {0,2,3} and is what
+%  prp:localise(ii) supplies at no assumption; the SECOND is an emptiness
+%  claim and is supplied by neither.
+%  THE INDEX OF THE FAMILY IS THEREFORE A SUBSET OF CELLS AND
+%  NOT A SINGLE CELL, and the dispatch's "intersection over S, then over
+%  S union {l'}" structure is PRESERVED VERBATIM -- cal-V_S is literally the
+%  intersection over the pairs inside S.  What changes is the generator: pairs,
+%  not singletons.
+%
+%  *** AND NOTHING HERE NORMALISES THE OPERATOR. ***  cal-V_S is a set of
+%  functions defined by a conditional-law restriction; T, psi and the raw
+%  contrast are untouched, and Omega^{-1} appears nowhere.  The temptation is
+%  real, because m_l - m_0 IS the l-th coordinate of Omega^{-1} E[Wtilde
+%  varsigma | z], so a reader will reach for Wtilde^Omega.  THE FAMILY IS
+%  DEFINED WITHOUT IT and rem:localise(2) says so in print.
+%
+%  ---------------------------------------------------------------------------
+%  4. THE PROOF.  PASTE-READY FOR proofs.tex, WHICH IS PHASE 5's FILE AND WHICH
+%  THIS PASS MAY NOT TOUCH.  IT IS PRINTED HERE IN FULL, NOT SUMMARISED, SO
+%  THAT NOTHING IS ASSERTED COMPLETE THAT HAS NOT BEEN WRITTEN.
+%
+%  *** RELOCATED 2026-08-09, PHASE 5-O1.  THE TWO PROOFS THAT STOOD HERE ARE
+%  NOW IN proofs.tex AND ONLY THERE: prp:localise and rem:localise, inserted
+%  after prp:kerchar's proof and before the cor:a1cprim archaeology block.
+%  The de-comment was prefix-stripping only; the mathematics is unchanged.
+%  O1 IS THEREBY DISCHARGED and the binary submission gate of
+%  .claude/rules/quality.md Section 4 clause 1 is no longer blocked on it, so
+%  the item-4 header above ("PRINTED HERE IN FULL") is now historical.
+%  *** DO NOT RE-PASTE THEM HERE. ***  A 306-line parallel copy in a comment is
+%  the divergent-mirror defect that retired results.tex and, before it,
+%  paper/sections/theorems/ -- see the two repointing notes at that same clause.
+%  The rationale for the proofs, which is NOT duplicated in proofs.tex, is items
+%  1--3 above and items 5--6 below; those stay.
+%
+%  ---------------------------------------------------------------------------
+%  5. WHAT IS OWED, WITH AN OWNER.
+%
+%   O1. *** DISCHARGED 2026-08-09, PHASE 5-O1 -- READ THIS LINE BEFORE THE REST
+%       OF O1, WHICH IS NOW HISTORICAL. ***  The proofs are in proofs.tex:
+%       prp:localise at 2782-2894, rem:localise at 2896-3088.  Binary gate 1 was
+%       re-run over the eight compiled files after the move: 56 thm/prp/lem/cor
+%       declared, 56 proved, zero stubs, plus rem:localise which needed one.
+%       THE GATE CLEARS.  Corpus builds clean at 390 pages.
+%       Everything below this marker describes the state BEFORE the move and is
+%       retained only so the reasoning survives; it is not a live debt, and it
+%       must not be read as instructing a paste.  See the RELOCATED marker at
+%       item 4 above for why re-pasting would be a defect rather than a repair.
+%       ---- historical from here ----
+%       *** THE BINARY SUBMISSION GATE IS BLOCKED UNTIL THE PROOFS ABOVE ARE IN
+%       proofs.tex. ***  .claude/rules/quality.md Section 4, clause 1, requires
+%       every theorem-like environment in the compiled corpus to have a matching
+%       \begin{proof} in proofs.tex, keyed by \label.  prp:localise and
+%       rem:localise now declare two.  def:cellsets is a DEFINITION and is
+%       exempt.  The proofs are written in full at item 4 and are paste-ready;
+%       PHASE 5 pastes them.  This is a declared debt on a schedule, not a
+%       stub -- but it IS a gate block until it is paid, and calling it
+%       anything else would be the defect Phase 1 lost rounds to.
+%       *** ROUND-2 CORRECTION: O1 IS NOT THE ONLY GATE-RELEVANT DEBT.  See O7,
+%       which round 1 omitted from this list and from item 6 alike. ***
+%   O2. assumptions_supp.tex:389-391 is FALSE AS PRINTED.  Exact repair at
+%       CENSUS B, item B1.  PHASE 4.  This is the only site this pass found
+%       that is false rather than merely un-pointed.
+%   O3. assumptions_supp.tex:366-371 -- one sentence saying whether "cell by
+%       cell" means cell-against-base or cell-against-pool, since the corpus
+%       now contains both objects and they are NOT the same.  CENSUS B, item
+%       B2.  PHASE 4.
+%   O4. notation_glossary.md -- a row for sans-serif S and cal-V_S, with the
+%       sweep printed (`\mathsf S' -> zero across every .tex in the project
+%       directory) and the four separations.  PHASE 6, notation-warden.
+%   O5. Optional \cref pointers: assumptions_supp:1530 -> rem:localise(1);
+%       results_supp:159 -> prp:localise(iii).  Neither is a defect.  PHASE 4.
+%   O6. Section 6 -- the design's own reading.  prp:localise(iv) is what the
+%       chronic/transient split is for: the hypothesis is that {0,1}
+%       (attainment, bad-day-only) is consistent while {0,1,2} and {0,1,3} are
+%       not, so the cells in conflict with the maximal consistent set are the
+%       chronic ones.  If overlap forces a merge of the n = 66 cell, BOTH
+%       consequences must be printed -- A1b(iii) strengthens AND localisation
+%       is forfeited (assumptions_supp:1526-1531).  PHASE 9.
+%   O7. *** A SECOND GATE-RELEVANT DEBT, MISSED IN ROUND 1 AND NAMED HERE.
+%       prp:localise(i)'s SECOND equality routes through cor:opsol, whose ground
+%       is lem:bierens, WHOSE COMPILED PROOF IS STILL BINARY. ***  Two sites,
+%       both declared by Phase 2b and both assigned to Phase 5, and round 1 of
+%       this pass omitted them from BOTH the owed list and item 6:
+%         proofs.tex:2118-2119  "since W is binary, equality of the two
+%                               conditional distribution functions is exactly
+%                               conditional independence at z" -- the (c) => (a)
+%                               step, binary-only.
+%         proofs.tex:2142       "Pi = Pi_u tensor Pi_t is a product of finite
+%                               measures" -- TWO factors against def:spaces's
+%                               three.
+%       CONSEQUENCE, STATED PLAINLY: prp:localise(i) prints at sans-L >= 3 an
+%       equality that the COMPILED corpus currently supports only at sans-L = 2.
+%       The mathematics is not in doubt -- see O8 -- but the printed support is
+%       not there, and O1's "blocked only by the two missing proofs" was
+%       therefore incomplete.  PHASE 5.
+%   O8. *** AND THE REPLACEMENT IS ALREADY WRITTEN, IN THIS FILE.  PHASE 5
+%       SHOULD LIFT IT, NOT RE-DERIVE IT. ***  The proof of rem:localise(1)
+%       above derives, at general sans-L and under NO overlap condition, that
+%       the vanishing of every slice of T at every (u,t) gives
+%           p_l(B) = varrho_l P(xi_varphi in B | Delta Z)   for every l and B,
+%       which at (varphi_dagger, theta_dagger) IS conditional independence of
+%       Delta U and W given Delta Z -- the two differing by the Delta Z-
+%       measurable shift Delta Z' theta_dagger, which def:cellsets's invariance
+%       clause and Step 1 of the proof of prp:localise both license.  That is
+%       exactly lem:bierens (c) => (a) at sans-L >= 3, i.e. the step
+%       proofs.tex:2118-2119 is missing.  It was derived here for a different
+%       purpose and neither round 1's statement nor its comment block noticed.
+%       PHASE 5: paste, do not re-derive; the Omega_A two-case argument of
+%       assumptions_supp paragraph *A1* "Third" remains available as the
+%       alternative route and is NOT needed if this one is taken.
+%   O9. *** THE ROUND-3 FORM OF THIS ITEM WAS A PROHIBITION ON SECTION 6 AND IS
+%       WITHDRAWN.  IT READ: "SECTION 6 MUST NOT ASSERT THAT ITS OWN MECHANISM
+%       IS AN INSTANCE OF prp:localise(iv) UNTIL N1'' IS SETTLED ... WHAT IT MAY
+%       NOT SAY: that the chronic-channel mechanism it conjectures is known to
+%       produce a non-empty conflict set in population."  THE PROHIBITION RESTED
+%       ON TREATING (iv)'s HYPOTHESIS AS A THEOREM OWED A WITNESS.  IT IS NOT
+%       ONE. ***
+%       THE PRECEDENT IS THE COMPANION PAPER AND IT IS DECISIVE.  CFF
+%       (centorrinofeveflorens2019) state the relevance condition of that
+%       framework as their Assumption 2.2 -- E[phi(X) | U, W] = E[phi(X) | U]
+%       a.s. implies phi = 0, glossed as requiring "that the dependence
+%       structure between X and U changes with the value of the instrument W" --
+%       and their entire treatment of it is: STATE it; RELATE it to standard
+%       completeness (Remark 1); BOUND it (Remark 2); ILLUSTRATE it (Examples 1
+%       and 2).  THEY DO NOT PROVE IT SATISFIABLE.  A1b(iii) is the conditional
+%       analogue, this paper's identification strategy is that one with
+%       conditional independence in place of full independence, and clause
+%       (iv)'s hypothesis is the same species of object.
+%       WHAT SECTION 6 SHOULD DO INSTEAD.  State the conditional-relevance
+%       condition; note that it is the conditional analogue of CFF's Assumption
+%       2.2; and DISCUSS whether reading the chronic/transient split as an
+%       instance is plausible -- the way CFF discuss theirs, with the scope
+%       bounded rather than the condition proved.  rem:localise(7) is available
+%       as the worked example and rem:localise(6) as the boundary case CFF's
+%       Remark 2 names.  PHASE 9.
+%       PROVENANCE, AND WHY IT IS NOT A BREACH OF THE WARNING UNDER prp:kerchar.
+%       That block says: "DO NOT let a later pass upgrade it to
+%       \citet[Prop. N]{...} without reading the paper."  THIS PASS DOES PRINT
+%       NUMBERED ATTRIBUTIONS -- Assumption 2.2 at rem:localise(7), Remark 2 at
+%       rem:localise(6), Examples 1 and 2 at rem:localise(7) -- and the record
+%       has to say plainly why.
+%        (1) DIFFERENT CLAIM.  prp:kerchar's citation says the companion paper
+%            is STATED AT a particular comparison; the warning protects THAT
+%            sentence, which is untouched here and still carries no number.
+%        (2) THE NUMBERS AND THE QUOTED GLOSSES WERE SUPPLIED IN THE DISPATCH BY
+%            THE AUTHOR, who is an author of that paper.  THIS PASS DID NOT HAVE
+%            THE COMPANION PAPER'S TEXT AND HAS NOT CHECKED THEM AGAINST IT.
+%        (3) THE CORPUS ALREADY CARRIES NUMBERED CFF ATTRIBUTIONS --
+%            results_supp.tex:2172 (Prop. 4.2(a)) and :2378 (Assumption (18)) --
+%            so the practice is established and this pass is not opening it.
+%        (4) EVERY CITATION PRINTED HERE IS POSITIONING: it says what the
+%            companion paper STATES and how it TREATS it, and no step of
+%            prp:localise or of rem:localise rests on any of them.  Delete all
+%            three and the mathematics is unchanged.
+%       A later pass that wants to lean harder -- to argue equivalence, or to
+%       import a proof -- must read the paper first.
+%
+%  ---------------------------------------------------------------------------
+%  6. WHAT THIS PASS COULD NOT ESTABLISH, STATED RATHER THAN LEFT IMPLICIT.
+%
+%   N1. *** STRUCK IN ROUND 2, IN ALL THREE OF ITS CLAIMS, AND THE CORRECTION IS
+%       PRINTED HERE RATHER THAN OVERWRITING IT BECAUSE A LATER DISPATCH READING
+%       THE STRUCK TEXT WOULD OTHERWISE ADOPT THE ROUTE IT RECOMMENDS -- WHICH
+%       IS THE ONE assumptions_supp:379-382 RECORDS AS WITHDRAWN. ***
+%
+%       WHAT IT SAID.  "NO EXAMPLE IS EXHIBITED IN WHICH prp:localise(iv)'s
+%       HYPOTHESIS HOLDS.  The clause is proved, and its hypothesis is proved
+%       unsatisfiable at sans-L = 2; what is NOT proved is that it is
+%       satisfiable at sans-L >= 3.  Satisfiability needs a law P with cal-V_S
+%       non-empty at some pair and cal-V_CI empty, and EMPTINESS of a set of
+%       functions in an infinite-dimensional cal-V is not established by
+%       exhibiting a data-generating process -- it is an identification
+%       statement.  The cheapest sufficient condition is identification on the
+%       reference sub-population ... which is A1b(iii) at a coarsening and is
+%       STRONGER than A1b(iii) at the full instrument."
+%
+%       WHY EACH CLAUSE IS WRONG.
+%        (a) "No example is exhibited" -- one is, at rem:localise(6), and it
+%            uses nothing beyond the proposition's own hypotheses.
+%        (b) "Emptiness ... is not established by exhibiting a DGP" -- FALSE,
+%            and this is the load-bearing error.  Emptiness of cal-V_CI is a
+%            statement about the DGP and can be settled AT the DGP: in
+%            rem:localise(6) it is settled in three lines by a characteristic-
+%            function argument, because the competitor enters ONLY through the
+%            convolution nu_h * N(mu_l, 1) and the deconvolution identity
+%            hat-nu_h(s)(1 - e^{is}) = 0 has no probability-measure solution.
+%            The generic difficulty of proving a set of functions empty is real;
+%            it is not a THEOREM that it cannot be done, and treating it as one
+%            is what produced this item.
+%        (c) "The cheapest sufficient condition is identification on the
+%            reference sub-population" -- NOT MERELY NOT CHEAPEST, UNNECESSARY.
+%            In rem:localise(6), cal-V_{0,1} = cal-V: identification on the
+%            reference sub-population is MAXIMALLY ABSENT and the hypothesis
+%            holds anyway.  The item recommended, as a route, exactly the
+%            withdrawn one.
+%
+%       AND THE CORPUS ALREADY PRINTED THE HARD HALF, which this pass cited and
+%       misread.  results_supp.tex:159-160 says "cal-V_CI = emptyset is an
+%       observable event, witnessed for instance by Delta Y = W chi + e with
+%       chi != 0 and e independent of W" -- a location-shift-by-W witness of
+%       precisely the species rem:localise(6) uses.  CENSUS B item B7 recorded
+%       that passage as merely "reconciles"; it was the answer.
+%
+%       WHAT SURVIVES OF THE ITEM, and it is the only part that does: the
+%       construction has W independent of (X_1, X_2), so the instrument is
+%       IRRELEVANT there.  That residual is printed in rem:localise(6) itself.
+%       An example with a relevant instrument is not supplied and is worth
+%       having before a referee asks.  Carried as N1' below.
+%   N1'. *** STRUCK IN ROUND 3.  IT SAID "NO RELEVANT-INSTRUMENT EXAMPLE ...
+%       constructing one at a relevant W is open", AND rem:localise(7) IS ONE.
+%       The item was also mis-framed as a referee nicety.  IT IS NOT: a witness
+%       requiring W irrelevant is, in an IV paper, no witness at all -- there is
+%       no first stage, and rem:localise(6)'s cal-V_{0,1} = cal-V holds
+%       PRECISELY BECAUSE nothing is identified.  The author's judgment on that
+%       is recorded and is correct. ***
+%
+%       WHAT MADE IT LOOK HARD, AND WHY THAT WAS THE WRONG DIAGNOSIS.  N1' said
+%       the obstruction is that "with W dependent on X the conditional law of
+%       xi_varphi given (W = l, Delta Z) no longer factors through a single
+%       convolution, so the characteristic-function argument does not run".  The
+%       first half is true; the second is a statement about ONE argument, and it
+%       was read as a statement about the problem.  IT DOES NOT FACTOR THROUGH A
+%       SINGLE CONVOLUTION -- and it does not have to.  The FIRST MOMENT alone
+%       decides, and it is available at every L and at a relevant W:
+%           equality of the two cells' laws => m_0 + mu_0 = m_2 + mu_2,
+%           m_l = int h delta_l  with delta_l := f^{(l)}_{X_2} - f^{(l)}_{X_1},
+%       so delta_0 = delta_2 and mu_0 != mu_2 empty cal-V_{0,2} outright.  The
+%       relevance can then be carried by ANY OTHER CELL: at sans-L >= 3 there is
+%       room for a cell that moves X and a pair that does not, and that is the
+%       whole construction.  ROUND 2 REACHED FOR A DECONVOLUTION AND CONCLUDED
+%       FROM ITS FAILURE, WHICH IS THE SAME ERROR SHAPE AS THE STRUCK N1: a tool
+%       failing was read as the question being closed.
+%
+%       THE COORDINATOR'S LEAD WAS RIGHT AND IT IS THE MECHANISM.  "Make the
+%       cell-l violation something phi cannot manufacture ... prp:nophifree and
+%       eq:tilted may be the right machinery."  They are exactly it: m_l is
+%       eq:tilted's tilted-marginal difference read at a cell, and delta_0 =
+%       delta_2 is eq:tilted's condition applied to the DIFFERENCE of two cells
+%       rather than to one.
+%
+%       WHAT SURVIVES, AND IT IS A DIFFERENT AND SMALLER RESIDUAL: N1''.
+%   N1''. *** REWEIGHTED IN ROUND 4 FROM AN OPEN GAP TO A DISCUSSION POINT.  THE
+%       MATHEMATICS IS UNCHANGED; ITS STANDING IS NOT. ***  Round 3 filed this
+%       as an open item that Section 6 had to wait on.  It is not that: an
+%       example that illustrates a hypothesis is not obliged to cover every law
+%       satisfying it, and CFF's Examples 1 and 2 do not exhaust their own
+%       Assumption 2.2 either.  See O9 for the precedent and its provenance.
+%       WHAT THE POINT IS, UNCHANGED.  rem:localise(7) has delta_0 = delta_2, so
+%       W moves the period-difference tilt between the reference set and cell 1
+%       and not between the base cell and the violating cell.  When
+%       delta_0 != delta_2 the first-moment argument is unavailable -- scale h
+%       along delta_0 - delta_2 and the means match -- so emptiness of
+%       cal-V_{0,2} would have to be refuted at a higher cumulant, equality of
+%       the two laws forcing kappa_j(nu_0) = kappa_j(nu_2) for every j >= 2
+%       together with a mean gap of mu_2 - mu_0.  NEITHER DIRECTION IS
+%       ESTABLISHED: no h is exhibited, and no proof that none exists.
+%       WHY IT IS WORTH KEEPING ANYWAY.  Section 6's conjecture -- W close to a
+%       function of X_1 at the chronic cells -- is plausibly a
+%       delta_0 != delta_2 story, so the case the example does not cover is the
+%       case the application discusses.  That is a DISCUSSION POINT for Section
+%       6 and a candidate second example for a later pass; it is NOT a gap in
+%       prp:localise, whose clause (iv) is a hypothesis and not a claim.
+%       A REMARK ON WHERE THIS PASS SPENT ITS ROUNDS, since the record is more
+%       useful than the item.  Rounds 2 and 3 escalated the non-vacuity of a
+%       HYPOTHESIS into a blocking question, twice, and the corpus already
+%       carried the answer in two places: results_supp:159-160's witness clause
+%       (see CENSUS B, B7) and the companion paper's own treatment of the
+%       analogous condition (see O9).  THE GENERAL LESSON, which is not
+%       sans-L-specific: before treating the satisfiability of a hypothesis as
+%       an obligation, check what the corpus and its companion do with the
+%       hypotheses of the same species.  Here they state, bound and illustrate
+%       them.
+%   N2. THE STATISTIC IS DESCRIBED AND NOT CONSTRUCTED.  rem:localise(3) says
+%       so.  No null distribution, no rate, no critical value.  A
+%       sample-splitting subtlety is visible and unpriced: the reference set S
+%       would in practice be SELECTED from the data, and a conflict set read
+%       off a selected reference set is a post-selection object.
+%   N3. THE ATTRIBUTION IS SET-VALUED AND REFERENCE-RELATIVE, AND
+%       prp:localise(iii) PROVES THAT THIS CANNOT BE REPAIRED: the maximal
+%       consistent set is unique EXACTLY WHEN there is no violation, so under
+%       any violation there are at least two maximal consistent sets and no
+%       reference-free attribution exists.  A selection rule -- largest set,
+%       or the set containing a designated base cell -- is a convention.  THIS
+%       IS A LIMIT OF THE OBJECT AND NOT OF THE PROOF, which is why it is
+%       stated in the printed clause and not only here.
+%   N3b. PLAN Sec.5's WORDING NOW HAS A DOCUMENTED EXCEPTION, AND IT IS A
+%       WORDING EXCEPTION AND NOT A SUBSTANTIVE ONE.  The rev-2 plan records
+%       "L = 2 reduces with ZERO EXCEPTIONS".  prp:localise(iv) is VACUOUS at
+%       sans-L = 2 -- its hypothesis is unsatisfiable there, proved at Step 5 --
+%       which is not the verbatim reduction every other statement carries.  NO
+%       BINARY RESULT CHANGES: clauses (i)-(iii) hold at sans-L = 2, the binary
+%       estimator is untouched, and nothing printed before this pass moves.  The
+%       plan's sentence should read "every statement carried into the binary
+%       case reduces verbatim; the one statement that does not carry into it is
+%       prp:localise(iv), which is vacuous there by construction".  Raised for
+%       the orchestrator to carry to the plan; this pass may not edit it.
+%   N4. NOTHING IS CLAIMED ABOUT EFFICIENCY.  Whether the sans-L - 1 systems
+%       carried jointly improve the asymptotic variance of theta-hat over the
+%       binary coarsening is not addressed anywhere in this pass, and the
+%       budget table's deferral (plan Sec.4 item 2) is untouched.
+% ===========================================================================
+
+% ===========================================================================
+%  rem:a1cwithdrawn MOVED ENTIRE TO results_supp.tex, 2026-08-28, ON THE AUTHOR'S
+%  SHORTENING INSTRUCTION.  It printed 247 words in the ARTICLE and is a
+%  RETIREMENT RECORD -- what a withdrawn corollary said and why it was withdrawn.
+%  Companion move to A1d (ass:instrcomp), which went to assumptions_supp.tex in
+%  the same pass; the two are each other's only article-side callers, so nothing
+%  article-side is left pointing at either.  The \label is unchanged and the five
+%  supplement-side \cref calls are unaffected.
+%  NOTE THE COUNTER: remark IS numbered, so the remarks after this point in the
+%  article renumber by one.  Every reference to them is by \label.
+% ===========================================================================
+
+% ===========================================================================
+%  PART F.  STEP 5 -- THE SELECTION, ORTHOGONALITY, AND THE BALANCING BOUND
+%
+%    def:weight    representers, weights, and THE ANCHOR (round-7: closes the
+%                  CRITICAL that L_star was used everywhere and defined nowhere)
+%    def:dirclass  admissible perturbation directions, with the SHIFT-UNIFORM
+%                  seminorms that make m(tau) exist off tau_1 = 0
+%    lem:solset   (L-16)  structure of the solution set and the selection
+%    lem:secondord (L-6)  the second-order expansion in three nuisances
+%    prp:orthog           orthogonality in varphi, in L, and in varrho
+%    lem:balance   (L-7)  the balancing bound on the first-order bias
+%
+%  TYPING.  Per F-15 every statement below is COORDINATEWISE in the p
+%  coordinates of theta: L, ell, ell_star and the directions D are R^p-valued,
+%  and A*_cond acts on each coordinate separately.  eq:JSig's J is the one
+%  object whose FORM is NOT coordinatewise; see the round-7 note in
+%  assumptions.tex.  DISPATCH 13: the tag on that sentence was "A3", which is
+%  now retired (ass:rank), and the distinction between FORM and VALUE is now
+%  the operative one -- lem:momzero(iv) makes the non-coordinatewise summand
+%  ZERO, so J itself IS coordinatewise and symmetric, while J-hat (eq:Jhat) is
+%  neither.  The typing warning therefore transfers from J to J-hat and is not
+%  withdrawn.
+%
+%  SYMBOLS INTRODUCED OR MOVED IN ROUND 7, all recorded in the glossary:
+%    Psi(tau)  replaces m(tau).  C7 retired the shorthand m := M/pi BECAUSE it
+%              collided with the LF iteration counter m, and round 6 introduced a
+%              second collision on the same letter.  Psi is the expectation of
+%              psi, which is the mnemonic; the pair is documented in Sec.1.6.
+%    sans-r    replaces r as the varrho-direction.  Italic r is the propensity
+%              smoothness index and the two CO-OCCUR in one display of
+%              lem:secondord(iv)'s proof, where r_n = n^{-r/(2r+d_Z)}.
+%    tau       is Part F's perturbation parameter; A7's discrepancy constant has
+%              moved to tau_DP.
+%    vartheta  is the R^p coordinate-contraction direction, replacing the
+%              round-6 binding use of varsigma, which is a RESERVED LOCAL bound
+%              variable and could not be made binding.
+%    D         RETAINED, and C2's retirement of plain D is LIFTED -- see the
+%              glossary Sec.8.6.  Three fonts, three types: calligraphic D the
+%              differentiation operator, bold D the sieve design matrix, italic D
+%              the direction in L.  This is the rule Sec.8.2 already applies to
+%              B_sym versus bold B.
+% ===========================================================================
+
+\begin{definition}[Representers, weights, and the anchor]\label{def:weight}
+Let $\ell^\Pi\in L^{2}(\Pi;\IR^{p})$ and $\ell:=\mathcal W\ell^\Pi$ with $\mathcal W$ as in
+\suppeq{Wdef}, applied coordinatewise in the $p$ coordinates of $\theta$ and \emph{columnwise in $l$}:
+column $l$ of the $\IR^{p\times(\mathsf L-1)}$-valued $\ell$ is generated by the slice
+$\ell^\Pi(\cdot,\cdot,l)$ and by no other slice, so the $\mathsf L-1$ contrasts carry $\mathsf L-1$
+\emph{separately choosable} generators --- separately choosable, not linearly independent: nothing
+prevents two slices coinciding, and localisation needs only the former. \emph{This is the reading
+A$2'$(i) and A2b fix, not a further restriction.}
+\begin{enumerate}
+\item[(a)] $\ell^\Pi$ is an \emph{admissible representer} if it satisfies \textbf{A2b}. \emph{That tag,
+and not A$2'$(i), is what this clause names}: A$2'$(i) is a \emph{maintained assertion} about
+$\ell^\Pi_\star$; A2b is a \emph{property} a candidate representer may or may not have, and it is the
+property every result quantifying over representers imposes. Under B1(i), (ii), (iv.a) and (iv.d),
+\suppref{Corollary}{elldiff}, itself stated at a generic admissible representer, applies to $\ell$
+entry by entry: each entry is bounded and continuously differentiable in $u$, uniformly in $z$, with
+budgets $\Lambda^{(0)},\Lambda^{(1)}$ aggregated as A2b aggregates them, which therefore bound the
+Euclidean norm of a whole column and hence \emph{a fortiori} every entry.
+% AMENDED 2026-08-09, following an AUTHORISED reopening of A2'/A2b/eq:lambdamu in
+% assumptions_main.tex (Phase 1, otherwise closed).  The clause read "aggregates
+% over j and l by the maximum and which therefore serve every entry".  Its first
+% half is now false and its second was true but WEAKER THAN THE TRUTH: a
+% Euclidean-in-j budget bounds a whole column, not merely each entry.
+%
+% WHY THE UPSTREAM FORM CHANGED, since this clause is where a reader meets it:
+% under max-over-j, cor:elldiff's constants were short by sqrt(p) -- an error that
+% is L-FREE AND VISIBLE AT L = 2, inherited from the pre-L text and surfaced only
+% because Phase 4 was retyping the objects that consume the budget.  The
+% Euclidean form returns every downstream constant verbatim at every L and every
+% p; at p = 1 the two forms coincide character for character.
+\item[(b)] For a Borel $b:\IR^{p}\to\IR^{p\times(\mathsf L-1)}$, the \emph{weight generated by $\ell$ and
+anchored at $b$} is
+\begin{equation}\label{eq:weightdef}
+L^{\,b}_{\ell}(u,z)\;:=\;\int_{0}^{u}\ell(v,z)\,dv\;+\;b(z),
+\qquad (u,z)\in\IR\times\IR^{p},
+\end{equation}
+the integral taken entrywise and well defined because each entry of $\ell(\cdot,z)$ is continuous and
+bounded. It is the unique
+function that is differentiable in $u$ at \emph{every} point with $\partial_uL^{\,b}_\ell=\ell$ and
+$L^{\,b}_{\ell}(0,\cdot)=b$. The weight is \emph{admissible} if $E\|b(\Delta Z)\|^{2}<\infty$, the norm
+being Frobenius.
+\item[(c)] $\ell^\Pi$ is an \emph{admissible selection} if it is an admissible representer and solves
+$\mathcal A^\ast_{\mathrm{cond}}\ell^\Pi=-\nu/\pi$.
+\end{enumerate}
+Under A2 and A2$'$(i), $\ell^\Pi_\star$ is an admissible selection, A2 gives that it solves the
+adjoint equation, A2$'$(i) that it satisfies A2b, with $\ell_\star=\mathcal W\ell^\Pi_\star$, and
+$L_\star:=L^{\,b_\star}_{\ell_\star}$ is the admissible weight fixed by A2$'$(iii). Write
+$\zeta_\star:=(\vdagger,L_\star,\varrho)$ for the nuisance triple at the truth.
+\end{definition}
+
+% ===========================================================================
+%  PHASE 2a ON def:weight.  THREE THINGS: THE COLUMNWISE READING, ONE
+%  PRE-EXISTING CONTRADICTION CLOSED, AND ONE CHECK THAT FAILED.
+%
+%  1. COLUMNWISE, AND CLAUSE (a) IS STILL A RANGE CONDITION.
+%  The binding ell := W ell^Pi is what it always was: ell must LIE IN THE RANGE
+%  of W, which is far stronger than "ell is bounded and C^1 in u".  PHASE 1'S
+%  FINDING, RECORDED HERE AND NOT RE-DERIVED IN THIS PASS: W's z-sections are
+%  Laplace transforms of Pi_t against w = exp and are therefore real-analytic in
+%  z, while A4(ii) makes varrho only Hoelder, so right-multiplication by Omega
+%  leaves the class -- which is what REFUTED THE WEIGHT-CLASS BIJECTION.  It is
+%  why this pass retypes the binding without touching its species.  A retyping
+%  that replaced it by budgets on ell would have thrown the refutation away.
+%  THE COLUMNWISE READING IS NOT NEW HERE.  A2'(i) and A2b in
+%  assumptions_main.tex both already print "through eq:Wdef, columnwise in l";
+%  def:weight said only "applied coordinatewise", which was written when
+%  coordinatewise meant "in the p coordinates of theta" and the contrast was a
+%  scalar.  Both readings are now stated.  Per-cell generators are also what let
+%  a localisation statement attribute a violation to a cell: a single shared
+%  generator would couple the sans-L - 1 systems and there would be nothing to
+%  attribute.
+%
+%  2. b's CODOMAIN.  Clause (b) printed b: R^p -> R^p while A2'(iii) prints
+%  b_star: R^p -> R^{p x (sans-L - 1)}.  THE CONTRADICTION WAS ALREADY ON DISK
+%  BEFORE THIS PASS -- it was created in Phase 1, which retyped A2'(iii) and
+%  recorded clause (b) as an open item rather than reaching into a Phase-2 file
+%  (the rev-2 plan's carried item 6).
+%  It is closed here in the direction of A2'(iii), since the closing
+%  paragraph of this definition sets L_star := L^{b_star}_{ell_star} and so the
+%  two must agree by construction.  The DOMAIN R^p is Delta Z's space and is
+%  untouched.  At sans-L = 2, R^{p x 1} is R^p and Frobenius is Euclidean.
+%
+%  3. THE CHECK THAT FAILED: eq:adjclosed DID NOT SURVIVE AS PRINTED.
+%  *** CLOSED BY REPAIR (R1), APPLIED 2026-08-09 IN results_supp.tex.  eq:Wdef
+%  NOW CARRIES varpi_w(l) IN COLUMN l AND eq:adjclosed READS VERBATIM AT EVERY
+%  sans-L.  The diagnosis below is kept because it is the ground for the repair
+%  and for prp:orthog(i)'s amended condition; it is a record, not an open item.
+%  What Phase 2b did with it is at the end of this block. ***
+%
+%  THE COLUMNWISE READING IS NOT THE CULPRIT.  What fails is the passage of
+%  B1(iv.d)'s masses varpi_w(l) through the adjoint, and it would fail the same
+%  way under a shared generator.  Compute A*_cond in the pairing def:spaces now
+%  prints:
+%     <A_cond h, Xi>_{L^2(Pi)}
+%        = sum_l varpi_w(l) int int (A_cond h)(u,t,l) Xi(u,t,l) Pi_u(du) Pi_t(dt)
+%  with (A_cond h)(u,t,l) = E[Wtilde_l w(t'Phi) f_{DU|.}(u) Delta h].  Fubini,
+%  then Pi_u(du) = varpi_u(u) du against the conditional density (which is what
+%  puts varpi_u inside eq:Wdef in the first place), then the t-integral, give
+%     A*_cond Xi = nu_{ Wtilde' diag(varpi_w) (W Xi) } / pi,
+%  W being eq:Wdef read columnwise.  eq:adjclosed prints nu_{Wtilde (W ell)}/pi.
+%  IT IS SHORT BY diag(varpi_w).  At sans-L = 2 the two agree exactly, varpi_w(1)
+%  = 1 by B1(iv.d), which is why no earlier round could see this.
+%
+%  AND A UNIFORM Pi_w DOES NOT RESCUE IT, which is the tempting escape.  With
+%  varpi_w = 1/(sans-L - 1) the adjoint equation A*_cond ell^Pi = -nu/pi reads
+%  nu_{Wtilde'(W ell^Pi)} = -(sans-L - 1) nu, not -nu.  The masses cannot be
+%  absorbed by choosing them.
+%
+%  WHY IT MATTERS RATHER THAN BEING A CONSTANT: psi carries the contrast
+%  UNWEIGHTED (psi = Delta Z Delta U + L Wtilde, eq:psidef), so prp:orthog(i)'s
+%  condition nu_{Delta Z + Wtilde ell} = 0 is unweighted, while the adjoint
+%  equation of def:weight(c) delivers the varpi_w-weighted combination.  The
+%  "consequently" clause of eq:adjclosed -- the one that identifies the two --
+%  is exactly the step that breaks at sans-L >= 3.
+%
+%  TWO REPAIRS, SAME MATHEMATICS, DIFFERENT OBJECT CARRIES THE MASSES:
+%   (R1) eq:Wdef gains varpi_w(l) in column l:
+%          (W ell^Pi)_{.l}(u,z) := varpi_w(l) varpi_u(u) int_T ell^Pi(u,t,l)
+%                                   w(t'Phi(z)) Pi_t(dt).
+%        Then eq:adjclosed is verbatim at every sans-L and invisible at 2.
+%        RECOMMENDED, and the ground is internal: W already absorbs Pi_u's
+%        DENSITY varpi_u and already integrates out Pi_t, so it prices two of
+%        Pi's three factors; the w-direction is the only factor of Pi that W
+%        currently neither weights nor integrates.  Symmetry, not convenience.
+%   (R2) Leave W bare and print diag(varpi_w) in eq:adjclosed.  Then every
+%        consumer carries the masses -- def:weight(c), prp:orthog(i),
+%        cor:rangegap's Upsilon, lem:solset, A2, A2' -- and the selected
+%        representer is rescaled by varpi_w(l)^{-1} relative to (R1), inflating
+%        Lambda^{(0)}_star and Lambda^{(1)}_star by max_l varpi_w(l)^{-1}.  That
+%        is precisely the factor the plan's carried item (1) already prices, so
+%        (R2) is consistent -- it is simply the more expensive bookkeeping.
+%  WHAT IS *NOT* AFFECTED: eq:kernel and lem:adjoint(i)'s KERNEL form are
+%  correct as they stand.  There the masses arrive through Pi in the integral
+%  itself, so the kernel must NOT carry them; it is only the CLOSED form, which
+%  routes through W, that must.  That asymmetry is the check that the diagnosis
+%  is right and localises the missing factor to eq:Wdef.
+%
+%  ---------------------------------------------------------------------------
+%  PHASE 2b: (R1) WAS TAKEN, AND WITH IT READING (a) -- psi STAYS UNWEIGHTED.
+%  AUTHOR DECISION, 2026-08-09.
+%
+%  eq:psidef is NOT touched: psi remains Delta Z Delta U + L Wtilde with the RAW
+%  contrast, and the masses varpi_w(l) appear ONLY inside W.  prp:orthog(i)'s
+%  condition is therefore stated against the R1 adjoint, and the equivalence
+%  closes there rather than by pushing masses into psi.  Pushing them into psi
+%  would undo R1's purpose and would touch a Phase-3 file.
+%
+%  WHAT THAT MEANS FOR eq:orthphi, CONCRETELY.  eq:adjclosed's "consequently"
+%  clause now reads: A*_cond ell^Pi = -nu/pi  iff  nu_{Delta Z + Wtilde'(W
+%  ell^Pi)} = 0.  With ell := W ell^Pi, the object Wtilde'(W ell^Pi) IS
+%  ell Wtilde -- the same Euclidean contraction over l, written at the
+%  R^{p x (sans-L - 1)} matrix rather than coordinate by coordinate.  So
+%  eq:orthphi's left-hand condition is written nu_{Delta Z + ell Wtilde} = 0 and
+%  the two sides of the "iff" are the same statement, one before and one after
+%  routing through W.  BEFORE R1 THEY WERE NOT: the left side was unweighted and
+%  the right delivered the varpi_w-weighted combination, so the "<=>" was FALSE
+%  at sans-L >= 3 -- off by a non-scalar diagonal, not by a constant -- and true
+%  at sans-L = 2 because varpi_w(1) = 1.  That is what R1 fixes and it is the
+%  whole reason this pass could state eq:orthphi at all.
+%
+%  THE ORDER, "ell Wtilde" AND NOT "Wtilde ell", IS THE SAME FORCED CHOICE AS AT
+%  cor:udep: ell is p x (sans-L - 1) and Wtilde is (sans-L - 1) x 1, so only one
+%  order multiplies at sans-L >= 3.  Inside the sum the factors commute, one
+%  being scalar, which is why the gloss is written sum_l Wtilde_l ell_{.l} in
+%  the same shape eq:adjclosed uses.
+%  ---------------------------------------------------------------------------
+% ===========================================================================
+
+\begin{proposition}[Neyman orthogonality]\label{prp:orthog}
+The debiased moment is orthogonal in all three nuisances: in the structural function exactly when the
+debiasing weight solves the adjoint equation, and in the weight and the propensity exactly, for every
+admissible direction.
+Suppose A1b(i), A1b(iv), B1(i), (ii), (iv), C1(ii) and C2$'$(i) hold. Then
+% A1 IS NOT IN THE GLOBAL LIST -- part (ii) alone consumes it -- and N1 is not
+% assumed in any part.  Why, and what the finiteness of eq:PsiL rests on:
+% rem:orthoghyp.
+\begin{enumerate}
+\item[(i)] Structural function, at an arbitrary admissible representer. Let $\ell^\Pi$ be an
+admissible representer in the sense of A2b, $\ell:=\mathcal W\ell^\Pi$ with $\mathcal W$ as in
+\suppeq{Wdef}, and $L$ an admissible
+weight generated by $\ell$ in the sense of \cref{def:weight}. Write
+$\ell\widetilde W:=\sum_{l=1}^{\mathsf L-1}\widetilde W_l\,\ell_{\cdot\,l}(\Delta U,\Delta Z)\in\IR^{p}$
+for the contraction of the $\mathsf L-1$ columns of $\ell$ against the contrast vector. For
+$h\in\mathcal V$ define
+% Broken across lines 2026-08-05: on one line this ran 64pt past the text block
+% and the trailing "tau_1 in R" qualifier was cut off the page.
+\begin{equation}\label{eq:PsiL}
+\begin{split}
+\Psi_L(\tau_1)\;&:=\;E\big[\psi\big(\theta_\dagger,(\vdagger+\tau_1h,\,L,\,\varrho)\big)\big] \\
+&\;=\;E\Big[\Delta Z\,(\Delta U-\tau_1\Delta h)+L\big(\Delta U-\tau_1\Delta h,\Delta Z\big)\,\widetilde W\Big],
+\qquad\tau_1\in\IR,
+\end{split}
+\end{equation}
+which is finite for \emph{every} $\tau_1\in\IR$. At $L=L_\star$,
+$\Psi_{L_\star}(\tau_1)=\Psi(\tau_1,0,0)$ in the notation of \suppref{Lemma}{secondord}, so the two agree
+wherever both are defined. Then for every $h\in\mathcal V$,
+$\partial_{\tau_1}\Psi_L(0)=-\big\langle\nu_{\Delta Z+\ell\widetilde W}/\pi,\,h\big\rangle_{L^{2}(\pi)}$,
+and this vanishes for every $h\in\mathcal V$ if and only if
+\begin{equation}\label{eq:orthphi}
+\nu_{\Delta Z+\ell\widetilde W}\equiv0
+\qquad\Longleftrightarrow\qquad
+\mathcal A^\ast_{\mathrm{cond}}\ell^\Pi=-\nu/\pi .
+\end{equation}
+\emph{The two sides of \eqref{eq:orthphi} are one condition written before and after routing through
+$\mathcal W$}: $\ell\widetilde W$ is the combination $\widetilde W'(\mathcal W\ell^\Pi)$ of
+\suppeq{adjclosed}, read coordinatewise in the $p$ coordinates of $\theta$, so the masses
+$\varpi_{\mathsf w}(l)$ of B1(iv.d) enter only inside $\mathcal W$ and
+$\psi$ carries the raw contrast on both sides. \emph{In particular, under A2$'$ the left-hand condition
+holds at $\ell=\ell_\star$}, and $\partial_{\tau_1}\Psi(0)=0$ for every $h\in\mathcal V$.
+\item[(ii)] \emph{Debiasing weight, exactly.} Assume in addition A1, A2, A2$'$(i) and A2$'$(iii). For
+every Borel $D:\IR\times\IR^{p}\to\IR^{p\times(\mathsf L-1)}$ with
+$E[\|D\|\mid\Delta Z]<\infty$ almost surely and $E\|D\widetilde W\|<\infty$, and every $\tau_2\in\IR$,
+$E[\psi(\theta_\dagger,(\vdagger,L_\star+\tau_2D,\varrho))]=E[\psi(\theta_\dagger,\zeta_\star)]$.
+\item[(iii)] Propensity: exact orthogonality is equivalent to N1. Assume in addition A2,
+A2$'$(i), A2$'$(iii) and A4(i), and
+\emph{do not assume} N1, nor A1. Then, for every bounded Borel
+$\mathsf r:\IR^{p}\to\IR^{\mathsf L-1}$
+with $\varrho+\tau_3\mathsf r$ taking values
+in the simplex $\{q\in\IR^{\mathsf L-1}:q_l\ge0\ \text{for every }l,\ \mathbf 1'q\le1\}$ for all small
+$\tau_3$, and every such $\tau_3$,
+\[
+E\big[\psi(\theta_\dagger,(\vdagger,L_\star,\varrho+\tau_3\mathsf r))\big]=E\big[\psi(\theta_\dagger,\zeta_\star)\big]
+\qquad\Longleftrightarrow\qquad
+E\big[L_\star(\Delta U,\Delta Z)\mid\Delta Z\big]=0\ \text{a.s.},
+\]
+the right-hand condition being exactly N1, both sides being well defined.
+\end{enumerate}
+\emph{At $\mathsf L=2$}, $L$, $\ell$ and $D$ have one column, $\mathsf r$ is scalar, the three products
+against $\widetilde W$ commute, and the simplex of clause \textup{(iii)} is the interval $[0,1]$.
+\end{proposition}
+
+\noindent\emph{Notes on \cref{prp:orthog}.} Why A1 is not in the global list, why N1 is assumed in no
+part, and what the finiteness of \eqref{eq:PsiL} and the well-posedness of clause \textup{(iii)}'s two
+sides rest on are \suppref{Remark}{orthoghyp}.
+
+% ===========================================================================
+%  cor:centarity, ADDED 2026-08-15.  WHY IT EXISTS AND WHY IT IS ADDITIVE.
+%
+%  thm:rootn's (T-2) assumes "N1 at L_star".  N1 is a MATRIX condition -- the
+%  zero of R^{p x (sans-L - 1)} -- hence p(sans-L - 1) scalar conditions.  The
+%  corpus never printed that arity, and ass:centering was one of the only
+%  sans-L-typed conditions carrying NEITHER a collapse sentence NOR a count.  A
+%  Monte Carlo violated it at sans-L = 4 and the failure appeared at exactly the
+%  rate prp:orthog(iii) predicts -- i.e. a construction that centres ONE
+%  CONTRACTION of the columns satisfies N1 at sans-L = 2 and fails p(sans-L - 2)
+%  of it above, undetected, because nothing in the corpus said the two differ.
+%
+%  THIS RESULT ADDS NO HYPOTHESIS TO ANY EXISTING RESULT.  It is a corollary to
+%  prp:orthog(iii) drawing out (a) the arity, (b) the failure of the converse
+%  INSIDE the admissible class, and (c) the price.  No proof, constant or
+%  display elsewhere changes.
+%
+%  SYMBOLS, CHECKED AGAINST notation_glossary.md Sections 1.6/1.7 BEFORE WRITING:
+%    * the contraction vector is sans-serif v, NOT varpi.  varpi is ALWAYS
+%      subscripted in this corpus (varpi_u RESERVED by C19, varpi_w the B1(iv.d)
+%      masses, varpi_t); a superscripted varpi was already REJECTED (Section 1.6,
+%      the sans-d_i row) and varpi^d_i DELETED (C92).  A bare varpi would
+%      separate from varpi_w by subscript alone -- the defect Section 8.9 names.
+%    * the annihilator is sans-v-perp.  Italic v is eq:weightdef's and
+%      rem:anchor's residual integration variable, i.e. it is bound in the very
+%      displays this corollary cites.
+%    * the displacement function is sans-serif f, NOT italic c.  C86 gives bare
+%      italic c to cor:udep's affine-weight slope c(z), which is
+%      p x (sans-L - 1)-valued and stands ~1400 lines above in THIS file; the
+%      object here is R^p-valued, so the letter would collide in type.
+%    * the conditional mean is WRITTEN OUT, not called M.  C7 retires bare
+%      italic M and this corpus prints the retirement (proofs.tex:4090, :4456,
+%      :9252).  prp:orthog(iii)'s own proof carries a live local M at
+%      proofs.tex:4679-4695 -- a PRE-EXISTING breach, flagged and NOT widened:
+%      promoting a retired glyph from a proof-local into a printed STATEMENT is
+%      exactly the C25 defect.
+%    * sans-serif v and sans-serif f have ZERO occurrences in the compiled
+%      corpus; the sans/italic pairing at one letter is this project's own
+%      documented device (sans-c/c, sans-b/b, sans-u/u, sans-w/w, sans-r/r).
+%
+%  MAIN-FILE VOCABULARY ONLY.  This file is \input by main.qmd, which does NOT
+%  input results_supp.  So the statement names no supplement-only symbol:
+%  c_Wtilde (defined only at cor:rangegap, supplement) and sans-r_k (defined at
+%  def:crossfit in results_s3_estimation, which is LATER in \input order) are
+%  both kept out and appear only in the proof, which lives in proofs.tex.
+% ===========================================================================
+
+\begin{corollary}[to \cref{prp:orthog}\textup{(iii)}: the arity of N1, and what a contracted centring
+leaves unpriced]\label{cor:centarity}
+N1 is a condition on a matrix and therefore $p(\mathsf L-1)$ scalar conditions, not $p$: centring one
+contraction of the columns is strictly weaker at every $\mathsf L\ge3$, it fails inside the class of
+weights this paper admits, and what it leaves uncentred enters the propensity direction at the full
+propensity rate.
+Suppose A1, A1b(iv), A2, A$2'$(i), A$2'$(iii), A4(i) and B1(i), (ii), (iv.a), (iv.d) hold, and fix
+$\mathsf v\in\IR^{\mathsf L-1}$
+with $\mathsf v\ne0$. \emph{Do not assume} N1.
+\emph{The four B1 clauses are the $\|\ell_\star\|_\infty$ bridge}: the finiteness
+\eqref{eq:centaritycost} requires runs through the sup-norm bound on $\ell_\star$, which is reached from
+A$2'$(i) under exactly those four. They are a proper part of \cref{prp:orthog}'s own line, so they add
+no restriction on $P$ that this corollary's parent does not already carry. Then
+\begin{enumerate}
+\item[(i)] \emph{Arity, and the failure of the converse inside the admissible class.} N1 at $L_\star$,
+namely $E\big[L_\star(\Delta U,\Delta Z)\mid\Delta Z\big]=0$ almost surely, is $p(\mathsf L-1)$ scalar
+conditions, one per entry $(j,l)\in\{1,\dots,p\}\times\{1,\dots,\mathsf L-1\}$, the zero being the zero
+matrix of $\IR^{p\times(\mathsf L-1)}$. It implies the $p$ contracted conditions
+$E\big[L_\star\mid\Delta Z\big]\,\mathsf v=0$ almost surely. \emph{The converse fails at every
+$\mathsf L\ge3$, and it fails at a weight the paper's own hypotheses admit.} Let
+$\mathsf v^{\perp}\in\IR^{\mathsf L-1}$ satisfy $\mathsf v^{\perp}\ne0$ and
+$(\mathsf v^{\perp})'\mathsf v=0$, which is possible if and only if $\mathsf L-1\ge2$, let
+$b_{\mathrm{N1}}$ be the N1 anchor of \suppref{Remark}{anchor} at $\ell_\star$, and let
+$\mathsf f:\IR^{p}\to\IR^{p}$ be Borel with $E\|\mathsf f(\Delta Z)\|^{2}<\infty$ and
+$P\big(\mathsf f(\Delta Z)\ne0\big)>0$. Then
+$L:=L^{\,b}_{\ell_\star}$ with $b(z):=b_{\mathrm{N1}}(z)+\mathsf f(z)\,(\mathsf v^{\perp})'$, a Borel map
+$\IR^{p}\to\IR^{p\times(\mathsf L-1)}$ --- \emph{the \textbf{outer} product of the $\IR^{p}$-valued
+$\mathsf f(z)$ with the $\IR^{\mathsf L-1}$-valued $\mathsf v^{\perp}$, and not $\mathsf f$ evaluated at
+$\mathsf v^{\perp}$, which is not even typed} --- is, in the sense of
+\cref{def:weight}\textup{(b)}, an admissible weight with $\partial_uL=\ell_\star$, it satisfies the
+contracted condition at $\mathsf v$, and it violates N1 on an event of positive probability.
+\item[(ii)] \emph{What the gap costs at the population propensity.} For every bounded Borel
+$\mathsf r:\IR^{p}\to\IR^{\mathsf L-1}$ admissible in the sense of \cref{prp:orthog}\textup{(iii)},
+\[
+E\big[L_\star(\Delta U,\Delta Z)\,\mathsf r(\Delta Z)\big]
+\;=\;E\Big[E\big[L_\star\mid\Delta Z\big]\,\mathsf r(\Delta Z)\Big] ,
+\]
+\emph{the $\sigma(\Delta Z)$-measurable factor standing on the right}, so the derivative in the
+propensity reads the \emph{whole} matrix and not its contraction against $\mathsf v$. If
+$P\big(E[L_\star\mid\Delta Z]\ne0\big)>0$ there is such an $\mathsf r$ making it non-zero, and it may be
+taken of the entrywise form
+$\mathsf r=\varepsilon_\varrho\operatorname{sign}\big(\big(E[L_\star\mid\Delta Z]\big)_{jl}\big)\,e_l$
+with $e_l\in\IR^{\mathsf L-1}$ the $l$-th standard basis vector, at any entry $(j,l)$ on which
+$E[L_\star\mid\Delta Z]$ is non-zero with positive probability.
+\item[(iii)] \emph{What it costs at the estimated propensity, and why it does not vanish.} For every
+bounded Borel $\mathsf r$ as in \textup{(ii)},
+\begin{equation}\label{eq:centaritycost}
+\Big\|E\big[L_\star(\Delta U,\Delta Z)\,\mathsf r(\Delta Z)\big]\Big\|
+\;\le\;\Big(E\big\|E[L_\star\mid\Delta Z]\big\|^{2}\Big)^{1/2}\,
+\big(E\|\mathsf r(\Delta Z)\|^{2}\big)^{1/2} ,
+\end{equation}
+the first norm Frobenius and the second Euclidean. If in addition
+$\liminf_n\big(E\|\mathsf r\|^{2}\big)^{-1/2}\big\|E[L_\star\mathsf r]\big\|>0$ along a sequence of such
+directions, the left side is of \emph{exact} order $\big(E\|\mathsf r\|^{2}\big)^{1/2}$. Read at
+$\mathsf r=\hat\varrho-\varrho$ --- \emph{conditionally on $\sigma(\mathcal I_a)$, on which $\hat\varrho$
+is frozen, so that the clause is applied at a \textbf{bounded Borel} $\mathsf r$ as it is stated and not
+at a random one}; boundedness holds because \eqref{eq:trunset} confines both $\hat\varrho$ and $\varrho$
+to the $\varepsilon_\varrho$-interior simplex, and the expectation in \eqref{eq:centaritycost} is then
+over a $(\Delta U,\Delta Z)$ draw independent of $\mathcal I_a$, by \cref{def:hatT}'s sample
+split --- A4(iii) makes that order $r_n=n^{-\alpha}$ with
+$\alpha=r/(2r+d_Z)$, so after the $\sqrt n$ scaling of \cref{thm:rootn} the contribution is of order
+$n^{1/2-\alpha}$, \emph{which diverges}: A4(ii) gives $r>0$ and $d_Z\ge1$, so
+$\alpha=r/(2r+d_Z)<\tfrac12$, the range C5$'$(i) also records.
+\end{enumerate}
+\emph{At $\mathsf L=2$ the whole statement collapses to the printed one}: there is one column,
+$\mathsf v$ is a non-zero scalar, no $\mathsf v^{\perp}\ne0$ exists, so clause \textup{(i)}'s witness
+cannot be built, and N1 and the contracted condition are the same $p$ conditions.
+\end{corollary}
+
+% ===========================================================================
+%  PHASE 2b ON prp:orthog.  THE CONSUMER CENSUS FIRST, THEN THE EDITS.
+%  THE CENSUS WAS REQUIRED BEFORE EDITING AND IS RECORDED HERE, NOT ONLY IN THE
+%  DISPATCH REPORT, BECAUSE R1 WAS APPLIED WITHOUT ONE AND THAT FALSIFIED
+%  eq:Wderiv -- a printed identity true at sans-L = 2 and false above it, i.e.
+%  the repair for one instance of the failure species creating another.
+%
+%  ROUND-2 CORRECTION TO THIS BLOCK, MADE BEFORE ANYTHING ELSE.  The round-1
+%  census below was run on part (i) and eq:orthphi -- THE CLAUSE THIS PASS
+%  CHANGED LEAST, by tokens only -- and was NOT run on parts (ii) and (iii), the
+%  two clauses the pass actually RESTATED.  It also claimed completeness it did
+%  not have (fourteen printed sites, not six) and mis-described rem:orthoghyp as
+%  having four clauses when it has six -- and clause (5), one of the two it
+%  omitted, PRINTS exactly the product order that (ii)'s retyping breaks.  Both
+%  censuses are now below.
+%  The STRUCTURAL conclusion of the round-1 census survived every addition; the
+%  ENUMERATION is what the next phase works from, and an enumeration claimed
+%  complete and short by two-thirds is worse than one honestly partial.
+%
+%  ---- CENSUS 1: EVERY PRINTED CONSUMER OF prp:orthog(i) AND OF eq:orthphi,
+%  ---- ALL EIGHT COMPILED FILES.  Retired mirrors (results.tex, assumptions.tex,
+%  ---- results_main.tex) are excluded by construction: no document inputs them.
+%
+%  A. PRINTED CONSUMERS OF eq:orthphi -- TWO, AND BOTH RECONCILE.
+%   A1. proofs.tex:7498-7505, lem:biasexp Step 3.  "Under A2 and A2'(i),
+%       ell^Pi_star solves A*_cond ell^Pi = -nu/pi, so by lem:adjoint(iii) and
+%       eq:orthphi of prp:orthog(i), nu_{Delta Z + Wtilde ell_star} = 0."
+%       RECONCILES: the right-hand side of eq:orthphi is untouched by this pass,
+%       and the left-hand side is the SAME object, now written ell_star Wtilde.
+%       TOKENS OWED (Phase 5): FOUR, not three -- :7498 carries TWO
+%       (nu_{Delta Z + Wtilde ell_star} and nu_{Wtilde(hat-ell - ell_star)}),
+%       :7501 one, :7505 one (E[Wtilde(hat-ell - ell_star) Delta h]).
+%       NO MATHEMATICS CHANGES: this step consumes eq:orthphi in the direction
+%       (adjoint equation) => (nu vanishes), which is exactly the direction R1
+%       restored at sans-L >= 3.
+%   A2. results_supp.tex:3968-3971, rem:momentread(iv.3).  "A2 is precisely the
+%       assertion that E[Wtilde ell_star Delta h] equals -E[Delta Z Delta h] for
+%       every h in V (prp:orthog(i) and eq:orthphi)."  RECONCILES: same object,
+%       same direction, one token (Phase 4).
+%
+%  B. PRINTED CONSUMERS OF prp:orthog(i) THAT DO NOT NAME eq:orthphi -- TWELVE.
+%   THE TWO THAT PRINT eq:orthphi's LEFT-HAND SIDE IN THE SUPERSEDED ORDER AND
+%   THEREFORE CARRY TOKEN DEBTS -- these were MISSING from round 1:
+%   B1. proofs.tex:3601-3605, lem:balance Step 2.  "By prp:orthog(i) applied at
+%       the admissible selection ell^Pi_star ... nu_{Delta Z + Wtilde ell_star} =
+%       0, so linearity of g |-> nu_g gives nu_g = nu_{Wtilde(hat-ell -
+%       ell_star)}."  RECONCILES; TWO tokens owed (Phase 5).
+%   B2. results_supp.tex:4504, thm:rootn's hypothesis-usage audit, entry for A2:
+%       "existence of ell^Pi_star, hence of nu_{Delta Z + Wtilde ell_star} = 0".
+%       RECONCILES; ONE token owed (Phase 4).
+%   THE TEN THAT READ (i) AS A PROPERTY, A HYPOTHESIS LIST OR A MEMBERSHIP CLAIM,
+%   AND OWE NOTHING:
+%   B3. results_supp.tex:1494, lem:balance's hypothesis line, inherits "the
+%       hypotheses of prp:orthog(i)".  No hypothesis of (i) changed.
+%   B4. results_supp.tex:1157 and :1159, lem:solset(ii): "satisfying
+%       prp:orthog(i)-(iii)", and the unbounded-member clause "for which
+%       prp:orthog(i)'s differentiation under the expectation is unlicensed".
+%   B5. results_supp.tex, rem:orthoghyp (1)-(4) -- FOUR OF ITS SIX CLAUSES;
+%       clauses (5) and (6) are censused under CENSUS 2, and (5) does NOT
+%       reconcile.  (1)-(4) are hypothesis bookkeeping: A1 not global, N1
+%       nowhere, eq:PsiL finite, part (i) defines Psi_L rather than importing it.
+%       All four survive verbatim.  Clause (3)'s finiteness argument bounds
+%       ||L(u,z)|| <= ||b(z)|| + ||ell||_inf |u| in the FROBENIUS norm the type
+%       declaration fixes, and |Wtilde_l| <= 1 is (P1) read per cell.
+%   B6. results_supp.tex:3996, "the three NUISANCE directions of prp:orthog and
+%       not partial_theta" -- a scope statement.
+%   B7. results_supp.tex:4519-4520, the same audit's tag entries: "B1(iv) in full
+%       -- prp:orthog's list, inherited by lem:balance"; "C2'(i) -- prp:orthog(i)'s
+%       differentiation, inherited".  Bookkeeping.
+%   B8. assumptions_supp.tex:435, A1b(i)'s binding consumer list, which names
+%       prp:orthog(i).  A membership list.
+%   B9. proofs.tex:2861-2862, cor:elldiff's proof: the list of "four sites that
+%       apply this corollary at a representer other than ell^Pi_star", one of
+%       which is prp:orthog(i).  A membership list; nothing owed on the census.
+%       *** BUT THE SAME SENTENCE CARRIES AN UNRELATED DEFECT, FOUND HERE AND
+%       DECLARED BECAUSE IT IS DECLARED NOWHERE ELSE: at :2861 it prints
+%       "def:weight(a) and \eqref{eq:PsiL} in \texttt{results.tex}" -- A PRINTED,
+%       TYPESET REFERENCE TO A RETIRED MIRROR, in the shipped supplement.
+%       results.tex is compiled by no document (build.sh:46 records it RETIRED),
+%       so a reader is sent to a file that is not in the paper.  eq:PsiL is in
+%       results_s2_identification.tex and is \cref-able directly; the words "in
+%       \texttt{results.tex}" should simply go.  NOT A CENSUS ITEM and NOT
+%       sans-L-related -- recorded here so it does not stay invisible.  Phase 5
+%       (proofs.tex), or Phase C if it prefers to sweep it with the rest. ***
+%   B10. proofs.tex:2933-2936, proof of lem:solset(ii): "Part (i) of prp:orthog,
+%       which is stated for an arbitrary admissible representer, applies ... Parts
+%       (ii) and (iii) do not involve ell at all."  Reads (i) as a property.
+%   B11. proofs.tex:2949, same proof: part (i)'s differentiation under the
+%       expectation is what "admissible" licenses.  Reads the licence, not the
+%       form.
+%   B12. proofs.tex:3192, "prp:orthog's reading of partial_{tau_1}Psi(0) as a
+%       Gateaux derivative"; and :3293 and :3299, C2'(i)'s routing -- "prp:orthog(i)
+%       invokes lem:adjoint(iii), which consumes C2'(i)", and the exemption that
+%       travels "transitively by prp:orthog; not here".  All three are routing
+%       statements about which tag reaches which result.
+%
+%  C. THE PROOF -- proofs.tex:3469-3520, proof of prp:orthog Part (i).  It
+%   differentiates eq:PsiL, obtains -E[(Delta Z + Wtilde ell) Delta h], applies
+%   (P5) at g := Delta Z + Wtilde ell, and closes through lem:adjoint(iii).
+%   RECONCILES IN SUBSTANCE.  TOKENS OWED (Phase 5): FIVE, not four --
+%   :3492 (E[Wtilde ell Delta h]), :3493 (the bracketed g), :3501 (g := ...),
+%   and :3506 TWICE (nu_g = nu + nu_{Wtilde ell}; nu_{Wtilde ell} = -nu).
+%   The envelope {||Delta Z|| + ||ell||_inf}|Delta h| is unchanged, ||ell||_inf
+%   being Frobenius by the type declaration and |Wtilde_l| <= 1 per cell.  The
+%   step "by linearity" is linearity of g |-> nu_g and is indifferent to how g is
+%   written.
+%
+%  ---- CENSUS 2: EVERY PRINTED CONSUMER OF prp:orthog(ii) AND (iii), ALL EIGHT
+%  ---- COMPILED FILES.  THIS IS THE CENSUS ROUND 1 OMITTED, AND IT IS THE ONE
+%  ---- THAT MATTERS MORE: (i) was changed by tokens, (ii) and (iii) were
+%  ---- RESTATED -- D from R^p-valued to R^{p x (sans-L - 1)}-valued, sans-r from
+%  ---- scalar to R^{sans-L - 1}-valued, and the range condition from [0,1] to
+%  ---- the simplex.  A retyping propagates further than a reordering, because
+%  ---- every site that MULTIPLIES the retyped object must be checked for
+%  ---- conformability, not merely for word order.
+%
+%  E. ONE PRINTED CONSUMER DOES **NOT** RECONCILE, AND IT IS A CONFORMABILITY
+%  FAILURE, NOT A TOKEN.  DECLARED AS A PHASE-4 OBLIGATION WITH ITS REPAIR.
+%   E1. results_supp.tex:1483-1484, rem:orthoghyp CLAUSE (5): "Part (ii) is the
+%       one part that consumes A1, through the conditional independence that
+%       makes E[Wtilde D | Delta Z] = E[Wtilde | Delta Z] E[D | Delta Z] = 0."
+%       WITH D RETYPED TO p x (sans-L - 1), THE PRODUCT "Wtilde D" DOES NOT EXIST
+%       AT sans-L >= 3: Wtilde is (sans-L - 1) x 1.  Nor does the factorised
+%       right-hand side, for the same reason.
+%       EXACT REPAIR (Phase 4, results_supp.tex):
+%           E[D Wtilde | Delta Z] = E[D | Delta Z] E[Wtilde | Delta Z] = 0,
+%       which is a p x (sans-L - 1) matrix against a zero vector in
+%       R^{sans-L - 1}, hence 0 in R^p.  THE MATHEMATICS IS UNCHANGED and the
+%       clause's POINT -- that (ii) is the one part consuming A1 -- is untouched:
+%       what A1 supplies is the conditional independence of D(Delta U, Delta Z)
+%       and W given Delta Z, which is what lets the conditional expectation of
+%       the product factor, at any value type of D.  AT sans-L = 2 the printed
+%       clause is already correct, Wtilde being scalar; that is why no earlier
+%       round could see it.
+%   E2. results_supp.tex:4497-4499, thm:rootn's hypothesis-usage audit, entry for
+%       A1's first clause: "E[Wtilde Xi(Delta U, Delta Z)] = 0, hence
+%       partial_{tau_2}Psi = 0 exactly (lem:momzero(i), lem:biasexp Step 2,
+%       through prp:orthog(ii))."  SAME FAILURE, SAME SHAPE: Xi is def:dirclass's
+%       generic direction argument, so it retypes with D.
+%       EXACT REPAIR (Phase 4): E[Xi(Delta U, Delta Z) Wtilde] = 0.
+%       NOTE THE COUPLING, WHICH IS WHY THIS ENTRY IS NOT INDEPENDENT OF E1: the
+%       same Xi is the argument of def:dirclass's seminorm eq:shiftnorm and of
+%       lem:nusigma(v) and cor:rangegap's Upsilon (results_supp.tex:583, :761,
+%       proofs.tex:2283, :2871), all of which print "Wtilde Xi".  THOSE FOUR ARE
+%       NOT CONSUMERS OF prp:orthog AND ARE OUT OF THIS CENSUS'S SCOPE, but they
+%       retype together with def:dirclass and are recorded here so that Phase 4
+%       does not repair E2 alone and leave the same symbol at two types.
+%
+%  F. PRINTED CONSUMERS OF (ii) AND (iii) THAT RECONCILE, WITH TOKEN DEBTS.
+%   F1. proofs.tex:3524-3538, proof of prp:orthog Part (ii).  SIX old-order
+%       tokens: :3526 (tau_2 Wtilde D inside the integrand), :3527
+%       (E[Wtilde D]), :3529 (E||Wtilde D|| < infinity), :3531 (the factorised
+%       display, TWICE -- E[Wtilde D | Delta Z] and E[Wtilde | Delta Z] E[D |
+%       Delta Z]), :3536 (E[Wtilde D] = 0).  Substance unchanged; the
+%       degenerate-region sentence "on {varrho(1-varrho) = 0} ... Wtilde = 0
+%       almost surely there" is the BINARY degenerate region and needs
+%       def:admissible's max_l varrho_l = 1 form.  Phase 5.
+%   F2. proofs.tex:3540-3568, proof of Part (iii).  Beyond the tokens, ONE
+%       PRINTED JUSTIFICATION IS FALSE at sans-L >= 3 -- "sans-r multiplies the
+%       whole R^p-valued L_star, so a vector-valued sans-r is not well typed" --
+%       already itemised at the end of this block with its replacement.  Phase 5.
+%   F3. proofs.tex:7463, :7471-7473, lem:biasexp Step 2, clauses (a)-(c).  FOUR
+%       old-order tokens: :7463 (E[Wtilde D(Delta U, Delta Z)] inside the align),
+%       :7471 (E[Wtilde D] = 0, cited AS prp:orthog(ii)), :7473 (E||Wtilde D||).
+%       Clause (c) cites (iii) and prints E[sans-r L_star], which is
+%       CONFORMABLE AT EVERY sans-L once sans-r is R^{sans-L - 1}-valued and
+%       L_star is p x (sans-L - 1) -- but only in the order L_star sans-r.  As
+%       printed it is "sans-r L_star", so it is a token, not a hole.  Phase 5.
+%   F4. proofs.tex:3229, :3387, :7547, :7573.  lem:secondord's proof and
+%       lem:biasexp's decomposition: "of Wtilde L_star(.), of Wtilde D(.) and of
+%       sans-r{L_star, D}(.)"; Psi_10 = E[Wtilde D(Delta U - tau_1 Delta h,
+%       Delta Z)]; term (3) of eq:psidecomp; and ||Wtilde D||_{L^2(P)} <=
+%       ||D||_{L^2(P)} "by (P1)".  Tokens, plus one CONSTANT to re-read: that
+%       last inequality uses |Wtilde| <= 1 and at sans-L >= 3 the right reading
+%       is the per-cell (P1) bound with the Frobenius norm on D, NOT a Euclidean
+%       bound on Wtilde -- which is <= min{sqrt 2, sqrt(sans-L - 1)} and not 1.
+%       FLAGGED, because it is the one place in this census where a printed
+%       CONSTANT and not only an order is at stake.  Phase 5.
+%   F5. results_supp.tex:1177-1239, lem:secondord (statement).  eq:Psitau's
+%       zeta_tau = (varphi_dagger + tau_1 h, L_star + tau_2 D, varrho + tau_3
+%       sans-r) is the object prp:orthog(ii)-(iii) are proved through.  Clauses
+%       (iii)-(iv) print E[sans-r(Delta Z) D(...)], E[sans-r(Delta Z) ell_star
+%       Delta h] and ||sans-r||_{L^2(P)} := (E[sans-r(Delta Z)^2])^{1/2} -- the
+%       LAST of which is a SCALAR second moment and is not a norm on a vector.
+%       Its sans-L form is (E||sans-r(Delta Z)||^2)^{1/2}, which is exactly what
+%       A4(iii) already prices.  Phase 4, and it travels with def:dirclass.
+%   F6. results_supp.tex:1044-1047, def:dirclass -- already declared at the end
+%       of this block as the typing that must move.  It is the ROOT of E2, F1,
+%       F4 and F5: retyping it is what makes the rest mechanical.
+%   F7. results_supp.tex:1088, rem:supinside; :1253-1254 and :1370, rem:dirmember;
+%       :1879, prp:sharpquad read at (D, sans-r) = (0,0); :4106-4123 and :4220,
+%       lem:biasexp's Psi^{(2)}, Psi^{(3)} and the fold maximum; :4516 and :4524,
+%       the audit entries for N1 and A4(i).  All read (D, sans-r) as a PAIR or
+%       price a norm of it; each is conformable once def:dirclass retypes, and
+%       :4123's scalar (E[sans-r_k^2])^{1/2} needs the same repair as F5.
+%   F8. results_supp.tex:1022 and :4232; assumptions_supp.tex:1533.  Three sites
+%       reading (iii) as a STATEMENT ABOUT N1 -- "prp:orthog(iii) is the statement
+%       of exactly what its failure costs"; "a consequence of prp:orthog(iii)
+%       under N1"; "prp:orthog(iii) shows that it is necessary and sufficient".
+%       N1 and N1' are stated on L and on D whatever their value type
+%       (assumptions_main.tex, ass:centering and ass:centeringdir), so all three
+%       RECONCILE WITH NOTHING OWED.
+%   F9. proofs.tex:1549, an archaeology line quoting "E[Wtilde D] = 0 ... so the
+%       tower property applies".  Comment layer; Phase C.
+%
+%  G. NET OF CENSUS 2.  ONE non-reconciling site (E1), one of the same species
+%  (E2), both in results_supp.tex, both repaired by transposing a product, and
+%  both invisible at sans-L = 2.  NO CONSUMER OF (ii) OR (iii) FAILS IN A WAY
+%  THE RETYPING CANNOT REPAIR, so the dispatch's stop condition is not triggered
+%  by this census either.  But note what it cost to find: the retyping of (ii)
+%  and (iii) reaches def:dirclass and everything downstream of it, which is a
+%  LARGER blast radius than (i)'s reordering, and round 1 declared only the
+%  def:dirclass root while asserting a census it had run on the other clause.
+%
+%  H. NO CONSUMER OF (i) OR eq:orthphi FAILS TO RECONCILE UNDER READING (a).
+%   The dispatch's stop condition was not triggered.  The reason is structural
+%   and worth stating: R1 put the masses inside W, and NO CONSUMER OF part (i) OR
+%   OF eq:orthphi READS INSIDE W -- every one of the FOURTEEN sites in CENSUS 1
+%   reads either the hypothesis list, or the composite ell = W ell^Pi as a single
+%   object, or the direction (adjoint equation) => (nu vanishes).  Reading (b),
+%   which would have put masses into psi, would have reached eq:psidef,
+%   eq:psistar, eq:JSig, Sigma and every variance display; reading (a) reaches
+%   none of them.  THIS CONCLUSION WAS REACHED IN ROUND 1 ON SIX SITES AND SURVIVES
+%   ALL FOURTEEN; it was right for a reason that does not depend on the count,
+%   which is why the round-1 enumeration being short did not make it wrong -- and
+%   is also why an enumeration must not be relied on to certify itself.
+%
+%  ---- WHAT 2b THEN EDITED IN THIS PROPOSITION, AND WHY EACH WAS FORCED.
+%
+%  (1) eq:PsiL's ORDER.  "Wtilde L(...)" -> "L(...) Wtilde".  Phase 2a declared
+%  this and it is forced: L is p x (sans-L - 1) and Wtilde is (sans-L - 1) x 1,
+%  so only the printed order multiplies, and Psi_L must be R^p-valued because it
+%  is E[psi].  The type declaration in assumptions_main.tex puts the contrast to
+%  the RIGHT of the weight for exactly this reason.
+%
+%  (2) THE CONTRACTION GLOSS AND eq:orthphi.  See the block above def:weight's
+%  successor for the R1 accounting.  The gloss is written sum_l Wtilde_l ell_{.l}
+%  to be character-parallel with eq:adjclosed's "sum_l Wtilde_l (W ell)_l".
+%
+%  (3) PART (ii)'s DIRECTION D IS RETYPED, AND THE OLD TYPING DID NOT PARSE.
+%  D is a perturbation direction in L, so it is p x (sans-L - 1)-valued, and
+%  E||Wtilde D|| is not a product at sans-L >= 3.  It becomes E||D Wtilde||.
+%  The proof is unaffected in substance: under A1, D = D(Delta U, Delta Z) is
+%  conditionally independent of W given Delta Z, so E[D Wtilde | Delta Z] =
+%  E[D | Delta Z] E[Wtilde | Delta Z] = 0 by (P3), a matrix times a zero vector.
+%
+%  (4) PART (iii)'s DIRECTION sans-r IS RETYPED, AND SO IS ITS RANGE CONDITION.
+%  sans-r is the varrho-direction; varrho is R^{sans-L - 1}-valued by
+%  eq:contrast, and lem:biasexp already uses sans-r as varrho-hat - varrho
+%  ("hat-Wtilde = Wtilde - sans-r"), which is a vector at sans-L >= 3.  So
+%  sans-r: R^p -> R^{sans-L - 1}.  AND "varrho + tau_3 sans-r taking values in
+%  [0,1]" IS NOT A CONDITION ON A VECTOR: it would permit varrho_1 + varrho_2 > 1
+%  and hence a negative base cell.  The correct condition is membership of the
+%  SIMPLEX, which at sans-L = 2 IS [0,1] -- the two faces q_1 >= 0 and q_1 <= 1.
+%  THE PLAIN SIMPLEX AND NOT eq:trunset: eq:trunset is the eps_varrho-INTERIOR
+%  simplex and is def:hatT's truncation convention for an ESTIMATOR; part (iii)
+%  needs only that the perturbed propensity still be a propensity.  The set is
+%  written out rather than named, on the C78 write-it-out precedent eq:trunset
+%  itself follows.
+%
+%  WHAT PHASES 4 AND 5 INHERIT FROM (3) AND (4).  CENSUS 2 ABOVE IS THE FULL
+%  ITEMISATION; the two items below are the ROOT and the one FALSE SENTENCE.
+%   * def:dirclass (results_supp.tex:1044-1047, PHASE 4) still types
+%     sans-r: R^p -> R and D: R x R^p -> R^p, i.e. BOTH at the binary arity.
+%     prp:orthog(ii)-(iii) do not cite def:dirclass -- their integrability
+%     conditions are self-contained, and rem:orthoghyp(4) records that no
+%     direction pair enters part (i) -- so nothing HERE is unsupported.  But
+%     lem:secondord DOES cite it, and CENSUS 2 items E2, F1, F4, F5 and F7 all
+%     resolve once it retypes and none of them resolves before.  IT IS THE ROOT;
+%     Phase 4 should move it FIRST and let the rest follow mechanically.
+%   * AND THE TWO SITES THAT DO NOT MERELY NEED A TOKEN: rem:orthoghyp(5)
+%     (results_supp.tex:1483-1484) and the audit entry at :4497 PRINT products
+%     that do not exist once D and Xi retype.  Exact repairs at CENSUS 2, E1 and
+%     E2.  These are the round-2 findings; round 1 declared the def:dirclass root
+%     and MISSED both, because it censused (i) and not (ii)-(iii).
+%   * proofs.tex's Part (iii) (PHASE 5) argues "sans-r multiplies the whole
+%     R^p-valued L_star, so a vector-valued sans-r is not well typed, and a
+%     coordinatewise sign written as a single object would be".  THAT SENTENCE IS
+%     FALSE AT sans-L >= 3 and is the binary instance of a correct concern.  The
+%     sans-L form of the (=>) half perturbs ONE (coordinate j of theta, cell l)
+%     pair at a time: take sans-r = eps_varrho sign(E[L_{star,jl} | Delta Z]) e_l
+%     with e_l the l-th standard basis vector of R^{sans-L - 1}, which is bounded
+%     and, by A4(i) with eps_varrho < 1/sans-L, keeps varrho + tau_3 sans-r in
+%     the simplex for |tau_3| <= 1; the (j,l) entry of the display then reads
+%     -tau_3 eps_varrho E|E[L_{star,jl} | Delta Z]|, and ranging over (j,l) gives
+%     N1.  p(sans-L - 1) scalar directions in place of p.  DECLARED, NOT WRITTEN:
+%     proofs.tex is Phase 5's.
+% ===========================================================================

@@ -1,0 +1,17 @@
+claim_id: kernelcompare-at-pX-equals-rho
+source: "quality_reports/theory/panel-npiv-discrete/results.tex"
+# CLAIM (the sufficiency direction, done directly).  At p_X = varrho the
+# eq:kernelcompare weights collapse to the scalar multiple varrho(1-varrho) of
+# the draft's kernel f_1 - f_0.
+variables:
+  pX:
+    domain: real
+  rho:
+    domain: real
+  f1:
+    domain: real
+  f0:
+    domain: real
+start: "pX*(1-rho)*f1 - (1-pX)*rho*f0"
+operation: "substitute(pX=rho)"
+claimed_end: "rho*(1-rho)*(f1-f0)"

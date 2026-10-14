@@ -1,0 +1,19 @@
+claim_id: frontier-at-r2-dz1
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A5(iii)), read at r = 2, d_Z = 1"
+# CROSS-CHECK, and the caveat the raw-rate arithmetic does not carry.  Clearing
+# n^{-1/4} at the level of the NUISANCE rate hat-delta_n is NOT the frontier:
+# A5(ii) asks delta_n = hat-delta_n^{2mu/(2mu+1)} = o_P(n^{-1/4}), which deflates
+# the exponent by 2mu/(2mu+1) < 1.  Substituting r = 2, d_Z = 1 into the
+# frontier numerator 2r(2mu-1) - d_Z(2mu+1) gives 6mu - 5, so an order-2 Holder
+# propensity in ONE dimension satisfies A5(iii) only if mu > 5/6 -- strictly more
+# than the mu > 1/2 that is necessary in general.
+variables:
+  mu:
+    domain: positive
+  r:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "2*r*(2*mu-1) - d_Z*(2*mu+1)"
+operation: "substitute(r=2, d_Z=1)"
+claimed_end: "6*mu - 5"

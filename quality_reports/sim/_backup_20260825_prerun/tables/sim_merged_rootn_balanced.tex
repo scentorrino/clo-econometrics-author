@@ -1,0 +1,44 @@
+\begin{tabular}{lllccc}
+\toprule
+\multicolumn{6}{l}{\textbf{Block III} --- multinomial design, shipped engine, nuisances estimated, \emph{Balanced design}} \\
+\multicolumn{6}{l}{\quad \texttt{sim\_multinomial\_dgp.R} with \texttt{lf\_panel.R}; $\mathsf L\in\{2,3,4\}$ off one draw} \\
+\midrule
+Design & $n$ & Coefficient & $\mathsf L=2$ & $\mathsf L=3$ & $\mathsf L=4$ \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel A: bias, with its Monte Carlo standard error.  Truth $(0,\,1.0,\,-0.5)$.}} \\
+\midrule
+Balanced & 400 & Constant & 0.0819 (0.0313) & -0.0098 (0.0260) & -0.0754 (0.0246) \\
+ &  & $z_1$ & 0.0176 (0.0252) & -0.0095 (0.0170) & -0.0083 (0.0125) \\
+ &  & $z_2$ & 0.0231 (0.0257) & 0.0140 (0.0174) & -0.0011 (0.0149) \\
+ & 800 & Constant & 0.0084 (0.0196) & -0.0260 (0.0197) & -0.0392 (0.0175) \\
+ &  & $z_1$ & -0.0010 (0.0104) & -0.0268 (0.0098) & -0.0256 (0.0090) \\
+ &  & $z_2$ & -0.0019 (0.0103) & 0.0009 (0.0092) & 0.0001 (0.0088) \\
+ & 1,600 & Constant & 0.0141 (0.0127) & 0.0169 (0.0152) & -0.0175 (0.0125) \\
+ &  & $z_1$ & 0.0020 (0.0067) & 0.0006 (0.0071) & -0.0036 (0.0058) \\
+ &  & $z_2$ & 0.0056 (0.0078) & 0.0025 (0.0063) & 0.0033 (0.0055) \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Panel B: $\sqrt n\times$ s.d., which the theorem makes constant in $n$.}} \\
+\midrule
+Balanced & 400 & Constant & 6.862 & 5.687 & 5.381 \\
+ &  & $z_1$ & 5.522 & 3.718 & 2.739 \\
+ &  & $z_2$ & 5.640 & 3.809 & 3.260 \\
+ & 800 & Constant & 6.087 & 6.116 & 5.408 \\
+ &  & $z_1$ & 3.219 & 3.044 & 2.777 \\
+ &  & $z_2$ & 3.196 & 2.855 & 2.718 \\
+ & 1,600 & Constant & 5.574 & 6.643 & 5.462 \\
+ &  & $z_1$ & 2.933 & 3.109 & 2.552 \\
+ &  & $z_2$ & 3.415 & 2.752 & 2.416 \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Panel C: coverage of the nominal $95\%$ interval, with its Monte Carlo standard error.}} \\
+\midrule
+Balanced & 400 & Constant & 0.850 (0.033) & 0.883 (0.029) & 0.883 (0.029) \\
+ &  & $z_1$ & 0.867 (0.031) & 0.958 (0.018) & 0.958 (0.018) \\
+ &  & $z_2$ & 0.817 (0.035) & 0.867 (0.031) & 0.942 (0.021) \\
+ & 800 & Constant & 0.942 (0.021) & 0.900 (0.027) & 0.825 (0.035) \\
+ &  & $z_1$ & 0.958 (0.018) & 0.908 (0.026) & 0.942 (0.021) \\
+ &  & $z_2$ & 0.975 (0.014) & 0.950 (0.020) & 0.908 (0.026) \\
+ & 1,600 & Constant & 0.900 (0.027) & 0.867 (0.031) & 0.867 (0.031) \\
+ &  & $z_1$ & 0.975 (0.014) & 0.917 (0.025) & 0.950 (0.020) \\
+ &  & $z_2$ & 0.917 (0.025) & 0.975 (0.014) & 0.958 (0.018) \\
+\bottomrule
+\end{tabular}

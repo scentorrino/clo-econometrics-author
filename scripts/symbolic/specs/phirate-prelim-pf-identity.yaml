@@ -1,0 +1,39 @@
+claim_id: phirate-prelim-pf-identity
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex, prp:phirate Step 4(a.1) and rem:h6bandwidth clause (4): '(P-f) and the non-self-defeating condition (a.1) are THE SAME INEQUALITY up to a strictly positive factor'"
+# CLAIM.  Write h_u = n^{-beta}, delta-hat_n = n^{-alpha}, kappa = 2 mu/(2 mu + 1).
+#
+#  (P-f)   delta_n^2 = O(h_u^2 delta-hat_n ln n) with delta_n = (delta-hat_n ln n)^kappa
+#          reads, in POWERS OF n,   2 kappa alpha  >=  2 beta + alpha,
+#          i.e.                     alpha (2 kappa - 1)  >=  2 beta.
+#
+#  (a.1)   The repelling fixed point of Step 4(a)'s affine log-recursion is
+#          a* = b_n/(2 kappa - 1) with b_n = 2 kappa beta log n + O(1), so the
+#          preliminary requirement is varsigma_0 > 2 kappa beta/(2 kappa - 1).
+#          It is WEAKER THAN THE DELIVERED EXPONENT kappa alpha iff
+#                     kappa alpha - 2 kappa beta/(2 kappa - 1)  >  0.
+#
+# THE CLAIM VERIFIED HERE is that the left-hand side of (a.1) equals
+#          [kappa/(2 kappa - 1)] * [ alpha (2 kappa - 1) - 2 beta ],
+# i.e. (a.1) is (P-f)'s slack multiplied by the factor kappa/(2 kappa - 1),
+# which is STRICTLY POSITIVE for kappa > 1/2 (i.e. for mu > 1/2, everywhere in
+# Part H).  The two conditions are therefore the SAME inequality, the second
+# strict -- NOT two conditions that happen to agree at mu = 5/6.
+#
+# WHAT THIS DOES NOT SAY.  It does not say eq:prelimrate is vacuous: the
+# requirement varsigma_0 > 2 kappa beta/(2 kappa - 1) on the PRELIMINARY is new
+# and is what sharpens open item Q-1.  It says only that the THRESHOLD at which
+# that requirement stops being self-defeating is (P-f) again.
+#
+# The specialisation beta = alpha/8 (C5'(i) as amended, p_K = 8) turns both into
+# 2 kappa - 1 > 1/4, i.e. kappa > 5/8, i.e. mu > 5/6 -- which is the separate
+# spec phirate-retune-mu-five-sixths.
+variables:
+  kappa:
+    domain: positive
+  alpha:
+    domain: positive
+  beta:
+    domain: positive
+start: "kappa*alpha - 2*kappa*beta/(2*kappa - 1)"
+operation: none
+claimed_end: "kappa*(alpha*(2*kappa - 1) - 2*beta)/(2*kappa - 1)"

@@ -1,0 +1,52 @@
+\begin{tabular}{rlrrrrrr}
+\toprule
+\multicolumn{8}{l}{\textit{Panel A: two condition numbers, and they are two different objects ($\ge$: at the double-precision floor)}} \\
+\midrule
+$n$ & Prelim. & $L_x$ & $\kappa$, compression \eqref{eq:compress} & $\kappa$, Gram \eqref{eq:gram} & $n_{\mathrm m}$ & Gram s.v.\ computed & \\
+\midrule
+500 & zero & 6 & $\ge$4.5e+15 & $\ge$2.0e+31 & 500 & 500 of 500 & \\
+500 & rate & 6 & $\ge$4.5e+15 & $\ge$2.0e+31 & 500 & 500 of 500 & \\
+2,000 & zero & 6 & $\ge$4.5e+15 & $\ge$2.0e+31 & 2,000 & 780 of 2,000 & \\
+2,000 & rate & 6 & $\ge$4.5e+15 & $\ge$2.0e+31 & 2,000 & 780 of 2,000 & \\
+8,000 & zero & 9 & $\ge$4.5e+15 & --- & 8,000 & --- & \\
+8,000 & rate & 9 & $\ge$4.5e+15 & --- & 8,000 & --- & \\
+\addlinespace
+\multicolumn{8}{l}{\textit{Panel B: ill-posedness of the realised design, against H1's $\sigma_j\asymp j^{-a}$ with $a=3/4$}} \\
+\midrule
+$n$ & Prelim. & \multicolumn{2}{c}{Power fit: $\hat a$ ($R^2$)} & \multicolumn{2}{c}{Exponential fit: $\hat c$ ($R^2$)} & Pr(exp.\ wins) & \\
+\midrule
+500 & zero & \multicolumn{2}{c}{1.63 (0.944)} & \multicolumn{2}{c}{0.66 (0.966)} & 0.68 (0.03) & \\
+500 & rate & \multicolumn{2}{c}{1.67 (0.964)} & \multicolumn{2}{c}{0.66 (0.943)} & 0.34 (0.03) & \\
+2,000 & zero & \multicolumn{2}{c}{2.02 (0.943)} & \multicolumn{2}{c}{0.83 (0.975)} & 0.81 (0.02) & \\
+2,000 & rate & \multicolumn{2}{c}{2.05 (0.973)} & \multicolumn{2}{c}{0.80 (0.919)} & 0.14 (0.02) & \\
+8,000 & zero & \multicolumn{2}{c}{2.14 (0.972)} & \multicolumn{2}{c}{0.61 (0.946)} & 0.12 (0.02) & \\
+8,000 & rate & \multicolumn{2}{c}{2.05 (0.982)} & \multicolumn{2}{c}{0.56 (0.881)} & 0.00 (0.00) & \\
+\addlinespace
+\multicolumn{8}{l}{\textit{Panel B$'$: $L_x$ against \eqref{eq:lxwindow}, at a literal constant-1 reading of (P-c) and (P-d)}} \\
+\midrule
+$n$ & & $L_x$ used & (P-c) lower & (P-d) upper & Window & Upper/lower & \\
+\midrule
+500 & & 6 & 2.11 & 1.51 & empty & 0.715 & \\
+2,000 & & 6 & 2.49 & 2.03 & empty & 0.815 & \\
+8,000 & & 9 & 2.94 & 2.83 & empty & 0.962 & \\
+\addlinespace
+\multicolumn{8}{l}{\textit{Panel C: does the $\varphi$-step attain $\delta_n$? $\|\hat\varphi-\varphi_\dagger\|_{L^2(\pi)}/\delta_n$ at $\mathsf c_{14}=1$}} \\
+\midrule
+$n$ & & $\delta_n$ & \multicolumn{2}{c}{Prelim.\ ``rate'': measured (MC SE)} & \multicolumn{2}{c}{Prelim.\ ``zero'': $\|\varphi_\dagger\|/\delta_n$, arithmetic} & \\
+\midrule
+500 & & 0.879 & \multicolumn{2}{c}{0.409 (0.0028)} & \multicolumn{2}{c}{0.805} & \\
+2,000 & & 0.724 & \multicolumn{2}{c}{0.405 (0.0026)} & \multicolumn{2}{c}{0.977} & \\
+8,000 & & 0.580 & \multicolumn{2}{c}{0.419 (0.0021)} & \multicolumn{2}{c}{1.218} & \\
+\addlinespace
+\multicolumn{8}{l}{\textit{Panel D: can the limit-law arm's injected $h$ reach the directions this operator damps?}} \\
+\midrule
+$n$ & Prelim. & Sieve-captured & Resolvable dim. & Energy c.o.m.\ index & Energy in damped half & $\sigma_1/\sigma$ at c.o.m. & \\
+\midrule
+500 & zero & 0.783 & 5.0 & 3.00 & 0.595 & 2.64 & \\
+500 & rate & 0.783 & 5.0 & 3.02 & 0.605 & 2.96 & \\
+2,000 & zero & 0.783 & 5.0 & 3.00 & 0.593 & 2.93 & \\
+2,000 & rate & 0.783 & 5.0 & 3.04 & 0.608 & 3.54 & \\
+8,000 & zero & 0.973 & 8.0 & 4.28 & 0.462 & 4.26 & \\
+8,000 & rate & 0.973 & 8.0 & 4.36 & 0.482 & 5.36 & \\
+\bottomrule
+\end{tabular}

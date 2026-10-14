@@ -1,0 +1,43 @@
+\begin{tabular}{llcccccc}
+\toprule
+Design & $\mathsf L$ & $\max_{j,l}\|b_{jl}\|$ & $\max_{j,l}\|L_{\star,jl}\|$ & ratio & $\|b\|_F$ & $\|L_\star\|_F$ & ratio \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel A: the N1 defect, computed}} \\
+\midrule
+DGP-A & 2 & $8.23\times10^{-6}$ & 2.4613 & $3.34\times10^{-6}$ & $9.86\times10^{-6}$ & 2.9477 & $3.34\times10^{-6}$ \\
+DGP-A & 4 & 0.7293 & 3.8227 & 0.1908 & 1.0359 & 5.5730 & 0.1859 \\
+DGP-B & 2 & $4.18\times10^{-5}$ & 2.4964 & $1.67\times10^{-5}$ & $4.92\times10^{-5}$ & 2.9424 & $1.67\times10^{-5}$ \\
+DGP-B & 4 & 0.4295 & 3.4628 & 0.1240 & 0.5779 & 4.3852 & 0.1318 \\
+\\[0.5em]
+\multicolumn{8}{l}{\textit{Panel B: contracted, per unit $\|\hat\varrho-\varrho\|_{L^2}$}} \\
+\midrule
+Design & $\mathsf L$ & $n$ & $\Gamma_{\mathrm{op}}$ & $\Gamma_{\mathrm{real}}$ & $\Gamma$ trunc. & $\Lambda$ & $\Gamma_{\mathrm{real}}/\Lambda$ \\
+\midrule
+DGP-A & 2 & 1,000 & $9.86\times10^{-6}$ & $5.19\times10^{-6}$ & $5.33\times10^{-6}$ & 2.9681 & $1.75\times10^{-6}$ \\
+DGP-A & 2 & 8,000 & $9.86\times10^{-6}$ & $5.19\times10^{-6}$ & $5.75\times10^{-6}$ & 2.9681 & $1.75\times10^{-6}$ \\
+DGP-A & 4 & 1,000 & 1.0349 & 0.3258 & 0.3120 & 3.2161 & 0.1013 \\
+DGP-A & 4 & 8,000 & 1.0349 & 0.3258 & 0.2920 & 3.2161 & 0.1013 \\
+DGP-B & 2 & 1,000 & $4.92\times10^{-5}$ & $2.79\times10^{-5}$ & $2.76\times10^{-5}$ & 2.9506 & $9.46\times10^{-6}$ \\
+DGP-B & 2 & 8,000 & $4.92\times10^{-5}$ & $2.79\times10^{-5}$ & $2.71\times10^{-5}$ & 2.9506 & $9.46\times10^{-6}$ \\
+DGP-B & 4 & 1,000 & 0.5778 & 0.1814 & 0.1833 & 2.5518 & 0.0711 \\
+DGP-B & 4 & 8,000 & 0.5778 & 0.1814 & 0.1856 & 2.5518 & 0.0711 \\
+\\[0.5em]
+\multicolumn{8}{l}{\textit{Panel C: mechanism and confirmation}} \\
+\midrule
+Design & $\mathsf L$ & odd-$q$ share & bal.\ resid. & sampled $\max\|b_{jl}\|$ & MC SE & binned $\|\hat b\|/\|L_\star\|$ & binned floor \\
+\midrule
+DGP-A & 2 & 1.000000 & $4.15\times10^{-7}$ & 0.0037 & 0.0017 & 0.0110 & 0.0115 \\
+DGP-A & 4 & 0.707117 & $3.69\times10^{-5}$ & 0.7281 & 0.0022 & -- & -- \\
+DGP-B & 2 & 1.000000 & $1.36\times10^{-6}$ & 0.0015 & 0.0019 & 0.0122 & 0.0115 \\
+DGP-B & 4 & 0.722202 & $3.64\times10^{-5}$ & 0.4264 & 0.0024 & -- & -- \\
+\\[0.5em]
+\multicolumn{8}{l}{\textit{Panel E: the shipped $T_2$ statistic, with and without the $\varphi$-error (DGP-A, sampled)}} \\
+\midrule
+$\mathsf L$ & $h$ & $n=1{,}000$ & (MC SE) & $n=8{,}000$ & (MC SE) & $\beta$ & $\Lambda\tau_n$ at $8{,}000$ \\
+\midrule
+2 & on & 0.3417 & 0.0065 & 0.2776 & 0.0053 & $-0.100$ & 0.1673 \\
+4 & on & 0.5950 & 0.0109 & 0.8200 & 0.0155 & $+0.154$ & 0.1813 \\
+2 & off & 0.2448 & 0.0047 & 0.1308 & 0.0026 & $-0.302$ & 0.1673 \\
+4 & off & 0.5358 & 0.0100 & 0.8225 & 0.0154 & $+0.206$ & 0.1813 \\
+\bottomrule
+\end{tabular}

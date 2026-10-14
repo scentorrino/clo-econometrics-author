@@ -1,0 +1,50 @@
+claim_id: frontier-table-mu2-dz5-printed
+source: "*** RENDERING WITHDRAWN: the mu = 2 row of the A5(iii) table NO LONGER PRINTS '4.17'. *** Current table: quality_reports/theory/panel-npiv-discrete/assumptions.tex (the mu = 2 row now reads 'r > 5/2  r > 10/3  r > 25/6', EXACT FRACTIONS). The withdrawal and its reason: assumptions.tex. General formula: eq:frontier at assumptions.tex. '4.17' still appears, as a quoted historical rendering, at assumptions.tex and at theory_memo.md:2180."
+# ===========================================================================
+# ===  BY-DESIGN MISMATCH (exit 1), AND THE SUBJECT IS NOW A WITHDRAWN      ===
+# ===  RENDERING.  Re-verified round 12: still by design, NOT a real        ===
+# ===  mismatch -- but the thing it verifies is no longer printed.          ===
+# ===========================================================================
+#
+# WHAT THIS SPEC DOES.  It recomputes the (mu, d_Z) = (2, 5) entry of the A5(iii)
+# substitution table from eq:frontier's general formula
+# r > d_Z(2 mu + 1)/(2(2 mu - 1)) and compares it with the TWO-DECIMAL rendering
+# 4.17.  The exact value is 25/6 = 4.1666..., so the comparison MUST fail; the
+# residual 25/6 - 417/100 = -1/300 IS the output and exit 1 is the intended result.
+# The companion frontier-table-mu2-dz5-exact.yaml MATCHes against 25/6.
+#
+# THE SIGN IS THE POINT, AND IT IS THE OPPOSITE OF THE d_Z = 4 CASE.  Here the
+# residual is NEGATIVE: 4.17 > 25/6, so the printed bound sat ABOVE the true
+# threshold and the rounding was in the CONSERVATIVE direction -- it demanded
+# slightly more smoothness than the frontier requires and admitted no r that fails
+# the frontier.  At d_Z = 4 the residual is +1/300 and the rounding was UNSAFE.
+# assumptions.tex makes exactly this contrast and draws the conclusion that
+# decided the round: "('4.17' rounded 25/6 = 4.1666... UP and was safe, but the two
+# must not be printed to different conventions.)"  So the reason the mu = 2 row is
+# now printed as exact fractions is not that either entry was catastrophic; it is
+# that the SAME row was being rendered to two opposite conventions.  This spec and
+# frontier-table-mu2-dz4-printed.yaml are the two halves of that finding.
+#
+# ROUND-12 RE-VERIFICATION.  (1) STILL BY DESIGN: eq:frontier is unchanged at
+# assumptions.tex, so 25/6 is still the exact threshold and the gap to
+# 417/100 is still a deliberate rounding gap.  The frontier-clearing configuration
+# (2, 3, 3/4, 0.32) is NOT retired in the live files -- it is still named the
+# admissible design at proofs.tex -- the retirement recorded in the memo
+# being conditional on the derivative route, which was assessed and DECLINED.
+# (2) SUBJECT WITHDRAWN: the table no longer prints 4.17.  So this is a retirement
+# record whose residual is now the mechanised form of the paper's stated reason for
+# printing fractions, not a check on a printed value.
+#
+# ANY TALLY MUST REPORT THIS AS 'BY-DESIGN MISMATCH', NOT AS A FAILURE, AND SHOULD
+# NOTE THAT THE RENDERING IT PRICES IS WITHDRAWN.  It exits 1, so it cannot inflate
+# a MATCH count; the hazard here is the opposite one, of being read as a failure.
+#
+# EXPECTED EXIT CODE: 1.  Residual: -1/300.
+variables:
+  mu:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "d_Z*(2*mu+1)/(2*(2*mu-1))"
+operation: "substitute(mu=2, d_Z=5)"
+claimed_end: "417/100"

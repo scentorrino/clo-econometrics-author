@@ -1,0 +1,18 @@
+claim_id: bandwidth-not-standard-tradeoff
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (C5' comment (b): 'THE OPERATOR NEEDS NO LOWER BOUND ON h_u')"
+# CLAIM, and a guard against a plausible mis-correction.  The exponent 1/16 in
+# h_u asymp n^{-1/16} does NOT come from a bias-variance trade-off.  If it did,
+# the standard balance at p = p_K = 8 and d = 1 would put the bandwidth at
+# n^{-1/(2p+d)} = n^{-1/17} and the rate at n^{-8/17}, NOT n^{-1/16} and
+# n^{-1/2}.  The paper's 1/16 comes from matching the bias h_u^{p_K} to the
+# n^{-1/2} stochastic FLOOR of an unconditional expectation (no local-averaging
+# denominator, hence no variance term inflating as h_u shrinks).  This spec
+# records the standard-trade-off value so the two are not confused.
+variables:
+  p:
+    domain: positive
+  d:
+    domain: positive
+start: "1/(2*p+d)"
+operation: "substitute(p=8, d=1)"
+claimed_end: "1/17"

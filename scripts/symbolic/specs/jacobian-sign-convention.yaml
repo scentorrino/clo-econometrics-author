@@ -1,0 +1,21 @@
+claim_id: jacobian-sign-convention
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A3, ass:rank); memo Sec.1.1 item 8"
+# CLAIM.  A3 states J = E[dZ dZ'] + E[Wtilde ell_star dZ'] with a PLUS sign.
+# jacobian-scalar-chain gives d psi / d theta = -dZ^2 - Wt ell dZ, so the sign
+# convention is J := -E[d psi / d theta], NOT +E[d psi / d theta].  This spec
+# records the convention so that a later edit which writes J = E[d psi / d theta]
+# -- flipping the sandwich J^{-1} Sigma J^{-1'} in thm:rootn to the same value
+# but the one-step update to the wrong direction -- is caught.
+# Trivial as arithmetic, deliberately: the point is the DECLARATION, and an
+# unstated sign convention is the classic source of a one-step estimator that
+# diverges rather than converges.
+variables:
+  dZ:
+    domain: real
+  Wt:
+    domain: real
+  ell:
+    domain: real
+start: "-(-dZ**2 - Wt*ell*dZ)"
+operation: expand
+claimed_end: "dZ**2 + Wt*ell*dZ"

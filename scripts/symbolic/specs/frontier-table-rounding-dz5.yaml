@@ -1,0 +1,22 @@
+claim_id: frontier-table-rounding-dz5
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (the reason the mu = 2 row is printed as exact fractions: '(\"4.17\" rounded 25/6 = 4.1666... UP and was safe, but the two must not be printed to different conventions.)'); the current table is at assumptions.tex and no longer prints 4.17"
+# CLAIM.  The withdrawn rendering "4.17" was the 2-decimal rendering of the exact
+# threshold 25/6.  Rounding error: 25/6 - 4.17 = -1/300 < 0, i.e. the PRINTED
+# bound was ABOVE the true bound (conservative direction).
+#
+# ROUND-12 STATUS: SUBJECT STILL LIVE, ROLE CHANGED, SOURCE LINE CORRECTED.  The
+# mu = 2 row now prints exact fractions, so 4.17 is no longer a table entry; it
+# survives at assumptions.tex as the quoted safe-direction counterpart to the
+# unsafe 3.33.  THE NEGATIVE SIGN OF THIS RESIDUAL IS EXACTLY WHY THE ROW WAS
+# CONVERTED: not because 4.17 was wrong -- it was conservative -- but because the
+# same row was being rendered to two opposite conventions, +1/300 at d_Z = 4 and
+# -1/300 at d_Z = 5.  This spec is the mechanised form of the parenthesis the paper
+# uses to say so.
+#
+# PREDICTED: MATCH.  Falsification: claimed_end "1/300" (i.e. asserting the unsafe
+# direction) leaves residual -2/300; MISMATCH.  So the spec's sign is load-bearing
+# and refutable, which is the point of having both dz4 and dz5 versions.
+variables: {}
+start: "25/6 - 417/100"
+operation: none
+claimed_end: "-1/300"

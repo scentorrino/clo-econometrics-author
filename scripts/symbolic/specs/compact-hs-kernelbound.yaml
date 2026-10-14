@@ -1,0 +1,17 @@
+claim_id: compact-hs-kernelbound
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:compact Step 3, kernel bound)"
+# CLAIM.  |nu_{g_{u,t}}(x)| <= bar-w(t) ||bar f_0||_inf (f_{X_1}(x) + f_{X_2}(x))
+# and hence, dividing by pi and using f_{X_j}/pi <= cpi for j = 1, 2,
+#     |k(u,t;x)| <= 2 cpi bar-w(t) ||bar f_0||_inf.
+# The factor 2 is one cpi per period, exactly as in eq:deltahbound; it is NOT a
+# slack constant.
+variables:
+  cpi:
+    domain: positive
+  wbar:
+    domain: positive
+  f0bar:
+    domain: positive
+start: "wbar*f0bar*(cpi + cpi)"
+operation: none
+claimed_end: "2*cpi*wbar*f0bar"

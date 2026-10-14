@@ -1,0 +1,47 @@
+claim_id: cap-scaleinv-rate-invariance
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (lem:scaleinv(iv), eq:scaleinv) and 3208-3210 ('the exponents 1/(2mu+1) on the radius and 2mu/(2mu+1) on the noise are exactly the pair for which it does'); proved at proofs.tex"
+# WHAT THIS CHECKS.  eq:scaleinv asserts that (F-f)'s error bound is EXACTLY
+# invariant under the rescaling L -> omega_*^{-1} L of lem:scaleinv:
+#
+#     ( omega_*^{2mu} R_* )^{1/(2mu+1)} ( omega_*^{-1} delta )^{2mu/(2mu+1)}
+#         =  R_*^{1/(2mu+1)} delta^{2mu/(2mu+1)} .
+#
+# The whole content is that the two powers of omega_* cancel.  The radius
+# contributes omega_*^{2mu * 1/(2mu+1)}; the noise contributes
+# omega_*^{-1 * 2mu/(2mu+1)}.  The identity holds if and only if
+#
+#     2mu * (1/(2mu+1))  =  1 * (2mu/(2mu+1)) ,
+#
+# which is what this spec verifies.  The two sides enter with OPPOSITE signs in
+# the exponent of omega_*, so equality is cancellation.
+#
+# WHY IT IS WORTH A SPEC.  lem:scaleinv exists because the only norm bound
+# available for hat-A_varphi (prp:hatAprop(i)) DIVERGES, so omega_n -> infinity
+# and a divergent rescaling moves ||L||, the data error and the source radius at
+# once.  Clauses (iii)-(iv) are the claim that the movement cancels.  If the
+# exponent pair were anything else -- e.g. a draft writing R_*^{1/(mu+1)} -- the
+# cancellation would fail and eq:phirate would move with the normalisation.
+# results.tex says this is why eq:linlf must be written with R_* SHOWN
+# and not absorbed into an O_P; the exponent pair is what makes that necessary.
+#
+# WHAT THIS DOES NOT CHECK.  It does not check (F-f) itself, which is a quoted
+# external theorem (rem:ff).  It does not check that the radius on which these
+# exponents sit is R_* rather than R -- that is a TYPING claim, not an identity,
+# and the algebra that licenses the separation is the separate spec
+# rstar-heinz-gap.  And it does not check clause (v); that is
+# cap-scaleinv-stopping-omega2.
+#
+# FALSIFICATION (hand-computed; see the header note on execution).  Replacing
+# claimed_end by "1*(mu/(2*mu+1))" leaves residual mu/(2*mu+1), which is nonzero
+# for mu > 0, so the spec flips to MISMATCH.  Replacing start by
+# "2*mu*(1/(mu+1))" leaves residual 2*mu*(2*mu/((mu+1)*(2*mu+1))) - ... , again
+# nonzero.  The form is therefore not one that must MATCH.
+#
+# PREDICTED: MATCH.  Both sides parse to 2*mu/(2*mu + 1) and the difference is
+# structurally zero; no simplification is required beyond Add flattening.
+variables:
+  mu:
+    domain: positive
+start: "2*mu*(1/(2*mu+1))"
+operation: none
+claimed_end: "1*(2*mu/(2*mu+1))"

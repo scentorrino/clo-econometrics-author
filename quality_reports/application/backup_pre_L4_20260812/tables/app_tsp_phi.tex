@@ -1,0 +1,43 @@
+\begin{tabular}{lrrrrrrrr}
+\toprule
+& & & & & \multicolumn{2}{c}{Bootstrap envelope} & \multicolumn{2}{c}{Counties within $\pm5\,\mu$g/m$^3$} \\
+\cmidrule(lr){6-7} \cmidrule(lr){8-9}
+Pctile of $X$ & TSP & $\hat\varphi(x)-\hat\varphi(x_{0.5})$ & Bootstrap median & Bootstrap s.d. & 5th & 95th & 1970 & 1980 \\
+\midrule
+\multicolumn{9}{l}{\textit{Panel A: $\hat\varphi$ at deciles of the pooled $X$ distribution}} \\
+\midrule
+5 & 31.4 & 0.0038 & 0.0040 & 0.0177 & -0.0295 & 0.0277 & 61 & 67 \\
+10 & 37.5 & -0.0156 & -0.0136 & 0.0154 & -0.0416 & 0.0052 & 94 & 124 \\
+20 & 44.9 & -0.0302 & -0.0303 & 0.0130 & -0.0531 & -0.0118 & 138 & 206 \\
+30 & 49.6 & -0.0293 & -0.0285 & 0.0111 & -0.0485 & -0.0133 & 170 & 272 \\
+40 & 53.6 & -0.0156 & -0.0156 & 0.0064 & -0.0252 & -0.0073 & 184 & 280 \\
+50 (anchor) & 58.0 & 0.0000 & 0.0003 & 0.0021 & -0.0028 & 0.0038 & 187 & 253 \\
+60 & 62.8 & 0.0128 & 0.0141 & 0.0060 & 0.0040 & 0.0249 & 178 & 210 \\
+70 & 68.1 & 0.0207 & 0.0221 & 0.0093 & 0.0084 & 0.0391 & 168 & 154 \\
+80 & 75.4 & 0.0170 & 0.0185 & 0.0137 & -0.0003 & 0.0434 & 135 & 96 \\
+90 & 87.7 & 0.0115 & 0.0163 & 0.0187 & -0.0204 & 0.0436 & 76 & 28 \\
+95 & 100.2 & 0.0181 & 0.0215 & 0.0215 & -0.0173 & 0.0545 & 46 & 9 \\
+\addlinespace
+\multicolumn{9}{l}{\textit{Panel B: bootstrap design and convergence}} \\
+\midrule
+Replications drawn & \multicolumn{8}{l}{99} \\
+Replications with a finite curve & \multicolumn{8}{l}{99} \\
+Failures: error / non-finite & \multicolumn{8}{l}{0 / 0} \\
+$\hat m_\varphi$: median [min, max] & \multicolumn{8}{l}{15 [15, 15]} \\
+Retained with $\hat m_\varphi = 1$ & \multicolumn{8}{l}{0} \\
+Retained with $\hat m_\varphi = \bar m$ & \multicolumn{8}{l}{99} \\
+S.d.\ of the anchor across resamples & \multicolumn{8}{l}{0.63} \\
+Share at $\hat m_\varphi = 1$: resample of $n$ / subsample of 621 & \multicolumn{8}{l}{0 of 99 / 0 of 24} \\
+\addlinespace
+$\theta$ re-estimated as well ($B=1$): replications & \multicolumn{8}{l}{25, 25 finite} \\
+$\theta$ re-estimated: band width on the same draws & \multicolumn{8}{l}{0.0384 vs.\ 0.0374} \\
+$\theta$-step fold solves at the cap (median of 5) & \multicolumn{8}{l}{5} \\
+\addlinespace
+\multicolumn{9}{l}{\textit{Panel C: the same normalised curve recomputed in two other $X$ coordinates}} \\
+\midrule
+Coordinate & Max $|\Delta|$ & RMS $\Delta$ & Max/SD & RMS/SD & Steps up & Band width, 25 paired draws & & \\
+Pooled empirical CDF (baseline) & 0.000 & 0.000 & 0.00 & 0.00 & 35/59 & 0.037 & & \\
+$X$ in $\mu$g/m$^3$ & 0.015 & 0.009 & 1.27 & 0.79 & 40/59 & 0.023 & & \\
+$X$ min--max scaled & 0.015 & 0.009 & 1.27 & 0.79 & 40/59 & 0.023 & & \\
+\bottomrule
+\end{tabular}

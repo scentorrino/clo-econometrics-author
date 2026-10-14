@@ -1,0 +1,978 @@
+% ============================================================================
+%  *** STALE MERGE RECORD.  DO NOT COMPILE AND DO NOT EDIT. ***
+%  This file was merged into results.tex on 2026-07-29 and SUPERSEDED there by
+%  the dispatch-7 fix pass the same day.  It duplicates the labels def:intker,
+%  eq:intker, eq:hatT and eq:a7amend, all of which now live in assumptions.tex,
+%  and it states prp:tccfails, def:lfstep, prp:phirate and lem:srctransfer in
+%  forms that have since been corrected.  It is retained only as the record of
+%  what the Step-6 dispatch delivered and of the amendments it requested.
+%  THE LIVE TEXT IS results.tex PART H.
+% ============================================================================
+%  RESULTS -- PART H -- project `panel-npiv-discrete`
+%  Stage 3, dispatch 4: proof_strategy_memo.md Sec.10, STEP 6.
+%  Produced by the theorist, 2026-07-29.  NEW CONTENT.
+%
+%  THIS FILE IS A DRAFT OF THE NEXT SECTION OF results.tex.  It is written in a
+%  separate file because a parallel dispatch owns results.tex, proofs.tex,
+%  assumptions.tex, notation_glossary.md and theory_memo.md for a Part G fix
+%  pass.  Merge instructions: append the body of this file to results.tex
+%  immediately after rem:sharpscope (results.tex:2079), before the change logs.
+%
+%  CONTENTS
+%    H.1  (O4), exhibition half.  def:intker (the integrated kernel),
+%         def:hatTexp (T-hat and its x-smoothed variant), def:hatAcon (the
+%         operator A-hat_varphi and its adjoint, exhibited), prp:hatAprop.
+%    H.2  (O4), verification half.  prp:tccfails (A6 is FALSE for the pair
+%         (T-hat, A-hat)); A6b and prp:tccrepair (what A6 becomes, and holds
+%         for, once the pair is made consistent); rem:tccverdict.
+%    H.3  The noise level.  lem:opnoise (L-18), lem:aerr (the operator-
+%         estimation rate, new), prp:stopfeas (A7, verified in an amended
+%         form).
+%    H.4  L-19.  lem:unifop, over a source-condition ball, by BRACKETING
+%         entropy; rem:l19cost (the new smoothness line it charges).
+%    H.5  The rate.  lem:srctransfer (the mu <= 1/2 barrier), prp:phirate,
+%         rem:lfnonlinear (F-6 / O10 -- what does NOT transfer), rem:phirscope.
+%
+%  Proofs are in proofs_partH.tex.  Assumptions are cited BY TAG.  Symbols
+%  follow notation_glossary.md, with the additions listed immediately below.
+%
+% ============================================================================
+%  WHAT THIS FILE NEEDS APPENDED OR AMENDED IN THE FIVE LOCKED FILES.
+%  Nothing below is written by this dispatch; each item is a request.
+%
+%  A. notation_glossary.md  Sec.1.5d "Round-10 (Step 6): slots claimed".
+%     Every row records the sweep for the letter CLAIMED, per Sec.1.5b.
+%     C45  sans-serif C_{h_u}, C_{h_x} -- the INTEGRATED kernels of
+%          \eqref{eq:intker}.  CLAIMED.  Sweep: roman C_{h_u}, C_{h_x} are the
+%          kernels (C3); c_C is the support constant; C_{!A} is the Frechet
+%          constant; calligraphic C_0 is cor:udep(c)'s weight class; BLACKBOARD
+%          C IS DELIBERATELY DECLINED, because lem:reprsmooth's proof runs
+%          complex exponentials with an upright imaginary unit and a blackboard
+%          C one line from them reads as the complex plane.  Sans-serif joins
+%          c, k, r, L_Gamma.  Case separation from sans-serif c is the one
+%          already live between c_C and C_{h_u}.
+%     C46  Delta_{h_x} v_i -- the SMOOTHED period difference, \eqref{eq:smdiff}.
+%          CLAIMED, and the reading is CORRECT rather than merely
+%          non-colliding: it IS a smoothed Delta.  Sweep: Delta is the period
+%          difference (plan Sec.1); the Dirac was deleted by C11; no
+%          bandwidth-subscripted Delta occurs in any file.  Separation is by
+%          subscript TYPE -- a bandwidth name -- which is the C43 device.
+%          THE ALTERNATIVE WAS beta_i AND IT IS OCCUPIED: beta_1,...,beta_{L_u}
+%          is the residual sieve basis (plan Sec.15) and bare beta is a Sec.1.6
+%          local.  This is the sweep paying for itself for the fourth round.
+%     C47  n_m := #I_m, n_a := #I_a, with an UPRIGHT subscript.  CLAIMED.
+%          Sweep: italic m is the LF iteration counter (C3), so an italic n_m
+%          would read as "n at iteration m".  Upright = a word subscript naming
+%          the fold, per C37.
+%     C48  T-hat_{h_x} -- the x-smoothed sample operator, \eqref{eq:hatTx}.
+%          CLAIMED.  Sweep: T-hat is the sample analogue (glossary Sec.5);
+%          T never appears without an argument (Sec.1.7); no subscripted T-hat
+%          occurs.  The bandwidth subscript says exactly what is added.
+%     C49  d-hat-T_varphi[.], upright d -- the GATEAUX derivative of T-hat.
+%          CLAIMED.  Sweep: upright i is the imaginary unit and appears only
+%          inside a complex exponential; italic d does not occur as an operator;
+%          differentials are written dx, du, dv.  The bracket argument and the
+%          upright d separate it.  It exists so that prp:hatAprop(v) can name
+%          the object it proves is NOT an operator.
+%     C50  bold G_n -- the Gram matrix of \eqref{eq:gram}.  CLAIMED.  Sweep:
+%          G_varphi is the conditional distribution function (C14), always
+%          varphi-subscripted and italic; bold roman is the sample-matrix family
+%          (bold B, bold D); bold G occurs in no file.
+%     C51  lambda_min(.) with a MATRIX argument.  CLAIMED, and C13's rule is
+%          AMENDED IN THE OPEN on the C42/C27 model.  C13 reads "lambda always
+%          carries two arguments (u,t)".  Amended: lambda with two arguments
+%          (u,t) is the Bierens weight; lambda_min(.) and lambda_max(.),
+%          word-subscripted with a MATRIX argument, are eigenvalues of that
+%          matrix.  Subscript-type separation, the device Sec.1.7 uses five
+%          times.  NOT sigma_min: sigma_ess is already a word-subscripted sigma
+%          taking an OPERATOR argument and returning a SET, so a
+%          word-subscripted sigma returning a NUMBER would be a genuine
+%          near-collision.  Sweep: "lambda_" with a word subscript occurs in no
+%          file.
+%     C52  gamma_n -- the operator-estimation rate of \eqref{eq:gamman}.
+%          CLAIMED.  Sweep: gamma is B1(v)'s finite signed measure on T and is
+%          NEVER subscripted; Gamma is lem:bierenscore's image measure and lives
+%          in one proof (C30).  Separation is by subscript type -- a measure
+%          bare, a rate at n -- which is the Psi_L / Psi_{jk} device, and it is
+%          the convention the user has fixed for this project: bandwidth
+%          dependence is routed through delta_n, gamma_n, kappa_n rather than
+%          through explicit h and dimension exponents.
+%     C53  sans-serif R -- the radius of the H^s ball in \eqref{eq:srcball}.
+%          CLAIMED.  Sweep: italic R_n is the truncated-SVD retained rank (C10),
+%          an INTEGER; sans-serif R is a real radius; font separates, and
+%          sans-serif R occurs in no file.
+%     C54  delta_n^{(k)}, phi-hat^{(k)} -- the error and the iterate at
+%          linearisation stage k.  CLAIMED, and NO NEW LETTER.  The
+%          parenthesised superscript is the order/stage index of the
+%          Lambda^{(0)}, Lambda^{(1)}, Lambda^{(mu'')} family (C40), used here
+%          for a stage rather than an order.  Sweep: phi-hat_m with an INTEGER
+%          SUBSCRIPT is the LF iterate within a stage (C3) and is untouched;
+%          the two indices are on different levels and are typographically
+%          separated, subscript = LF step, superscript = linearisation stage.
+%     C55b PART-H SEC.1.6 LOCALS, four, each declared where it is used and none
+%          crossing a result boundary:
+%            d_i(x)  sans-serif, the kernel-smoothed design-difference weight of
+%                    prp:hatAprop's proof.  Sweep: italic d occurs only as d_Z
+%                    (an integer) and in the differentials dx, du; upright d only
+%                    in d-hat-T[.], always adjacent to T-hat.  A SUPERSCRIPTED
+%                    varpi WAS DRAFTED AND REJECTED -- C19 reserves varpi for the
+%                    RANGE-side densities and requires the variable subscript,
+%                    and d_i is a DOMAIN-side object; a superscript does not move
+%                    a symbol across that boundary.
+%            u_i     sans-serif, the residual-direction argument at unit i, in
+%                    prp:hatAprop Step 5 and prp:tccfails Steps 2-3.  Sweep:
+%                    italic e_j is the RIGHT SINGULAR FUNCTION (glossary Sec.5),
+%                    so the obvious e_i is one index letter from a binding
+%                    symbol of the same font and the same domain -- C34's exact
+%                    species.  Sans-serif u records that the object is a value of
+%                    the residual variable u.
+%            phi_{h_x}, v_{h_x}  the C_{h_x}-smoothing of a function on X, so
+%                    that Delta_{h_x} phi_i = Delta(phi_{h_x})_i.  Bandwidth
+%                    subscript, matching C46.  Sweep: phi_m with an INTEGER
+%                    subscript is the LF iterate (C3); subscript type separates,
+%                    and a sans-serif K_{h_x} was drafted and REJECTED because
+%                    sans-serif k is the kernel of A_cond, calligraphic K is the
+%                    HS operator and roman K is the RESERVED fold count -- three
+%                    live meanings already.
+%            Xi_*    prp:tccfails Step 2's limit; Xi is already a Sec.1.6 local.
+%     C55  sans-serif c_2,...,c_15 -- Part H's locally declared constants,
+%          joining Sec.1.6's integer-subscripted sans-serif family.  c_0 and
+%          c_1 are Part G's and are not reused.  Sans-serif M is a further
+%          Sec.1.6 local, a generic finite bound, in lem:srctransfer(ii) only.
+%     C57  Fraktur m_{p_K} -- the uniform p_K-derivative budget of C2'(ii),
+%          local to lem:opnoise(ii).  CLAIMED.  Sweep: italic m is the LF
+%          counter (C3); sans-serif m was DECLINED by Sec.1.6 precisely to keep
+%          a third meaning off the letter; C7 retired the shorthand m := M/pi.
+%          Fraktur is already this project's third font for a letter with two
+%          live meanings (Fraktur B, C20) and Fraktur m occurs in no file.  The
+%          alternative -- writing max_k sup_t bar-w(t)^{-1} sup_u |d^k M| out at
+%          both sites -- was weighed and declined only because the object also
+%          appears in proofs_partH.tex at four further sites.
+%     C56  DECLINED: no symbol for the discrepancy inflation factor.  A7's
+%          amended threshold is written tau_DP * delta-hat_n * ln n, with the
+%          remark that any divergent factor serves.  Sweep found the natural
+%          name a_n one subscript from the RESERVED degree of ill-posedness a,
+%          which is the letter Sec.1.6's sans-serif slot exists to protect and
+%          which C35 has already charged once.  Sixth application of the
+%          C12/C24/C31/C35/C38 write-it-out precedent.
+%
+%  B. notation_glossary.md Sec.5, new rows for: C_{h_u} (integrated), C_{h_x}
+%     (integrated), Delta_{h_x}, n_m, n_a, T-hat_{h_x}, d-hat-T, bold G_n,
+%     gamma_n, sans-serif R, delta_n^{(k)}, phi-hat^{(k)}, and an amended row
+%     for T-hat, whose present row reads only "sample analogue of T" and which
+%     \eqref{eq:hatT} now DEFINES.  Also amend the A-hat_varphi row: def:hatA
+%     fixes the reading, def:hatAcon performs the construction, and
+%     prp:hatAprop(v) proves that the reading def:hatA rejects is not merely
+%     different but UNAVAILABLE.
+%
+%  C. assumptions.tex.  FIVE requests, of which two are CRITICAL.
+%     (1) CRITICAL.  A6 IS FALSE AS STATED.  prp:tccfails proves it, for the
+%         operator def:hatA names and def:hatAcon exhibits, on every ball of
+%         positive L^2(pi) radius, with probability one.  The defect is not the
+%         constant eta_TCC and is not repairable by shrinking the ball.  A6
+%         must be REPLACED, not weakened.  The replacement this file proves is
+%         A6b (a PROPERTY, not maintained, on the A1d/A2b/A2c model), stated at
+%         \eqref{eq:a6b}, together with prp:tccrepair.  AND prp:phirate DOES NOT
+%         USE EITHER: the route it takes does not need a tangential cone
+%         condition at all.  So the honest disposition is that A6 leaves the
+%         maintained block.  See rem:tccverdict.
+%     (2) CRITICAL.  T-hat IS USED IN THE MAINTAINED ASSUMPTIONS A6 AND A7 AND
+%         IS DEFINED IN NO FILE.  The glossary row reads "sample analogue of T"
+%         and points at memo Sec.3.3, which describes it in prose.  This is the
+%         same defect def:hatA was added to fix one level down, and it was not
+%         swept: fixing the reading of A-hat while leaving T-hat undefined
+%         leaves A6's and A7's content undetermined for a second reason.
+%         \eqref{eq:hatT} supplies the definition.
+%     (3) A7 IS NOT VERIFIABLE AT A FIXED tau_DP from the block's own
+%         hypotheses.  prp:stopfeas proves the T-component at a fixed constant
+%         -- and that is where A5(i)'s sqrt(ln n) earns its keep -- but the
+%         varrho-component follows only from A4(iii), which is an O_P
+%         statement, and an O_P statement gives no fixed-constant exceedance
+%         bound.  Two repairs, either sufficient: (a) A4(iii) strengthened to
+%         P(||varrho-hat - varrho||_{L^2} > c r_n) -> 0 for some finite c; or
+%         (b) A7's threshold inflated to tau_DP delta-hat_n ln n.  (b) costs
+%         NOTHING, because eq:frontier is a STRICT inequality and a factor
+%         (ln n)^{2mu/(2mu+1)} is absorbed by any strict margin.  (b) is
+%         recommended.
+%     (4) A5(i) is CONFIRMED and one clause of it is loosened.  The
+%         T-component's L^2(Pi)-norm is O_P(n^{-1/2}) with NO logarithm --
+%         lem:opnoise Step 2, by a Hilbert-space second-moment bound, because
+%         L^2(Pi) is a Hilbert space and the summands are bounded in norm.  The
+%         sqrt(ln n) A5(i) carries is therefore an upper bound and is satisfied;
+%         it is NOT idle, because prp:stopfeas consumes it at a FIXED constant.
+%         Both facts should be recorded in A5(i)'s comment.
+%     (5) C5'(ii) IS CONSERVATIVE AND THE RE-DERIVATION IT ASKS FOR IS
+%         \eqref{eq:gamman}.  The clause requires (n h_x^2 h_u^3)^{-1} ln n -> 0.
+%         What lem:aerr consumes is (n h_x h_u)^{-1} ln n -> 0: ONE power of
+%         h_x and ONE of h_u.  The inherited exponents 2 and 3 come from a
+%         density-DERIVATIVE estimator in the cross-sectional companion;
+%         A-hat_varphi estimates a density-weighted CONDITIONAL MEAN and carries
+%         one bandwidth in each direction.  C5'(ii) may be relaxed accordingly;
+%         it is stated conservatively in the meantime and prp:phirate is proved
+%         under the RELAXED version, which the current C5'(ii) implies.
+%
+%  D. assumptions.tex, ONE NEW TAG requested: A6b, at \eqref{eq:a6b}.  NOT
+%     MAINTAINED, on the A1d/A2c model: a property with exactly one consumer
+%     (prp:tccrepair), never asserted, and consumed by no theorem in the
+%     programme.  It exists so that the paper can say what A6 SHOULD have said.
+%
+%  E. theory_memo.md: merge step6_memo.md, which carries the findings, the
+%     escalations, and the bibliography flag.
+% ============================================================================
+
+% ===========================================================================
+%  PART H.  STEP 6 -- THE REGULARISED FIRST STEP
+%
+%  ORDER OF READING.  H.1 is a construction and carries no hypotheses beyond
+%  the block's; H.2 is the verification (O4) asks for and its headline result
+%  is NEGATIVE; H.3--H.5 build the rate on a route that does not use A6.
+%  A reader who wants only the rate may read H.1, then H.3--H.5, and take
+%  rem:tccverdict on trust.
+% ===========================================================================
+
+% ---------------------------------------------------------------------------
+%  H.1  (O4), EXHIBITION HALF
+% ---------------------------------------------------------------------------
+
+\begin{definition}[The integrated kernel]\label{def:intker}
+Let $C_{h_u}$ be the kernel of C3 and, for $s_0\in[0,1]$, define
+\begin{equation}\label{eq:intker}
+\mathsf C_{h_u}(v;s_0)\;:=\;\int_{-\infty}^{v/h_u}C_{h_u}\big(h_u\varsigma,s_0\big)\,d\varsigma
+\;=\;\frac1{h_u}\int_{-\infty}^{v}C_{h_u}(\varsigma,s_0)\,d\varsigma ,
+\qquad v\in\IR ,
+\end{equation}
+and write $\mathsf C_{h_u}(v):=\mathsf C_{h_u}(v;1)$. The same definition with $h_x$ in place of $h_u$
+defines $\mathsf C_{h_x}$. \emph{The boundary index is carried only in the $x$-direction}: in the
+residual direction the argument $u$ ranges over all of $\IR$ and there is no boundary, so
+\cref{def:hatTexp} uses $\mathsf C_{h_u}(\cdot)=\mathsf C_{h_u}(\cdot;1)$ throughout; in the
+$x$-direction $\mathcal X$ is a compact interval by A0 and the index is used.
+\end{definition}
+
+\begin{lemma}[Properties of the integrated kernel]\label{lem:intker}
+Suppose C3 holds. Then, with $\mathsf c_2:=\sup_{h>0,\,s_0\in[0,1],\,|\varsigma|\le c_C}|C_{h}(h\varsigma,s_0)|<\infty$:
+\begin{enumerate}
+\item[(i)] \emph{Support and normalisation.} $\mathsf C_{h_u}(v)=0$ for $v\le-c_Ch_u$ and
+$\mathsf C_{h_u}(v)=1$ for $v\ge c_Ch_u$; consequently $0\le\mathsf C_{h_u}\le\mathsf c_3$ with
+$\mathsf c_3:=1\vee 2c_C\mathsf c_2$, uniformly in $h_u$.
+\item[(ii)] \emph{Derivative, and a second-order bound without a second derivative.} $\mathsf C_{h_u}$
+is continuously differentiable with $\partial_v\mathsf C_{h_u}(v)=h_u^{-1}C_{h_u}(v,1)$ and
+$\|\partial_v\mathsf C_{h_u}\|_\infty\le\mathsf c_2h_u^{-1}$; $\partial_v\mathsf C_{h_u}$ is Lipschitz
+with constant $\mathsf c_4h_u^{-2}$, $\mathsf c_4$ being the Lipschitz constant of
+$C_{h_u}(h_u\cdot,1)$ furnished by C3(iii); and consequently, for all $v,\varDelta\in\IR$,
+\[
+\big|\mathsf C_{h_u}(v+\varDelta)-\mathsf C_{h_u}(v)-\partial_v\mathsf C_{h_u}(v)\,\varDelta\big|
+\;\le\;\tfrac12\,\mathsf c_4\,h_u^{-2}\,\varDelta^{2} .
+\]
+\emph{No second derivative of $C_{h_u}$ is assumed or used}; C3(iii) gives a Lipschitz kernel and the
+display above is what a Lipschitz derivative buys.
+\item[(iii)] \emph{Order.} If $G:\IR\to[0,1]$ is $p_K$ times continuously differentiable with
+$\|G^{(p_K)}\|_\infty<\infty$, then
+$\big|\int_{\IR}\mathsf C_{h_u}(u-a)\,dG(a)-G(u)\big|\le\mathsf c_5\,\|G^{(p_K)}\|_\infty\,h_u^{p_K}$
+for every $u$, with $\mathsf c_5:=(p_K!)^{-1}\!\int|\varsigma|^{p_K}|C_{h_u}(h_u\varsigma,1)|d\varsigma$,
+finite and uniform in $h_u$ by C3(i)--(ii).
+\item[(iv)] \emph{Exact $x$-normalisation.} For every $x^\ast$ in the interior of $\mathcal X$ there is
+$s_0=s_0(x^\ast)\in[0,1]$, equal to $1$ whenever $x^\ast$ is at distance at least $c_Ch_x$ from both
+endpoints of $\mathcal X$, with
+$h_x^{-1}\!\int_{\mathcal X}C_{h_x}(x-x^\ast,s_0)\,dx=1$.
+\end{enumerate}
+\end{lemma}
+
+\begin{definition}[The sample operator, exhibited]\label{def:hatTexp}
+Adopt the sample-splitting convention of \cref{lem:balance}: $\{1,\dots,n\}=\mathcal I_a\cup\mathcal I_m$,
+$n_{\mathrm a}:=\#\mathcal I_a$, $n_{\mathrm m}:=\#\mathcal I_m$, the two folds independent by A0, with
+$\hat\varrho$ computed on $\mathcal I_a$ as A4(iii) requires. \emph{Construction convention, costing
+nothing}: $\hat\varrho$ is taken to have values in $[0,1]$; if a first-stage estimator does not, replace
+it by its truncation to $[0,1]$, which can only decrease $\|\hat\varrho-\varrho\|_{L^2}$ because
+$\varrho\in[0,1]$, so A4(iii) is preserved. Write
+$\widehat{\widetilde W}_i:=W_i-\hat\varrho(\Delta Z_i)$, so that $|\widehat{\widetilde W}_i|\le1$ as in
+(P1). The \emph{sample operator} is
+\begin{equation}\label{eq:hatT}
+\hat T(\varphi,\theta)(u,t)\;:=\;\frac1{n_{\mathrm m}}\sum_{i\in\mathcal I_m}
+\widehat{\widetilde W}_i\;\mathsf C_{h_u}\big(u-\Delta U_i(\theta,\varphi)\big)\;w\big(t'\Phi(\Delta Z_i)\big),
+\qquad(u,t)\in\IR\times\mathcal T ,
+\end{equation}
+with $\Delta U_i(\theta,\varphi)$ as in \eqref{eq:trialres}. \emph{This is the object A6, A7 and C3
+name and which no file has defined.}
+
+For $\varphi\in\mathcal V$ and $i\in\mathcal I_m$ let the \emph{smoothed period difference} be
+\begin{equation}\label{eq:smdiff}
+\Delta_{h_x}\varphi_i\;:=\;\frac1{h_x}\int_{\mathcal X}
+\Big[C_{h_x}\big(x-X_{i2},s_{0,i2}\big)-C_{h_x}\big(x-X_{i1},s_{0,i1}\big)\Big]\varphi(x)\,dx ,
+\end{equation}
+with $s_{0,ij}:=s_0(X_{ij})$ from \cref{lem:intker}(iv), and write
+$\Delta_{h_x}\varphi:=(\Delta_{h_x}\varphi_i)_{i\in\mathcal I_m}\in\IR^{n_{\mathrm m}}$. The
+\emph{$x$-smoothed sample operator} is \eqref{eq:hatT} with $\Delta\varphi_i$ replaced by
+$\Delta_{h_x}\varphi_i$:
+\begin{equation}\label{eq:hatTx}
+\hat T_{h_x}(\varphi,\theta)(u,t)\;:=\;\frac1{n_{\mathrm m}}\sum_{i\in\mathcal I_m}
+\widehat{\widetilde W}_i\;\mathsf C_{h_u}\big(u-\Delta Y_{i,\theta}+\Delta_{h_x}\varphi_i\big)\;
+w\big(t'\Phi(\Delta Z_i)\big),
+\qquad \Delta Y_{i,\theta}:=\Delta Y_i-\Delta Z_i'\theta .
+\end{equation}
+\emph{The two agree to the accuracy of the $x$-smoothing and differ in one respect that decides
+everything below}: $\varphi\mapsto\hat T(\varphi,\theta)$ depends on $\varphi$ through the
+\emph{point evaluations} $\varphi(X_{ij})$, while $\varphi\mapsto\hat T_{h_x}(\varphi,\theta)$ depends
+on it through the \emph{bounded linear functionals} \eqref{eq:smdiff}.
+\end{definition}
+
+\begin{definition}[The smoothed sample linearisation, exhibited]\label{def:hatAcon}
+Fix $\theta$ and $\varphi\in\mathcal V$, and put, for $i\in\mathcal I_m$,
+\begin{equation}\label{eq:hatg}
+\hat g_{u,t,i}(\varphi,\theta)\;:=\;\widehat{\widetilde W}_i\;w\big(t'\Phi(\Delta Z_i)\big)\;
+\frac1{h_u}\,C_{h_u}\big(u-\Delta Y_{i,\theta}+\Delta_{h_x}\varphi_i,\;1\big) ,
+\end{equation}
+the sample counterpart of $g_{u,t}$ of \eqref{eq:kernel} with the conditional density replaced by the
+derivative of the integrated kernel. \emph{The residual inside \eqref{eq:hatg} carries the
+\textbf{smoothed} difference $\Delta_{h_x}\varphi_i$ of \eqref{eq:smdiff}, not the raw $\Delta\varphi_i$,
+and the choice is not cosmetic}: with the raw difference every clause of \cref{prp:hatAprop} except
+(iv) is unchanged, and (iv) acquires an additional \emph{first-order} term --- which is exactly the
+discrepancy \cref{prp:tccfails} exploits. Define the \emph{kernel-smoothed sample difference
+functional}
+\begin{equation}\label{eq:hatnu}
+\hat\nu_{u,t}(x)\;:=\;\frac1{n_{\mathrm m}h_x}\sum_{i\in\mathcal I_m}\hat g_{u,t,i}(\varphi,\theta)
+\Big[C_{h_x}\big(x-X_{i2},s_{0,i2}\big)-C_{h_x}\big(x-X_{i1},s_{0,i1}\big)\Big] ,
+\end{equation}
+which replaces each of the two products $E[\,\cdot\mid X_j=x]f_{X_j}(x)$ constituting $\nu_{g_{u,t}}$ by
+its $C_{h_x}$ kernel estimate, exactly as \cref{def:hatA} prescribes. Then
+\begin{equation}\label{eq:hatAcon}
+\hat{\mathcal A}_\varphi h(u,t)\;:=\;\int_{\mathcal X}\frac{\hat\nu_{u,t}(x)}{\pi(x)}\,h(x)\,\pi(x)\,dx
+\;=\;\int_{\mathcal X}\hat\nu_{u,t}(x)\,h(x)\,dx
+\;=\;\frac1{n_{\mathrm m}}\sum_{i\in\mathcal I_m}\hat g_{u,t,i}(\varphi,\theta)\,\Delta_{h_x}h_i ,
+\end{equation}
+with kernel $\hat{\mathsf k}_\varphi(u,t;x):=\hat\nu_{u,t}(x)/\pi(x)$ in the $L^2(\pi)$ pairing, and
+\begin{equation}\label{eq:hatAadj}
+\hat{\mathcal A}^\ast_\varphi\alpha(x)\;:=\;\frac1{\pi(x)}\int_{\IR\times\mathcal T}\hat\nu_{u,t}(x)\,
+\alpha(u,t)\,\Pi(du,dt),
+\qquad \alpha\in L^{2}(\Pi) .
+\end{equation}
+As in \cref{def:hatA}, $\hat{\mathcal A}_{\mathrm{cond}}:=\hat{\mathcal A}_{\vdagger}$ and
+$\hat{\mathcal A}^\ast_{\mathrm{cond}}:=\hat{\mathcal A}^\ast_{\vdagger}$.
+
+\emph{Two features of \eqref{eq:hatAcon} are worth naming because they are not accidents.} First, the
+reference density cancels: the operator is $h\mapsto\int\hat\nu_{u,t}h\,dx$ and is therefore
+\emph{computable without knowing $\pi$}, which the population identity
+$\langle\nu_g/\pi,h\rangle_{L^{2}(\pi)}=\int\nu_gh\,dx$ of (P5) already predicted; only its
+\emph{kernel} with respect to $\pi\,dx$ carries $\pi^{-1}$, which is the same bookkeeping
+\cref{rem:nupi} records for A2. Second, \eqref{eq:hatAcon} depends on $h$ through
+$\Delta_{h_x}h$ and through nothing else, which is what makes it a bounded operator and is the whole
+content of \cref{prp:hatAprop}.
+\end{definition}
+
+\begin{proposition}[What $\hat{\mathcal A}_\varphi$ is, and what it is not]\label{prp:hatAprop}
+Suppose A0, B1(i), (ii), (iv.c), C1(ii) and C3 hold, and let $\hat{\mathcal A}_\varphi$ be
+\eqref{eq:hatAcon}. Then, conditionally on the sample, and for every $\varphi\in\mathcal V$ and
+$\theta\in\IR^{p}$:
+\begin{enumerate}
+\item[(i)] \emph{Boundedness.} $\hat{\mathcal A}_\varphi:\mathcal V\to L^{2}(\Pi)$ is a bounded linear
+operator with
+$\|\hat{\mathcal A}_\varphi\|\le 2\,(2c_C)^{1/2}\,\mathsf c_2^{2}\,c_\Pi\,\|1/\pi\|_\infty^{1/2}\,h_u^{-1}h_x^{-1/2}$.
+\item[(ii)] \emph{Finite rank.} $\operatorname{rank}\hat{\mathcal A}_\varphi\le n_{\mathrm m}$, so
+$\hat{\mathcal A}_\varphi$ is Hilbert--Schmidt, and $\ker\hat{\mathcal A}_\varphi$ has infinite
+dimension.
+\item[(iii)] \emph{The adjoint maps into $\mathcal V$.} $\int_{\mathcal X}\hat\nu_{u,t}(x)\,dx=0$ for
+every $(u,t)$, hence $\hat{\mathcal A}^\ast_\varphi\alpha\in\mathcal V$ for every $\alpha\in L^{2}(\Pi)$,
+and \eqref{eq:hatAadj} is the adjoint of \eqref{eq:hatAcon} in the $L^{2}(\pi)$--$L^{2}(\Pi)$ pairing.
+\emph{This is what C3(ii)'s boundary index is for}, through \cref{lem:intker}(iv); without it the
+identity fails by an $O(1)$ amount at design points within $c_Ch_x$ of an endpoint of $\mathcal X$, and
+$\hat{\mathcal A}^\ast_\varphi$ leaves the parameter space.
+\item[(iv)] \emph{It is the exact Fr\'echet derivative of $\hat T_{h_x}$.} The map
+$\varphi\mapsto\hat T_{h_x}(\varphi,\theta)$ is twice Fr\'echet differentiable on $\mathcal V$ with
+$\partial_\varphi\hat T_{h_x}(\varphi,\theta)=\hat{\mathcal A}_\varphi$ and, for all
+$\varphi,\varphi+v\in\mathcal V$,
+\begin{equation}\label{eq:hatTxrem}
+\big\|\hat T_{h_x}(\varphi+v,\theta)-\hat T_{h_x}(\varphi,\theta)-\hat{\mathcal A}_\varphi v\big\|_{L^{2}(\Pi)}
+\;\le\;\frac{\mathsf c_4\,c_\Pi}{2\,h_u^{2}}\cdot\frac{\|\Delta_{h_x}v\|_2^{2}}{n_{\mathrm m}} .
+\end{equation}
+\item[(v)] \emph{It is not, and cannot be, a derivative of $\hat T$ --- the reading
+\cref{def:hatA} rejects is unavailable, not merely different.} The Gateaux derivative of
+$\hat T(\cdot,\theta)$ at $\varphi$ in the direction $v$ exists for every $v\in\mathcal V$ and equals
+\begin{equation}\label{eq:gateaux}
+\mathrm d\hat T_\varphi[v](u,t)\;=\;\frac1{n_{\mathrm m}}\sum_{i\in\mathcal I_m}
+\widehat{\widetilde W}_i\,w\big(t'\Phi(\Delta Z_i)\big)\,\frac1{h_u}
+C_{h_u}\big(u-\Delta U_i(\theta,\varphi),1\big)\,\Delta v_i,
+\qquad \Delta v_i=v(X_{i2})-v(X_{i1})
+\end{equation}
+--- the \emph{raw} residual and the \emph{raw} difference, which is what distinguishes it from
+\eqref{eq:hatAcon} ---
+but $v\mapsto\mathrm d\hat T_\varphi[v]$ is \emph{unbounded on $\mathcal V$}, and indeed unbounded on
+every infinite-dimensional subspace of $\mathcal V$ that separates the points $\{X_{ij}\}$: almost
+surely there is a sequence $v_k\in\mathcal V$ with $\|v_k\|_{L^{2}(\pi)}\to0$ and
+$\|\mathrm d\hat T_\varphi[v_k]\|_{L^{2}(\Pi)}\ge\mathsf c>0$. Consequently $\hat T(\cdot,\theta)$ is
+\emph{nowhere Fr\'echet differentiable} on $\mathcal V$, and no bounded operator is its derivative.
+\end{enumerate}
+\end{proposition}
+
+% ---------------------------------------------------------------------------
+%  H.2  (O4), VERIFICATION HALF.  THE HEADLINE IS NEGATIVE.
+% ---------------------------------------------------------------------------
+
+\begin{proposition}[A6 is false for the operator it names]\label{prp:tccfails}
+Suppose A0, A4(i), B1(i), (ii), (iv), C1(ii) and C3 hold, and that $\varrho(\Delta Z)\notin\{0,1\}$ and
+$X_{11},X_{12},\dots,X_{n2}$ are pairwise distinct --- both automatic here, the first by A4(i) and the
+second because $X$ is continuously distributed by \cref{def:model}. Let
+$\hat{\mathcal A}_{\tilde\varphi}$ be \eqref{eq:hatAcon}, let $\hat T$ be \eqref{eq:hatT}, and let
+$\eta_{\mathrm{TCC}}<1$. Then, with probability one, for \emph{every} $\tilde\varphi\in\mathcal V$ and
+every $\bar\rho>0$ there exists $\varphi\in\mathcal V$ with
+$\|\varphi-\tilde\varphi\|_{L^{2}(\pi)}\le\bar\rho$ and
+\[
+\big\|\hat T(\varphi,\theta)-\hat T(\tilde\varphi,\theta)-\hat{\mathcal A}_{\tilde\varphi}(\varphi-\tilde\varphi)\big\|_{L^{2}(\Pi)}
+\;>\;\eta_{\mathrm{TCC}}\,\big\|\hat T(\varphi,\theta)-\hat T(\tilde\varphi,\theta)\big\|_{L^{2}(\Pi)} .
+\]
+Hence the event in A6 has probability $0$ for every $n$, every $\eta_{\mathrm{TCC}}<1$, and every ball
+$\mathcal V_n$ of positive $L^{2}(\pi)$-radius. \emph{A6 is not a strong assumption; it is a false one.}
+\end{proposition}
+
+\begin{remark}[Why it fails, in one sentence, and what it is not]\label{rem:tccwhy}
+A tangential cone condition asks a \emph{second-order} quantity to be dominated by a \emph{first-order}
+one. Pairing $\hat T$, which sees $\varphi$ through point evaluations, with
+$\hat{\mathcal A}_{\tilde\varphi}$, which sees it through the smoothed functionals \eqref{eq:smdiff},
+leaves a \emph{first-order} discrepancy
+$\mathrm d\hat T_{\tilde\varphi}[v]-\hat{\mathcal A}_{\tilde\varphi}v$ on the left-hand side, and
+by \cref{prp:hatAprop}(v) that discrepancy is unbounded relative to $\|v\|_{L^{2}(\pi)}$ while the
+right-hand side is not bounded below by anything. \emph{This is exactly the ambiguity \cref{def:hatA}
+identifies and fixes one level down.} \cref{def:hatA} is right that the two readings are not
+interchangeable and right that C3's bandwidth forces the separately-smoothed one; what it could not
+see, having performed no construction, is that under that reading A6 pairs two objects whose difference
+is first order. The defect is therefore \emph{in the pairing}, not in the constant $\eta_{\mathrm{TCC}}$
+and not in the radius of $\mathcal V_n$ --- which is why \cref{prp:tccfails} is stated at every
+$\eta_{\mathrm{TCC}}<1$ and every $\bar\rho>0$.
+\end{remark}
+
+\begin{definition}[A6b: restricted curvature (a \emph{property}, not maintained)]\label{def:a6b}
+Let $\eta\in(0,\tfrac12)$ and let $\mathcal V_n\subseteq\mathcal V$. The pair
+$(\hat T_{h_x},\hat{\mathcal A})$ \emph{satisfies A6b at $(\eta,\mathcal V_n)$} if
+\begin{equation}\label{eq:a6b}
+\big\|\hat T_{h_x}(\varphi,\theta)-\hat T_{h_x}(\tilde\varphi,\theta)-\hat{\mathcal A}_{\tilde\varphi}(\varphi-\tilde\varphi)\big\|_{L^{2}(\Pi)}
+\;\le\;\frac{\eta}{1+\eta}\,\big\|\hat{\mathcal A}_{\tilde\varphi}(\varphi-\tilde\varphi)\big\|_{L^{2}(\Pi)}
+\qquad\text{for all }\varphi,\tilde\varphi\in\mathcal V_n .
+\end{equation}
+\emph{A6b is NOT MAINTAINED}, on the A1d/A2c model: it is a property that a pair may or may not have,
+it has exactly one consumer (\cref{prp:tccrepair}), it is never asserted, and \emph{no theorem in this
+programme uses it} --- \cref{prp:phirate} takes a route that needs no cone condition at all. It is
+stated so that the paper can say what A6 should have said, and so that the simulation grid has a
+testable object (probe CP-8).
+\end{definition}
+
+\begin{proposition}[A6b implies a tangential cone condition, and holds on an explicit ball]\label{prp:tccrepair}
+Suppose the hypotheses of \cref{prp:hatAprop} hold, fix $\theta$ and $\tilde\varphi$, and let
+\begin{equation}\label{eq:gram}
+\mathbf G_n\;:=\;\Big(\big\langle \hat g_{\cdot,\cdot,i}(\tilde\varphi,\theta),\,
+\hat g_{\cdot,\cdot,k}(\tilde\varphi,\theta)\big\rangle_{L^{2}(\Pi)}\Big)_{i,k\in\mathcal I_m}
+\end{equation}
+be the Gram matrix of the $n_{\mathrm m}$ functions \eqref{eq:hatg} in $L^{2}(\Pi)$. Then:
+\begin{enumerate}
+\item[(i)] \emph{A6b delivers A6 for the consistent pair.} If $(\hat T_{h_x},\hat{\mathcal A})$
+satisfies A6b at $(\eta,\mathcal V_n)$ then A6 holds verbatim with $\hat T$ replaced by
+$\hat T_{h_x}$ and $\eta_{\mathrm{TCC}}=\eta$, deterministically on the same event; and, on that
+event, for all $\varphi,\tilde\varphi\in\mathcal V_n$,
+\[
+(1-\eta)\big\|\hat T_{h_x}(\varphi,\theta)-\hat T_{h_x}(\tilde\varphi,\theta)\big\|
+\;\le\;\big\|\hat{\mathcal A}_{\tilde\varphi}(\varphi-\tilde\varphi)\big\|
+\;\le\;(1+\eta)\big\|\hat T_{h_x}(\varphi,\theta)-\hat T_{h_x}(\tilde\varphi,\theta)\big\| .
+\]
+\item[(ii)] \emph{A sufficient condition, with an explicit radius.} Suppose $\mathbf G_n$ is
+nonsingular and let
+\begin{equation}\label{eq:tccrad}
+\bar\rho_n\;:=\;\frac{\eta}{1+\eta}\cdot
+\frac{h_u^{2}\,h_x^{1/2}}{(2c_C)^{1/2}\,\mathsf c_2\,\mathsf c_4\,c_\Pi\,\|1/\pi\|_\infty^{1/2}}
+\cdot\frac{\lambda_{\min}(\mathbf G_n)^{1/2}}{n_{\mathrm m}^{1/2}} .
+\end{equation}
+Then $(\hat T_{h_x},\hat{\mathcal A})$ satisfies A6b at $(\eta,\mathcal V_n)$ for
+$\mathcal V_n=\{\varphi\in\mathcal V:\|\varphi-\tilde\varphi\|_{L^{2}(\pi)}\le\bar\rho_n\}$.
+\item[(iii)] \emph{And the radius is governed by the smallest singular value, which is where the
+ill-posedness sits.} $n_{\mathrm m}^{-1}\lambda_{\min}(\mathbf G_n)^{1/2}$ is exactly the smallest ratio
+$\|\hat{\mathcal A}_{\tilde\varphi}v\|_{L^{2}(\Pi)}\big/\|\Delta_{h_x}v\|_{2}$, i.e.\ the injectivity
+modulus of $\hat{\mathcal A}_{\tilde\varphi}$ read in the $\Delta_{h_x}$ coordinates, so
+\eqref{eq:tccrad} shrinks with the ill-posedness of the empirical linearisation. \emph{No conclusion of
+this file rests on $\bar\rho_n$ being bounded away from zero, and none is claimed}; whether it is, is a
+design question about the conditioning of $\mathbf G_n$ --- the same species of question A8's upper end
+answers for the balancing solve --- and it is the object probe CP-8 should report.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[The verdict on \textup{(O4)}, and the disposition of A6]\label{rem:tccverdict}
+\textup{(O4)} asked for two things: exhibit $\hat{\mathcal A}_\varphi$, and verify A6 and A7 for the
+object exhibited. Both are done and the answers differ.
+
+\emph{The operator is exhibited} at \eqref{eq:hatAcon}, with $\hat T$ at \eqref{eq:hatT} --- which had to
+be exhibited too, because A6 and A7 are statements about $\hat T$ and \emph{$\hat T$ was defined in no
+file either}. \Cref{prp:hatAprop} establishes that the exhibited object is bounded, finite rank,
+adjointable into $\mathcal V$, and is the exact Fr\'echet derivative of the $x$-smoothed operator
+$\hat T_{h_x}$ --- so \cref{def:hatA}'s reading is not only fixed but \emph{realised}, and its rejected
+alternative is proved unavailable rather than merely declined.
+
+\emph{A6 is not verified; it is refuted}, by \cref{prp:tccfails}. Three consequences, each a request on
+the maintained block rather than an edit to it.
+\begin{enumerate}
+\item[(1)] \emph{A6 must leave the maintained block.} An assumption whose event has probability zero
+cannot be maintained. It is not repairable by lowering $\eta_{\mathrm{TCC}}$ or shrinking
+$\mathcal V_n$; \cref{prp:tccfails} quantifies over both.
+\item[(2)] \emph{What A6 should have said is A6b}, \cref{def:a6b}, which pairs $\hat{\mathcal A}$ with
+the operator it actually differentiates. \Cref{prp:tccrepair} proves A6b non-vacuous and gives an
+explicit radius. A6b is a \emph{property}, not maintained, exactly as A1d and A2c are.
+\item[(3)] \emph{Nothing downstream needs either.} \Cref{prp:phirate} is proved without A6 and without
+A6b, by a route that treats the nonlinearity as an addition to the noise level rather than controlling
+it by a cone condition; \cref{rem:lfnonlinear} explains why that route is available here and why the
+inherited one is not. The strategy memo's instruction to attempt the range-invariance route ``for
+$\hat T$, not $T$, one round only'' is executed in \cref{prp:norangeinv} and the round is spent: it
+fails, and it fails for a reason that is proved rather than reported.
+\end{enumerate}
+
+\emph{A7 is verified in part}, by \cref{prp:stopfeas}: at a fixed $\tau_{\mathrm{DP}}$ for the component
+of the noise generated by the smoothed indicator and the empirical average, and \emph{not} at a fixed
+$\tau_{\mathrm{DP}}$ for the component generated by $\hat\varrho$, because A4(iii) is an $O_P$
+statement and an $O_P$ statement carries no fixed-constant exceedance bound. The amendment is item
+C(3) of this file's header and it costs nothing.
+\end{remark}
+
+\begin{proposition}[The range-invariance route, spent]\label{prp:norangeinv}
+Range invariance in the sense of \citet[(2.6)--(2.7)]{hanke1995} would require a family of bounded
+operators $\mathcal R(\varphi,\tilde\varphi)$ on $L^{2}(\Pi)$, with
+$\|\mathcal R(\varphi,\tilde\varphi)-I\|\le\mathsf c\|\varphi-\tilde\varphi\|_{L^{2}(\pi)}$, such that
+$\hat{\mathcal A}_\varphi=\mathcal R(\varphi,\tilde\varphi)\,\hat{\mathcal A}_{\tilde\varphi}$ for all
+$\varphi,\tilde\varphi$ in a ball $\mathcal B$. Suppose the hypotheses of \cref{prp:hatAprop} and, in
+addition, that $\mathcal B$ has $L^{2}(\pi)$-radius exceeding
+$\mathsf c_9\,h_u\,h_x^{1/2}$ with
+$\mathsf c_9:=c_C(2c_C)^{-1/2}\mathsf c_2^{-1}\|1/\pi\|_\infty^{-1/2}$. Then:
+\begin{enumerate}
+\item[(i)] range invariance forces $\mathcal R(\hat{\mathcal A}_\varphi)=\mathcal R(\hat{\mathcal A}_{\tilde\varphi})$
+for every $\varphi,\tilde\varphi\in\mathcal B$ with
+$\mathsf c\|\varphi-\tilde\varphi\|_{L^{2}(\pi)}<1$;
+\item[(ii)] and that equality fails: almost surely there are $\varphi,\tilde\varphi\in\mathcal B$
+arbitrarily close in $L^{2}(\pi)$ with
+$\mathcal R(\hat{\mathcal A}_\varphi)\ne\mathcal R(\hat{\mathcal A}_{\tilde\varphi})$.
+\end{enumerate}
+Hence no such family exists, for any $\mathsf c<\infty$. \emph{The mechanism is that
+$\hat{\mathcal A}_\varphi$'s range is spanned by kernels \emph{translated} in $u$ by
+$\Delta_{h_x}\varphi_i$, and translates of a compactly supported function by more than its support
+width are linearly independent.} The same argument applies verbatim to the population pair
+$(T,\mathcal A_\varphi)$, where by \eqref{eq:Adef} and the shift identity of (P6) the base point enters
+$\mathcal A_\varphi$ as an argument shift of the conditional density.
+\end{proposition}
+
+% ---------------------------------------------------------------------------
+%  H.3  THE NOISE LEVEL.  L-18, THE OPERATOR-ESTIMATION RATE, AND A7.
+% ---------------------------------------------------------------------------
+
+\begin{lemma}[L-18: the operator error at the fixed truth]\label{lem:opnoise}
+Suppose A0, A1, A1b(iv), A4(iii), B1(i), (ii), (iv.c), C2$'$, C3 and C5$'$(i) hold, and adopt
+\cref{def:hatTexp}. Then $T(\vdagger,\theta_\dagger)=0$ and
+\begin{equation}\label{eq:opnoise}
+\big\|\hat T(\vdagger,\theta_\dagger)\big\|_{L^{2}(\Pi)}
+\;=\;\underbrace{O_P\big(n^{-1/2}\big)}_{\text{empirical}}
+\;+\;\underbrace{O\big(h_u^{p_K}\big)}_{\text{smoothing bias}}
+\;+\;\underbrace{O_P(r_n)}_{\text{propensity}}
+\;=\;O_P\big(\hat\delta_n\big),
+\end{equation}
+with $\hat\delta_n$ as in A5(i). Moreover the three components are separately controlled:
+\begin{enumerate}
+\item[(i)] \emph{Empirical, with no logarithm and with a fixed-constant tail.} Writing
+$\bar T$ for \eqref{eq:hatT} with $\varrho$ in place of $\hat\varrho$ and
+for every $\mathsf s>0$
+\[
+E\big\|\bar T(\vdagger,\theta_\dagger)-E\bar T(\vdagger,\theta_\dagger)\big\|^{2}_{L^{2}(\Pi)}
+\le\frac{\mathsf c_3^{2}c_\Pi^{2}}{n_{\mathrm m}},
+\qquad
+P\Big(\big\|\bar T-E\bar T\big\|_{L^{2}(\Pi)}\ge \mathsf s\Big)\le\frac{\mathsf c_3^{2}c_\Pi^{2}}{n_{\mathrm m}\,\mathsf s^{2}} .
+\]
+\emph{The $L^{2}(\Pi)$ norm needs no uniformity in $(u,t)$ and hence no logarithm}, because
+$L^{2}(\Pi)$ is a Hilbert space and the summands are bounded in \emph{norm}; the logarithm A5(i)
+carries is what turns the second display into a \emph{fixed-constant} statement at
+$\mathsf s=\tau n^{-1/2}\sqrt{\ln n}$, where the right-hand side is $O(1/\ln n)\to0$, and that is where
+it earns its keep. \emph{No exponential inequality and no Hilbert-space concentration result is used;
+Chebyshev suffices, which matters because no such result is pinnable in this project's
+bibliography.}
+\item[(ii)] \emph{Smoothing bias.} $\|E\bar T(\vdagger,\theta_\dagger)-T(\vdagger,\theta_\dagger)\|_{L^{2}(\Pi)}
+\le\mathsf c_5\,c_\Pi\,\mathfrak m_{p_K}\,h_u^{p_K}$, where
+$\mathfrak m_{p_K}:=\max_{k\le p_K}\sup_t\bar w(t)^{-1}\sup_u|\partial_u^{k}\mathcal M(u,t)|<\infty$ by
+C2$'$(ii); this is $O(n^{-1/2})$ under C5$'$(i).
+\item[(iii)] \emph{Propensity.}
+$\|\hat T(\vdagger,\theta_\dagger)-\bar T(\vdagger,\theta_\dagger)\|_{L^{2}(\Pi)}
+\le\mathsf c_3c_\Pi\,n_{\mathrm m}^{-1}\sum_{i\in\mathcal I_m}|\hat\varrho(\Delta Z_i)-\varrho(\Delta Z_i)|
+=O_P(r_n)$.
+\end{enumerate}
+\emph{Scope, per the memo's own correction to L-18}: this is a statement at the \emph{fixed} truth. It
+is not sufficient for \cref{prp:phirate}, which evaluates the residual along a data-dependent path;
+that is \cref{lem:unifop}.
+\end{lemma}
+
+\begin{lemma}[The operator-estimation rate, and the re-derivation C5$'$(ii) asks for]\label{lem:aerr}
+Suppose A0, A1b(iv), A4(iii), B1(i), (ii), (iv.c), C1, C2$'$, C3 and C5$'$ hold. Define
+\begin{equation}\label{eq:gamman}
+\gamma_n\;:=\;\underbrace{\big(n\,h_x\,h_u\big)^{-1/2}\sqrt{\ln n}}_{\text{variance}}
+\;+\;\underbrace{h_x^{p_K}+h_u^{p_K}}_{\text{smoothing bias}}
+\;+\;\underbrace{r_n\,\big(h_x\,h_u\big)^{-1/2}}_{\text{propensity}} .
+\end{equation}
+\emph{The propensity term carries the bandwidth factor and the first term is therefore never binding},
+since $r_n\ge n^{-1/2}$ by A4(iii) and \eqref{eq:frontier}. \emph{The factor $(h_xh_u)^{-1/2}$ is a
+triangle-inequality bound and is very likely improvable}: the mean of that term is a $\nu$-functional
+of an integrable function and is $O(r_n)$ with no bandwidth at all, and only its fluctuation carries
+the factor, which a sup-norm rate for $\hat\varrho$ would remove --- but \emph{nothing in the block
+prices $\|\hat\varrho-\varrho\|_\infty$}, as the glossary's $r_n$ row records, so the crude bound is
+carried. This is recorded, not claimed away.
+Then, for the ball $\mathcal V_n$ of \eqref{eq:srcball} below,
+\begin{equation}\label{eq:aerr}
+\sup_{\varphi\in\mathcal V_n}\big\|\hat{\mathcal A}_\varphi-\mathcal A_\varphi\big\|_{\mathcal V\to L^{2}(\Pi)}
+\;=\;O_P(\gamma_n),
+\end{equation}
+provided $\big(n\,h_x\,h_u\big)^{-1}\ln n\to0$, $\mathsf R\,h_x^{s-1/2}=o(1)$, and
+\begin{equation}\label{eq:entropyA}
+\log N_{[\,]}\big(\gamma_n\,h_u^{2}h_x^{1/2},\ \mathcal V_n,\ \|\cdot\|_\infty\big)
+\;=\;o\big(n\,h_x\,h_u\,\gamma_n^{2}\big) .
+\end{equation}
+\emph{Three readings, and the third is the deliverable.}
+\begin{enumerate}
+\item[(i)] The exponents in \eqref{eq:gamman} are \emph{one} on $h_x$ and \emph{one} on $h_u$, not two
+and three. C5$'$(ii)'s $(n h_x^{2}h_u^{3})^{-1}\ln n\to0$ is inherited from a density-\emph{derivative}
+estimator in the cross-sectional companion; $\hat{\mathcal A}_\varphi$ estimates a density-weighted
+conditional mean and carries one bandwidth in each direction. \emph{C5$'$(ii) implies the condition
+used here and may be relaxed to it.}
+\item[(ii)] $\gamma_n$ is \emph{not} a component of $\hat\delta_n$. It multiplies
+$\|\vdagger-\varphi\|_{L^{2}(\pi)}$ in every place it appears, so it enters the effective noise level at
+$\gamma_n\delta_n$ and not at $\gamma_n$; \cref{prp:phirate} therefore needs only
+$\gamma_n=O\big(\hat\delta_n^{1/(2\mu+1)}\big)$, which is far weaker than $\gamma_n=O(\hat\delta_n)$.
+\item[(iii)] The $\sqrt{\ln n}$ in \eqref{eq:gamman} buys uniformity over $\varphi\in\mathcal V_n$ and
+nothing else; at a fixed $\varphi$ it may be deleted, by the argument of \cref{lem:opnoise}(i).
+\end{enumerate}
+\end{lemma}
+
+\begin{proposition}[A7, verified --- and the one place it does not close]\label{prp:stopfeas}
+Suppose the hypotheses of \cref{lem:opnoise}. Then:
+\begin{enumerate}
+\item[(i)] \emph{The $T$-component closes at a fixed constant.} For every
+$\tau\ge 4\mathsf c_3c_\Pi$ and with $\hat\delta_n^{(T)}=n^{-1/2}\sqrt{\ln n}$,
+\[
+P\Big(\big\|\bar T(\vdagger,\theta_\dagger)\big\|_{L^{2}(\Pi)}>\tau\,\hat\delta_n^{(T)}\Big)\longrightarrow0 .
+\]
+\item[(ii)] \emph{The $\varrho$-component does not.} Under A4(iii) alone,
+$\|\hat T(\vdagger,\theta_\dagger)-\bar T(\vdagger,\theta_\dagger)\|=O_P(r_n)$ and no more; in
+particular there is no finite $\tau$ for which
+$P(\|\hat T-\bar T\|>\tau r_n)\to0$ follows. \emph{An $O_P$ hypothesis cannot produce a
+fixed-constant exceedance conclusion, and A7 is a fixed-constant statement.}
+\item[(iii)] \emph{Two repairs, either sufficient, and the second is free.} A7 holds as written if
+A4(iii) is strengthened to: there is a finite $\mathsf c$ with
+$P(\|\hat\varrho-\varrho\|_{L^{2}}>\mathsf c\,r_n)\to0$. Alternatively, A7 holds with the amended
+threshold
+\begin{equation}\label{eq:a7amend}
+P\Big(\big\|\hat T(\vdagger,\theta)\big\|_{L^{2}(\Pi)}\le\tau_{\mathrm{DP}}\,\hat\delta_n\,\ln n\Big)
+\;\longrightarrow\;1,
+\end{equation}
+under A4(iii) exactly as stated, for every $\tau_{\mathrm{DP}}\ge1$; and any divergent factor serves in
+place of $\ln n$.
+\item[(iv)] \emph{And the amendment costs nothing.} Replacing $\hat\delta_n$ by $\hat\delta_n\ln n$
+replaces $\delta_n$ by $\delta_n(\ln n)^{2\mu/(2\mu+1)}$. Since \eqref{eq:frontier} is a \emph{strict}
+inequality, $\delta_n=o_P(n^{-1/4})$ survives the substitution at every $(\mu,r,d_Z)$ satisfying it:
+if $\tfrac{2\mu}{2\mu+1}\cdot\tfrac{r}{2r+d_Z}=\tfrac14+\varepsilon$ with $\varepsilon>0$ then
+$\delta_n\ln n^{\,2\mu/(2\mu+1)}=n^{-1/4-\varepsilon}(\ln n)^{2\mu/(2\mu+1)}=o(n^{-1/4})$.
+\emph{The strictness of the frontier is what pays for the amendment, and it is the only thing that
+does.}
+\end{enumerate}
+\end{proposition}
+
+% ---------------------------------------------------------------------------
+%  H.4  L-19.  UNIFORMITY OVER A SOURCE-CONDITION BALL, BY BRACKETING.
+% ---------------------------------------------------------------------------
+
+\begin{definition}[The source-condition ball]\label{def:srcball}
+Let $s$ and $\mathsf R$ be as in H1 and A5(vi) and set
+\begin{equation}\label{eq:srcball}
+\mathcal V_n\;:=\;\Big\{\varphi\in\mathcal V:\ \|\varphi-\vdagger\|_{L^{2}(\pi)}\le\bar\rho,\ \
+\|\varphi-\vdagger\|_{H^{s}}\le\mathsf R\Big\},
+\end{equation}
+with $\bar\rho>0$ and $\mathsf R<\infty$ fixed and not depending on $n$, and $H^{s}$ the Sobolev scale
+of order $s$ on $\mathcal X$ generated by $\mathcal D$, as in H1. \emph{$\mathcal V_n$ is
+deterministic}, as L-19 requires, and it is a \emph{source-condition} ball rather than an $L^{2}(\pi)$
+ball: the second constraint is exactly A5(vi)'s $\|h\|_{H^{s}}=O_P(1)$ made into a set. \emph{The
+subscript $n$ is retained from the memo's notation}; nothing in \eqref{eq:srcball} varies with $n$, and
+the containment statement that does vary is \cref{lem:pathcont}.
+\end{definition}
+
+\begin{lemma}[L-19: uniform operator error over the source-condition ball]\label{lem:unifop}
+Suppose A0, A1b(iv), A4(iii), B1(i), (ii), (iv.c), C2$'$, C3 and C5$'$(i) hold, that $s>\tfrac12$, and
+that
+\begin{equation}\label{eq:entropy}
+\frac{\tfrac1{16}+\alpha}{s}\;<\;1-2\alpha ,
+\qquad\text{where }\ \hat\delta_n=n^{-\alpha}\ \text{ and }\ \alpha:=\frac{r}{2r+d_Z}\in\big(0,\tfrac12\big).
+\end{equation}
+Then, with $\mathcal V_n$ as in \eqref{eq:srcball},
+\begin{equation}\label{eq:unifop}
+\sup_{\varphi\in\mathcal V_n}\big\|\hat T(\varphi,\theta_\dagger)-T(\varphi,\theta_\dagger)\big\|_{L^{2}(\Pi)}
+\;=\;O_P\big(\hat\delta_n\big),
+\end{equation}
+and the same bound holds with $\hat T$ replaced by $\hat T_{h_x}$ provided in addition
+$\mathsf R\,h_x^{s-1/2}=O(\hat\delta_n)$. \emph{Furthermore}, if the supremum is restricted to
+$\mathcal V_n\cap\mathcal S_n$ with $\mathcal S_n:=\operatorname{span}(b_1,\dots,b_{L_x})\cap\mathcal V$
+the spline sieve of A8, then \eqref{eq:unifop} holds under the weaker condition
+\begin{equation}\label{eq:entropysieve}
+L_x\,\ln n\;=\;o\big(n\,\hat\delta_n^{2}\big)
+\end{equation}
+in place of \eqref{eq:entropy}, and \emph{that is the version \cref{def:lfstep} consumes.}
+
+\emph{What is used, and what is not.} The proof uses a \textbf{bracketing} entropy bound for the
+source-condition ball \eqref{eq:srcball} in the sup-norm ---
+$\log N_{[\,]}(\epsilon,\mathcal V_n,\|\cdot\|_\infty)\le\mathsf c_6(\mathsf R/\epsilon)^{1/s}$, valid
+for $s>\tfrac12$ --- together with a bounded-difference inequality at each bracket centre. It does
+\emph{not} use a VC-subgraph bound, and it does \emph{not} use stochastic equicontinuity of the
+$\sqrt n$-scaled empirical process at an estimated point. \emph{The VC route registered in the
+strategy memo \S3.4 is not available here}: the class
+$\{\widetilde W\,\mathsf C_{h_u}(u-\Delta Y_\theta+\Delta\varphi)\,w(t'\Phi(\Delta Z)):\varphi\in\mathcal V_n\}$
+is indexed by an infinite-dimensional $\varphi$ entering through a smooth transformation, and it is
+\emph{not} a VC-subgraph class of indicator-weighted functions --- the indicator has been smoothed, and
+even before smoothing the index is a function and not a halfspace. \emph{Smoothness of the index set,
+not combinatorial dimension, is what supplies the entropy}, and that is precisely why the ball must be
+a source-condition ball and not an $L^{2}(\pi)$ ball: the $L^{2}(\pi)$ ball has infinite sup-norm
+entropy at every radius.
+\emph{On the sieve the entropy is elementary and needs no classical citation}: $\mathcal V_n\cap\mathcal S_n$
+is a bounded subset of an $L_x$-dimensional space, so a volumetric bound gives
+$\log N(\epsilon)\le L_x\log(\mathsf c\,\mathsf R\,L_x^{1/2}/\epsilon)$. \emph{The two versions
+therefore differ in what they rest on as well as in what they require}, and the one consumed is the
+elementary one.
+\end{lemma}
+
+\begin{remark}[What \cref{lem:unifop} costs, and it is a line the budget table does not carry]\label{rem:l19cost}
+\eqref{eq:entropy} is a \emph{new} restriction linking $s$, $r$ and $d_Z$, and it should be read three
+ways.
+
+\emph{(1) It is satisfiable, and comfortably, at the configurations the block already contemplates.} At
+$(\mu,d_Z)=(1,3)$ the frontier \eqref{eq:frontier} reads $r>4.5$; at $r=4.5$, $\alpha=0.375$ and
+\eqref{eq:entropy} reads $s>1.75$. Under H1 with $\mu=1$ that is $a=s/2>0.875$, and mild
+ill-posedness $s>a+\tfrac12$ reads $s>1$, so \eqref{eq:entropy} binds and the two are consistent.
+At $(\mu,d_Z)=(2,3)$ the frontier reads $r>2.5$; at $r=2.5$, $\alpha=\tfrac5{16}$ and
+$\tfrac1{16}+\alpha=\tfrac38=1-2\alpha$, so \eqref{eq:entropy} reads exactly $s>1$, which mild
+ill-posedness already implies whenever $a\ge\tfrac12$.
+\emph{So \eqref{eq:entropy} is a real line in the smoothness budget and it is not the binding one.}
+
+\emph{(2) It runs the wrong way in $r$, and that is worth displaying rather than hiding.} The
+left-hand side of \eqref{eq:entropy} increases in $\alpha$ and the right-hand side decreases in it, so
+\emph{a smoother propensity makes \cref{lem:unifop} harder}: a smaller $\hat\delta_n$ is a tighter
+target for the uniform bound. The block's two constraints on $r$ therefore pull in opposite directions
+--- the frontier \eqref{eq:frontier} wants $r$ large, \eqref{eq:entropy} wants it small --- and the
+window is non-empty precisely when
+$s>\big(\tfrac1{16}+\tfrac{r}{2r+d_Z}\big)\big/\big(1-\tfrac{2r}{2r+d_Z}\big)$ at some $r$ clearing
+the frontier.
+
+\emph{(3) It excludes the configuration in which the propensity component does not bind.} As
+$\alpha\uparrow\tfrac12$ the right-hand side of \eqref{eq:entropy} tends to $0$ and no finite $s$
+suffices. \emph{So \cref{lem:unifop} requires $r_n\gg n^{-1/2}$ strictly}, i.e. requires A5(i)'s
+``in every configuration of interest $\hat\delta_n=\hat\delta_n^{(\varrho)}$'' to hold with a margin.
+That is a scope condition on Step 6 and it is stated rather than assumed away: with a parametric
+propensity the uniform bound at rate $\hat\delta_n$ is \emph{not} available by this route, and the
+$L^{2}(\Pi)$-norm rate would have to be relaxed to $\hat\delta_n$ times a slowly divergent factor ---
+which, by \cref{prp:stopfeas}(iv), the strictness of \eqref{eq:frontier} again absorbs.
+\end{remark}
+
+\begin{lemma}[Containment of the path]\label{lem:pathcont}
+Let $\hat\varphi^{(0)}\in\mathcal S_n$ satisfy $\|\hat\varphi^{(0)}-\vdagger\|_{L^{2}(\pi)}=o_P(1)$, let
+A5(vi) hold at each stage --- $\|\hat\varphi^{(k)}-\vdagger\|_{H^{s}}=O_P(1)$, $k=0,\dots,\bar k$ ---
+and let $\hat\varphi^{(k)}$ be the stages of \cref{def:lfstep}, each stopped by the discrepancy
+principle at an index $\hat m^{(k)}\le\bar m_n$. Then, for $\mathsf R$ and $\bar\rho$ fixed and large
+enough, $P\big(\hat\varphi^{(k)}\in\mathcal V_n\cap\mathcal S_n\ \text{for all }k\le\bar k\big)\to1$.
+
+\emph{Three things about this lemma, and the third is a finding.}
+\emph{(a)} The $L^{2}(\pi)$ half is the stagewise bound of \cref{prp:phirate} Step 4 and is genuinely
+proved; the within-stage Landweber path satisfies
+$\|v_m\|_{L^{2}(\pi)}\le m\,\sup_{\mathcal V_n}\|\hat T_{h_x}\|\le 2m\,\mathsf c_3c_\Pi$ under the
+normalisation of \cref{def:lfstep}, which bounds the path but by $\bar m_n$ and not by $\bar\rho$; it
+is the DP stopping rule, not the Landweber algebra, that keeps the \emph{stopped} iterate inside the
+ball. \emph{The memo's registered mechanism --- ``$\varphi_m-\varphi_0\in\mathcal R(\hat{\mathcal A}^\ast)$
+with norm growing at most polynomially in the cap'' --- gives the first bound and not the second, and
+the distinction matters because $\mathcal V_n$'s radius is fixed while $\bar m_n$ diverges.}
+\emph{(b)} The sieve constraint $\hat\varphi^{(k)}\in\mathcal S_n$ is by construction.
+\emph{(c)} \textbf{The $H^{s}$ half is A5(vi), assumed and not proved} --- and A5(vi) is registered in
+the block as consumed by \cref{lem:balance}\textup{(iii)} \emph{alone}, on the balancing route. It is
+consumed here too, on the rate route, because \cref{lem:unifop}'s ball is a source-condition ball and
+$\hat\varphi^{(k)}$ must lie in it. \emph{The ``Route'' column of the smoothness-budget table
+therefore needs amending: A5(vi) is charged on \textbf{both} routes from Step 6 onward.} Deriving the
+$H^{s}$ bound instead of assuming it is possible on the sieve --- Bernstein's inequality for splines
+gives $\|\zeta\|_{H^{s}}\le\mathsf c_7L_x^{s}\|\zeta\|_{L^{2}(\pi)}$ on $\mathcal S_n$ --- but at the
+cost of $L_x^{s}\delta_n=O(1)$, which is a genuine extra restriction and is \emph{not} imposed;
+A5(vi) is cheaper and is what the block already carries.
+\end{lemma}
+
+% ---------------------------------------------------------------------------
+%  H.5  THE RATE.
+% ---------------------------------------------------------------------------
+
+\begin{lemma}[Source-condition transfer, and the $\mu\le\tfrac12$ barrier]\label{lem:srctransfer}
+Let $\mathcal A,\hat{\mathcal A}:\mathcal V\to L^{2}(\Pi)$ be bounded with
+$\|\hat{\mathcal A}-\mathcal A\|\le\gamma$, and let $v\in\mathcal V$.
+\begin{enumerate}
+\item[(i)] \emph{$\mu\le\tfrac12$: transfer is free.} If $v=(\mathcal A^\ast\mathcal A)^{\mu}\varsigma$
+with $\mu\in(0,\tfrac12]$ and $\|\varsigma\|\le\mathsf R$, then
+$v=(\hat{\mathcal A}^\ast\hat{\mathcal A})^{\mu}\tilde\varsigma+\varkappa$ with
+$\|\tilde\varsigma\|\le\mathsf c_8\mathsf R$ and
+$\|\varkappa\|_{L^{2}(\pi)}\le\mathsf c_8\mathsf R\,\gamma^{2\mu}$. \emph{The proof is Heinz's
+inequality} --- operator monotonicity of $z\mapsto z^{2\mu}$ on $[0,\infty)$ for $2\mu\le1$ --- and
+$\mu\le\tfrac12$ is exactly its range of validity.
+\item[(ii)] \emph{$\mu>\tfrac12$: it is not, and no bound in $\|\hat{\mathcal A}-\mathcal A\|$ alone
+supplies it.} There are $\mathcal A$, $\hat{\mathcal A}$ with $\|\hat{\mathcal A}-\mathcal A\|$
+arbitrarily small and $v\in\mathcal R((\mathcal A^\ast\mathcal A)^{\mu})$ with
+$\operatorname{dist}\big(v,\{(\hat{\mathcal A}^\ast\hat{\mathcal A})^{\mu}\tilde\varsigma:\|\tilde\varsigma\|\le \mathsf M\}\big)
+\ge\tfrac12\|v\|$ for every $\mathsf M$.
+\item[(iii)] \emph{What is available instead, and it is what H1 already says.} A Hilbert-scale source
+condition, $\|v\|_{H^{s}}\le\mathsf R$, is a statement about $v$ alone and transfers trivially. It
+delivers a rate for a regularisation of $\hat{\mathcal A}$ only through the \emph{link} condition
+$\|\hat{\mathcal A}\zeta\|_{L^{2}(\Pi)}\asymp\|\zeta\|_{H^{-a}}$, which cannot hold on all of
+$\mathcal V$ because $\hat{\mathcal A}$ has finite rank by \cref{prp:hatAprop}(ii), and which is
+therefore imposed on the sieve $\operatorname{span}(b_1,\dots,b_{L_x})$ of A8. \emph{A8's window is
+what makes the Hilbert-scale route available at $\mu>\tfrac12$}, and that is a use of A8 the block does
+not yet record.
+\end{enumerate}
+\end{lemma}
+
+\begin{definition}[The estimator: iterated linearisation with sieve Landweber--Fridman]\label{def:lfstep}
+Let $\hat\varphi^{(0)}$ be a preliminary estimator with
+$\|\hat\varphi^{(0)}-\vdagger\|_{L^{2}(\pi)}=o_P(1)$ and $\|\hat\varphi^{(0)}-\vdagger\|_{H^{s}}=O_P(1)$,
+and let $\mathcal S_n:=\operatorname{span}(b_1,\dots,b_{L_x})\cap\mathcal V$ with $b_1,\dots,b_{L_x}$
+the B-spline basis of A8. Normalise the scale so that
+$\|\hat{\mathcal A}_\varphi|_{\mathcal S_n}\|\le1$ for every $\varphi\in\mathcal V_n$, w.p.$\to1$; this
+is a rescaling of $\Pi$ and costs nothing. For $k=1,\dots,\bar k$:
+\begin{enumerate}
+\item[(a)] form the linear equation in $v\in\mathcal S_n$,
+$\ \hat{\mathcal A}_{\hat\varphi^{(k-1)}}v=-\hat T_{h_x}\big(\hat\varphi^{(k-1)},\theta\big)$;
+\item[(b)] run Landweber--Fridman on it from $v_0=0$,
+$v_{m+1}=v_m-\hat{\mathcal A}^\ast_{\hat\varphi^{(k-1)}}\big[\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m
++\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\big]$, projected onto $\mathcal S_n$;
+\item[(c)] stop at $\hat m^{(k)}:=\min\{m\le\bar m_n:\ \|\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m
++\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\|_{L^{2}(\Pi)}\le\tau_{\mathrm{DP}}\hat\delta_n\ln n\}$,
+the discrepancy principle at the amended level \eqref{eq:a7amend};
+\item[(d)] set $\hat\varphi^{(k)}:=\hat\varphi^{(k-1)}+v_{\hat m^{(k)}}$.
+\end{enumerate}
+Put $\hat\varphi:=\hat\varphi^{(\bar k)}$. \emph{Every Landweber iteration in this construction is
+applied to a \textbf{linear} equation}; the nonlinearity is carried by the outer index $k$ and by
+nothing else. That is the entire difference from the route \cref{rem:lfnonlinear} declines, and it is
+what makes A6 unnecessary.
+\end{definition}
+
+\begin{proposition}[\texttt{prp:phirate}: the rate for the $\varphi$-step]\label{prp:phirate}
+Suppose A0, A1, A1b, A1c, A2, A4, A8, B1, C1--C5$'$ and H1 hold, with $\mu=s/(2a)$; suppose
+\begin{enumerate}
+\item[(P-a)] \emph{(source and link)} $\|\vdagger-\hat\varphi^{(0)}\|_{H^{s}}=O_P(1)$ and the link
+condition of \cref{lem:srctransfer}(iii) holds on $\mathcal S_n$ w.p.$\to1$;
+\item[(P-b)] \emph{(operator noise is affordable)} $\gamma_n=O\big(\hat\delta_n^{1/(2\mu+1)}\big)$ with
+$\gamma_n$ of \eqref{eq:gamman};
+\item[(P-c)] \emph{(sieve approximation)} $\mathsf R\,L_x^{-s}=O(\hat\delta_n)$, which is A8's lower end
+at the noise level $\hat\delta_n$ rather than at $n^{-1/2}$, hence weaker;
+\item[(P-d)] \emph{(uniformity)} \eqref{eq:entropy}, so that \cref{lem:unifop} is available;
+\item[(P-e)] \emph{(stopping)} A7 in the amended form \eqref{eq:a7amend}, with
+$\tau_{\mathrm{DP}}>2$;
+\item[(P-f)] \emph{(the linearisation remainder is absorbed)}
+$\delta_n^{2}=O\big(h_u^{2}\,\hat\delta_n\ln n\big)$, the one bandwidth-explicit condition of Part H;
+\cref{rem:h6bandwidth} unpacks it, shows that at C5$'$(i)'s $h_u$ it reads
+$\tfrac{2\mu-1}{2\mu+1}\cdot\tfrac{r}{2r+d_Z}\ge\tfrac18$, and shows that re-tuning $h_u$ to the
+largest bandwidth whose bias is $O(\hat\delta_n)$ replaces it by $\mu\ge\tfrac56$;
+\end{enumerate}
+and suppose finally
+\begin{equation}\label{eq:muhalf}
+\mu\;>\;\tfrac12 .
+\end{equation}
+Then there is a finite $\bar k$, not depending on $n$ and computable from $\mu$ alone, such that the
+estimator of \cref{def:lfstep} satisfies
+\begin{equation}\label{eq:phirate}
+\big\|\hat\varphi-\vdagger\big\|_{L^{2}(\pi)}\;=\;O_P(\delta_n),
+\qquad
+\delta_n\;:=\;\big(\hat\delta_n\ln n\big)^{2\mu/(2\mu+1)} ,
+\end{equation}
+and $\delta_n=o_P(n^{-1/4})$ whenever \eqref{eq:frontier} holds. \emph{Hence A5(i)--(iii) and A5(vi)
+are discharged, not assumed}; A5(iv) and A5(v) concern other objects and are untouched.
+
+\emph{Where \eqref{eq:muhalf} comes from, and why it is not a new budget line.} The stagewise recursion
+of Step 4 of the proof is $\delta_n^{(k)}=\big(\hat\delta_n\ln n+\mathsf c\,(\delta_n^{(k-1)})^{2}\big)^{2\mu/(2\mu+1)}$,
+whose fixed point is \eqref{eq:phirate} exactly when $\delta_n^{2}=O(\hat\delta_n)$, i.e. when
+$\tfrac{4\mu}{2\mu+1}\ge1$, i.e. when $\mu\ge\tfrac12$; strict inequality gives contraction with a
+margin and finitely many stages. \emph{This is the same $\mu>\tfrac12$ that A5(iii) proves necessary for
+\eqref{eq:frontier} to be satisfiable at any $r$.} The two arise independently --- one from the
+propensity frontier, one from the linearisation recursion --- and they coincide. \emph{No new line is
+charged to the smoothness budget by \eqref{eq:muhalf}}; the new lines are \eqref{eq:entropy} and
+(P-b).
+\end{proposition}
+
+\begin{remark}[F-6 / O10: the nonlinear transfer, and why it is declined rather than performed]\label{rem:lfnonlinear}
+The registered route for \texttt{prp:phirate} is nonlinear Landweber--Fridman with a tangential cone
+condition and the discrepancy principle, after \citet{hanke1995} and \citet[Ch.~11]{engl2000}, with the
+operator-noise model of Dunker, Florens, Hohage, Johannes \& Mammen (2014). \emph{That route does not
+transfer, and the obstruction is not a technicality.} Three things go wrong, of increasing severity,
+and each is proved or cited rather than reported.
+
+\emph{(1) The cone condition is false for the operator the block names.} \Cref{prp:tccfails}. It is
+repairable, by A6b and \cref{prp:tccrepair}, at the cost of replacing $\hat T$ by $\hat T_{h_x}$; so
+this is the mild one.
+
+\emph{(2) Range invariance, the only route to a cone condition that does not simply assume it, fails.}
+\Cref{prp:norangeinv}. The strategy memo caps this attempt at one round; the round is spent.
+
+\emph{(3) The decisive one: the nonlinear Landweber rate saturates at $\mu=\tfrac12$, and
+\eqref{eq:frontier} needs $\mu>\tfrac12$.} The rate theorem for nonlinear Landweber under a tangential
+cone condition and the discrepancy principle delivers
+$\|x_{\hat m}-x^\dagger\|=O(\hat\delta^{2\mu/(2\mu+1)})$ only for source index $\mu\in(0,\tfrac12]$;
+above $\tfrac12$ the analysis gives no improvement, and the underlying reason is the same Heinz-inequality
+barrier that \cref{lem:srctransfer}(ii) exhibits. \emph{At the saturation index the programme fails, and
+it fails even with a perfect propensity}: at $\mu=\tfrac12$ the rate is $\hat\delta_n^{1/2}$, and since
+$\hat\delta_n\ge\hat\delta_n^{(T)}\asymp n^{-1/2}\sqrt{\ln n}$ by \cref{lem:opnoise}, the best
+attainable is $\delta_n\asymp n^{-1/4}(\ln n)^{1/4}$, which is \emph{not} $o(n^{-1/4})$; at
+$\mu<\tfrac12$ it fails polynomially. \emph{So the inherited rate and the paper's own feasibility
+frontier are incompatible, and the incompatibility is exactly at $\mu=\tfrac12$.}
+
+\emph{What is done instead, and why it closes at the same threshold.} \Cref{def:lfstep} linearises and
+runs \emph{linear} Landweber--Fridman at each stage, absorbing the nonlinearity into the noise level
+through \cref{prp:frechet}(i)'s quadratic remainder. Linear Landweber does not saturate, so the source
+index is unrestricted from above; what the route needs instead is that the absorbed remainder be
+dominated by the noise, $\delta_n^{2}=O(\hat\delta_n)$, and \emph{that is $\mu\ge\tfrac12$}. The
+condition that kills the inherited route is the condition that switches the replacement route on.
+\emph{This is the substantive resolution of F-6 / O10 and it should be stated in the paper as such,
+not buried:} the paper does not inherit a nonlinear-regularisation rate, it proves a linearised one,
+and the reason it may is that its own frontier already lives on the side of $\mu=\tfrac12$ where
+linearisation closes.
+
+\emph{What is given up.} Three things, and they should be printed.
+\begin{enumerate}
+\item[(a)] \emph{Global convergence.} Nonlinear Landweber with a cone condition converges from any
+starting point in the ball where the condition holds. \Cref{def:lfstep} needs a \emph{consistent}
+preliminary $\hat\varphi^{(0)}$, which is L-14's object and is an input, not an output, of
+\cref{prp:phirate}. The paper must say where $\hat\varphi^{(0)}$ comes from; a fixed number of
+Landweber steps from $0$ on the linearised equation at $\varphi=0$ will not do without an argument.
+\item[(b)] \emph{A sieve.} \Cref{lem:srctransfer}(iii) forces the link condition onto
+$\mathcal S_n$, so the estimator is a \emph{sieve} LF and A8's upper end is consumed by the
+$\varphi$-step as well as by the balancing solve.
+\item[(c)] \emph{The Dunker et al.\ noise model is adopted and their regulariser is not.} Their
+iteratively regularised Gauss--Newton method is the standard answer to exactly the saturation problem
+in (3), attaining source indices above $\tfrac12$. \emph{Declining IRGN and then needing $\mu>\tfrac12$
+is a live tension in the project's positioning}, and the honest options are two: adopt IRGN, or state
+--- as this file does --- that the linearised route reaches the same place under the same threshold.
+The second is cheaper and is what is proved; the first should be named in the paper as the alternative
+and priced, because a methods referee who knows the regularisation literature will ask.
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[What \cref{prp:phirate} does not claim]\label{rem:phirscope}
+\emph{(1) It is a rate, not a sharpness statement.} \eqref{eq:phirate} is an upper bound on
+$\|\hat\varphi-\vdagger\|_{L^{2}(\pi)}$. Nothing here says that $\delta_n$ cannot be improved, and
+nothing here says that $\delta_n=o(n^{-1/4})$ is \emph{necessary}. \emph{In particular this file does
+not reinstate the strategy memo \S2.5(iii) reading} that ``$\delta_n=o(n^{-1/4})$ is sharp for this
+moment function'': that is a necessity claim about the estimator, \cref{prp:sharpquad} deliberately
+does not prove it, and \cref{rem:sharpscope}\textup{(1)} blocks it. What \texttt{thm:rootn} may inherit
+from Part G is the \emph{lower bound} on the second-order form, and what it inherits from here is the
+\emph{upper bound} \eqref{eq:phirate}; the two are different objects and neither is a sharpness claim
+about $\hat\varphi$.
+
+\emph{(2) The logarithm is carried, not absorbed.} $\delta_n$ in \eqref{eq:phirate} is
+$(\hat\delta_n\ln n)^{2\mu/(2\mu+1)}$ and not $\hat\delta_n^{2\mu/(2\mu+1)}$. A5(ii) writes the latter.
+The two differ by $(\ln n)^{2\mu/(2\mu+1)}$, which \cref{prp:stopfeas}(iv) shows is absorbed by the
+strictness of \eqref{eq:frontier} but is \emph{not} absorbed into the symbol; a downstream result that
+reads A5(ii) literally and then substitutes a power of $n$ will be off by that factor.
+
+\emph{(3) It says nothing about $\hat\ell$, $\hat L$ or $\hat b$.} A5(iv) prices
+$\|\hat\ell-\ell_\star\|_{L^{2}(P)}$ and is L-13's business; obligations \textup{(O2)} and
+\textup{(O3)} of \cref{rem:obligations} are owed by the construction of $\hat L$ and are \emph{not}
+discharged here. \emph{This file discharges \textup{(O4)} and nothing else on that list} --- and
+discharges it with a negative answer on A6, which is a discharge and not an evasion: the obligation was
+to verify, and the verification has an outcome.
+
+\emph{(4) It does not identify $\vdagger$.} A1b(iii) is assumed, as everywhere; \eqref{eq:phirate} is a
+rate for an estimator of an object assumed identified, and the discrepancy principle stops on the
+residual, which by A1c is informative about $\varphi$ only to first order.
+\end{remark}
+
+% ============================================================================
+%  END OF PART H.
+% ============================================================================

@@ -1,0 +1,65 @@
+claim_id: phirate-retune-mu-five-sixths
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (rem:h6bandwidth(2), eq:muthreshold: '2 kappa - 1 > 1/4 <=> kappa > 5/8 <=> mu > 5/6', ALL THREE STRICT), read with proofs.tex (clause (0), why they must be strict) and results.tex (eq:muhalf, mu > 5/6)"
+# ===========================================================================
+# ROUND-12 REPAIR.  THIS SPEC'S SOURCE LINE AND COMMENTARY WERE WRONG ABOUT THE
+# PAPER AND ARE CORRECTED HERE.  The prior version cited a nonexistent file
+# (proofs_partH.tex, superseded by proofs.tex) and quoted eq:muthreshold as
+# "2 kappa - 1 >= 1/4 <=> kappa >= 5/8 <=> mu >= 5/6", with WEAK inequalities.
+# The paper's eq:muthreshold is STRICT in all three places, and rem:h6bandwidth(0)
+# is a new clause whose entire purpose is to establish that it must be:
+#
+#   "The inequality is strict, and by clause (0) it must be: at mu = 5/6 exactly
+#    the powers of n balance and the left side carries (ln n)^{2 kappa} =
+#    (ln n)^{5/4} against the right side's (ln n)^1, so (P-f) fails by
+#    (ln n)^{1/4}."                                   -- proofs.tex
+#
+# THE IDENTITY BELOW IS UNCHANGED, BECAUSE IT WAS AND IS CORRECT.  What changed is
+# the reading: an identity between rational functions is silent about whether a
+# threshold is attained.  The strictness is NOT carried by this spec and is not
+# derivable from it; it is carried by the companion spec
+# phirate-muthreshold-strict, which mechanises the log-power deficit at mu = 5/6.
+# Anyone quoting this spec as verifying eq:muthreshold must quote that one too.
+# ===========================================================================
+#
+# WHAT THIS SPEC DOES VERIFY: THE POWER CONDITION.  With h_u re-tuned to the
+# largest bandwidth whose smoothing bias is O(hat-delta_n) -- C5'(i) as amended,
+# h_u asymp hat-delta_n^{1/p_K} with p_K = 8 -- hypothesis (P-f),
+# delta_n^2 = O(h_u^2 hat-delta_n ln n), reads in powers of n as
+#     alpha (2 kappa - 1)  >  alpha/4 ,
+# i.e. 2 kappa - 1 > 1/4, a condition FREE OF alpha.  Since
+# kappa = 2 mu/(2 mu + 1), 2 kappa - 1 = (2 mu - 1)/(2 mu + 1), and
+#
+#     (2 mu - 1)/(2 mu + 1)  -  1/4   =   (6 mu - 5) / (4 (2 mu + 1)) ,
+#
+# whose sign is the sign of 6 mu - 5, i.e. of mu - 5/6.  So the threshold printed
+# at eq:muthreshold is the EXACT root of the power condition and not a rounded
+# value: at mu = 5/6 the left-hand side is exactly 0, which is why 5/6 and not
+# 0.83 or 0.84 appears in eq:muhalf.
+#
+# WHAT THE ZERO AT mu = 5/6 MEANS, AND THIS IS THE JOIN TO THE COMPANION SPEC.  The
+# numerator vanishing at 5/6 says the POWERS OF n balance there.  Whether the
+# boundary is admissible then turns entirely on the logarithms, and clause (0)
+# settles it: 2 kappa = 4 mu/(2 mu + 1) > 1 for every mu > 1/2, so the left side of
+# (P-f) always carries the LARGER power of ln n and an exact balance in powers of n
+# is a FAILURE.  Hence "> 1/4" and not ">= 1/4"; hence mu > 5/6 and not mu >= 5/6.
+#
+# WHAT THIS DOES NOT CHECK.  (a) The strictness -- see above.  (b) That (P-f) in
+# powers of n is alpha(2 kappa - 1) > 2 beta; that is the separate spec
+# phirate-prelim-pf-identity, which also shows (P-f) and the preliminary-rate
+# requirement of Step 4(a.1) are the same inequality up to a positive factor.
+# (c) The specialisation beta = alpha/8, which is C5'(i) at p_K = 8 and is the spec
+# cap-hu-exponent-c5i.
+#
+# FALSIFICATION (hand-computed).  claimed_end "(6*mu - 5)/(2*(2*mu + 1))" leaves
+# residual (6*mu - 5)/(4*(2*mu+1)), nonzero for mu != 5/6; MISMATCH.  claimed_end
+# "(4*mu - 3)/(4*(2*mu + 1))" -- i.e. a threshold at mu = 3/4 -- leaves residual
+# (2*mu - 2)/(4*(2*mu+1)), nonzero for mu != 1; MISMATCH.  So the location of the
+# root is what is being tested.
+#
+# PREDICTED: MATCH.  `together`/`cancel` reduces the difference to 0.
+variables:
+  mu:
+    domain: positive
+start: "(2*mu-1)/(2*mu+1) - 1/4"
+operation: none
+claimed_end: "(6*mu-5)/(4*(2*mu+1))"

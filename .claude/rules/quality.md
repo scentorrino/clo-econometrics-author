@@ -151,7 +151,39 @@ In all PROJECT_TYPE schedules: if a declared component has no critic score (beca
 
 Independent of the weighted aggregate, the submission gate (overall >= 95) requires **all** of the following binary conditions when `PROJECT_TYPE` is `theory` or `mixed`:
 
-1. **Every theorem proved.** Every file under `paper/sections/theorems/*.tex` contains a complete proof (or a `\begin{proof}...\end{proof}` block sourced from `quality_reports/theory/{project}/proofs.tex`). Stubs and TODOs block the gate.
+1. **Every theorem proved.** Every theorem-like environment declared in the **compiled theory corpus** — for `panel-npiv-discrete` that is `quality_reports/theory/{project}/{assumptions_main, results_s2_identification, results_s3_estimation, results_s4_asymptotics, assumptions_supp, results_s3_supp, results_supp}.tex` — has a matching `\begin{proof}...\end{proof}` in `quality_reports/theory/{project}/proofs.tex`, keyed by `\label`. Definitions are exempt; they take no proof. Stubs and TODOs block the gate.
+
+   > **REPOINTED 2026-08-03, AND THE OLD TARGET COULD FALSE-PASS.** This clause used to read
+   > "every file under `paper/sections/theorems/*.tex`". That directory is a rendering from an
+   > abandoned architecture (`paper/main.tex`, which does not exist); it is compiled by no
+   > document and its contents are round-2 vintage against a corpus at dispatch 25. Because those
+   > files *do* contain proofs, the gate would have **passed while inspecting the wrong artifact**
+   > — worse than no gate, since it reports safety it never checked. Retired with a marker rather
+   > than deleted; see `paper/sections/theorems/_SUPERSEDED.md`.
+   >
+   > **REPOINTED AGAIN 2026-08-05, WITH USER APPROVAL, AND THE FAILURE MODE THIS TIME WAS THE
+   > MIRROR IMAGE.** The 2026-08-03 note said to gate on the undivided `results.tex`, on the
+   > ground that it "feeds `scripts/build-theory/build.sh`" and the split is derived from it.
+   > **That ground has since evaporated:** `scripts/build-theory/driver.tex` now `\input`s the
+   > eight split files, and `build.sh:46` itself records `assumptions.tex` / `results.tex` as
+   > RETIRED. The undivided files are today compiled by **no document at all** — precisely the
+   > position `paper/sections/theorems/` was in when it was retired.
+   >
+   > The two copies have now diverged. `cor:a1cprim` was withdrawn on 2026-08-05, because its
+   > hypothesis set is empty (A1 makes $\widetilde W$ conditionally centred, so A1d fails at
+   > $\Lambda\equiv1$); the statement and its proof were removed together from the split and from
+   > `proofs.tex`. `results.tex` still declares the corollary. **Gating on it would therefore FAIL
+   > on a statement the paper no longer makes** — the mirror of 2026-08-03's false pass, and just
+   > as uninformative: a gate that fails on an artifact nobody compiles reports danger it never
+   > checked.
+   >
+   > **Gate on the compiled corpus.** The rule is now: gate on whatever set of files the shipped
+   > documents actually `\input`, and never on a parallel copy, whichever direction the divergence
+   > runs. `results.tex` and `assumptions.tex` are retained on disk — ~33 specs under
+   > `scripts/symbolic/specs/` cite them by line number, and
+   > `scripts/render-sync/check_rendering_sync.py:567` still reads `results.tex` as its source of
+   > record — but they are **not** the gate target and are no longer the source of record for it.
+   > Those two consumers are a known follow-up, recorded here rather than repaired silently.
 
 2. **theorist-critic cleared.** The most recent theorist-critic score in the research journal is >= 80, with no unresolved CRITICAL findings.
 

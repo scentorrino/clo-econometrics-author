@@ -1,0 +1,47 @@
+claim_id: cap-n2000-upper
+source: "quality_reports/theory/panel-npiv-discrete/results.tex ('130 Landweber steps become between 630 and 6750'), against the exponent n^{1.16} of results.tex; repeated at theory_memo.md:142-143"
+# WHAT THIS CHECKS.  The upper end of the repriced cap at n = 2000.  The exponent
+# 1.16 = 29/25 is verified against the configuration by cap-window-upper; here it
+# is evaluated:
+#
+#     2000^{29/25}  =  6748.306...        so   floor(2000^{29/25}) = 6748 ,
+#
+# and the paper's "6750" is that value to THREE significant figures (equivalently,
+# to the nearest ten).  This is the one printed number of the three whose rounding
+# granularity is not the unit, and it is flagged here rather than left to be
+# inferred: 6748.306 is not 6750, and a reader recomputing the arithmetic will get
+# 6748.  The paper's sentence ("between 630 and 6750") is a two- to three-figure
+# statement throughout, so the rendering is internally consistent; but the exact
+# value is 6748.306 and this spec is where that is recorded.
+#
+# WHY THE ROUNDING IS BENIGN HERE.  As at cap-n2000-lower, the printed value
+# EXCEEDS the exact one (by 1.694), and for a cap that is the conservative
+# direction.  So both printed endpoints, 630 and 6750, are at or above the exact
+# values, and a reader implementing the cap from the printed numbers gets a
+# slightly generous budget rather than a deficient one.
+#
+# THE PARSE-TIME DISCLOSURE.  As in cap-n2000-baseline, the report will print
+# "Start: 6748 / Claimed end: 6748 / MATCH", and the substantive step is that
+# SymPy computed the integer part exactly.  Do not quote this spec without that
+# sentence.
+#
+# HAND-CHECK.  ln 6748 = 8.8170014 and 1.16 * ln 2000 = 8.8170469, an excess of
+# 4.541e-5, so 2000^{1.16} = 6748 * exp(4.541e-5) = 6748.306.  ln 6749 = 8.8171496
+# exceeds 8.8170469, so the floor is 6748.  Margins 0.306 above 6748 and 0.694
+# below 6749.
+#
+# WHAT THE THREE NUMERIC SPECS DO NOT CHECK.  They evaluate the exponents; they do
+# not certify that 2000 is a relevant sample size, nor that a cap of ~6750
+# Landweber steps is computationally acceptable.  results.tex says only
+# that the cap is a computational budget and not a rate condition, so nothing in
+# eq:phirate moves with it.
+#
+# FALSIFICATION (hand-computed).  claimed_end "6750" leaves residual -2; MISMATCH.
+# claimed_end "6749" leaves residual -1; MISMATCH.  Replacing the exponent by
+# 106/125 gives floor = 629, not 6748; MISMATCH.
+#
+# PREDICTED: MATCH.
+variables: {}
+start: "floor(2000**(29/25))"
+operation: none
+claimed_end: "6748"

@@ -1,0 +1,12 @@
+claim_id: bandwidth-balance-log
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (C5' comment (b)); stochastic term from A5(i), assumptions.tex"
+# CLAIM.  The bias h_u^{p_K} = n^{-1/2} matches the uniform stochastic term
+# O_P(n^{-1/2} sqrt(ln n)) "up to the log": the ratio of bias to stochastic term
+# is exactly 1/sqrt(ln n) -> 0, so the bias is dominated and the balance is
+# exact up to the logarithmic factor, not merely up to a constant.
+variables:
+  n:
+    domain: positive
+start: "(n**(-1/16))**8 / (n**(-1/2)*sqrt(log(n)))"
+operation: none
+claimed_end: "1/sqrt(log(n))"

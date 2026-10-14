@@ -1,0 +1,2471 @@
+% ============================================================================
+%  ASSUMPTIONS -- ONLINE SUPPLEMENT.  project `panel-npiv-discrete`
+%
+%  WHAT THIS FILE HOLDS.  Everything the assumption block prints that is not a
+%  statement: the per-condition interpretation, the retirement records for A3,
+%  A6, B1(vi) and A2'(ii), the status list for the five clauses no theorem rests
+%  on, and the smoothness-budget table.  Copied verbatim from assumptions.tex;
+%  nothing here was rewritten.
+%
+%  IT IS READ AFTER assumptions_main.tex AND NOT INSTEAD OF IT.  The paragraphs
+%  below cite the statements they discuss, so the supplement inputs the
+%  statements first.  Together the two files are the undivided assumptions.tex.
+%
+%%  DO NOT \input THIS FILE ALONGSIDE results.tex OR assumptions.tex.
+%%  results.tex and assumptions.tex SURVIVE UNDIVIDED and remain the source of
+%%  record: scripts/build-theory/build.sh compiles them, scripts/render-sync/
+%%  check_rendering_sync.py reads them, and ~100 files under scripts/symbolic/
+%%  specs/ cite them BY LINE NUMBER.  Neither was edited.  Every \label in this
+%%  file is therefore declared TWICE on disk -- here and in its parent -- and the
+%%  two must never reach the same document.
+%
+%%  THE PARAGRAPH ABOVE IS STALE AS OF 2026-08-05 AND IS NOT AMENDED IN
+%%  DISPATCH 25, WHICH WOULD BE OUT OF SCOPE.  quality.md's binary gate 1 was
+%%  repointed that day: results.tex and assumptions.tex are compiled by NO
+%%  document (build.sh:46 records them RETIRED; driver.tex inputs the eight split
+%%  files), and the two copies have DIVERGED at cor:a1cprim.  DISPATCH 25 EDITED
+%%  NEITHER, so the divergence widens by everything this dispatch did.  That is
+%%  the intended state -- the split files are the corpus -- and it is recorded
+%%  here so the next reader of the "declared TWICE" sentence does not try to
+%%  restore parity by hand.
+% ============================================================================
+
+% ============================================================================
+%  DISPATCH-25 CHANGE LOG (2026-08-08).  PHASE 1 OF THE MULTINOMIAL-INSTRUMENT
+%  PLAN.  The full log, including everything done to assumptions_main.tex, is at
+%  the foot of that file; this is what changed HERE.
+%
+%  NEW PARAGRAPH: "A1 (conditional exogeneity)", placed first.  It proves the
+%  three facts the sans-L-category representation rests on -- the contrasts span
+%  the conditionally centred functions exactly, the span is base-cell free, and
+%  restriction (A) at the contrasts is EQUIVALENT to A1 rather than implied by
+%  it -- and it records what extra cells buy (LOCALISATION; round 5 replaced the
+%  round-1 "efficiency and overidentification" motivation, A1 being testable at
+%  sans-L = 2)
+%  and what they do not (identification, which already held at sans-L = 2 and
+%  whose hypothesis a finer instrument WEAKENS).  It carries a standing
+%  prohibition against explaining the gain through the ill-posed inverse problem.
+%
+%  THREE NUMBERED DISPLAYS ADDED IN THIS FILE:
+%     eq:omegainv     Omega^{-1} in closed form, and Omega^{-1} Wtilde as the
+%                     vector of inverse-probability contrasts against the base
+%                     (A4 paragraph)
+%     eq:omegaprefac  E[Wtilde 1{Delta U <= u} | Delta Z] = Omega d
+%                     (A4 paragraph)
+%     eq:omeganorm    the normalised contrast Wtilde^Omega (rem:htread).  ADDED
+%                     IN ROUND 4; it stood in assumptions_main.tex in rounds 2-3,
+%                     where the estimator carried it, and MOVES here with the
+%                     reading when the estimator stops carrying it.
+%  Four further displays are added in assumptions_main.tex (eq:contrast,
+%  eq:omegadef, eq:omegafloor, eq:trunset).  SEVEN IN TOTAL ACROSS THE TWO FILES.
+%  *** THE TWO CHANGE LOGS MUST AGREE ON THIS NUMBER.  Rounds 2-3 had this log
+%  saying SIX while assumptions_main.tex said EIGHT -- two logs contradicting each
+%  other about their own dispatch, which is the defect species this block spends
+%  its length policing.  Both now say seven. ***
+%
+%  ONE NUMBERED ENVIRONMENT IS ADDED IN THIS FILE, IN ROUND 4, AND IT IS THE ONLY
+%  COUNTER CHANGE IN THE DISPATCH: rem:htread, at the foot beside the four
+%  remarks already there.  This file is position 5 of 8, so every theorem-like
+%  number in results_s3_supp.tex, results_supp.tex and proofs.tex ADVANCES BY
+%  ONE.  Nothing breaks -- every reference is a \cref -- but printed numbers move.
+%  The other four remarks keep their positions and their relative order.
+%
+%  PARAGRAPHS AMENDED: A2' (the (P1) bound and the Khan-Tamer computation),
+%  A2c (ROUND 2: the (m.1) exceptional set is now the FINITE intersection over
+%  the p(sans-L - 1) slices, and the (m.2) measurability argument is run at
+%  ell^Pi_j(., t, l) rather than at the two-argument object -- round 1 amended
+%  A2c's STATEMENT and left its discussion at the old object, so the printed
+%  argument did not establish the printed display), A3
+%  (a note; THE RETIRED DISPLAY IS DELIBERATELY LEFT AS PRINTED, being an
+%  archaeological record), A4 (three derivations prepended; the measurability
+%  clause read at the vector), "the sample operator T-hat" (the simplex
+%  truncation and what it buys), rem:hatTread(2) and (3), and the Discussion's
+%  A4 sentence.
+%
+%  ROUND-2 CORRECTIONS TO ROUND-1 TEXT IN THIS FILE (against theorist-critic
+%  61/100).  Each replaces something round 1 printed; none is an extension.
+%   A1 paragraph, third fact:  the equivalence was stated "under eq:omegafloor",
+%       i.e. under overlap.  IT NEEDS NO OVERLAP.  The two-case argument via
+%       Omega_A now stands in place of the invertibility appeal.
+%   A1 paragraph, coarsening:  "V_CI = {varphi_dagger} at the coarsening gives
+%       the same at the full instrument" delivered only the INCLUSION.
+%       Non-emptiness is A1, and it is now stated as the second half.
+%   A4 paragraph, degenerate region:  {det Omega = 0} is NOT the degenerate
+%       region at sans-L >= 3 and the restriction is not vacuous there; the
+%       region is {Omega = 0} = {max_l varrho_l = 1}.  The withdrawn claim, the
+%       sans-L = 3 counterexample, and what lem:bierens does and does not need
+%       are printed.
+%   A4 paragraph, determinant:  det Omega = prod varrho_l was attributed to
+%       eq:omegainv, which presupposes the invertibility that fails exactly where
+%       the identity is wanted.  It is now proved by the matrix determinant lemma
+%       on the open region plus polynomial continuation.
+%   A4 paragraph, WHERE the normalisation goes:  round 1 said which normalisation
+%       and never where.  ~~The theta moment (redundant, with the bijection of the
+%       weight class proved)~~ -- STRUCK IN ROUND 3; the bijection is false and
+%       psi normalises too -- and the varphi operator (adopted, with the
+%       sans-L = 2 check and the costs) are now separated.
+%   Overidentification:  the "pin from a subset" motivation presumed
+%       identification from a SINGLETON contrast, which the next sentence itself
+%       said is unavailable.  Replaced by the joint-consistency route.
+%
+%  ROUND-3 CORRECTIONS IN THIS FILE (against theorist-critic 45/100), TAGGED WITH
+%  THE FINDING EACH CLOSES.
+%   [AUTHOR DECISION]  A4 paragraph, "where the normalisation is applied": the
+%       answer is now BOTH SIDES.  The round-2 claim that Omega^{-1} is redundant
+%       on psi, and the bijection-of-the-weight-class argument for it, are STRUCK
+%       and replaced by the refutation -- def:weight's clause (a) is a RANGE
+%       condition, ell in R(cal-W), and a merely Hoelder Omega(z) takes a
+%       real-analytic section out of that range.  The four bound-checks are kept
+%       on record as correct-but-insufficient.
+%   [C-2]  rem:hatTread(2): "at most two entries are nonzero" is FALSE -- at
+%       W_i = 0 all sans-L - 1 entries equal -1/hat-varrho_0, which the same
+%       clause's own lower bound says two lines earlier.  The Euclidean bound is
+%       now sqrt(sans-L - 1) eps_varrho^{-1}, SHARP.  This was PRINTED text and
+%       it understated at sans-L = 4, i.e. at Section 6's design.
+%   [M-1]  the lf_panel.R misquotation is struck from the A4 paragraph; a global
+%       scalar cannot move a root set and the file no longer suggests it can.
+%   [M-2]  "efficiency and conditioning" struck from the A4 paragraph; the ground
+%       is interpretability.
+%   ~~[M-3]  the cost list in the A4 paragraph is five items and is explicitly
+%       not asserted complete~~ -- STRUCK IN ROUND 4: the cost list existed only
+%       under the normalisation and went with it.
+%   ~~[C-3]  the lem:bierens hand-off is reconciled IN THIS FILE as well: the
+%       overlap-free statement is about (a) <=> (b), and the clauses naming M or
+%       T carry A4(i) as a well-formedness condition.~~  STRUCK IN ROUND 4 AND
+%       LEFT UNSTRUCK BY IT, WHICH ROUND 5 REPAIRS.  With the raw contrast, M and
+%       T are defined everywhere and bounded, so NO clause of lem:bierens carries
+%       A4(i) and the hand-off is unqualified at every clause.  Reversed in the
+%       printed text at the A1 paragraph and at A4's note (b); this log entry was
+%       the last site still asserting the carve-out.
+%   [m-2]  the four bound-checks now name which norm is spectral and which
+%       Frobenius, and cite submultiplicativity across the two.
+%   [m-5]  Z_0 is no longer redefined in an unlabelled display; eq:degenreg is
+%       cited and the reading fixed.
+%   [m-6]  "strictly smaller" is scoped to the simplex, with the note that the
+%       z-sets may coincide for a particular DGP.
+%   [ROUND 3, no finding]  the A3 retirement note records that lem:momzero(iv)'s
+%       vanishing survives the normalisation, since Omega is Delta Z-measurable.
+%
+%  ROUND-4 CHANGES IN THIS FILE.  THE AUTHOR REVERSED THE NORMALISATION; THE
+%  ESTIMATOR CARRIES THE RAW CONTRAST ON BOTH SIDES.
+%   [AUTHOR DECISION]  The A4 paragraph's "where is it applied" section now
+%       answers "nowhere in the estimator", with the author's ground -- A2, A2',
+%       A1c and H1 are stated at A_cond, and mu = s/(2a), eq:frontier, the
+%       budget table and the CFF comparison sit downstream of a.  The round-3
+%       "repair is to normalise psi as well" paragraph is struck and replaced by
+%       what the reversal leaves untouched.  The bijection refutation is KEPT,
+%       because the same analytic-versus-Hoelder mechanism is the author's
+%       ground.
+%   [NEW]  rem:htread, the only numbered environment the dispatch adds.  It
+%       carries eq:omeganorm, the Horvitz-Thompson reading, the base-cell-free
+%       quadratic form, the two moments, and clause (6) saying why the estimator
+%       does not use any of it.  IT SAYS IN ITS FIRST SENTENCE THAT IT IS
+%       INTERPRETATION AND NOT SPECIFICATION.
+%   [CRITICAL]  the two moments of the normalised contrast are stated correctly
+%       at rem:htread(3)-(4): E[Wtilde' Omega^{-1} Wtilde | DZ] = sans-L - 1 is
+%       BOUNDED; E[||Omega^{-1} Wtilde||^2 | DZ] = tr(Omega^{-1}) DIVERGES; and
+%       E[|Wtilde^Omega_l| | DZ] = 2 exactly, FREE of varrho.  Round 3 computed
+%       the first and cited it where the second belonged, and had the
+%       varrho-freedom backwards.  Numbers verified at sans-L = 4.
+%   [CRITICAL]  "not integrable without A4(i)" struck at both sites (the A1
+%       paragraph's lem:bierens qualification and the A4 cost list).  Where a
+%       cell vanishes Wtilde^Omega is UNDEFINED; where defined it is integrable
+%       with a varrho-free bound.
+%   [m-a]  the A1 spanning derivation now carries the degenerate-z count --
+%       one less than the number of non-null cells -- so this file no longer
+%       leaves a reader concluding that spanning needs A4(i), which the notation
+%       block explicitly denies.
+%   [M-C]  the display count here now matches assumptions_main.tex at seven.
+%   rem:hatTread(2)  the normalised-contrast clause is REMOVED and clause (c) is
+%       restated on the ground that survives: hat-varrho must be a probability
+%       vector.  The paragraph is explicit that clauses (a) and (b) would hold on
+%       the box, so the simplex is not load-bearing for them.
+%   "the sample operator T-hat"  same restatement.
+%   the A3 retirement note  the round-3 normalisation qualification is marked
+%       true-but-idle rather than deleted.
+%
+%  ROUND-5 CHANGES IN THIS FILE, TAGGED.
+%   [C-1]  the round-3 log entry [C-3] above -- "the clauses naming M or T carry
+%       A4(i) as a well-formedness condition" -- was left UNSTRUCK by round 4
+%       while the printed text reversed it.  Struck.
+%   [M-1]  the A4 paragraph's "...what makes the NORMALISED OPERATOR OF THE NEXT
+%       PARAGRAPH well defined" pointed in PRINTED TEXT at an object round 4 had
+%       removed; the next paragraph is "a claim withdrawn here".  Rewritten to
+%       point at rem:htread.
+%   [M-2]  Omega-hat_i is DECLARED, at its first printed consumer in the T-hat
+%       paragraph.  Round 4 removed the declaration from def:hatT with the
+%       normalisation -- correctly -- and kept all four consumers, which is the
+%       round-1 orphan defect mirrored.
+%   [AUTHOR DECISION 2]  the A1 paragraph's "what extra cells buy" is rewritten
+%       on LOCALISATION.  "Converts A1 from untestable" and the sans-L - 2 count
+%       are struck: A1 is testable at sans-L = 2, the restriction being a
+%       continuum of equations against one function, and Section 6's own probe
+%       rejects it there.  The three concepts -- testability, instrument
+%       strength, localisation -- are separated, and the Section 6
+%       chronic-versus-transient split is named as what the design tests.  Joint
+%       consistency stays as the APPARATUS.
+%   [m-1]  the tr(Omega^{-1}) example's ratio is 1.79; 2(sans-L - 1) is the worst
+%       case and is no longer attached to the example.
+%   [m-6]  the spanning uniqueness step cites the paragraph's own standing
+%       hypothesis, not eq:omegafloor, which is A4(i)'s global consequence and
+%       whose citation there suggested spanning needs A4(i).
+%
+%  ONE NUMBER IS LEFT STALE ON PURPOSE AND IS FLAGGED AT ITS SITE: the
+%  Discussion's 689/300 split and the 18%/9% figures are the two-category
+%  reading of the application.  Phase 9 replaces them; this dispatch does not
+%  have the four-category split and will not invent it.
+% ============================================================================
+
+\section*{Discussion of the assumptions}
+
+\noindent This section carries the material the article does not print: for each
+numbered condition of the assumption block, the interpretation, the provenance,
+the record of what it does and does not restrict, and -- where a condition was
+retired -- the ground on which it was retired. The statements themselves are
+printed above, verbatim and unchanged. Headings below name the condition; the
+text under each is reproduced verbatim from the consolidated block.
+
+
+% ------------------------------------------------------------------------
+% ADDED IN DISPATCH 25 (2026-08-08), PHASE 1 OF THE MULTINOMIAL-INSTRUMENT PLAN.
+% A1 HAD NO PARAGRAPH HERE, and it did not need one while the instrument was
+% binary: the statement was read as self-explanatory and the representation was
+% invisible because there was only one of them.  With sans-L cells the
+% representation has to be exhibited and shown exhaustive, and that is what this
+% paragraph does.  IT PROVES THREE THINGS AND ASSUMES NOTHING NEW.  It is
+% placed FIRST because it is read before A1b, and because every later paragraph
+% that says "the contrasts" points here for what that means.
+\paragraph{A1 (conditional exogeneity).}
+
+A1's statement is cardinality-free, and this paragraph is the reason the passage from a binary to
+an $\mathsf L$-category instrument is a change of representation and not of content. A1 says
+$\Delta U\upmodels W\mid\Delta Z$, a statement about $\sigma$-fields; nothing in it refers to how many
+values $W$ takes. What referred to the cardinality, in every round before the $\mathsf L$-category one,
+was the single scalar contrast $\widetilde W=W-\varrho(\Delta Z)$ through which the restriction was
+carried. Three facts fix the general representation, and all three are established here rather than
+assumed.
+
+% THIS PARAGRAPH POINTS FORWARD TO eq:omegainv AND eq:omegaprefac, WHICH ARE
+% DERIVED IN THE A4 PARAGRAPH A FEW PAGES BELOW IN THIS SAME SECTION.  The
+% forward pointer is deliberate and is not the defect def:spaces's 2026-08-03
+% note records: nothing is DECLARED here and used earlier, and there is no
+% circularity -- neither of the two derivations uses anything from this
+% paragraph.  A1 is placed first because the Discussion follows the order of the
+% assumption block and A1 precedes A1b and A4 there.
+First: the contrasts span the conditionally centred functions, exactly. Fix $z$ at which
+$\varrho_l(z)>0$ for every $l\in\{0,\dots,\mathsf L-1\}$, which A4(i) supplies for almost every $z$. Let
+$a$ be any measurable function of $(W,\Delta Z)$ with $E[|a|\mid\Delta Z=z]<\infty$ and
+$E[a\mid\Delta Z=z]=0$, and write $a_l(z):=a(l,z)$, a finite list of numbers at each $z$, since $W$
+takes finitely many values, so that
+the centring is $\sum_{l=0}^{\mathsf L-1}a_l(z)\varrho_l(z)=0$. Put $c_l(z):=a_l(z)-a_0(z)$ for
+$l=1,\dots,\mathsf L-1$. Then
+\[
+\sum_{l=1}^{\mathsf L-1}c_l(z)\,\un\{W=l\}
+\;=\;a(W,z)-a_0(z),
+\qquad
+\sum_{l=1}^{\mathsf L-1}c_l(z)\,\varrho_l(z)
+\;=\;\Big(\sum_{l\ge1}a_l\varrho_l\Big)-a_0\big(1-\varrho_0\big)
+\;=\;-a_0(z),
+\]
+the second using the centring in the form $\sum_{l\ge1}a_l\varrho_l=-a_0\varrho_0$. Subtracting,
+$c(z)'\widetilde W=a(W,z)$. So every conditionally centred function of $(W,\Delta Z)$ is a
+$\Delta Z$-measurable linear combination of the $\mathsf L-1$ contrasts, and the family is exhaustive
+with nothing approximated. The representation is unique: if $c(z)'\widetilde W=0$ almost surely given
+$\Delta Z=z$ then $0=\operatorname{Var}(c'\widetilde W\mid\Delta Z=z)=c(z)'\Omega(z)c(z)$, and
+$\Omega(z)\succ0$ forces $c(z)=0$, \emph{$\Omega(z)\succ0$ being supplied by \textbf{the standing
+hypothesis of this paragraph}, that every cell is non-null at $z$, through the determinant identity
+$\det\Omega=\prod_{l}\varrho_l$ below, and \textbf{not} by \eqref{eq:omegafloor}}, which is A4(i)'s
+global consequence and is not assumed here. The space therefore has dimension
+exactly $\mathsf L-1$ at such a $z$ and \eqref{eq:contrast} is a basis for it.
+% ROUND-5 CORRECTION.  The uniqueness step cited eq:omegafloor, which OVER-
+% ATTRIBUTES: eq:omegafloor is A4(i)'s consequence and carries the uniform floor
+% eps_Omega, whereas all this step needs is that Omega(z) be nonsingular AT THE z
+% the paragraph has already fixed.  Citing the global bound here is what would
+% make a reader think the spanning statement needs A4(i) -- exactly what the next
+% paragraph exists to deny.
+
+At a degenerate $z$ the count is different, and it is stated here because the notation block
+promises it and because a reader who stopped at the display above would conclude that spanning needs
+A4(i). \emph{It does not.} Let $A_0:=\{l\in\{0,\dots,\mathsf L-1\}:\varrho_l(z)>0\}$ be the non-null
+cells. The contrasts indexed by null cells are identically zero at $z$, and the argument above, re-run
+with the sums restricted to $A_0$, shows that the conditionally centred functions of $(W,\Delta Z)$ at
+$z$ are exactly the $\Delta Z$-measurable combinations of $\{\widetilde W_l:l\in A_0,\,l\ge1\}$, of
+dimension $\#A_0-1$ when the base cell is non-null, and $\#A_0-1$ again when it is not, the
+constraint $\sum_{l\in A_0}a_l\varrho_l=0$ removing one dimension from an $\#A_0$-dimensional space in
+both cases. \emph{So the spanning statement holds at every $z$, with the dimension being one less than
+the number of non-null cells}; A4(i) makes $\#A_0=\mathsf L$ everywhere and removes the case
+distinction, but it is not a hypothesis of the statement. \emph{This is why no
+Bierens-type device is needed in the $W$ direction}: a Bierens family exists to span an
+infinite-dimensional space of test functions by a countable or continuum-indexed family, and here the
+space is finite-dimensional and a basis is available in closed form. The Bierens family remains where it
+was, over $\Delta Z$, and B1 is unchanged apart from B1(iv.d).
+
+Second: nothing above depends on which cell is the base. The derivation used no property of cell
+$0$ beyond its being one of the cells, so re-running it with base $k$ produces a second basis of the
+\emph{same} space; the two are related by an invertible $\Delta Z$-measurable linear map, and every
+statement of the form ``the restriction holds'' or ``the span is exhausted'' is therefore invariant to
+the choice. \emph{Objects that are not invariant are flagged where they occur, and the distinction is
+finer than it looks}: the individual contrast $\widetilde W_l=\un\{W=l\}-\varrho_l(\Delta Z)$ does not
+mention the base cell at all, but \emph{which} $\mathsf L-1$ of the $\mathsf L$ contrasts are collected
+into the vector does, the base cell is the omitted one, and $\Omega$, being the covariance of that
+collection, moves with it. The quadratic form $\widetilde W'\Omega^{-1}\widetilde W$ does not move: by
+\eqref{eq:omegainv} it equals $(1-\varrho_W)/\varrho_W$, which names no cell but the realised one. See
+the paragraph \emph{A4}.
+
+\emph{Third: restriction \textup{(A)} at the $\mathsf L-1$ contrasts is equivalent to A1, not merely
+implied by it, \textbf{and the equivalence uses no overlap condition.}} For bounded measurable
+$\varsigma$ the computation of \eqref{eq:omegaprefac} with
+$\varsigma(\Delta U)$ in place of $\un\{\Delta U\le u\}$ gives
+$E[\widetilde W\varsigma(\Delta U)\mid\Delta Z=z]=\Omega(z)\,d_\varsigma(z)$ with
+$d_{\varsigma,l}(z)=E[\varsigma(\Delta U)\mid W=l,\Delta Z=z]-E[\varsigma(\Delta U)\mid W=0,\Delta Z=z]$,
+read at any versions of the conditional expectations, those at null cells being arbitrary. \emph{Fix
+$z$ and put $A:=\{l\ge1:\varrho_l(z)>0\}$}; $\Omega(z)$ vanishes off $A\times A$ and its $A$-block is
+$\Omega_A=\operatorname{diag}(\varrho_A)-\varrho_A\varrho_A'$ with
+$\det\Omega_A=\varrho_0\prod_{l\in A}\varrho_l$. If $\varrho_0>0$ then $\Omega_A$ is nonsingular and
+$\Omega d_\varsigma=0$ forces $d_{\varsigma,A}=0$; if $\varrho_0=0$ then
+$\ker\Omega_A=\operatorname{span}\{\mathbf 1_A\}$, from $\varrho_l(c_l-\varrho_A'c)=0$ with
+$\varrho_l>0$ on $A$, and $d_{\varsigma,A}$ is constant on $A$. \emph{In both cases the restriction
+holds for every bounded $\varsigma$ if and only if the conditional law of $\Delta U$ given
+$(W,\Delta Z=z)$ is the same across all non-null cells}, which is $\Delta U\upmodels W\mid\Delta Z=z$.
+\emph{No condition on $\varrho$ was used, and A4(i) is \textbf{not} a hypothesis of this equivalence}:
+what A4(i) is needed for is \eqref{eq:omeganorm}, the normalisation, which is a different matter and is
+taken up in the paragraph \emph{A4}. \emph{At $\mathsf L=2$ this is the equivalence the block has
+used since round~1}, with the scalar $\varrho(1-\varrho)$ in place of $\Omega$, and the two cases
+collapse to the single observation that a null cell makes $W$ conditionally degenerate.
+
+What extra cells buy, and what they do not. They do not buy identification, and no sentence
+in this corpus may suggest that they do. Identification of $\vdagger$ is A1b(iii), and A1b(iii) at the
+full $\mathsf L$-category $W$ is \emph{implied by} A1b(iii) at any coarsening of $W$ \emph{together with
+A1}. The two halves are separate and only the first is about coarsening. \emph{Inclusion}: a coarsening
+$g(W)$ imposes fewer restrictions, so $\mathcal V_{CI}(W)\subseteq\mathcal V_{CI}(g(W))$, and
+$\mathcal V_{CI}(g(W))=\{\vdagger\}$ gives $\mathcal V_{CI}(W)\subseteq\{\vdagger\}$, \emph{at most}
+one element. \emph{Non-emptiness}: $\vdagger\in\mathcal V_{CI}(W)$ is exactly
+$\Delta U\upmodels W\mid\Delta Z$, which is A1 and is not delivered by the coarsening. \emph{With both,
+$\mathcal V_{CI}(W)=\{\vdagger\}$.} A first draft of this paragraph gave the inclusion alone and called
+it the implication, which would leave $\mathcal V_{CI}(W)$ possibly empty. \emph{A finer
+instrument therefore makes the identification hypothesis weaker, never stronger}, A1 being maintained
+throughout, and identification
+already held at $\mathsf L=2$.
+
+What the extra cells \textbf{do} buy is \textbf{localisation}, and three concepts have to be kept
+apart to see it.
+
+First, testability, which is \textbf{present at $\mathsf L=2$} and is not what $\mathsf L>2$ adds.
+At $\mathsf L=2$ the restriction is $d_1(u\mid z)=0$ \emph{for every $u$ at almost every $z$}, a
+continuum of equations against one unknown function. This is a conditional-\textbf{independence}
+restriction with a continuously distributed conditioning variable, not the mean-independence case in
+which a binary instrument supplies two moments and exhausts them. A1 is therefore testable at
+$\mathsf L=2$, and the paper's own application demonstrates it: the Section~6 probe rejects A1 at
+$\mathsf L=2$. A statement that more cells make A1 testable is false and must not be written.
+
+Second, instrument strength, which is a property of the data and not of the model. How hard $W$
+moves $X$ bears on precision. \emph{Splitting an instrument creates no variation}, and strength within a
+sub-population can be examined at $\mathsf L=2$ by subsetting. This is not what $\mathsf L>2$ adds
+either.
+
+Third, and this is the claim, \textbf{localisation}. At $\mathsf L=2$ the restriction is the
+single object $d_1(u\mid z)=0$, so a violation concentrated in one channel of the instrument and its
+absence in another are \emph{averaged into one verdict}: the test rejects, and cannot say through which
+channel. At $\mathsf L\ge3$ the restriction is $d_l(u\mid z)=0$ \emph{cell by cell}, so a violation can be
+\emph{attributed} to a cell. \emph{That question cannot be posed at $\mathsf L=2$ at all}, and posing it
+is what the finer instrument is for.
+
+The formal apparatus is joint consistency, and it is apparatus rather than motivation. Under A1
+each of the $\mathsf L-1$ contrast directions carries a valid restriction on the \emph{same} $\vdagger$
+, each a whole family, indexed by the test function and by the Bierens index $t$, so the testable
+content is that there exists a single $\varphi\in\mathcal V$ at which all $\mathsf L-1$ systems hold, and
+a $J$-type statistic for that hypothesis is the vehicle. \emph{This route needs no identification from
+any subset}, which is why it is the one taken; and its per-cell decomposition is what delivers
+localisation. \emph{A route a first draft took is withdrawn}: it pinned $\vdagger$ from a subset of the
+directions and called the remainder testable, which presumes identification from a \emph{singleton}
+contrast, and contrast $l$ alone is the binary coarsening $\un\{W=l\}$, so identification from it is
+A1b(iii) at that coarsening, \emph{stronger} than A1b(iii) at the full instrument and not implied by it.
+
+The application is what the split exists for, and it makes the three concepts concrete. The
+Section~6 instrument divides into a \emph{chronic-level} channel, the annual-mean-only and
+both-triggers cells, and a \emph{transient} channel, the bad-day-only cell. \emph{The hypothesis the
+split is built to test is that A1 fails through the chronic channel}, where $W$ is close to a function of
+$X_1$, the endogenous regressor's own initial value, \emph{and not through the transient one}. At
+$\mathsf L=2$ that hypothesis has no expression. \emph{The proposition that states the joint-consistency
+restriction and the statistic that localises a violation to a cell are not in this dispatch}; they are
+recorded as owed, and Phase~2 builds them off this paragraph.
+
+\emph{\textbf{And consistency of every cell set is \textbf{necessary} for A1, not sufficient, which
+governs how a non-rejection may be reported and is stated here because it is stated nowhere else.}}
+\Cref{prp:localise}\textup{(ii)} runs in one direction only: A1 implies that every cell set is
+consistent, and its contrapositive is that a conflict refutes A1. The converse is never asserted,
+and it is false in general. The reason is structural rather than statistical, and survives at infinite
+sample size. What the cell system interrogates is whether $\mathcal V_{CI}$ is \emph{empty}; what A1 is
+about is whether $\vdagger$ \emph{lies in} $\mathcal V_{CI}$. \emph{Those are different questions.} At a
+law where A1 fails at the truth but some other $\varphi_1\in\mathcal V$ satisfies the
+conditional-independence restriction, every cell set is satisfied \emph{at $\varphi_1$}, every conflict
+set is empty, the diagnostic reports nothing, and the estimator converges to $\varphi_1\ne\vdagger$.
+Nothing in this block excludes such a law: A1b(iii) would also fail there, it is the clause that says
+$\mathcal V_{CI}=\{\vdagger\}$, and the point is precisely that \emph{the diagnostic cannot see the
+failure of the clause it would need to see}.
+\emph{So a cell showing no conflict is \textbf{not exonerated}}: the procedure detects
+$\mathcal V_{CI}=\varnothing$ and nothing more, which is not an interpretation but
+\cref{prp:localise}\textup{(iii)}'s own equivalence, that some consistent $\mathsf S$ has a non-empty
+conflict set \emph{if and only if} $\mathcal V_{CI}=\emptyset$, so a violation reconciled by some other
+$\varphi\in\mathcal V$ is invisible to it, and the false-negative rate of the attribution is
+unpriced by anything in this paper. \emph{Section~6 will attribute a non-rejection to a channel and must report it in exactly those
+terms}, as the absence of a detected conflict, not as evidence for A1 in the un-flagged cell.
+% ADDED 2026-08-10 (Phase 6a).  THIS IS NOT A COUNTEREXAMPLE and is not recorded as
+% one: prp:localise(ii) states only the forward implication, all its hypotheses and
+% its conclusion hold, and a probe that constructed such a law (L = 3, varrho_l =
+% 1/3, a perturbation orthogonal to the first cell contrast but separating the
+% conditional laws at higher moments) found every hypothesis satisfied.  What the
+% probe found was that NO PRINTED SENTENCE ANYWHERE IN THE CORPUS says the converse
+% is not claimed.  rem:localise(5)'s "What is not claimed" blocks two OTHER
+% over-readings -- it is not this one -- and a search for any statement that
+% consistency is necessary and not sufficient returned zero hits.  The argument
+% above is stated at the level that is verified here (the two questions differ, and
+% the diagnostic answers the wrong one), rather than by reciting a construction this
+% file does not carry.
+% ROUND-5 CORRECTION, AND IT REPLACES THE MOTIVATION AND NOT ONLY THE WORDING.
+% Rounds 1-4 said the extra cells "convert A1 from an untestable assumption into
+% one with evidence for or against it", and counted "sans-L - 2 independent
+% testable restrictions".  BOTH ARE STRUCK.  A1 IS TESTABLE AT sans-L = 2 -- the
+% restriction is a continuum of equations against one function, and Section 6's
+% own probe rejects it there -- so the sentence was false, and the count was a
+% moment-counting reflex imported from the mean-independence case where a binary
+% instrument gives two moments.  It does not apply to a conditional-independence
+% restriction with a continuous conditioning variable.
+% THE THREE CONCEPTS THE FILE MUST NOT CONFLATE ARE TESTABILITY, INSTRUMENT
+% STRENGTH AND LOCALISATION.  Only the third is what sans-L > 2 buys.  A later
+% dispatch tempted to restore "overidentification" as the headline should note
+% that the joint-consistency statistic IS an overidentification statistic -- that
+% is not the error -- and that the error was calling its existence, rather than
+% its per-cell decomposition, the reason for the design.
+
+% *** AND THE MECHANISM IS NOT THE ILL-POSED INVERSE PROBLEM.  READ THIS BEFORE
+% WRITING ANYTHING ABOUT WHAT MORE CELLS BUY. ***
+% varphi solves the NONLINEAR operator equation eq:opeq under a conditional
+% INDEPENDENCE restriction.  A_cond is the DERIVATIVE of T at the truth, not the
+% problem; the degree of ill-posedness a of H1 is a property of A_cond's singular
+% values, and the cardinality of W does not act on it in any way this block can
+% state, let alone in the way "more instruments improve conditioning" would
+% suggest for a LINEAR Fredholm equation.  THE TEMPTATION IS REAL AND THE
+% SENTENCE WOULD LOOK PLAUSIBLE: it is the sentence a reader who has the linear
+% NPIV literature in mind will supply, and it imports a different problem.  What
+% extra cells do is add MOMENT DIRECTIONS -- restrictions on the same varphi --
+% which is an efficiency and overidentification statement and lives entirely on
+% the moment side.  Recorded here as a standing prohibition because this is the
+% paragraph a later dispatch will edit when it writes the overidentification
+% result.
+
+% ------------------------------------------------------------------------
+\paragraph{A1b (identification).}
+
+\emph{(The corresponding statement for a generic $\varphi\in\mathcal V$ is \cref{def:spaces} and not an
+assumption; only membership of the truth is content.)}
+Mode of consumption, stated once and binding on every citation of this clause: A1b(i) is consumed
+for \textbf{well-posedness} and never for a bound. What it buys is that the truth, and hence the path
+$\vdagger+\tau_1h$ for $h\in\mathcal V$, lies in the parameter space. A result whose conclusion
+concerns a generic $h\in\mathcal V$, and whose proof needs only $\int h\,d\pi=0$, consumes
+\cref{def:spaces} and must cite \cref{def:spaces}; citing A1b(i) there charges the result with a
+hypothesis it does not use, because the two statements are typographically identical and semantically
+disjoint. The genuine consumers are \cref{lem:secondord} \textup{(Step 1)}, \cref{prp:orthog}\textup{(i)},
+\cref{cor:udep} \textup{(clause (a), at $\vdagger$)}, \cref{lem:biasexp} and, transitively,
+\cref{lem:solset} and \cref{thm:rootn}.
+\emph{\Cref{lem:biasexp}'s use is the archetype}: A1b(i) is what puts
+$h_k=\hat\varphi^{(-k)}-\vdagger$ in $\mathcal V$, hence what makes the balancing pairing
+$\langle\nu_{g_k}/\pi,h_k\rangle_{L^{2}(\pi)}$ of \eqref{eq:biasdecomp} the object
+\cref{lem:nusigma}\textup{(iii)} computes and the object A2 asserts a range condition about, a
+\emph{well-posedness} use and not a bound. \Cref{thm:rootn} carries
+A1b(i) in group \textup{(T-1)} for the same use, inherited.
+\emph{\Cref{lem:prelimtheta} Step~4, \cref{lem:epterm} Step~3 and \cref{lem:sandwich} Steps~3 and~6$'$
+are \textbf{not} consumers}, although each applies \cref{lem:nusigma}\textup{(i)} at $h_k$:
+that clause is stated for every $h\in L^{2}(\mathcal X,\pi)$, which is all its proof establishes.
+% ARCHAEOLOGY.  lem:biasexp was missing from this binding list through dispatch 13,
+% which is the dangerous direction: the list was wrong and the citation was right,
+% so a reader following the list would have struck a correct citation.  Both the
+% assumption-auditor and the regularity-checker reached that conclusion
+% independently, the latter classifying it as "a citation gap and not a mathematical
+% one".  thm:rootn -- the paper's only theorem -- was missing from the same list
+% through dispatch 17, the same defect one level up; it survived the dispatch-14
+% repair because that repair ran site-by-site rather than list-by-list.  No other
+% clause in this block carries a list declared binding; A1d's "sole consumer
+% cor:a1cprim" and A2c's "exactly one consumer lem:reprsmooth" are the only
+% comparable claims and both were re-checked and are correct.  The three
+% non-consumers would each have needed A1b(i) under lem:nusigma(i)'s round-13
+% statement "for every h in V".
+
+% ------------------------------------------------------------------------
+\paragraph{B1 (Bierens family and range space).}
+
+\begin{enumerate}
+\item[(vi)] \textbf{\sout{RETIRED.}} It describes an estimator this block
+does not implement. The clause read: \emph{the family used on the $\varphi$-side is a finite set
+$\mathcal T_n\subset\mathcal T$ with $\#\mathcal T_n\to\infty$ and
+$\overline{\bigcup_n\mathcal T_n}\supseteq\mathcal T$} \sout{[retired]}. It is not maintained, is not
+available for use, and is a hypothesis of no result in this programme. The clause number is kept
+rather than reused, on the A3 and \textup{(P-b)} precedent, so that a stale citation lands
+somewhere.
+That second claim was false for four dispatches, and what made it false is recorded here rather than
+repaired silently. A retirement is complete only when the clause is struck, when no hypothesis list carries
+it \emph{including through a block citation of the parent tag}, and when nothing describes it in the present
+tense as a live condition. B1(vi) failed the second test at \cref{prp:phirate}, whose list read ``B1'' in full
+and now reads B1(i)--(v); and it failed the third at three compiled sites, the Discussion of this block,
+\cref{rem:Tcond} in \texttt{results.tex}, and that remark's rendering in
+\texttt{paper/sections/theorems/lem-bierens.tex}, each of which called it an identification restriction in
+the present tense. All four are closed. \emph{A clause that is struck in one file and live in three is worse
+than a clause nobody struck}, because the strike is what stops the next reader from checking.
+Why it is retired, and this one is retired for the third of the three reasons, neither
+``it is a theorem'' \textup{(A3)} nor ``it is false'' \textup{(A6)} but ``it is about a different
+estimator''. The \textbf{growing finite family} $\mathcal T_n$, a finite subset of $\mathcal T$
+with $\#\mathcal T_n\to\infty$, is instantiated \textbf{nowhere in this project}, in the compiled text
+or in the simulation code. The
+estimator does not use a growing finite grid: \cref{def:hatT} integrates against $\Pi_t$ over \emph{all} of
+% ARCHAEOLOGY.  The sentence read "cal T_n occurs nowhere in this project outside the
+% sentence above" through dispatch 20 and was FALSE on the register in which it was
+% written: the varphi-step simulation carries an identifier Tn for a FIXED quadrature
+% node set -- a constant number of Halton nodes for a Pi_t uniform on cal T, whose
+% own header says in terms that it is B1(iii)--(iv.b)--(iv.c) and NOT B1(vi) -- so
+% the STRING occurred and the OBJECT did not.  The claim is restated at the object
+% rather than at the string, as of dispatch 21.
+$\mathcal T$, and every operator norm in Parts~F--H is an $L^{2}(\Pi)$ norm over the whole index set. The
+clause is a leftover from a Dom\'inguez--Lobato-style design with a growing finite family, which this block
+considered and did not adopt.
+What it was for, and where that work is actually done. Its heading claimed identification of
+$\vdagger$. Identification of $\vdagger$ in this block is \textbf{A1b(iii)}, assumed outright, and A1b(iii)'s
+own comment records that no primitive route to it is offered. A growing family would be one ingredient of
+such a route, \emph{and the counterexample-hunter's sub-probe shows it would be a genuine ingredient and
+not decoration}: at a \emph{fixed finite} grid $\Pi_t=\sum_{k\le K}\delta_{t_k}$ with $\Delta Z$ supported on
+$K+1$ atoms, the $K\times(K+1)$ matrix $[e^{t_k\Phi(z_j)}]$ has a null vector, and perturbing along it makes
+the Bierens family hold while the conditional restriction fails. So the clause is correctly labelled an
+identification condition; what it is not is a condition of this estimator. It is recorded here rather than
+deleted so that a later dispatch reinstating the growing-grid design finds the statement and the witness
+together. \emph{Note also that (vi) was never sufficient for A1b(iii)}: it constrains the index family and
+says nothing about $\mathcal V_{CI}$.
+\end{enumerate}
+
+% ------------------------------------------------------------------------
+\paragraph{A2$'$ (source condition with usable representer).}
+
+\begin{enumerate}
+\item[(ii)] \textbf{\sout{RETIRED.}} It is a consequence of \textup{(i)}.
+The clause read
+$E[\widetilde W^{2}\|\ell_\star\|^{2}]<\infty$ \sout{[retired]} and is not maintained, is not
+available for use, and is a hypothesis of no result in this programme. The clause number is kept
+rather than reused, on the A3 precedent and for the same reason \textup{(P-b)} is kept: a stale
+citation must land somewhere.
+Why it is retired, and it is retired because it is a \textbf{theorem}, exactly as A3 was, not
+because it is false and not because it is too strong. Under (i) in full, together with B1(i), (ii),
+(iv.a), (iv.d), \cref{cor:elldiff} gives $\|\ell_\star\|_\infty\le\|\varpi_u\|_\infty\Lambda^{(0)}_\star<\infty$,
+and $\|\widetilde W\|\le\min\{\sqrt2,\sqrt{\mathsf L-1}\}$, in the Euclidean norm on
+$\IR^{\mathsf L-1}$, is \textup{(P1b)}, free from \eqref{eq:contrast}, $W$ taking finitely many values and
+$\varrho_l\in[0,1]$; hence
+$E[\widetilde W^{2}\|\ell_\star\|^{2}]\le2\|\ell_\star\|_\infty^{2}<\infty$ with no further hypothesis.
+\emph{The factor $2$ is the square of that bound and is therefore \textup{(P1b)}'s constant and not
+\textup{(P1)}'s}: \textup{(P1)} is the
+\emph{per-cell} $|\widetilde W_l|\le1$ and does not bound the Euclidean norm of the vector, and a
+derivation routed through it here would produce the constant \cref{cor:rangegap}'s proof records as
+\textbf{false} at $\mathsf L\ge3$. \emph{The bound is written out rather than called by its symbol},
+that symbol being declared at \cref{cor:rangegap}, which this file precedes in reading order.
+\emph{This tag was \textup{(P1)} through 2026-08-24, at both sites of
+this retirement ground}, while \cref{lem:momzero}'s closing paragraph, which runs the identical
+derivation, printed ``the bound on $\|\widetilde W\|$ is the Euclidean one and \textbf{not}
+\textup{(P1)}''; \emph{soundness was never at stake, but a retirement ground is a derivation and must
+name every clause it uses}. The factor is $1$ at
+$\mathsf L=2$; it is a constant, it is uniform in $\mathsf L$, and it changes nothing about the
+retirement.
+\emph{The attribution is (i) \textbf{in full} and not (i.a) alone}: the only route to
+$\|\ell_\star\|_\infty<\infty$ in this block is \cref{cor:elldiff}, that corollary is stated at A2b, and
+A2b requires (i.a) \emph{and} (i.b). \emph{Every tag in that derivation is already carried by every list
+that could have carried (ii)}, so the retirement changes no conclusion anywhere.
+\emph{The clause has \textbf{no consumer}}, as \cref{lem:balance}, \cref{lem:solset},
+\cref{lem:secondord}'s own hypothesis line --- ``A$2'$ cited by clause; A$2'$(ii) is consumed by no
+part of this lemma'' --- and \cref{lem:momzero}'s closing paragraph each state independently.
+\emph{Four attestations, and the number is not maintained}: the draft this sentence replaces said
+three and named three, and the fourth had been printing on its own hypothesis line throughout.
+What survives, and it is the half the clause was really carrying. At Step~8
+% ARCHAEOLOGY.  The round-8 change log of this file recorded "A2'(ii) is consumed by
+% none of them and is a Step-8 clause".  A4's comment (d) justified retaining it by
+% asserting that "the second-order and bias terms consume" it, which was false, and
+% a maintained clause with a false retention ground is what an audit is for.
+(\texttt{prp:effbound}), where the variance is computed and where tier~T3 relaxes (i), $\|\ell_\star\|_\infty$
+is no longer available and $E[\widetilde W^{2}\|\ell_\star\|^{2}]<\infty$ becomes a genuine restriction, 
+it is exactly the Khan--Tamer irregularity boundary, since holding the conditional laws given $W$ fixed and
+driving any one cell probability to zero makes
+$\|\Omega^{-1}\|\ge\max_{0\le l\le\mathsf L-1}\varrho_l^{-1}$ diverge by
+\eqref{eq:omegainv}, read at the diagonal entry
+$e_l'\Omega^{-1}e_l=\varrho_l^{-1}+\varrho_0^{-1}$, and with it
+$E[\widetilde W^{2}\|\ell_\star\|^{2}]$. \emph{At $\mathsf L=2$ that is
+the printed computation}, $\varrho\equiv\varepsilon$ giving
+$E[\widetilde W^{2}\|\ell_\star\|^{2}]\asymp\varepsilon^{-1}$; \emph{at $\mathsf L\ge3$ it is
+\textbf{one} cell that has to be thin and not all of them}, which is the reading the application needs,
+its thin cell being a single trigger category.
+\emph{That is a \textbf{forward} obligation and not a present consumer}, and it is recorded here rather than
+carried as a maintained clause: Step~8 must state the condition it needs, at the tier where it needs it, and
+under T3 it will not be this clause because (i) will not be available to make it redundant. \emph{Flagged
+for Step~8}, on the model of \cref{rem:obligations};
+\end{enumerate}
+
+\medskip
+\noindent
+ Status of clause \textup{(i)}, stated here so that the tag names exactly one object. A$2'$(i) is a
+\emph{maintained assertion about $\ell^\Pi_\star$, and about $\ell^\Pi_\star$ alone}. The same two
+conditions read at a generic $\ell^\Pi\in L^{2}(\Pi)$ are not an assumption but a \emph{property} that a
+candidate representer may or may not have; that property is tagged \textbf{A2b} below and is what
+\cref{def:weight}(a) names \emph{admissible representer}. \emph{A result that needs the property at a
+generic representer cites A2b and never A$2'$(i)}, exactly as a result needing the centring
+property of a generic weight cites N1 and never a maintained clause. This is the
+treatment N1/N1$'$ received in round 7 and it is applied here for the same reason: one tag, one object.
+
+% ------------------------------------------------------------------------
+\paragraph{A2c (source condition on the representer).}
+
+
+Two things in \eqref{eq:lambdamu} are established here rather than assumed, because neither is
+automatic and the second cannot be had from the transform.
+
+\textup{(m.1)} The exceptional set is a Borel set by construction, and stating it that way is a
+choice. The weaker phrasing ``for $\Pi_t$-almost every $t$ the slice lies in $H^{\mu''}(\IR;\IR^{p})$''
+% ARITY OF THE QUOTATION CORRECTED 2026-08-10 (Phase C).  This quoted A2c's slice
+% condition at the SCALAR H^{mu''}(R) while A2c states it at the VECTOR
+% H^{mu''}(R;R^p) -- the same species as the p(L-1) miscount M1 closed one
+% paragraph later, and the reason (m.1) was coherent but not literally faithful:
+% the CONSTRUCTION below does run at the p(L-1) coordinate slices, and the
+% paragraph says so, but the clause being weakened is the vector one.  One symbol;
+% the argument that follows is arity-neutral and is unchanged.
+delivers
+the displayed form at no cost: it means that the set of $t$ failing the slice condition is contained in
+some $\mathcal N\in\mathfrak B(\mathcal T)$ with $\Pi_t(\mathcal N)=0$, and
+$\mathcal T_\ast:=\mathcal T\setminus\mathcal N$ is then Borel, carries full $\Pi_t$-measure, and
+contains \emph{only} points at which the slice condition holds. \emph{Nothing anywhere requires
+$\mathcal T_\ast$ to be the largest such set}, which need not be Borel. What the choice buys is that
+$\IR\times\mathcal T_\ast$ belongs to $\mathfrak B(\IR)\otimes\mathfrak B(\mathcal T)$, the property
+\cref{lem:reprsmooth}'s Step 2 needs when it asserts joint measurability there, and the property an
+``almost every'' quantifier does not by itself supply.
+With $\mathsf L$ cells the construction is run once per slice and the sets are then intersected.
+\emph{What A2c asks for is \textbf{one} $\mathcal T_\ast$ serving every $l$}, its slice condition
+being membership of the \textbf{vector} slice $\ell^\Pi(\cdot,t,l)$ in $H^{\mu''}(\IR;\IR^{p})$, so that
+it has $\mathsf L-1$ slices and not more, \emph{while the construction below runs at the
+$p(\mathsf L-1)$ \textbf{coordinate} slices and delivers that requirement rather than a stronger one}:
+by the identity A2c prints when it extends \eqref{eq:usobolev} to $\IR^{p}$-valued $g$, membership of
+the vector slice in $H^{\mu''}(\IR;\IR^{p})$ \emph{is} membership of all $p$ coordinates in
+$H^{\mu''}(\IR)$, so the finer index is bookkeeping and not a further demand. There are
+$p(\mathsf L-1)$ coordinate slices $\ell^\Pi_j(\cdot,t,l)$; take $\mathcal N_{j,l}$ for each and set
+$\mathcal N:=\bigcup_{j,l}\mathcal N_{j,l}$, a \emph{finite} union, hence Borel and $\Pi_t$-null, and
+$\mathcal T_\ast:=\mathcal T\setminus\mathcal N$ then carries full $\Pi_t$-measure and contains only
+points at which \emph{every} coordinate slice condition holds, equivalently, by that same identity,
+only points at which $\ell^\Pi(\cdot,t,l)\in H^{\mu''}(\IR;\IR^{p})$ for every $l$, which is A2c's
+quantifier. \emph{Finiteness of $\mathsf L$ is what makes this
+free}: a countable union would serve too, but a union over an index set of unbounded cardinality would
+not, which is one more place where A0's ``$\mathsf L$ finite and fixed in $n$'' is doing work rather
+than housekeeping. \emph{A per-slice $\mathcal T_{\ast,j,l}$ would not serve} \cref{lem:reprsmooth}'s
+Step~2, which needs one product set on which all the slices are simultaneously well behaved.
+
+\textup{(m.2)} The integrand is measurable, by pairing against one fixed countable family of
+functions of $u$. There are real $\varkappa_1,\varkappa_2,\ldots\in L^{2}(\IR,du)$ with
+\begin{equation}\label{eq:hdual}
+\big\|g\big\|_{H^{\mu''}(\IR)}\;=\;\sup_{k\ge1}\Big|\int_{\IR}g(u)\,\varkappa_k(u)\,du\Big|
+\qquad\text{for every real }g\in H^{\mu''}(\IR).
+\end{equation}
+Construction, with no negative-index space and no completion. Call a function of $\xi$
+\emph{Hermitian} when its value at $-\xi$ is the complex conjugate of its value at $\xi$, which is what
+transforms of real functions are. The Hermitian elements of $L^{2}(\IR,(2\pi)^{-1}d\xi)$ form a closed
+real-linear subspace of a separable space, hence a separable real Hilbert space; take a countable subset
+of its closed unit ball, dense there, and replace each member by its truncations to
+$\{|\xi|\le R,\ |\cdot|\le R\}$ over rational $R$, truncation preserves Hermitian symmetry, because
+the truncation set is symmetric, does not increase the norm, and converges in $L^{2}$, so the subset
+may be taken to consist of \emph{bounded, compactly supported} Hermitian functions and to remain dense in
+the ball. Let $\varkappa_k$ be the inverse Fourier transform of $(1+\xi^{2})^{\mu''/2}$ times the $k$-th
+member: that product is bounded with compact support, hence in $L^{1}\cap L^{2}$, so $\varkappa_k$ is a
+bounded continuous element of $L^{2}(\IR,du)$, and it is real because the product is Hermitian. For real
+$g\in H^{\mu''}(\IR)$, Plancherel in the normalisation of \eqref{eq:usobolev} gives
+\[
+\int_{\IR}g\,\varkappa_k\,du
+\;=\;\frac1{2\pi}\int_{\IR}\big[(1+\xi^{2})^{\mu''/2}(\mathcal Fg)(\xi)\big]\,
+\overline{\big[(1+\xi^{2})^{-\mu''/2}(\mathcal F\varkappa_k)(\xi)\big]}\,d\xi ,
+\]
+whose second factor is the $k$-th member of the dense family and whose first is a Hermitian element of
+$L^{2}(\IR,(2\pi)^{-1}d\xi)$ of norm exactly $\|g\|_{H^{\mu''}(\IR)}$, by \eqref{eq:usobolev}. The
+supremum over $k$ of the modulus of a continuous linear functional over a dense subset of the closed unit
+ball is the functional's norm, which is \eqref{eq:hdual}.
+
+The remaining step is run at a fixed coordinate slice $(j,l)$ and then aggregated exactly as
+\eqref{eq:lambdamu} aggregates: Euclidean over the $p$ coordinates, maximal over the $\mathsf L-1$
+contrasts. \emph{The second stage is the only place the $\mathsf L$-category form changes anything
+here}; the first is present at every $\mathsf L$, $\mathsf L=2$ included. At each fixed $k$ and
+each $(j,l)$ the map $t\mapsto\int_{\IR}\ell^\Pi_j(u,t,l)\varkappa_k(u)\,du$ is $\Pi_t$-measurable
+on $\mathcal T_\ast$: the product $(u,t)\mapsto\ell^\Pi_j(u,t,l)\varkappa_k(u)$ is
+$\mathfrak B(\IR)\otimes\mathfrak B(\mathcal T)$-measurable, \emph{the contrast index $l$ ranges over
+a finite set, so a jointly measurable representative of $\ell^\Pi$ on
+$\IR\times\mathcal T\times\{1,\dots,\mathsf L-1\}$, with that set given its discrete $\sigma$-algebra, is
+exactly a finite list of jointly measurable functions of $(u,t)$, one per $(j,l)$}, Tonelli on the
+$\sigma$-finite product
+$(\IR,du)\otimes(\mathcal T,\Pi_t)$ makes the $u$-integrals of its positive and negative parts measurable
+in $t$, and both are finite at each $t\in\mathcal T_\ast$ because $\ell^\Pi_j(\cdot,t,l)$ and $\varkappa_k$
+are both in $L^{2}(\IR,du)$. A countable supremum of measurable functions is measurable, so
+$t\mapsto\|\ell^\Pi_j(\cdot,t,l)\|_{H^{\mu''}(\IR)}$ is $\Pi_t$-measurable on $\mathcal T_\ast$ for each
+$(j,l)$.
+One aggregation then remains, and it is the one over $j$: the integrand of \eqref{eq:lambdamu} is
+the \textbf{vector} norm, which the preceding sentence does not by itself deliver. It closes on the
+identity A2c prints when it extends \eqref{eq:usobolev} to $\IR^{p}$-valued $g$, read at
+$g=\ell^\Pi(\cdot,t,l)$:
+\[
+\big\|\ell^\Pi(\cdot,t,l)\big\|_{H^{\mu''}(\IR;\IR^{p})}
+\;=\;\Big(\sum_{j=1}^{p}\big\|\ell^\Pi_j(\cdot,t,l)\big\|^{2}_{H^{\mu''}(\IR)}\Big)^{1/2},
+\qquad t\in\mathcal T_\ast ,
+\]
+a \emph{finite} sum of squares of $\Pi_t$-measurable functions followed by $z\mapsto z^{1/2}$, which is
+continuous on $[0,\infty)$ and hence Borel; so
+$t\mapsto\|\ell^\Pi(\cdot,t,l)\|_{H^{\mu''}(\IR;\IR^{p})}$ is $\Pi_t$-measurable on $\mathcal T_\ast$,
+now for each $l$. Every summand is finite there, A2c placing the slice in $H^{\mu''}(\IR;\IR^{p})$ at
+every $t\in\mathcal T_\ast$ and that membership being, by the same identity, membership of all $p$
+coordinates. \emph{The step is one line because $p$ is a fixed finite dimension, exactly as
+\textup{(m.1)}'s intersection was free because $\mathsf L$ is finite}; nothing here is a Fubini
+statement in $j$.
+Each of the $\mathsf L-1$ integrals in \eqref{eq:lambdamu}, \emph{one per contrast $l$, and
+\textbf{not} one per $(j,l)$: the $p$ coordinates are aggregated inside the integrand, by the Euclidean
+norm, so only the contrast index survives as an index of integrals}, is therefore well defined in
+$[0,\infty]$, and so is their maximum, \emph{a maximum over a finite index set requiring no further
+argument}. That is the quantity of which A2c asserts finiteness.
+\emph{This is the same countable-supremum device \cref{lem:reprsmooth} uses at its Step 3 and
+\cref{def:dirclass} at \eqref{eq:shiftnormone}, applied one level up}, and it is used \emph{instead}
+of a Fubini statement about $(\xi,t)\mapsto(\mathcal F\ell^\Pi(\cdot,t))(\xi)$, which is not available,
+for the reason \cref{lem:reprsmooth}'s Step 2 prints: on $L^{2}(\IR,du)$ the transform is an
+$L^{2}$-limit and not an integral. \eqref{eq:hdual} pairs the slice against a family fixed \emph{once},
+in the variable $u$ in which the slice is jointly measurable, so no such statement is needed.
+
+
+% ------------------------------------------------------------------------
+\paragraph{H1 (Hilbert-scale link).}
+
+\emph{Two notational points.} \emph{First}, bare sans-serif $\mathsf c$ is this project's \emph{generic
+finite positive constant}: bound by the quantifier of the clause in which it appears, free to take a
+different value in every such clause, and never carried from one result to another. This clause binds it,
+in the words ``there is a finite $\mathsf c$, not depending on $\zeta$'', and no site downstream reads its
+value.
+\emph{Second, the pre-image is written $h$ and \textbf{not} $\varsigma$}, $h$ being the
+\emph{domain}-side bound variable \cref{rem:spacesread}\textup{(1)} declares, the counterpart of
+$\Xi,\Xi'$ on the range side, and the pre-image being exactly that: a generic element of $L^{2}(\pi)$, existentially
+bound per $\zeta$ inside this clause. \emph{The object is the spectral source pre-image}, the same species
+as in (P-a.3) and \cref{lem:scaleinv}\textup{(iii)}, read here at the \emph{population} operator on all of
+$\mathcal V$.
+\emph{$H^{s}$ is the \textbf{classical} Sobolev space and \textbf{not} a scale generated by
+$\mathcal D$}: for a Hilbert scale generated by a
+differential operator on a bounded interval the second scale step imports the generator's boundary
+conditions, so the space the generator produces at order $s'$ coincides with $H^{s'}(\mathcal X)$
+only for
+$s'<\tfrac32$ (Neumann-type) or $s'<\tfrac12$ (Dirichlet-type), \emph{$s'$ throughout this assumption
+and A8's derivation denoting a \textbf{generic} order of the scale, bound where it appears
+and used nowhere else in this project}, while \eqref{eq:lxwindow} forces
+% ARCHAEOLOGY.  Through dispatch 21 the constant line read "the constant is the
+% Sec.1.6 sans-serif slot and carries no name of its own"; that pointer was false --
+% Sec.1.6 scopes bare sans-c to one named PROOF site (prp:nophifree Step 3) -- and
+% the glossary was amended rather than the pointer patched (C88).  varsigma is a
+% Sec.1.6 LOCAL and a local may not be made binding (C25); it had been made binding
+% here, in a maintained assumption's statement.  eq:h1match is the matching written
+% as a condition on one named pair of objects rather than as machinery, which is
+% dispatch 21's change; through dispatch 20 the clause read "the Sobolev scale H^s
+% of order s GENERATED BY D", and that phrase is struck.  The generator's space at
+% order s' was written X_{s'} through dispatch 23 and is written out: italic X is
+% the BINDING regressor X_1, X_2, subscripted by a period index, and a scale space
+% subscripted by an order on the same letter is separated from it by nothing but
+% what the subscript happens to be; swept d24, X_{s'} -> A 1 / R 0 / P 0.  s' was
+% written sigma and tau through dispatch 21, against the four-way sigma rule and
+% against the reserved tau_DP.  Glossary C87, C106.
+$s>\tfrac{27}{16}$ at $\alpha=\tfrac38$, and it is \eqref{eq:lxwindow} and not \eqref{eq:hxwindow} that
+binds there, the latter asking only $s>1.4818$; at every $\alpha<\approx0.359$ the two exchange roles
+and \eqref{eq:hxwindow} is the higher floor.
+% CORRECTED 2026-08-10 (Phase 6a), AND IT WAS FALSE BEFORE THE (P-g) REPAIR TOO.
+% This read "and eq:hxwindow forces more still".  At alpha = 3/8, eq:lxwindow gives
+% s > 27/16 = 1.6875 while eq:hxwindow gives 1/2 + 16(3/8)/(8 - 9/8) = 1.3727 on the
+% old (P-g) and 1/2 + 18(3/8)/(8 - 9/8) = 1.4818 on the corrected one -- BELOW 27/16
+% in both cases, so eq:hxwindow forced nothing more at the alpha named and the
+% sentence was self-falsifying as printed.  Which of the two floors binds switches at
+% the root of 9 alpha/(8(1 - 2 alpha)) = 1/2 + 18 alpha/(8 - 3 alpha), ~0.35914, so
+% eq:hxwindow is the binding one BELOW that and eq:lxwindow above it, and alpha = 3/8
+% sits above.  The paragraph's own point -- that s is forced above 3/2, so the
+% literal generated reading of the scale would be false at every admissible s -- is
+% carried by 27/16 alone and is unaffected.
+\emph{A B-spline on a
+quasi-uniform mesh satisfies no boundary condition}, so under the literal generated reading
+\eqref{eq:sieveinhs} would be \textbf{false} at every admissible $s$ and the four conditions it underwrites
+, A5(vi), A5(vi$'$), \cref{prp:phirate}(P-a.1) and \eqref{eq:foldrates}'s
+second display, would again be events on the \emph{empty} set, which is the failure the amendment of
+A8 closed and which the generated reading reopened verbatim.
+\emph{What held it together was a directive and not a condition}: one sentence in a scope note in
+\texttt{proofs.tex} instructing that this scale be read on the same scale as \eqref{eq:jackson}, i.e.\
+classically, in a different file, and cited at neither this assumption, \cref{def:srcball}, nor
+\eqref{eq:sieveinhs}. \emph{It is settled here instead, in the clause, once}: the space is the classical
+one, and the comparison the generator was there to produce is \eqref{eq:h1match}, assumed outright.
+\emph{Nothing downstream loses anything}: only the single index $s$ is ever used, no site reads a second
+member of the scale, and \eqref{eq:h1match} is exactly what the generated construction was invoked to
+deliver. \emph{Consequently the source index in A2 is}
+\[
+\mu_{\text{\textup{H1}}} \;:=\; \frac{s}{2a}.
+\]
+The subscripted name is used \textbf{only} where the two indices must be told apart, which is the
+disposition \cref{rem:pasrc}\textup{(5)} makes binding. Bare $\mu$ in this project is (P-a.3)'s
+\emph{primitive} index at the finite-rank sieve compression of the \emph{realised} operator at the anchor
+$\theta_\circ$; $\mu_{\text{\textup{H1}}}$ is the index of A2 at the \emph{population}
+operator $\mathcal A_{\mathrm{cond}}$ on all of $\mathcal V$ at $\theta_\dagger$, \emph{read into the
+whole three-factor range space and not contrast by contrast, so that $a$ is the decay exponent of the
+\textbf{stacked} operator at every $\mathsf L$}, and $s$ and $a$ in the
+display are objects at $\theta_\dagger$ as well, against the $\theta_\circ$-specific $a$ of
+\cref{def:crossfit}(b). \emph{They are equal only under the interpolation proviso this file states and
+declines}, and the sites that computed one and read it into a condition on the other are qualified
+in place: the two daggered lines of the smoothness-budget table, the sentence deducing
+$\mu>\tfrac56$ from $s>a+\tfrac12$, \cref{rem:rootnscope}\textup{(1)}, and clause \textup{(2)} of
+\cref{rem:h6bandwidth}, which \cref{rem:rootnscope}\textup{(1)} cites while qualifying its own copy
+and which carried no proviso of its own until it was given one. \emph{No claim of exhaustiveness is
+made, and that is deliberate}: the sentence this one replaces said ``the three sites'', then named
+four things, and the fourth site was unqualified while the sentence asserted that all of them were.
+\emph{\textbf{The same identity is \textbf{not} asserted for \cref{prp:phirate}.}}
+\cref{prp:phirate}'s hypothesis (P-a.3) states a
+% ARCHAEOLOGY.  The change of scope is the round-12 amendment to this assumption.
+\textbf{spectral} source condition, at the sieve compression of the \emph{realised} operator, with $\mu$
+and its radius $\mathsf R_\ast$ \emph{primitive}. What H1 supplies to that route is the \emph{scale}
+$H^{s}$, which \cref{def:srcball}, A5(vi$'$), (P-a.1), (P-c) and (P-g) are written in, 
+and nothing more; the passage from a Hilbert-scale source condition plus a link condition to a spectral
+one is operator interpolation at exponent $2\mu$, licensed only at $2\mu\le1$, and
+\cref{prp:phirate} lives at $2\mu>\tfrac53$. \cref{rem:pasrc} carries the full disposition, including
+the commutativity proviso under which the identity above \emph{would} extend to the sample operator, and
+what that proviso costs.
+
+What $a$ is an exponent \textbf{of}, at $\mathsf L\ge3$. H1 is a hypothesis about the
+\textbf{stacked} operator, $\mathcal A_{\mathrm{cond}}$ read into
+$L^{2}(\Pi_u\otimes\Pi_t\otimes\Pi_{\mathsf w})$ entire, as \cref{def:spaces} fixes it, and not about
+any single contrast. \emph{At $\mathsf L\ge3$ that is a genuinely different operator from the binary one},
+and what makes it different is the \textbf{range enlargement}: the domain $\mathcal V$, the scale $H^{s}$
+and \eqref{eq:h1match}'s form are untouched, and the range gains a third factor. \emph{It is not the
+normalisation}, which was reversed, the operator carries the raw contrast \eqref{eq:contrast} on both
+sides at every $\mathsf L$, as the paragraph \emph{A4} sets out.
+
+And $a$ does not depend on $\Pi_{\mathsf w}$, which is worth saying because $\Pi_{\mathsf w}$ is the
+analyst's choice. B1(iv.d) puts strictly positive masses on a finite index set, so any two admissible
+$\Pi_{\mathsf w}$, $\Pi'_{\mathsf w}$ give \emph{equivalent} range norms,
+\[
+\min_{l}\frac{\varpi'_{\mathsf w}(l)}{\varpi_{\mathsf w}(l)}\;\|\Xi\|^{2}_{L^{2}(\Pi)}
+\;\le\;\|\Xi\|^{2}_{L^{2}(\Pi')}\;\le\;
+\max_{l}\frac{\varpi'_{\mathsf w}(l)}{\varpi_{\mathsf w}(l)}\;\|\Xi\|^{2}_{L^{2}(\Pi)}
+\qquad\text{for every }\Xi ,
+\]
+with both ratios finite and strictly positive because the index set is finite and B1(iv.d)'s masses are;
+and the \emph{domain} norm is untouched, $\Pi_{\mathsf w}$ appearing only on the range side. Singular
+values of a compact operator are its approximation numbers, infima of operator-norm distances to
+operators of rank below $j$, and an operator norm inherits those same two constants, so the singular
+values under the two weightings differ by at most their square roots \emph{at every $j$ alike}. \emph{The
+constants are $j$-free, so the exponent is identical and only the constant in the $\asymp$ moves}; and
+$\max_l\varpi_{\mathsf w}(l)^{-1/2}$, the same factor that prices the passage between the
+$L^{2}(\Pi)$ norm and the per-contrast norms, is what bounds the move. So the choice of range
+weights is not a choice of ill-posedness.
+
+One reading of $a$ in terms of the contrasts is available, and it is conditional. Write
+$\mathcal A^{(l)}h:=\mathcal A_{\mathrm{cond}}h(\cdot,\cdot,l)$, so that
+$\mathcal A^{(l)}:\mathcal V\to L^{2}(\Pi_u\otimes\Pi_t)$ is the $l$-th contrast operator, Hilbert--Schmidt
+by \cref{prp:compact} read at fixed $l$, its kernel being $\mathsf k(\cdot,\cdot,l;\cdot)$ of
+\eqref{eq:kernel}, and let $\mathcal A^{(l)\ast}\mathcal A^{(l)}\succeq0$ be its Gram operator on
+$\mathcal V$, the adjoint taken in the \emph{unweighted} range pairing. Since
+$\|\mathcal A_{\mathrm{cond}}h\|^{2}_{L^{2}(\Pi)}
+=\sum_{l}\varpi_{\mathsf w}(l)\,\|\mathcal A^{(l)}h\|^{2}$ by \cref{def:spaces}'s pairing, and since two
+bounded self-adjoint operators with the same quadratic form are equal,
+\[
+\mathcal A^{\ast}_{\mathrm{cond}}\mathcal A_{\mathrm{cond}}
+\;=\;\sum_{l=1}^{\mathsf L-1}\varpi_{\mathsf w}(l)\;\mathcal A^{(l)\ast}\mathcal A^{(l)}
+\qquad\text{on }\mathcal V .
+\]
+Two comparisons follow, both from the max--min characterisation of the eigenvalues of a compact positive
+operator. \emph{Discarding all but one summand} leaves that sum $\succeq
+\varpi_{\mathsf w}(l_0)\,\mathcal A^{(l_0)\ast}\mathcal A^{(l_0)}$ in the L\"owner order for each $l_0$,
+and the max--min is monotone in that order, so
+$\sigma_j(\mathcal A_{\mathrm{cond}})\ge\max_l\varpi_{\mathsf w}(l)^{1/2}\,\sigma_j(\mathcal A^{(l)})$ at
+every $j$. \emph{In the other direction}, Weyl's inequality for compact positive operators, the
+$(i+i'-1)$-th eigenvalue of a sum of two is at most the $i$-th of the first plus the $i'$-th of the
+second, which is the same max--min evaluated on the intersection of two finite-codimensional subspaces
+, iterated over the $\mathsf L-1$ summands gives
+\[
+\lambda_{\sum_lj_l-(\mathsf L-2)}\big(\mathcal A^{\ast}_{\mathrm{cond}}\mathcal A_{\mathrm{cond}}\big)
+\;\le\;\sum_{l=1}^{\mathsf L-1}\varpi_{\mathsf w}(l)\,\sigma_{j_l}\big(\mathcal A^{(l)}\big)^{2}
+\qquad\text{for any }j_1,\dots,j_{\mathsf L-1}\ge1 .
+\]
+Taking $j_l=\lceil j/(\mathsf L-1)\rceil$, for which $\sum_lj_l-(\mathsf L-2)\le j$ at every $j\ge1$, and
+using that $\lambda$ is non-increasing in its index,
+\[
+\sigma_j(\mathcal A_{\mathrm{cond}})^{2}\;\le\;
+\sum_{l=1}^{\mathsf L-1}\varpi_{\mathsf w}(l)\,\sigma_{\lceil j/(\mathsf L-1)\rceil}\big(\mathcal A^{(l)}\big)^{2} .
+\]
+\emph{So if the contrast operators have polynomial exponents, $\sigma_j(\mathcal A^{(l)})\asymp j^{-a_l}$,
+the two bounds pinch and}
+\[
+\sigma_j(\mathcal A_{\mathrm{cond}})\;\asymp\;j^{-a},
+\qquad
+a\;=\;\min_{1\le l\le\mathsf L-1}a_l ,
+\]
+the constants depending on $\mathsf L$ and on $\varpi_{\mathsf w}$ and \emph{not} on $j$. \emph{Read the
+lower bound at any $l$ attaining the minimum} and it is $\gtrsim j^{-\min_la_l}$; \emph{read the upper
+bound through $j^{-2a_l}\le j^{-2\min_la_l}$ for $j\ge1$}, and, since
+$\lceil j/(\mathsf L-1)\rceil\asymp_{\mathsf L}j$, it is $\lesssim j^{-\min_la_l}$ as well.
+\emph{At $\mathsf L=2$ every step is an identity and
+not a special case}: there is one contrast, $\Pi_{\mathsf w}=\delta_1$,
+$\mathcal A^{(1)}=\mathcal A_{\mathrm{cond}}$, both comparisons hold with constant $1$ and with $j_1=j$
+and offset $\mathsf L-2=0$, and $a=a_1$ is the binary $a$ of every earlier round.
+
+Two things do \textbf{not} follow, and each is a way the display above invites being over-read.
+First, the implication runs one way. Per-contrast polynomial decay is \textbf{sufficient} for
+H1's decay clause and is not necessary, a design in which one contrast operator has finite rank and
+another decays polynomially satisfies that clause and has no $a_l$ at the first contrast, so H1 stays
+a hypothesis about the stacked operator, assumed and not derived. And it reaches only the decay
+clause. \eqref{eq:h1match} compares $H^{s}$ with the powers of the \emph{summed} Gram operator
+$\sum_l\varpi_{\mathsf w}(l)\,\mathcal A^{(l)\ast}\mathcal A^{(l)}$;
+per-contrast matchings do not aggregate to it, and nothing above supplies it. Second,
+$\min_la_l$ is not a comparison with ``the binary $a$'' unless the binarisation is named.
+$\mathcal A^{(l)}$ is contrast $l$ against the \emph{base} cell in the $\mathsf L$-category
+parameterisation. Merging cells, $W\ge1$ against $W=0$, say, produces the contrast
+$\sum_{l\ge1}\widetilde W_l$, hence by linearity of \eqref{eq:Mdef} in the contrast the moment
+$\sum_{l\ge1}\mathcal M(\cdot,\cdot,l)$ and the linearisation $\sum_{l\ge1}\mathcal A^{(l)}$, which is a
+\textbf{sum} of contrast operators and is none of them; a sum admits cancellation that no hypothesis on
+its summands excludes, so no exponent transfers to it in either direction. \emph{And merging is not a
+free re-parameterisation in any case}, for the reason the \emph{Discussion} paragraph gives at its
+coarsening warning: it adopts the \emph{stronger} identification hypothesis, since
+$\mathcal V_{CI}(W)\subseteq\mathcal V_{CI}(g(W))$ for every coarsening $g$, and it forfeits the
+localisation. A reader who takes $a=\min_la_l$ to
+mean ``the exponent improves on the binary design'' is reading more than this gives. \emph{What it does
+license is the comparison between the full stack and a sub-collection of its own contrasts, inside one
+fixed $\mathsf L$-category design}: $\varpi_{\mathsf w}(l)>0$ makes
+$\ker\mathcal A_{\mathrm{cond}}=\bigcap_l\ker\mathcal A^{(l)}$, so the full stack has the weakly smaller
+kernel and the weakly larger rank, and H1's \emph{infinite-rank} clause is to that extent weakly easier
+at the stack than at any one contrast. \emph{The \textbf{level} of $\sigma_j$ carries no such
+monotonicity}: $\Pi_{\mathsf w}$ is a probability measure, so
+$\|\mathcal A_{\mathrm{cond}}h\|^{2}$ is an \emph{average} over contrasts and not a sum, and adding a
+contrast that carries little signal can lower it.
+
+% ==========================================================================
+%  THIS BLOCK CLOSES THE DEFERRAL THE DISPATCH-25 CENSUS RECORDED AT
+%  assumptions_main.tex, "RE-READING THE BUDGET TABLE AT sans-L >= 3 IS NOT DONE
+%  HERE AND IS FLAGGED FOR PHASE 2", and plan rev-2 Sec.4 item 2.  What was
+%  deferred was a QUESTION -- do the per-contrast operators share a decay
+%  exponent, and if not what is `a' -- and the answer is the pinch above.
+%
+%  WHAT WAS CHECKED, AND ONE THING IN THE HAND-OFF WAS WRONG.
+%   * The Gram decomposition A*_cond A_cond = sum_l varpi_w(l) A^{(l)*} A^{(l)}
+%     is exact: the quadratic forms agree by def:spaces's pairing, and two bounded
+%     self-adjoint operators with equal quadratic forms are equal (polarisation).
+%     NO SYMBOL IS INTRODUCED FOR THE PER-CONTRAST GRAM OPERATOR.  B_l is what the
+%     hand-off called it and is what a draft of this block used; calligraphic B is
+%     ALREADY the second-order form operator of suppeq:Bpi (declared at
+%     def:spaces's "one declared exception"), and calligraphic C, E, G, H, U and R
+%     are claimed too (results_supp.tex:4127).  Writing A^{(l)*} A^{(l)} out is
+%     five characters longer and collides with nothing.
+%   * THE INDEX IN THE WEYL STEP.  The hand-off proposed
+%     j_l = ceil((j + sans-L - 2)/(sans-L - 1)).  THAT IS THE WRONG DIRECTION:
+%     it makes m := sum_l j_l - (sans-L - 2) >= j, and Weyl then bounds
+%     lambda_m, not lambda_j.  What is needed is m <= j.  The correct choice is
+%     j_l = ceil(j/(sans-L - 1)) = floor((j + sans-L - 2)/(sans-L - 1)) -- the
+%     two are the same integer, and it is the CEILING OF j/(sans-L - 1), not of
+%     the shifted quotient.  Check: (sans-L - 1) ceil(j/(sans-L - 1))
+%     <= j + sans-L - 2 for every j >= 1 (write j = q(sans-L - 1) + r; at r = 0
+%     the left side is j, at r >= 1 it is j - r + sans-L - 1).  The CONCLUSION is
+%     unaffected -- the shifted version still gives the same exponent after
+%     re-indexing j -> j - (sans-L - 1) -- but the inequality as handed off does
+%     not bound sigma_j, so it is printed in the corrected form.
+%   * sans-L = 2 REDUCES WITH NO EXCEPTION: one summand, Weyl is the identity,
+%     the offset sans-L - 2 is 0, varpi_w(1) = 1, and both bounds are equalities.
+%
+%  WHAT IS *NOT* CLAIMED, AND THE TWO LIMITS ARE PRINTED ABOVE RATHER THAN
+%  RECORDED HERE BECAUSE A READER WILL REACH FOR EXACTLY THESE TWO.
+%   (1) The stacked decay does NOT imply per-contrast decay.  Only the forward
+%       implication holds.  And the MATCHING half of H1 is not reached at all.
+%   (2) min_l a_l is NOT "better than the binary a".  The merged operator is
+%       sum_l A^{(l)}, not any A^{(l)}; sums cancel.  The only monotone
+%       comparison available is the KERNEL one, inside a fixed sans-L-category
+%       design, and it is about RANK and not about the exponent.
+%
+%  AND NOTE WHAT DOES NOT MOVE.  `a' does not enter the OPERATIVE lines of the
+%  smoothness-budget table at all -- only the two DAGGERED interpretation lines
+%  carry it, mu having been primitive at (P-a.3) since round 12 -- so the pinch
+%  changes no condition this block imposes.  The table's own paragraph says so.
+% ==========================================================================
+
+% ------------------------------------------------------------------------
+\paragraph{A3 (RETIRED: local rank), moved entire.}
+
+\begin{assumption}[A3: RETIRED, local rank, now \cref{lem:momzero}\textup{(iv)}]\label{ass:rank}
+\textbf{\sout{RETIRED.}} This assumption is not maintained, it is not available for use, and no
+result in this programme takes it as a hypothesis. It is retired because it is a \textbf{theorem}, not
+because it is false, as A6 was, and not because it is too strong. It read: \emph{suppose
+A2 holds, so that $\ell_\star$ exists; then}
+% ARCHAEOLOGY.  It was maintained through dispatch 12.
+\[
+J \;:=\; E[\Delta Z\,\Delta Z'] \;+\; E\big[\widetilde W\,\ell_\star(\Delta U,\Delta Z)\,\Delta Z'\big]
+\quad\text{\emph{is nonsingular.}}
+\qquad\text{\sout{[retired]}}
+\]
+\emph{Why it is retired.} \Cref{lem:momzero}\textup{(iv)} proves that under A1's \emph{first} clause the
+second summand is the zero matrix, $\ell_\star(\Delta U,\Delta Z)\Delta Z'$ is
+$\sigma(\Delta U,\Delta Z)$-measurable and $E[\widetilde W\mid\Delta U,\Delta Z]=0$, so
+$J=E[\Delta Z\Delta Z']$ whenever $J$ is defined at all, and nonsingularity of that matrix is A1b(iv).
+% DISPATCH-25 NOTE, AND THE DISPLAY ABOVE IS DELIBERATELY LEFT AS IT WAS PRINTED.
+% The retired statement is an ARCHAEOLOGICAL RECORD of what A3 read; rewriting it
+% would misreport the history the retirement exists to preserve.  At sans-L >= 3
+% the same object is E[ell_star(Delta U, Delta Z) Wtilde Delta Z'], with the
+% p x (sans-L - 1) matrix ell_star acting on the (sans-L - 1)-vector Wtilde to
+% give a vector in R^p and then an outer product with Delta Z' -- which is what
+% the notation block's type declaration produces, and which is the display above
+% at sans-L = 2 because Wtilde is then a scalar and commutes.  THE REFUTATION IS
+% UNCHANGED AND IS CARDINALITY-FREE: conditioning on (Delta U, Delta Z) leaves
+% ell_star E[Wtilde | Delta U, Delta Z] Delta Z', and E[Wtilde | Delta U, Delta Z]
+% is the ZERO VECTOR under A1 for exactly the reason it was the zero scalar --
+% each Wtilde_l is conditionally centred by construction of eq:contrast.
+% ROUND 4: psi CARRIES THE RAW CONTRAST, SO THIS RECORD IS READ AT THE OBJECT IT
+% WAS ALWAYS ABOUT AND NEEDS NO QUALIFICATION.  (Round 3 added one, psi having
+% been normalised then; it noted that the vanishing survives at Wtilde^Omega too,
+% since Omega is sigma(Delta Z)-measurable and
+% E[Wtilde^Omega | Delta U, Delta Z] = Omega^{-1} E[Wtilde | Delta U, Delta Z] = 0.
+% That remains TRUE and is now IDLE, the normalisation having been reversed.)
+The
+proof consumes A1, A1b(iv), A$2'$(i), A$2'$(iii) and B1(i), (ii), (iv.a), (iv.d), \emph{A1 for the vanishing and
+A1b(iv) for the nonsingularity; A$2'$(i), A$2'$(iii) and the three B1 clauses only to make the second
+summand a finite matrix in the first place, through \cref{cor:elldiff}}. \emph{Every one of those tags was
+already carried by every list
+that carried A3}, so striking the tag is a strict weakening of four hypothesis lists with no change to any
+conclusion: \cref{lem:sandwich}\textup{(i)} and \textup{(i$'$)}, \cref{thm:rootn}'s group (T-2), and
+\cref{cor:ratefloor} through (T-2).
+
+What survives, and it is the half the conditional statement was invented to carry. A3 was stated
+conditional on A2 because $\ell_\star$ exists only under A2, so the display above is a well-formed object
+only under A2 and ``A3 holds while A2 fails'' had no truth value. \emph{That remains exactly true of the
+display} and \cref{rem:rootnscope}\textup{(4)} still says so, in the sharper form that what fails under
+$\neg$A2 is the \emph{existence} of $\ell_\star$, $L_\star$ and $\psi_\star$ and not a rank condition. It
+also remains true that A3 was never what identifies $\theta_\dagger$: that is A1b(iv). What is
+withdrawn is the further claim, made at A1b(iv)'s comment and at three sites in
+\texttt{results.tex}, that the two are \textbf{different} matrices. They are the same matrix wherever
+both are defined.
+% ARCHAEOLOGY.  The round-2 correction (M-3) was right about the conditionality and
+% wrong about the identity, and the identity was never computed.
+
+\emph{What is \textbf{not} conceded.} No conclusion weakens, no rate moves, and no other tag changes
+status. In particular A$2'$(i.b) is \textbf{not} freed, see \cref{lem:momzero}\textup{(iv.1)}, and
+A2 is not freed, being consumed at \cref{lem:biasexp}, \eqref{eq:biasb1}, for the first-order bias, which
+is where the source condition does its work. \emph{And the counterexample probe is redirected as it always
+was}: the object to probe is A2.
+\end{assumption}
+
+% ------------------------------------------------------------------------
+\paragraph{A4 (overlap and propensity regularity).}
+
+% ADDED IN DISPATCH 25.  A4(i) NOW CONTAINS THE WORD "CONSEQUENTLY", AND THE A8
+% PRECEDENT IN THIS FILE IS EXPLICIT THAT A DERIVATION BEHIND THAT WORD IS
+% PRINTED RATHER THAN ASSERTED.  Three things are derived here: the floor
+% eq:omegafloor, the prefactor identity eq:omegaprefac, and the inverse
+% eq:omegainv on which the normalisation decision rests.  NONE OF THE THREE IS
+% AN ASSUMPTION and none adds a hypothesis to any list.
+\emph{The word ``consequently'' in A4(i) is a derivation, and it is printed here rather than asserted}:
+\eqref{eq:omegafloor} is what every statement that divides by $\Omega$ points at. Write
+$\varrho=\varrho(z)$ and $\Omega=\Omega(z)$ throughout, and recall $\varrho_0=1-\mathbf1'\varrho$.
+
+The inverse in closed form, and it is where everything else comes from. For any
+$\varrho$ with $\varrho_l>0$ at every $l\in\{0,\dots,\mathsf L-1\}$,
+\begin{equation}\label{eq:omegainv}
+\Omega^{-1}\;=\;\operatorname{diag}(\varrho)^{-1}+\varrho_0^{-1}\mathbf1\mathbf1' ,
+\qquad\text{and}\qquad
+\big(\Omega^{-1}\widetilde W\big)_l\;=\;\frac{\un\{W=l\}}{\varrho_l}-\frac{\un\{W=0\}}{\varrho_0} .
+\end{equation}
+\emph{A notational convention, stated here because this is the identity map's first site in compiled
+order: the identity map, on any space and in any dimension, is written $\mathrm{Id}$ throughout this
+project and never $I$, italic $I$ being C3's boundary index \eqref{eq:rescaled} --- a closed interval,
+not an operator.} For the first identity, multiply out:
+$\big(\operatorname{diag}(\varrho)-\varrho\varrho'\big)\big(\operatorname{diag}(\varrho)^{-1}+\varrho_0^{-1}\mathbf1\mathbf1'\big)
+=\mathrm{Id}+\varrho_0^{-1}\varrho\mathbf1'-\varrho\mathbf1'-\varrho_0^{-1}(1-\varrho_0)\varrho\mathbf1'
+=\mathrm{Id}+\varrho\mathbf1'\big\{\varrho_0^{-1}-1-\varrho_0^{-1}+1\big\}=\mathrm{Id}$,
+using $\operatorname{diag}(\varrho)\mathbf1=\varrho$, $\varrho'\operatorname{diag}(\varrho)^{-1}=\mathbf1'$
+and $\varrho'\mathbf1=1-\varrho_0$; every one of the three needs $\varrho_l>0$ at some point, and
+$\varrho_0>0$ is what makes the second summand finite. For the
+second identity, $\widetilde W_l/\varrho_l=\un\{W=l\}/\varrho_l-1$ and
+$\mathbf1'\widetilde W=(1-\un\{W=0\})-(1-\varrho_0)=\varrho_0-\un\{W=0\}$, so the two added terms are
+$\un\{W=l\}/\varrho_l-1$ and $1-\un\{W=0\}/\varrho_0$ and the $\pm1$ cancel.
+
+\emph{The floor.} \emph{Matrix norms in this paragraph are spectral}, so that
+$\lambda_{\min}(\Omega)=\|\Omega^{-1}\|^{-1}$ for the symmetric positive definite $\Omega$. From
+\eqref{eq:omegainv} and the triangle inequality,
+$\|\Omega^{-1}\|\le\max_{l\ge1}\varrho_l^{-1}+\varrho_0^{-1}\|\mathbf1\mathbf1'\|
+=\max_{l\ge1}\varrho_l^{-1}+(\mathsf L-1)\varrho_0^{-1}$, since the only nonzero eigenvalue of
+$\mathbf1\mathbf1'$ on $\IR^{\mathsf L-1}$ is $\mathbf1'\mathbf1=\mathsf L-1$. Under \textbf{A4(i)'s
+condition} --- the sentence beginning ``The condition is''; this pointer read ``A4(i)'s \emph{first
+sentence}'' through 2026-08-25, and A4(i)'s first sentence is now its \emph{declaration}, which fixes
+$\varepsilon_\varrho$ and asserts no inequality --- each of the
+$\mathsf L$ cell probabilities is at least $\varepsilon_\varrho$, so
+$\|\Omega^{-1}\|\le\mathsf L/\varepsilon_\varrho$ and
+$\lambda_{\min}(\Omega)=\|\Omega^{-1}\|^{-1}\ge\varepsilon_\varrho/\mathsf L$, which is
+\eqref{eq:omegafloor}. \emph{The bound is valid and not sharp}: at $\mathsf L=2$ it asserts
+$\varrho(1-\varrho)\ge\varepsilon_\varrho/2$ where the exact minimum over
+$[\varepsilon_\varrho,1-\varepsilon_\varrho]$ is $\varepsilon_\varrho(1-\varepsilon_\varrho)$. Nothing in
+this corpus is stated \emph{at} the value of the floor, only under it, so the slack costs nothing;
+\emph{a dispatch that begins to track the constant should re-derive it rather than sharpen this one in
+place}. \emph{The base cell is in A4(i)'s quantifier for this reason and not for symmetry}:
+$\varrho_0\ge\varepsilon_\varrho$ is what bounds the second summand, and if $\varrho_0\to0$ then
+$\|\Omega^{-1}\|\to\infty$ however far the non-base cells stay from zero. \emph{A version of A4(i)
+quantified only over $l\in\{1,\dots,\mathsf L-1\}$ would therefore not deliver
+\eqref{eq:omegafloor}}, and at $\mathsf L=2$ it would be the one-sided condition
+$\varrho\ge\varepsilon_\varrho$, which is strictly weaker than the two-sided interval every earlier
+round assumed.
+
+The prefactor, which is what A4(i) cancels. Write $F_m(u\mid z):=P(\Delta U\le u\mid W=m,\Delta Z=z)$
+and $d(u\mid z):=\big(F_1-F_0,\dots,F_{\mathsf L-1}-F_0\big)'(u\mid z)$. Then, at $\sigma(\Delta Z)$ and
+only there,
+\begin{equation}\label{eq:omegaprefac}
+E\big[\widetilde W\,\un\{\Delta U\le u\}\,\big|\,\Delta Z=z\big]\;=\;\Omega(z)\,d(u\mid z) .
+\end{equation}
+Component $l$ of the left side is
+$\varrho_lF_l-\varrho_l\sum_{m}\varrho_mF_m=\varrho_l\big(F_l-\sum_m\varrho_mF_m\big)$; writing
+$F_l-F_m=d_l-d_m$ with $d_0:=0$ and using $\sum_m\varrho_m=1$ gives
+$F_l-\sum_m\varrho_mF_m=d_l-\varrho'd$, so the vector is
+$\operatorname{diag}(\varrho)d-\varrho\varrho'd=\Omega d$. At $\mathsf L=2$ this is
+$\varrho(z)(1-\varrho(z))\{F_1(u\mid z)-F_0(u\mid z)\}$, the display the block has carried since
+round~1. Under \eqref{eq:omegafloor} the map $\Omega(z)$ is invertible and the restriction can be
+\emph{divided through}. \emph{That division is what makes the reading of \suppref{Remark}{htread}
+available; it is \textbf{not} performed by the estimator}, whose operator and moment both carry the raw
+contrast.
+% ROUND-5 CORRECTION.  This sentence ended "...and hence what makes the
+% NORMALISED OPERATOR OF THE NEXT PARAGRAPH well defined."  THERE IS NO
+% NORMALISED OPERATOR IN THE NEXT PARAGRAPH -- round 4 replaced it by "a claim
+% withdrawn here" -- so the sentence pointed, IN THE PDF, at an object the
+% reversal had removed, and did so at exactly the place a reader checks the
+% reversal.  An orphaned forward pointer in printed text is the defect species
+% this block spends its length policing.
+
+What that division is \textbf{not} needed for, and a claim withdrawn here. It is not what
+makes \cref{lem:bierens} an equivalence. A first version of this paragraph said it was, and located
+the failure on $\{z:\det\Omega(z)=0\}$; \emph{both halves are wrong at $\mathsf L\ge3$}. Take
+$\mathsf L=3$ and $\varrho(z)=(q,0)'$ with $q\in(0,1)$: cell~$2$ is null, $\det\Omega(z)=0$, and yet $W$
+is not conditionally degenerate, $\widetilde W\ne0$, and the restriction still forces $F_1=F_0$. The
+equivalence $\Omega d_\varsigma=0\Leftrightarrow$ conditional independence holds at \emph{every} $z$ and
+under \emph{no} overlap condition, by the two-case argument given in the paragraph \emph{A1} above, 
+$\Omega_A$ nonsingular when $\varrho_0>0$, $\ker\Omega_A=\operatorname{span}\{\mathbf1_A\}$ when
+$\varrho_0=0$, and in both cases the non-null cells are forced to share one conditional law.
+\emph{The only set on which the restriction is vacuous is where $W$ is conditionally degenerate}, that
+is, where $\Omega(z)=0$, equivalently where $\max_{0\le l\le\mathsf L-1}\varrho_l(z)=1$. \emph{This is
+the $\mathsf L$-category reading of $\mathcal Z_0$ and it is \textbf{not} a new definition}: $\mathcal Z_0$
+is defined at \eqref{eq:degenreg} in exactly this form, which recovers the binary
+$\{z:\varrho(z)(1-\varrho(z))=0\}$ verbatim at $\mathsf L=2$.
+% AMENDED 2026-08-09 BY THE ORCHESTRATOR, closing a blocker Phase 5a raised against a file it did
+% not own.  This sentence read: "Z_0 is defined at eq:degenreg IN ITS BINARY FORM
+% {z:varrho(z)(1-varrho(z))=0}, which {z:Omega(z)=0} recovers verbatim at L=2; AMENDING THAT
+% DEFINITION IS THE BUSINESS OF THE FILE THAT CARRIES IT, and this paragraph fixes the reading
+% rather than the symbol."  5a amended eq:degenreg -- it was ill-typed at L>=3, varrho being a
+% vector there -- so BOTH halves became false: the definition is no longer binary, and the amending
+% has happened.  That is this project's dominant defect species (a claim about the artifact that the
+% artifact contradicts) and it was in PRINTED text.  eq:degenreg -- cited by LABEL, because the line
+% number this note carried ("proofs.tex:2173") was stale by the time it was read; the display sits in
+% lem:quantu's proof, after the eq:binaryquant paragraph, and is at proofs.tex:2244 as of 2026-08-10 --
+% now reads
+% Z_0 := {z: Omega(z)=0} = {z: max_{0<=l<=L-1} varrho_l(z)=1}, agreeing character-for-character with
+% :1063 above and with results_s2_identification.tex:281.  [POINTER REPAIRED 2026-08-10, Phase C.  A
+% stale line number INSIDE A DISCHARGE NOTE is the worst place for one: the next reader follows it to
+% check the discharge.  Anchor on the label and on the surrounding text, not on the number.]
+% The round-3 correction note below still
+% describes a real hazard and is kept: there must remain exactly ONE definition of Z_0, at
+% eq:degenreg, and this paragraph must go on citing it rather than restating it.
+% ROUND-3 CORRECTION.  Round 2 wrote the sans-L-category set out as an UNLABELLED
+% DISPLAY here, which put a second definition of Z_0 in the corpus while
+% eq:degenreg carries the binary one in proofs.tex.  Two definitions of one
+% symbol, in two files, is the collision this block spends most of its length
+% policing.  The display is withdrawn; the set is described in words and
+% eq:degenreg is cited.  ~~Amending eq:degenreg itself is Phase 3's, and it is
+% listed with the other cross-file obligations.~~  STRUCK 2026-08-10 (Phase C):
+% PHASE 3 CLOSED WITHOUT IT -- the fourth instance of the stranded-item failure
+% mode, since assumptions_main.tex:4384 assigned it to the same phase -- and the
+% amendment was performed in the 5a round instead, as the note above records.
+% The obligation is discharged; only the routing was wrong.
+\emph{As a condition on the propensity vector, degeneracy is strictly stronger than singularity of
+$\Omega$ once $\mathsf L\ge3$}, $\varrho=(q,0)'$ is singular and not degenerate, \emph{though for a
+particular data-generating process the two $z$-sets may of course coincide}, and nothing here asserts
+that they do not. \emph{\Cref{lem:bierens} states its equivalence under B1(i)--(iv) alone and its
+clauses (a) and (b) are
+correct as stated at every $\mathsf L$}; what does not generalise is the binary \emph{ground} recorded
+beside it, that the scalar prefactor vanishes on the degenerate region. A dispatch that
+generalises the printed reason instead of the printed result will import an overlap hypothesis
+(a)$\Leftrightarrow$(b) neither has nor needs.
+
+The statement is unqualified, and a qualification an earlier draft attached to it is withdrawn.
+That draft said \cref{lem:bierens}'s clauses naming $\mathcal M$ and $T$ acquire A4(i), because those
+objects would not exist at a normalised contrast. The estimator carries the raw contrast, so
+$\mathcal M$ and $T$ are defined everywhere and bounded, and no clause of \cref{lem:bierens} needs an
+overlap condition. \emph{The draft's reason was also wrong on its own terms}: $\Omega^{-1}\widetilde W$
+is not ``non-integrable'' where a cell vanishes, it is \emph{undefined} there, $\Omega$ having no
+inverse, and where it is defined it is integrable with a $\varrho$-free bound, as
+\suppref{Remark}{htread}\textup{(4)} computes. \emph{Undefinedness and non-integrability are different
+failures} and the corpus must not conflate them.
+
+The determinant, since it was used above and its usual derivation presumes what fails there. For
+$\varrho$ in the open region where every $\varrho_l>0$, the matrix determinant lemma applied to
+\eqref{eq:omegainv} gives
+$\det\Omega=\det\operatorname{diag}(\varrho)\,(1-\varrho'\operatorname{diag}(\varrho)^{-1}\varrho)
+=\big(\prod_{l\ge1}\varrho_l\big)\varrho_0$. \emph{Both sides are polynomials in
+$(\varrho_1,\dots,\varrho_{\mathsf L-1})$}, they agree on a non-empty open subset of
+$\IR^{\mathsf L-1}$, and two polynomials agreeing on a non-empty open set agree identically; hence
+$\det\Omega=\prod_{l=0}^{\mathsf L-1}\varrho_l$ \emph{everywhere}, including at the boundary where
+$\Omega$ is singular and the lemma does not apply. \emph{That is exactly where the identity is wanted},
+which is why the continuation step is printed rather than the lemma cited alone.
+
+\medskip
+\noindent
+ If the prefactor is inverted at all, which the estimator does not do, but which the reading of
+\suppref{Remark}{htread} does, the inverse is $\Omega^{-1}$, and that is settled by an identity rather
+than by a preference.
+The scalar $\varrho(1-\varrho)$ admits exactly one componentwise generalisation, the diagonal
+matrix with entries $\varrho_l(1-\varrho_l)$, and it is wrong. \eqref{eq:omegaprefac} says the map
+carrying the cell-versus-base contrasts $d$ into the observable moment is $\Omega$, whose off-diagonal
+entries $-\varrho_l\varrho_m$ are the negative cross-cell correlation that a multinomial has and a
+collection of separate binaries does not. Dividing component $l$ by $\varrho_l(1-\varrho_l)$ therefore
+does not return $d_l$, and what it returns is not a contrast between cell $l$ and the base cell at all.
+Two further facts make $\Omega^{-1}$ the right inverse to take. By \eqref{eq:omegainv},
+$\Omega^{-1}\widetilde W$ is the vector of \emph{inverse-probability} contrasts of each cell against the
+base, so $\Omega^{-1}$ is the only inverse under which the contrast vector is the
+Horvitz--Thompson object the binary design already was, and at $\mathsf L=2$ it reads
+$(W-\varrho)/\{\varrho(1-\varrho)\}=\un\{W=1\}/\varrho-\un\{W=0\}/(1-\varrho)$, the identity a binary
+design writes down without comment. And the quadratic form is base-free:
+$\widetilde W'\Omega^{-1}\widetilde W=(1-\varrho_W)/\varrho_W$, where $\varrho_W$ is the conditional
+probability of the \emph{realised} cell, a quantity that names no base cell, is symmetric in all
+$\mathsf L$ cells, and satisfies $E[\widetilde W'\Omega^{-1}\widetilde W\mid\Delta Z]=\mathsf L-1$. The
+componentwise weighting has neither property. So \textbf{which} inverse to take, if one is taken at
+all, is settled by an identity and not by a preference.
+
+\medskip
+\noindent
+ \textbf{Whether} to take it is a second question, and the answer is \textbf{no}: the estimator
+carries the raw contrast \eqref{eq:contrast} on both sides. The operator equation and $\psi$ of
+\eqref{eq:psidef} are both written at $\widetilde W$, and $\Omega^{-1}$ appears nowhere in either.
+The reading it supports is retained, as \suppref{Remark}{htread}, and is interpretation rather than
+specification.
+
+What normalising would have changed, so that the trade is legible. By the tower property with
+\eqref{eq:omegaprefac} the two candidate forward residuals are
+\[
+T(u,t,\cdot)\;=\;E\big[\Omega(\Delta Z)\,d(u\mid\Delta Z)\,w(t'\Phi(\Delta Z))\big],
+\qquad
+T^{\Omega}(u,t,\cdot)\;=\;E\big[d(u\mid\Delta Z)\,w(t'\Phi(\Delta Z))\big] ,
+\]
+which differ in where $\Omega$ sits relative to the \emph{outer} integration over $\Delta Z$, a
+difference no choice of norm on the range space can undo. The gain would be that the conditional
+forward residual is the cell difference $d$ itself rather than a matrix mixture of it.
+
+The price is that $T^{\Omega}$ has a different linearisation, and the whole smoothness budget is
+stated at the one the paper has. A2's range condition, A$2'$, A1c and H1, the last through
+$\sigma_j(\mathcal A_{\mathrm{cond}})\asymp j^{-a}$, the exponent of the \emph{stacked} operator on the
+whole three-factor range space at every $\mathsf L$, are all stated at $\mathcal A_{\mathrm{cond}}$,
+and $\mu_{\text{\textup{H1}}}=s/(2a)$, the two daggered lines of the smoothness-budget table below and
+the comparison to the cross-sectional companion sit downstream of $a$. \emph{\eqref{eq:frontier} does
+not}, its $\mu$ being (P-a.3)'s primitive index, and no other line of that table imposes a condition
+involving $a$; \emph{that
+narrows what a re-derivation would have to cover and does not remove the objection}, since the scale
+$H^{s}$ that \cref{def:srcball}, A5(vi$'$), (P-c) and (P-g) are written in, and A2's Picard form, would
+both have to be re-established at the normalised operator. \emph{A4's note (c) already records that the two
+operators must not be assumed to share range or kernel}, and the paragraph on Khan--Tamer irregularity
+scopes range-invariance to a \emph{constant} $\varrho$, a $z$-varying $\Omega$ being exactly what that
+scoping excludes. \emph{An interpretational gain does not buy a re-derivation of the
+ill-posedness budget}, and the author declines the trade. \emph{Nothing else in the dispatch depends on
+it}: the $\mathsf L$-category instrument, the contrast vector, $\Omega$ as covariance and prefactor,
+A4(i), \eqref{eq:trunset} and \eqref{eq:omegafloor} all stand.
+
+One consequence of the reversal is worth stating positively. At $\mathsf L=2$ the operator, $\psi$
+and every assumption clause reduce to the printed binary objects \emph{verbatim, with no exceptions}, and
+the binary estimator is unchanged. Under the normalisation they did not: \eqref{eq:hatT} would have
+carried a factor the pre-dispatch display did not have.
+
+And one argument made along the way is false and is recorded because it is the first repair a
+re-inventor will reach for. It ran: $\Omega$ is $\sigma(\Delta Z)$-measurable,
+so $L\widetilde W=(L\Omega)\widetilde W^{\Omega}$, and $L\mapsto L\Omega$ is a bijection of
+\cref{def:weight}'s admissible class onto itself, whence a normalised operator could be paired with a
+$\psi$ printed at $\widetilde W$
+without loss. \emph{Four bounds were checked and each of the four is correct}, \emph{the norms being spectral on
+$\Omega$ and Frobenius on $L$, $\ell$ and $b$, as the notation block fixes, which is why the two are
+named here rather than left to context}, 
+$L^{\,b}_{\ell}\Omega=L^{\,b\Omega}_{\ell\Omega}$ since $\Omega$ does not depend on $u$;
+$\|\Omega\|\le1$, because for a unit $c$, $c'\Omega c=\operatorname{Var}(c'\widetilde W\mid\Delta Z)\le
+E[(c'\widetilde W+c'\varrho)^{2}\mid\Delta Z]=\sum_lc_l^{2}\varrho_l\le1$, so
+$\|\ell\Omega\|_\infty\le\|\ell\|_\infty$ and $E\|b\Omega\|^{2}\le E\|b\|^{2}$, \emph{a Frobenius
+norm is submultiplicative against a spectral one, $\|AB\|_F\le\|A\|_F\|B\|$}; the inverse map with
+$\|\Omega^{-1}\|\le\mathsf L/\varepsilon_\varrho$; and $E[L\Omega\mid\Delta Z]=E[L\mid\Delta Z]\Omega$,
+so N1 transfers. They are jointly insufficient, because \cref{def:weight} does not define its
+admissible class by bounds. Its clause (a) binds $\ell:=\mathcal W\ell^\Pi$, so membership requires the
+generator to lie in $\mathcal R(\mathcal W)$; the $z$-sections of $\mathcal W$ are Laplace transforms
+against $w=\exp$ on a compact index set under B1(i)--(ii) and (iv.c), hence \emph{real-analytic} in $z$,
+while A4(ii) makes $\varrho$, and therefore $\Omega$, only H\"older of order $r$.
+\emph{Right-multiplication by a non-analytic $\Omega(z)$ leaves $\mathcal R(\mathcal W)$}, and the
+failure occurs already at $\mathsf L=2$ with $p=1$ and a $\varrho$ that is H\"older but non-analytic at a
+point. So the two parameterisations do not have the same admissible weight class, and no bijection
+is claimed anywhere in this corpus. \emph{The four bound-checks are left on record rather than deleted},
+because the lesson is that verifying the bounds of a class is not verifying membership of it when the
+class is defined by a range condition, \emph{and because the same analytic-versus-H\"older mechanism
+is what makes the author's ground for keeping the raw contrast bite}: a normalised
+$\mathcal A_{\mathrm{cond}}$ cannot be assumed to inherit the range and decay statements A2, A$2'$, A1c
+and H1 are made at.
+
+\emph{Nothing in the assumption block changes on account of any of this}, because the estimator was not
+re-written. The bounds the block does use are the free ones, $\|\widetilde W\|_\infty\le1$ and
+$\|\widetilde W\|_2\le\min\{\sqrt2,\sqrt{\mathsf L-1}\}$, uniform in $\mathsf L$ and free of $\varrho$;
+A4(i) remains idle in \cref{prp:wellposed}, \cref{prp:frechet} and \cref{prp:compact};
+$\hat T$ remains affine in $\hat\varrho$, so the propensity branch of the operator error keeps its
+exactly-zero second-order term; and no clause of \cref{lem:bierens} needs an overlap condition.
+
+% ARITHMETIC CHECK OF THE QUADRATIC FORM, kept because it is the one line a
+% reader will want to verify and it is two cases.  At W = k >= 1:
+% Wtilde_l = 1{l = k} - varrho_l and 1{W = 0} = 0, so the sum over l >= 1 of
+% Wtilde_l (1{W = l}/varrho_l) is (1 - varrho_k)/varrho_k.  At W = 0:
+% Wtilde_l = -varrho_l and 1{W = 0}/varrho_0 = 1/varrho_0, so the sum is
+% sum_{l>=1} varrho_l / varrho_0 = (1 - varrho_0)/varrho_0.  Both are
+% (1 - varrho_W)/varrho_W.  The conditional mean is sum_k varrho_k
+% (1 - varrho_k)/varrho_k = sans-L - 1 = tr(Omega^{-1} Omega).  At sans-L = 2 the
+% mean is 1, which is the binary case's E[(W - varrho)^2]/{varrho(1-varrho)}.
+
+\medskip
+\noindent
+ The lower bound $d_Z\ge1$ is load-bearing. At $d_Z=0$ the exponent $\alpha=r/(2r+d_Z)$ is
+$\tfrac12$ \emph{exactly}, and:
+% ARCHAEOLOGY.  The lower bound is stated in dispatch 14; it was assumed silently
+% before it, at four sites and in one place substantively.
+\begin{itemize}
+\item One site genuinely breaks, and it is the $\varphi$-step. (P-d)'s sieve-entropy condition is
+$L_x\ln n=o(n\hat\delta_n^{2})$. At $\alpha=\tfrac12$, A5(i)'s $\hat\delta_n=\max\{n^{-1/2}\sqrt{\ln n},r_n\}$
+is $n^{-1/2}\sqrt{\ln n}$, \emph{an equality, and it is the declared floor of clause \textup{(i)} that
+supplies it, not a two-sided reading of an $O_P$}, so $n\hat\delta_n^{2}=\ln n$ exactly and the
+condition reads $L_x=o(1)$, 
+\textbf{no integer $L_x\ge1$ satisfies it}. Equivalently, the window \eqref{eq:lxwindow} is empty at every
+$s$, its right-hand side $9\alpha/\big(8(1-2\alpha)\big)$ diverging as $\alpha\uparrow\tfrac12$.
+\cref{prp:phirate} therefore has no admissible sieve dimension, group (T-5) of \cref{thm:rootn} is
+unsatisfiable, and the theorem is \emph{vacuous} at $d_Z=0$ rather than false.
+\item \emph{Three further sites print ``$\alpha<\tfrac12$'' as a \textbf{reason} and are false as printed,
+although each conclusion happens to survive at the boundary}: \cref{lem:prelimtheta}'s statement, which
+writes $\alpha=r/(2r+d_Z)<\tfrac12$; that lemma's Step~6, whose collapse argument gives
+$\kappa\alpha<\tfrac12$ from ``$\kappa<1$ and $\alpha<\tfrac12$'', true at $\alpha=\tfrac12$ from
+$\kappa<1$ alone; and \cref{rem:h6bandwidth}'s ``impossible because $\alpha<\tfrac12$ always''. \emph{A
+true conclusion resting on a false printed reason is the harder defect to find}, which is why they are
+listed.
+\end{itemize}
+\emph{$d_Z=0$ is not a pathology and it is not being excluded as one}: it
+says $\varrho$ has no non-degenerate argument, hence is a constant, hence is estimable at the parametric
+rate, a genuinely easier propensity problem. \emph{What fails there is not the propensity but the
+$\varphi$-step's entropy budget}, because $\hat\delta_n$ then sits at $n^{-1/2}$ and leaves no room between
+the noise level and the sieve dimension. \emph{A block that assumes a strict inequality should say which
+primitive delivers it}, and this is that primitive.
+
+\medskip
+\noindent
+ The upper bound $d_Z\le p-1$ is a \textbf{modelling} restriction, and read with A1b(iv) it is
+sharper than it looks. It is stated on one line and, unlike its companion above, has been discussed
+nowhere; the asymmetry is not warranted, because the two bounds do different work. The lower bound
+protects a rate. \emph{The upper bound restricts the specification of $\Delta Z$}, as follows.
+\begin{itemize}
+\item[--] $d_Z$ counts the \emph{non-degenerate} coordinates of $\Delta Z$, degenerate meaning almost
+surely equal to a constant, which is what makes a coordinate carry no information for the propensity
+regression, so $d_Z\le p-1$ says that \emph{at least one} coordinate of $\Delta Z$ is a.s.\ constant.
+\item[--] \emph{That constant cannot be zero.} If coordinate $j$ is a.s.\ $0$ then row and column $j$ of
+$E[\Delta Z\Delta Z']$ vanish and the matrix is singular, contradicting A1b(iv).
+\item[--] And there cannot be two of them. If coordinates $j\ne k$ are a.s.\ the non-zero
+constants $c_j$ and $c_k$, then rows $j$ and $k$ of $E[\Delta Z\Delta Z']$ are $c_jE[\Delta Z]'$ and
+$c_kE[\Delta Z]'$, proportional, and the matrix is singular again.
+\end{itemize}
+\emph{So A4(ii) and A1b(iv) together force $d_Z=p-1$ \textbf{exactly}, and force $\Delta Z$ to contain
+exactly one constant coordinate, non-zero: \textbf{the differenced equation must carry a period effect.}}
+That is a restriction on how the analyst writes the model and not a regularity condition, and it is
+substantive: a specification of $\Delta Z$ in which every coordinate varies is \emph{excluded} by A4(ii),
+and one in which two do not is excluded by A1b(iv). \emph{What is \textbf{not} claimed is that the
+period effect is non-zero in the population}, the coefficient on the constant coordinate is an
+ordinary component of $\theta_\dagger$ and may be zero; what is forced is that the coordinate is
+\emph{present}, so that $\Delta Z$ spans an intercept in differences. \emph{Nor is $d_Z=p-1$ a
+strengthening of anything assumed}: it is a consequence of two clauses the block already maintains, which
+is precisely why it had to be derived somewhere rather than left for a reader to notice.
+% ADDED 2026-08-10 (Phase 6a).  The upper bound d_Z <= p-1 appeared at exactly one
+% line in A4(ii) and at one glossary row ("because Delta Z's constant coordinate
+% carries no information"), and its consequence -- read against A1b(iv) -- was
+% printed nowhere.  It is not a counterexample to anything: no result is false, and
+% the pair of clauses is satisfiable.  It is an UNDISCUSSED SCOPE RESTRICTION, and
+% the Section 6 author has to know it before choosing Delta Z, because a
+% specification with no constant coordinate does not satisfy A4(ii) as written.
+
+\medskip
+\noindent
+\emph{The $\sigma$-algebra of the fold is written out and given no symbol here}, because
+\cref{def:hatT}, which names it $\sigma(\mathcal I_a)$ by adopting \cref{lem:balance}'s convention, 
+comes several hundred lines later in this file, and a maintained clause must not name an undefined object;
+this is the write-it-out precedent C12/C24/C78, applied for the same reason A7's own statement forced
+\cref{def:hatT} into Part~V.
+\emph{The joint-measurability half is load-bearing}: two things this clause is asked to support are not
+well posed without it.
+\emph{First, its own display.} ``$O_P$'' is a statement about the distribution of
+% ARCHAEOLOGY.  Through dispatch 15 this clause carried NO measurability statement
+% of any kind, and the gap was recorded as OPEN; the half is new in dispatch 16.
+$\omega\mapsto\|\hat\varrho-\varrho\|_{L^2}$, which is an \emph{integral of a random function}; joint
+measurability makes it a measurable function of the sample, by Tonelli's theorem applied to the
+non-negative jointly measurable integrand $(\omega,z)\mapsto\|\hat\varrho(\omega)(z)-\varrho(z)\|^{2}$
+against the law of $\Delta Z$. Per-realisation Borel measurability of $z\mapsto\hat\varrho(\omega)(z)$
+does not supply it. \emph{The integrand is a sum of $\mathsf L-1$ squares and is jointly measurable
+exactly when each component is}, so the clause is read componentwise and the argument is the one it
+always was; \emph{and the two norms in the display are different objects}, the inner
+$\|\cdot\|$ is Euclidean on $\IR^{\mathsf L-1}$ and the outer $\|\cdot\|_{L^2}$ integrates it against
+the law of $\Delta Z$, which is what A4(iii)'s ``$:=$'' spells out.
+\emph{Second, \cref{lem:opnoise} Step~4}, which freezes $\hat\varrho$ on the auxiliary fold and applies
+\textup{(P8)}'s freezing lemma. That lemma's hypothesis is joint measurability of the \emph{composite},
+and the composite there is $\|\hat\varrho(\omega)(\cdot)-\varrho(\cdot)\|$ read at the main fold's
+$\Delta Z$-draws, which the clause above supplies by composition with the Borel coordinate maps.
+\emph{The shape is \cref{def:crossfit}\textup{(c$'$.1)}'s, one Part later}: a requirement on the
+% ARCHAEOLOGY.  Through dispatch 15 lem:opnoise Step 4 was the one consumer of the
+% freezing lemma whose hypothesis no clause of this block supplied; the repair was
+% located here rather than papered over there.
+estimator's own pointwise function and \textbf{not} a container declaration. That matters and is not a
+stylistic preference, no equivalence class is formed and no representative is chosen, so
+\cref{def:hatT}'s truncation, being a pointwise operation, continues to make
+$\varepsilon_\varrho\le\big|\widehat{\widetilde W}_{i,l}\big|\le1$ hold \emph{surely} at every $i$ and
+every $l$, and
+\cref{def:crossfit}\textup{(a)}'s reading of that bound at the folds is exact rather than almost sure.
+\emph{And it costs nothing about $P$}: it is a construction requirement on an estimator, satisfied by any
+$\hat\varrho$ given by a formula jointly measurable in the auxiliary sample and the evaluation point, 
+which every kernel and every series construction is, by inspection of the formula. \emph{The
+Carath\'eodory route \cref{def:crossfit}\textup{(c$'$.1)} records for \eqref{eq:prodmeas} is available
+here too but is \textbf{not} the same statement}: it delivers joint measurability from continuity in one
+argument and measurability in the others, so here it would run on continuity of
+$z\mapsto\hat\varrho(\omega)(z)$ at each realisation, true of a kernel or series construction and not
+of a measurable selection, and in any case a sufficient condition and not the requirement, which is the
+display above.
+
+% ------------------------------------------------------------------------
+\paragraph{A5 (nuisance rates).}
+
+% EXTRACTED FROM THE STATEMENT OF A5(i) on 2026-08-04, together with the repair
+% that made the extraction necessary.  The clause's two branches were written
+% with O_P and its closing sentence was an unquantified identity; both are
+% conditions-only violations of a different kind from the 2026-08-02 pass -- the
+% first stated an upper bound where the corpus consumed a floor, the second
+% stated an interpretation where the corpus consumed a margin.
+\emph{Clause \textup{(i)} \textbf{declares} its two branches and \textbf{assumes} one thing, and the
+two must not be run together.} What the clause assumes about the data-generating process is that the
+operator error is $O_P(\hat\delta_n)$, the last equality of \eqref{eq:opnoise}, which
+\cref{lem:opnoise} delivers rather than requires. What it declares is the level itself: $\hat\delta_n$ is
+the noise level \emph{fed to} the discrepancy principle, and the stagewise schedule is computed from it
+before the data are seen, so it is a deterministic sequence and the two superscripts are component tags
+naming which summand of the maximum is meant, not estimators. \emph{A deterministic sequence does not
+carry an $O_P$}, and this block's own preamble already says the clauses \emph{define} these rates.
+% ARCHAEOLOGY.  Through 2026-08-03 the branches were written
+% delta-hat_n^{(T)} = O_P(n^{-1/2} sqrt(ln n)) and delta-hat_n^{(varrho)} =
+% O_P(r_n) -- UPPER bounds -- while FIVE sites read them two-sidedly to obtain a
+% LOWER bound on delta-hat_n: prp:stopfeas(i)'s statement and its proof,
+% lem:prelimtheta's Step 6, rem:lfnonlinear(3)'s mu = 1/2 disposition, and A4's
+% d_Z >= 1 note in this file.  FROM X = O_P(a_n) ONE CANNOT INFER a_n <~ X.  A
+% max of two O_P upper bounds is still an upper bound, which is exactly what let
+% an implementation keep the propensity branch alone and stay formally
+% consistent with the clause: rate_delta_n in app_tsp_common.R did so and
+% printed a wrong number in the shipped d_Z = 0 feasibility row (corrected
+% 2026-08-03).  The code is fixed; this clause is why the error was available.
+
+\medskip
+\noindent
+ Nothing about the data-generating process is strengthened by the repair, and the floor is the
+thing gained. The $O_P(\hat\delta_n)$ half is upper-only, as it was, and is still discharged by
+\cref{lem:opnoise}; every ``A5(i) is discharged, not assumed'' downstream survives verbatim. What
+changes is that
+\[
+\hat\delta_n\;\ge\;\hat\delta_n^{(T)}\;=\;n^{-1/2}\sqrt{\ln n}
+\]
+is now \textbf{arithmetic}, a property of a maximum whose branches are named, where before it was a
+two-sided reading of an $O_P$. \emph{\Cref{lem:opnoise}\textup{(i)} cannot supply it and is no longer
+cited for it}: that clause is a Chebyshev tail bound and bounds the empirical component from above.
+The floor is what \cref{prp:stopfeas}\textup{(i)} runs Chebyshev against, and it is the reason a
+statement proved at $\tfrac12\mathsf c\,n^{-1/2}\sqrt{\ln n}$ may be printed at $\mathsf c\,\hat\delta_n$.
+
+\medskip
+\noindent
+ The clause's closing sentence is struck, and what replaces it is a quantifier. It read ``in every
+configuration of interest $\hat\delta_n=\hat\delta_n^{(\varrho)}=O_P(r_n)$'', an identity with no
+``eventually'' in it, and \emph{false as printed} over an admissible range. The propensity branch attains
+the maximum exactly when $n^{1-2\alpha}>\ln n$, so the crossover sits near $n=5{,}500$ at
+$\alpha=\tfrac38$ and \emph{diverges} as $\alpha\uparrow\tfrac12$; at $n=2{,}000$, the sample size
+\cref{lem:scaleinv} prints an inflation factor at, the \emph{parametric} branch is the maximum, and the
+shipped headroom ledger carries a branch column that records which branch binds cell by cell.
+\emph{What survives is an eventual statement and it is a consequence of A4(ii), not a configuration
+label}: $d_Z\ge1$ gives $\alpha=r/(2r+d_Z)<\tfrac12$ strictly, hence for each admissible configuration
+there is a finite $n_\star$ with $\hat\delta_n=\hat\delta_n^{(\varrho)}=r_n$ at every $n\ge n_\star$.
+\emph{That is precisely the licence clause \textup{(iii)} needs} in order to write
+$\hat\delta_n=n^{-r/(2r+d_Z)}$ inside an asymptotic condition, and clause \textup{(iii)} now names it.
+
+\medskip
+\noindent
+ It is \textbf{not} the licence the two sites that consumed the struck sentence as strict dominance
+needed, and neither of them cites it any longer. \Cref{rem:l19cost}\textup{(2)} needs
+$n\hat\delta_n^{2}$ to diverge \emph{polynomially}, which the floor does not give, the floor gives
+$n\hat\delta_n^{2}\ge\ln n$, and it now carries $\alpha<\tfrac12$-with-a-margin as its own scope
+condition on Step~6. \Cref{rem:h6bandwidth}\textup{(2)} needs only $\hat\delta_n\gg n^{-1/2}$, which the
+floor delivers outright, in \emph{every} configuration and not merely where the propensity branch binds;
+that site is strengthened by the repair rather than weakened.
+
+\medskip
+\noindent
+\emph{The factor $\ln n$ is not optional}: \cref{prp:phirate} delivers \eqref{eq:phirate} at
+$(\hat\delta_n\ln n)^{2\mu/(2\mu+1)}$, and (P-f),
+\cref{rem:h6bandwidth}\textup{(0)} and \cref{prp:stopfeas}\textup{(iv)} all read that log-inflated
+$\delta_n$. A log-free reading of this clause is off by $(\ln n)^{2\mu/(2\mu+1)}$.
+\emph{The \textbf{rate} is what that proposition delivers and the \textbf{object} is not the object of
+this clause}, a distinction that costs nothing here and is load-bearing two paragraphs over:
+\eqref{eq:phirate} is stated at the infeasible reading $\hat\varphi^{\pi}$ of \cref{def:lfstep} from
+2026-08-27, while this clause is stated at $\hat\varphi$, so the clause's first half is
+\textbf{assumed} and not discharged --- and $\delta_n$ is the same deterministic sequence either way,
+which is all this paragraph needs.
+\Cref{rem:rootnlog} carries the full disposition, including which of the four rate products
+% ARCHAEOLOGY.  The factor is new in dispatch 10 and is a CORRECTION, not a
+% strengthening: rounds 1--9 wrote this clause at delta-hat_n^{2mu/(2mu+1)}, so the
+% RATE the block STATED was not the rate the proposition returns, and the
+% block was already inconsistent with itself, not merely with the proposition.
+% ["DISCHARGES" -> "returns", 2026-08-27.  prp:phirate no longer discharges this
+% clause at all: it is scoped to hat-varphi^pi and A5(ii) is stated at
+% hat-varphi.  The RATE arithmetic in this paragraph is untouched by that.]
+\cref{thm:rootn} needs are affected. In one line: the second half of this clause and clause (iii) are
+\textbf{unchanged}, because \eqref{eq:frontier} is a strict inequality between polynomial exponents and its
+strictness absorbs the logarithm; clause (iv) becomes \textbf{stronger} by the factor $(\ln n)^{2\mu/(2\mu+1)}$,
+and that is the only place the logarithm bites; clause (v) becomes \textbf{weaker}, its right-hand side being
+inflated; and \eqref{eq:muhalf} does not move, having been computed at the inflated $\delta_n$ already.
+
+\medskip
+\noindent
+% EXTRACTED FROM THE STATEMENT OF A5 on 2026-08-02.  Clause (iv) carried the
+% attribution of its own typing and clause (vi') carried the well-posedness
+% argument for its own display, both inside the printed condition.  The TYPING
+% stays in clause (iv) -- it is what makes the display a probability statement --
+% and it is the ATTRIBUTION and the ARGUMENT that moved here.
+\emph{Clause \textup{(iv)}'s fold and measurability are fixed by \cref{lem:balance}'s sample-splitting
+convention, which also names what that measurability is \emph{of}.} \emph{The naming is not decoration.}
+The
+first display is an $O_P$ statement about $\omega\mapsto\|\hat\ell-\ell_\star\|_{L^{2}(P)}$, an integral of
+a random function; joint measurability of the fixed representative makes it a measurable function of the
+sample by Tonelli's theorem, and \emph{membership plus an unspecified ``measurability'' does not}.
+\emph{Nothing here is strengthened}: the joint measurability
+% ARCHAEOLOGY.  Through dispatch 15 the convention this clause points at stated
+% exactly membership and a measurability whose target was not named, so the clause
+% was well posed only by reference to something that did not state it -- the same
+% defect as A4(iii)'s and lem:balance's own, written a third time and at one remove.
+% The repair is at lem:balance and the naming half is dispatch 16's.
+is scoped to what \cref{lem:balance} Steps~0 and~2 use, which is strictly less than
+\cref{def:crossfit}\textup{(c$'$.1)}'s \eqref{eq:prodmeas}, because \cref{lem:balance} evaluates $\hat\ell$
+at an undistorted $(\Delta U,\Delta Z)$ draw. \emph{In Part~I it is \eqref{eq:prodmeas} that governs and
+not this convention}: what \cref{def:crossfit}\textup{(d)} reads at the folds is this clause's
+\emph{display}, and the measurability of $\hat\ell^{(-k)}$ is \cref{def:crossfit}\textup{(c$'$.1)}'s own.
+What this clause does and does not say about $\hat L$. It prices
+$\hat\ell$, and nothing else. The identity
+$\|\partial_u(\hat L-L_\star)\|_{L^{2}(P)}=\|\hat\ell-\ell_\star\|_{L^{2}(P)}$ is \textbf{an assertion,
+not notation}, and is \emph{not} made here: it holds if and only if $\hat L$ is differentiable in $u$ at
+every point with $\partial_u\hat L=\hat\ell$, that is, if and only if $\hat L=L^{\,\hat b}_{\hat\ell}$ in
+the sense of \cref{def:weight}(b), which is exactly the construction obligation \cref{rem:dirmember}
+records as owed by Step 6 or 7 and \emph{undischarged in this block}. \cref{lem:balance}(i)--(ii) consume
+the clause in the form printed above, at $\hat\ell$ itself, and need nothing further;
+\cref{lem:secondord}(iv) consumes it at $\|\partial_uD\|_{L^{2}(P)}$ with $D=\hat L-L_\star$, and may
+therefore be instantiated at the estimated direction only \emph{after} that obligation is discharged.
+% ARCHAEOLOGY.  Rounds 1--7 printed the identity as the first of two equalities
+% inside the clause, which asserted the construction silently -- a forward
+% obligation migrated into the block unstated.  Round-8 correction.
+
+\medskip
+\noindent
+\emph{The clause is a statement about a
+finite quantity, and what makes it one is \eqref{eq:sieveinhs} together with H1}:
+$h=\hat\varphi-\vdagger$ with $\hat\varphi\in\mathcal S_n$ at the configuration
+\cref{lem:pathcont} states, so $\hat\varphi\in H^{s}$ by \eqref{eq:sieveinhs} and $\vdagger\in H^{s}$
+by H1's source set; without the first of those $\|h\|_{H^{s}}=+\infty$ surely and the
+$O_P(1)$ statement would hold on the \emph{empty} event rather than with probability tending to one.
+
+\medskip
+\noindent
+\emph{Clause \textup{(vi$'$)}'s display is a probability statement about a finite quantity only because
+\textbf{both} memberships hold, and both are needed.} Every stage
+$\hat\varphi^{(0)},\dots,\hat\varphi^{(\bar k)}$ lies in $\mathcal S_n$ once $\hat\varphi^{(0)}$ does, by
+\cref{def:lfstep}\textup{(b)},\textup{(d)}, and hence in $H^{s}$ by \eqref{eq:sieveinhs}, \emph{while
+$\vdagger\in H^{s}$ by H1's source set}. The display being a norm of a \emph{difference}, either
+membership failing makes it $+\infty$ at every realisation and the event \textbf{empty} rather than
+merely improbable.
+
+\medskip
+\noindent
+\emph{That same $\mathsf R$ serves at every site \cref{def:srcball} enumerates, and \textbf{that} is
+where the enumeration is maintained}: \cref{def:srcball} carries the list, and this clause,
+\cref{lem:pathcont} and \cref{rem:paenvelope} point at it and maintain no copy.
+\emph{``No second copy is maintained'' is what this sentence used to say and it was false}:
+\cref{def:crossfit}'s clause-\textup{(d)} reading carries a three-entry instance list, which now
+declares itself an instance list and points here --- the very failure the archaeology below
+condemns, committed by the sentence recording it.
+\emph{The quantifier is an existential over
+% ARCHAEOLOGY.  Four copies of one list were maintained through dispatch 20, of
+% lengths seven, five, five and four, so that a reader assembling the consumer set
+% from any one of them got a different answer on a constant def:srcball declares
+% "the radius that is not free".
+one radius meeting all of those demands at once}, which is what \cref{lem:pathcont} consumes and what
+\cref{rem:paenvelope} explains; an $O_P(1)$ reading does not serve, because \cref{def:srcball}'s ball must
+be deterministic and an $O_P(1)$ bound is a family indexed by tolerance rather than a number.
+
+% ------------------------------------------------------------------------
+\paragraph{A8 (sieve window).}
+
+
+\emph{The word ``consequently'' is a derivation, and it is printed here rather than asserted}: ten live
+citations rest on it. Write $p_b$ for the degree, so $p_b>s-\tfrac12$; and write $s'$ for a
+\emph{generic} order of the Sobolev scale, bound in this derivation and in H1's
+boundary-condition paragraph and used nowhere else.
+% ARCHAEOLOGY.  Until dispatch 22 the containment carried neither a derivation nor a
+% pin while the weaker statement beside it carried two pins and was called
+% load-bearing.  Both letters are dispatch-22 replacements and neither changes
+% anything derived: the degree was bare italic d, one glyph from the dimensions
+% d_Z, d_K and from the differentials dx, du, in the FIRST file of the compiled
+% reading order; the generic order was written tau at two sites and sigma at three,
+% against the reserved discrepancy constant and against the four-way sigma rule.
+% Glossary C87 records both.
+A polynomial spline of
+degree $p_b$ on a mesh with simple interior knots lies in $C^{p_b-1}(\mathcal X)$
+\citep{schumaker2007}; its $p_b$th derivative is constant on each mesh cell, hence a finite step function;
+and a step function on a bounded interval lies in $H^{s'}$ for every $s'<\tfrac12$, and, unless it
+is constant, i.e.\ unless the spline is a single polynomial, in no $H^{s'}$ with $s'\ge\tfrac12$.
+Hence $\mathcal S_n\subset H^{s'}(\mathcal X)$ for every $s'<p_b+\tfrac12$, and the exponent
+$p_b+\tfrac12$ cannot be raised uniformly over the span. Since $p_b>s-\tfrac12$ gives $s<p_b+\tfrac12$,
+this is
+\eqref{eq:sieveinhs}. Three ingredients of that derivation are load-bearing and each is now stated
+rather than read in. The interior knots must be \emph{simple}: at an interior knot of multiplicity two
+the spline is only $C^{p_b-2}$ there, its $(p_b-1)$st derivative already jumps, and membership drops by a
+full order to $s'<p_b-\tfrac12$, so the containment fails at the stated degree.
+% ARCHAEOLOGY.  The clause above did not say "simple interior knots" through
+% dispatch 20, where the derivation was in a comment and the hypothesis it needs was
+% in neither the clause nor the comment.
+The space must be the \emph{classical} one, for the
+reason H1 now records. And $p_b>s-\tfrac12$ is \emph{strict}, $s'=p_b+\tfrac12$ being
+exactly where membership fails.
+
+% ------------------------------------------------------------------------
+\paragraph{the sample operator $\hat T$.}
+
+Why the truncation is in the maintained block and not in a proof. Without it, $\hat\varrho$
+taking the value of the realised dummy vector $\big(\un\{W=1\},\dots,\un\{W=\mathsf L-1\}\big)'$ has
+positive probability, hence so does $\widehat{\widetilde W}_i=0$ in $\IR^{\mathsf L-1}$; on the
+event that this holds at every $i\in\mathcal I_m$ the sample operator is identically zero and every
+statement about it is vacuous. A4(i) constrains $\varrho$ and says nothing about
+$\hat\varrho$, so the degeneracy cannot be excluded by assumption, it is excluded by construction,
+which is where it belongs.
+
+And the truncation set is the $\varepsilon_\varrho$-interior of the simplex \eqref{eq:trunset} and
+not a box, for a second and separate reason. On \eqref{eq:trunset} the implied base cell
+$\hat\varrho_0=1-\sum_{l\ge1}\hat\varrho_l$ is itself at least $\varepsilon_\varrho$, so $\hat\varrho$ is
+a probability vector bounded away from every face; \emph{on the box
+$[\varepsilon_\varrho,1-\varepsilon_\varrho]^{\mathsf L-1}$ it need not be one at all}, the implied base
+cell being possibly negative, in which case $\hat\varrho_0$ names nothing, the \emph{estimated contrast
+covariance}
+\[
+\hat\Omega_i\;:=\;\operatorname{diag}\big(\hat\varrho(\Delta Z_i)\big)-\hat\varrho(\Delta Z_i)\hat\varrho(\Delta Z_i)'
+\]
+need not be
+positive semi-definite, and the overlap diagnostic $\min_l\hat\varrho_l$ the application reports is not
+what it is taken for. \emph{$\hat\Omega_i$ is declared here, at its first use, and not in
+\cref{def:hatT}}: the estimator does not evaluate it, \eqref{eq:hatT} carries the raw contrast, so a
+declaration inside the definition would name an object that definition never uses. \emph{It is used by
+the diagnostics and by the two clauses below}, which is why it is declared at all.
+% ROUND-5 REPAIR.  Rounds 2-3 declared Omega-hat_i in def:hatT's PRINTED text,
+% where the normalised eq:hatT consumed it.  Round 4 removed the normalisation
+% and the declaration WITH it -- correctly, since an orphaned printed symbol in a
+% definition is the round-1 defect -- but LEFT THE FOUR CONSUMERS, so the
+% supplement used Omega-hat in printed text with no printed definition anywhere.
+% That is the same defect mirrored.  The declaration returns HERE, at the first
+% of the four consumers in file order, where it is used rather than merely named.
+% TEXT RECOVERED 2026-08-10 (Phase 6a).  The sentence below had been SWALLOWED BY
+% THIS COMMENT BLOCK -- spliced onto the end of the line above, so it did not
+% compile and the paragraph began, in the PDF, with "\suppref{Remark}{hatTread}(2)
+% hold on the box as well", a sentence with no subject.  Found by scanning for
+% comment lines carrying printed markup; not assigned by any audit.
+\emph{Be exact about what does and does not need this}: the two surely-bounds of
+\suppref{Remark}{hatTread}\textup{(2)} hold on the box as well, since each uses only
+$\hat\varrho_l\in[\varepsilon_\varrho,1-\varepsilon_\varrho]$. \emph{What needs \eqref{eq:trunset} is
+that the fitted object be a probability vector}, which is a requirement on the first stage rather than a
+bound any proof invokes. At $\mathsf L=2$ the box and
+\eqref{eq:trunset} coincide, which is why no earlier round had to distinguish them.
+% ROUND-4 CORRECTION.  Rounds 2-3 grounded this paragraph on the NORMALISATION:
+% without the simplex, Omega-hat^{-1} would be undefined on an event, and eq:hatT
+% was then written at the normalised contrast.  THE NORMALISATION IS REVERSED and
+% that ground is gone.  The discovery stands; its reason is restated at the
+% object the first stage returns.
+
+% ------------------------------------------------------------------------
+\paragraph{the smoothed sample linearisation.}
+
+This fixes a reading, and the reading is substantive rather than notational.
+$\hat{\mathcal A}_\varphi$ is a \textbf{separately smoothed operator} and \emph{not} the Fr\'echet
+derivative of $\hat T$ in $\varphi$; the hat marks a sample analogue of $\mathcal A_\varphi$, not a
+derivative of $\hat T$. \emph{The bandwidth is what forces the choice}: C3 attaches
+$C_{h_x}$ to $\hat{\mathcal A}_{\mathrm{cond}}$ and $\hat{\mathcal A}^\ast_{\mathrm{cond}}$, and a
+derivative of $\hat T$ would carry no bandwidth of its own. \emph{And the rejected reading is now known
+to be unavailable rather than merely different}: by \cref{prp:hatAprop}(v), $\hat T(\cdot,\theta)$ is
+nowhere Fr\'echet differentiable on $\mathcal V$, so ``the derivative of $\hat T$'' names no operator.
+
+Forward obligation, DISCHARGED at \cref{def:hatAcon} and \cref{prp:hatAprop}, with one negative
+answer. This definition names a construction; it does not perform one. Step~6 was to exhibit
+$\hat{\mathcal A}_\varphi$ explicitly, in particular the smoothed indicator and the two kernel
+estimates, and to verify the two conditions then maintained for the object exhibited.
+\eqref{eq:hatAcon} exhibits it; A7 is verified in the amended form
+\eqref{eq:a7amend} by \cref{prp:stopfeas}; and \emph{the tangential cone condition A6 is not verified
+but refuted} (\cref{prp:tccfails}), which is why the block below carries it as retired.
+Recorded in \cref{rem:obligations} as obligation (O4).
+
+% ------------------------------------------------------------------------
+\paragraph{A6 (RETIRED: tangential cone condition), moved entire.}
+
+\begin{assumption}[A6: RETIRED, tangential cone condition for the \emph{random} operator]\label{ass:tcc}
+\textbf{\sout{RETIRED.}} This assumption is not maintained, it is not available for use, and no
+result in this programme takes it as a hypothesis. It read: \emph{there exist
+$\eta_{\mathrm{TCC}}<\tfrac12$, not depending on $n$, and a ball
+% ARCHAEOLOGY.  It was maintained through round 9.
+$\mathcal V_n\subset\mathcal V$ around $\vdagger$ containing the Landweber--Fridman path, such that, with
+$\hat{\mathcal A}_{\tilde\varphi}$ the smoothed sample linearisation of \cref{def:hatA},}
+\[
+P\Big(\big\|\hat T(\varphi,\theta)-\hat T(\tilde\varphi,\theta)-\hat{\mathcal A}_{\tilde\varphi}(\varphi-\tilde\varphi)\big\|_{L^2(\Pi)}
+\;\le\;\eta_{\mathrm{TCC}}\,\big\|\hat T(\varphi,\theta)-\hat T(\tilde\varphi,\theta)\big\|_{L^2(\Pi)}
+\ \ \forall\,\varphi,\tilde\varphi\in\mathcal V_n\Big)\;\longrightarrow\;1 .
+\qquad\text{\sout{[retired]}}
+\]
+Why it is retired, and it is not a matter of strength. \Cref{prp:tccfails} proves that the
+displayed event has probability zero, at every $n$, at every $\eta_{\mathrm{TCC}}<1$, at every ball
+of positive $L^{2}(\pi)$-radius, and \textbf{for every bounded operator $\mathcal V\to L^{2}(\Pi)$ put
+in place of $\hat{\mathcal A}_{\tilde\varphi}$}. An assumption whose event is null cannot be maintained
+and cannot be repaired by lowering a constant or shrinking a ball.
+\emph{What it should have said is \cref{def:a6b} (A6b)}, which pairs $\hat{\mathcal A}_\varphi$ with the
+operator it actually differentiates, $\hat T_{h_x}$; A6b is a \emph{property}, on the A2b/A2c model,
+never asserted and consumed by no theorem. \emph{Scope of the refutation, stated because it is
+narrower than the retirement}: \cref{prp:tccfails} is a statement about $L^{2}(\pi)$-balls in
+$\mathcal V$. On the spline sieve $\mathcal S_n$ the spike it uses does not exist, so a cone condition
+\emph{restricted to $\mathcal V_n\cap\mathcal S_n$} is untouched by it, and would still not deliver
+the inherited route, for the independent reason recorded at \cref{rem:tccwhy}\textup{(3)}.
+\emph{Nothing downstream is affected}: \cref{prp:phirate} uses neither A6 nor A6b.
+\end{assumption}
+
+% ------------------------------------------------------------------------
+\paragraph{C2$'$ (smoothness of the residual law).}
+
+Two readings of that display are fixed here, \textbf{no letters are attached to them}, so that
+nothing below can be cited as a sub-clause of C2$'$(i), because without them neither $E[\bar f_k]$ nor
+$\|\bar f_k\|_\infty$ is a well-defined quantity.
+
+First, the version, and why each $\bar f_k$ is measurable. The density is read at a version that
+is \textbf{jointly Borel} in $(u,x_1,x_2,z,\mathsf w)$ and, at \emph{every} conditioning point rather than
+almost every one, $p_K-1$ times continuously differentiable in $u$, which is what ``continuously
+differentiable in its first argument'' is read to mean above. \emph{The supplier is one Part away and is now
+cited rather than left implicit}: \textup{(P6a)} of \cref{def:pregver} fixes exactly such a version for the
+conditional law of $\Delta Y_\theta-\Delta\varphi$ given $\mathcal F_{XZW}=\sigma(X_1,X_2,\Delta Z,W)$, for
+every $\omega$, at $(\theta,\varphi)=(0,0)$ that law \emph{is} the one this clause states, and every other
+is a translate of it by the shift identity of \textup{(P6)}, and the Doob--Dynkin lemma transports an
+$\mathcal F_{XZW}$-measurable function of $\omega$ to
+a Borel function of the conditioning \emph{value}, which is the argument $\bar f_k$ carries.
+Those two supply the version \textbf{one variable at a time}, and the declaration above is a
+\textbf{joint} one, so a third step is named rather than elided. \textup{(P6a)} gives joint measurability
+in $(\omega,u)$; Doob--Dynkin runs at each \emph{fixed} $u$ and returns, for that $u$, a Borel function of
+the conditioning value; neither, nor the two together, is joint Borel measurability in
+$(u,x_1,x_2,z,\mathsf w)$. \emph{What delivers it is the rationals-plus-continuity step this paragraph
+already performs below for the envelope}: at every conditioning point the map $u\mapsto\partial^{k}_uf$ is
+continuous, and a
+function that is Borel in one argument at each fixed value of the other and continuous in the other at each
+fixed value of the first is jointly Borel, the Carath\'eodory criterion, reached here by taking $u$ along
+the rationals and passing to the limit, which is the same device \cref{def:crossfit}\textup{(c$'$.1)}
+runs for \eqref{eq:prodmeas} and the proof of \cref{prp:frechet} runs for $G_\varphi$.
+\emph{Nothing that consumes this clause is affected}: every site reads $\bar f_k$ or
+$\|\bar f_k\|_\infty$, and the sentences below build both from the version fixed above at each separate
+conditioning point. \emph{The shortfall was in the \textbf{declaration} and not in the consumption}, and it is
+repaired here because a declaration a reader cannot derive from its own stated suppliers is a gap
+wherever it sits. \emph{It is also
+the version the corpus already runs}: the Carath\'eodory argument opening the proof of \cref{prp:frechet}
+establishes joint measurability of $G_\varphi$ and of its first two $u$-derivatives $G'_\varphi$ and
+$G''_\varphi$, which \emph{are} $\partial_u^{k}f$ at $k=0$ and $k=1$, from measurability in $\omega$ and
+continuity in $u$, and says there that it is used silently below. \emph{Extending it to $k\le p_K-1$ is the same argument and no more}: each $\partial_u^{k}f$ is the
+pointwise limit of the difference quotients of $\partial_u^{k-1}f$ in $u$ taken along the reciprocals of the
+positive integers, and a pointwise limit of countably many jointly Borel functions is jointly Borel, the
+device \cref{def:crossfit}\textup{(c$'$.1)} uses for $\partial_u\hat\ell^{(-k)}$. \emph{Then the envelope is a
+countable supremum}: continuity in $u$ makes $\sup_{u\in\IR}=\sup_{u\in\IQ}$ at every conditioning point, so
+each $\bar f_k$ is Borel as a map into $[0,+\infty]$, $E[\bar f_k]$ is well defined in $[0,+\infty]$, and the
+display above is the requirement that it be finite. \emph{Without this the display is an expectation of a
+function not known to be measurable}, the ground on which \cref{lem:reprsmooth} Step~3 refuses the same
+elision, and the same species as the defect repaired at A4(iii).
+
+Second, the outer norm is an \textbf{essential} supremum, and the inner one is genuine.
+$\|\bar f_k\|_\infty:=\operatorname{ess\,sup}\bar f_k$ under the law of $(X_1,X_2,\Delta Z,W)$, the supremum
+in $u$ inside $\bar f_k$ remaining a genuine supremum, \emph{the same split
+\cref{def:crossfit}\textup{(c$'$.2)} settles for \eqref{eq:supnormconv}, and settled the same way and for the
+same reason}. \emph{The essential reading is what every consumer needs and is the weaker of the two}: in the
+proof of \cref{prp:frechet} at Steps~3--5, in that of \cref{prp:compact}, in that of \cref{lem:adjfubini} and
+at \cref{lem:aerr} Step~4,
+$\|\bar f_0\|_\infty$ and $\|\bar f_1\|_\infty$ appear only on the right of an inequality \emph{inside} an
+expectation or a conditional expectation, so an almost-sure bound is exact there and a sure bound would be
+surplus strength. \emph{One thing does \textbf{not} carry over from \eqref{eq:supnormconv}}: there the outer
+essential supremum needed a measurability argument of its own because the object inside it was random; here
+$\bar f_k$ is a \emph{deterministic} function and $\|\bar f_k\|_\infty$ is a number, so no measurability
+question arises for the outer norm and none is settled. What had to be settled was only which of the two
+readings it is.
+
+% ------------------------------------------------------------------------
+\paragraph{C3 (kernel and boundary adjustment).}
+
+\emph{The normalisation $\int\Theta_1=1$ is printed rather than left inside the words ``of order
+$p_K$''}: it is consumed at \cref{lem:intker}(i), (iii) and (iv).
+% ARCHAEOLOGY.  Rounds 1--11 left it implicit.
+
+\medskip
+\noindent
+\emph{At $I=\IR$ clause (ii) \textbf{is} clause (i)}, so the interior kernel is $\Theta_1$ and there is
+no second convention. \emph{At a point near the \textbf{right} endpoint of a compact interval no
+separate clause and no reflection convention are needed}: the realised interval $I$ is then truncated
+on the right rather than the left, $\Theta_I$ is the member of the family that interval indexes, and
+\eqref{eq:truncmom} holds at it by hypothesis. \emph{The reflection is a
+\textbf{theorem} rather than a convention} --- $\Theta_{-I}(\varsigma)=\Theta_I(-\varsigma)$,
+\cref{lem:bdryfam}(f) --- \emph{and, being a theorem, it is not needed}: the interval already records
+which side is truncated. \emph{The case a scalar index could not express, and which the old
+\cref{lem:intker}(iv) excluded by hypothesis, is now covered by the same clause}: both endpoints close,
+i.e.\ $I$ bounded on both sides.
+% ARCHAEOLOGY.  Through dispatch 25 this paragraph read "At s_0 = 1 clause (ii) IS
+% clause (i)" and then stated the reflection AS A CONVENTION, with the reflected
+% kernel supported in [-c_C, c_C s_0].  Both halves are superseded by the interval
+% indexing of dispatch 26; the reflection survives as lem:bdryfam(f), proved rather
+% than declared, and the both-endpoints-close case, which no value of a SCALAR s_0
+% could name, is now inside the family.
+
+% ------------------------------------------------------------------------
+\paragraph{C4$'$ (residual truncation), moved entire.}
+
+\begin{assumption}[C4$'$: Residual truncation]\label{ass:app4}
+Let $\ell_n$ be a real sequence that is either bounded or diverges slowly to $\infty$ with $n$. The
+marginal density $f_{\Delta U}$ exists, is continuous, and is strictly positive on $[-\ell_n,\ell_n]$
+for every $n$; set $\kappa_n:=\inf_{|u|\le\ell_n}f_{\Delta U}(u)$, so that $\kappa_n>0$. If $\ell_n$ is
+bounded then $\inf_n\kappa_n>0$.
+\end{assumption}
+
+% ------------------------------------------------------------------------
+\clearpage
+
+\paragraph{Discussion.}
+A0 and A1 are the sampling and exogeneity primitives; A1 is the draft's own conditional-exogeneity primitive and is
+the weaker of the two candidate exogeneity conditions, since it permits the instrument to be assigned on
+characteristics that also enter $\Delta Z$. A1b(iii) rules out a second structural function generating
+the same conditional law of the residual given $(W,\Delta Z)$; A1b(iv) is what identifies
+$\theta_\dagger$, and it involves no source condition and no debiasing weight; A1c is the linearisation
+of A1b(iii) and governs the local behaviour of the regularised inverse. B1 is a set of conditions on
+objects the analyst \emph{chooses}, not on the data-generating process, with the exception of
+B1(iii)--(iv), which restrict how coarse an index family may be used. \emph{B1(vi) is \textbf{retired} and is
+not part of that set}: it was an identification restriction, it is not a condition of this estimator, and it
+is not available as a hypothesis, see the struck clause and the reason recorded with it. A2 is the
+Severini--Tripathi condition and is the binding
+assumption for $\sqrt n$ \emph{through this moment function}: in the linear model its necessity for
+$\sqrt n$-estimability is known \citep{severini2006}, but in the present nonlinear problem necessity
+remains conjectural, and two claims must be kept apart, necessity for this moment, and necessity for
+$\sqrt n$-estimability by \emph{some} estimator. A2$'$ adds what is needed for the second-order term to
+be a finite number. A3 is retired, and it never ruled out ``a design in which the
+debiased moment has no local information about $\theta_\dagger$''. By \cref{lem:momzero}\textup{(iv)} the debiasing
+% ARCHAEOLOGY.  A3 was described here through dispatch 12 in those terms, which was
+% an overstatement of what it could rule out.
+term contributes nothing to the $\theta$-Jacobian at all, $E[\psi(\theta,\zeta_\star)]$ is affine with
+gradient $-E[\Delta Z\Delta Z']$, so \emph{all} of the moment's information about $\theta_\dagger$
+comes from restriction (B), which is what \cref{lem:shiftinv} and \cref{rem:R1} said in words from Step~1
+onward and what A1b(iv) prices. \emph{The debiasing term buys orthogonality in $\varphi$, not information
+about $\theta$}, and \eqref{eq:sigsplit} shows it is paid for in variance. A4 rules out a design in which
+the instrument is degenerate on part of the support of the controls.
+% THE THREE NUMBERS IN THE NEXT SENTENCE ARE THE TWO-CATEGORY READING OF THE
+% APPLICATION AND ARE LEFT AS THEY STAND IN DISPATCH 25.  The plan's Sec.5
+% replaces the binary trigger by a four-category one, at which point 689/300,
+% varrho ~ 0.303 and the 18%/9% figures are computed for a design the paper no
+% longer runs, and the correct replacement is the realised min_l hat-varrho_l and
+% lambda_min(hat-Omega) named in the sentence after them.  THEY ARE NOT AMENDED
+% HERE because the new split is an EMPIRICAL quantity this dispatch does not
+% have -- inventing it would be worse than leaving a number a later phase
+% replaces -- and because the arithmetic as printed is correct for the design it
+% describes.  Flagged for Phase 9.
+The application's $689/300$ split is not itself a difficulty: at $\varrho\approx0.303$ the
+factor $\varrho(1-\varrho)\approx0.211$ costs $0.25/0.211\approx1.18$ relative to a balanced design, 
+about $18\%$ in variance and about $9\%$ in standard error. A4(i) binds only if some
+$\varrho_l$ approaches $0$
+somewhere on the support of $\Delta Z$, which is a question about the conditional propensity and
+not about the marginal split. \emph{At $\mathsf L\ge3$ that sentence is the one to read twice, because
+the marginal split can look comfortable while a single cell is thin}: the binding quantity is
+$\min_{0\le l\le\mathsf L-1}\varrho_l(\Delta Z)$ and, through \eqref{eq:omegainv}, one thin cell alone
+sends $\|\Omega^{-1}\|$ to infinity whatever the others do. \emph{The realised
+$\min_l\hat\varrho_l$ and $\lambda_{\min}(\hat\Omega)$ are therefore reportable diagnostics and not
+optional ones}, and a design whose thinnest cell will not support a conditional multinomial fit against
+$d_Z$ controls should be coarsened by merging cells rather than pushed through, but \emph{merging is not free,
+and its cost runs in the direction opposite to the one a reader expects}. Since
+$\mathcal V_{CI}(W)\subseteq\mathcal V_{CI}(g(W))$ for any coarsening $g$, identification at the
+merged instrument \emph{implies} identification at the full one: merging therefore \textbf{adopts the
+stronger} of the two hypotheses, and it forfeits the localisation the separated cells were carrying.
+Both are to be stated whenever a design is coarsened, and neither is a formality. N1 is a \emph{property} of a debiasing weight, not a normalisation built
+into it: it can always be arranged by re-anchoring, at no cost to $\partial_uL$ or to $E[\psi]$, and
+\cref{prp:orthog}(iii) shows that it is \emph{necessary and sufficient} for exact orthogonality in the
+propensity. Stating it as a property rather than as a construction is what leaves that equivalence with
+content. \emph{At $\mathsf L\ge3$ the count is the thing to carry away, because a construction can
+satisfy it at two cells and fail it at four without any display changing}: N1 is
+$p(\mathsf L-1)$ scalar conditions and the re-anchoring that arranges it is $p(\mathsf L-1)$
+conditional expectations, computed slice by slice, so centring \emph{one contraction} of the
+$\mathsf L-1$ columns discharges N1 at $\mathsf L=2$ and leaves $p(\mathsf L-2)$ of it undischarged
+above, at a cost of $r_n$ before the $\sqrt n$ scaling and $n^{1/2-\alpha}$ after it
+(\cref{cor:centarity}). \emph{The realised
+$\max_{j,l}\big\|E\big[\hat L^{(-k)}_{jl}\mid\Delta Z\big]\big\|_{L^{2}(P)}$, the largest of the
+$p(\mathsf L-1)$ entrywise centring residuals of the fitted weight --- the object \textup{(O2)} writes
+$E[\hat L-L_\star\mid\Delta Z]$, read entry by entry and estimated by a regression on $\Delta Z$ ---
+is therefore a reportable diagnostic too}, on exactly the footing of the $\min_l\hat\varrho_l$ and
+$\lambda_{\min}(\hat\Omega)$ named just above: all three are quantities a design either produces or
+does not, and none of them is visible in a $\mathsf L=2$ rehearsal of the same estimator. A5 collects what the regularised first step must deliver; clauses (i)--(iii) are
+discharged, not assumed, by \cref{prp:phirate}, and clause (iii) is the paper's real feasibility
+frontier. \emph{Clauses (vi) and (vi$'$) are not discharged}: they are unproven inputs, and from Step~6
+onward they are consumed on \emph{both} routes, (vi) by \cref{lem:balance}(iii) on the balancing
+route, (vi$'$) by \cref{lem:pathcont} on the rate route, which needs the Sobolev bound at every stage
+and not only at the final iterate.
+\emph{A7 is the condition under which a discrepancy-principle stopping rule is a theorem rather than a
+heuristic when the noise sits in the operator, and it is now the only one}: A6 is retired, having been
+refuted for the operator it named (\cref{prp:tccfails}), and the stopping theorem
+\cref{prp:phirate} runs on A7 in the amended form \eqref{eq:a7amend} together with the
+stage-adaptive schedule the estimator computes, with \emph{no} cone condition anywhere. A8 fixes the
+sieve window and, with it, the basis; from Step~6 onward its \emph{basis clause} and its \emph{upper
+end} are consumed by the $\varphi$-step as well as by the balancing solve, through
+\cref{lem:srctransfer}(iii) and \cref{lem:unifop}(3d), \emph{but its lower end is not}, and
+\cref{prp:phirate} cites A8 by clause for that reason; (P-c) is the rate route's own lower end. C1--C5 are
+regularity conditions for uniform consistency of the kernel components, carried over from the draft's
+appendix and restated for the panel operator.
+
+% A1b(ii) JOINED THIS CATEGORY 2026-08-05 and is recorded here rather than in the
+% list below, which is scoped to Part VI.  Its only route into a result was
+% lem:nusigma(ii), whose only consumer was the corollary withdrawn at
+% rem:a1cwithdrawn.  Withdrawing a result orphans whatever entered only through
+% it, and the consumer analysis has to be re-run when one is withdrawn -- it was
+% not, and this clause is what that omission left behind.
+\paragraph{Two clauses outside Part VI in the same position: A1b(ii) and A1c.}
+Both are, as of the withdrawal recorded at \cref{rem:a1cwithdrawn}, clauses no theorem rests on;
+both are maintained and printed; and neither is retired. They are collected here because the withdrawal
+that orphaned them is recorded in the \emph{results} file while every comparable status note in this
+programme sits in the assumption block, so a reader checking the block alone would not meet either.
+\begin{itemize}
+\item[--] \textbf{A1b(ii)} (measure separability) reached results only through
+\cref{lem:nusigma}\textup{(ii)}, and that clause's only consumer was the withdrawn corollary. It is
+\emph{not} retired, it is a substantive and checkable restriction on the joint law of $(X_1,X_2)$, and
+it is the natural hypothesis of any future primitive for A1c, but nothing in the present programme
+consumes it. \Cref{lem:nusigma}\textup{(ii)} carries the same note at its own site.
+\item[--] \textbf{A1c} (the linearisation of A1b(iii), governing the local behaviour of the regularised
+inverse) \emph{is a hypothesis of no result in this paper}, and its non-declaration occurrences are
+\emph{mentions} and not consumptions --- the lists pairing it with A2, A$2'$ and H1 as statements
+posed at $\mathcal A_{\mathrm{cond}}$, of which there are \textbf{three} and not two; the Discussion
+sentence naming what it is; \cref{rem:a1cwithdrawn}, which withdraws its primitive;
+\cref{rem:spacesread}, which names it as the completeness condition alongside the singular system;
+and the closing line of \cref{prp:compact}'s proof, which records that the $e_j$ span a proper
+subspace ``unless A1c holds''. \emph{No claim of exhaustiveness is
+made, and that is deliberate}: the draft this sentence replaces counted three and the count is at
+least six. It is \emph{not}
+retired, and the distinction is the same one the five Part~VI clauses turn on: A1c is available as a
+hypothesis and is a real restriction, it simply has no consumer. \emph{What it lacks is a primitive}:
+\cref{rem:a1cwithdrawn} withdraws the only one offered, because that route's hypothesis set is empty in
+this model, and records that A1b(iii) is therefore assumed and not derived. That is the status
+note, and this is where a reader of the assumption block will look for it.
+\end{itemize}
+% A1c ADDED TO THIS REGISTER 2026-08-10 (Phase 6a), AND THE HEADING WAS RETYPED WITH
+% IT.  The paragraph read "A clause outside Part VI in the same position: A1b(ii)" --
+% singular -- so appending a second clause without moving the heading would have left
+% a count contradicting its own list, which is the defect class this block has been
+% bitten by four times.  The remedy for A1c already existed at rem:a1cwithdrawn; what
+% did not exist was any pointer to it from the assumption block, and the block's own
+% stated model (A5(v), and the five Part VI clauses) is that a maintained clause with
+% no theorem behind it gets a printed status note WHERE THE CLAUSES ARE.
+
+\paragraph{Five clauses of Part VI that no theorem rests on, and the status of each.}
+These five are collected here because a maintained clause with no theorem behind it is exactly what a
+reader cannot check by grepping, and because the block already does this for A5(v)
+(\cref{rem:rootnscope}\textup{(4)}), that is the model, and the treatment below is uniform with
+it. \emph{None of the five is retired, and the distinction matters}: this block has \textbf{five}
+retirements resting on three grounds, A3 and A$2'$(ii) because they are \emph{proved}, A6 \textbf{and
+A1d} because they are \emph{false}, B1(vi) because it is \emph{about a different estimator}, and none of
+the five below meets any
+of the three.
+% COUNT CORRECTED 2026-08-26: "four retirements" -> FIVE.  A1d has carried a printed
+% "RETIRED, 2026-08-05" banner in the assumption block since that date -- it is
+% unsatisfiable in this model, Wtilde being conditionally centred given Delta Z, so
+% the completeness condition fails at Lambda == 1 at every law A1 admits -- and this
+% census never acquired it.  A1d sits on A6's ground, FALSE, not on A3's, PROVED, so
+% the number of GROUNDS is unchanged at three.  The omission is the standing defect
+% species here (a closure claim short by one), and it is the reason a reader checking
+% A1d's standing against the block's own registers found it in none of them. Unconsumed is not retired, and only a retired clause is unavailable as a hypothesis. What each
+of the five is instead:
+\begin{itemize}
+\item[--] \textbf{C1(i)} has exactly one consumer in the corpus, Step~2 of \cref{lem:aerr}, where it supplies
+the $p_K$ derivatives of the two products $E[\breve g_{u,t}\mid X_j=\cdot]f_{X_j}$, \emph{the breve
+marks the \textbf{infeasible} version of a hatted object, the one built at the true $\varrho$ rather
+than at $\hat\varrho$; it is declared at \cref{lem:opnoise} Step~1, which is where the two stems that
+carry it are defined, and this is its first occurrence in compiled order}, behind that step's
+$O(h_x^{p_K})$ $x$-smoothing bias. \emph{That consumer is itself consumed by nothing}, \cref{lem:aerr}
+opens ``Consumers: none'' and is retained for the two reasons its reading~\textup{(iv)} gives, so C1(i) is
+a hypothesis of one lemma and, transitively, of no theorem. It is kept because that lemma's proof needs it.
+\emph{\Cref{prp:phirate} does \textbf{not} consume C1(i)}.
+% ARCHAEOLOGY.  A comment in this file asserted that it did, through dispatch 17.
+\item[--] \textbf{C4$'$.} $\ell_n$ and $\kappa_n$ occur nowhere in this project outside C4$'$ itself, and no
+object anywhere in these files is truncated to $[-\ell_n,\ell_n]$. The clause prices a residual truncation
+the estimator does not perform. \emph{It is inert}: no bound stated anywhere degrades if it is deleted. It is
+nevertheless not retired, because \emph{inert} and \emph{unavailable} are different registers, a truncated
+variant of the residual direction would need exactly this clause, and \cref{def:a6b} is carried in this block
+on the same footing, being ``never asserted and consumed by no theorem''.
+\item[--] \textbf{C5$'$(ii).} No hypothesis list consumes it, \emph{and that statement is true only from
+this dispatch}: \cref{lem:aerr}, \cref{prp:phirate} and \cref{rem:rootnhyp}\textup{(3)} block-cited C5$'$ and
+therefore carried this clause, on the register rule stated with the retirements above, and all three now cite
+C5$'$(i). \Cref{lem:aerr} reading~\textup{(i)} shows that the one operator-error bound stated at this pair of
+bandwidths needs only $(nh_xh_u)^{-1}\ln n\to0$, which is what the clause now states.
+\emph{What it does do is fix the lower end of the admissible $h_x$ window}, and two printed computations turn
+on that end: \cref{rem:tccwhy}'s third reading,
+which collects C5$'$(ii) with A8, \eqref{eq:entropysieve}, (P-c) and \cref{lem:unifop} Step~4 and concludes
+that $h_xL_x$ is free in both directions, and \cref{lem:scaleinv}'s cap inflation, which reads $\bar m_n$
+across the $h_x$ window that C5$'$(ii) and (P-g) leave. Both are computed at the strengthened form of the
+clause and at $s=3$, where \eqref{eq:hxwindow} holds with room, so both stand. So C5$'$(ii) is consumed
+\emph{arithmetically} and not as a hypothesis, and the two readings must be kept apart: an auditor grepping
+hypothesis lists will find nothing, and deleting the clause would nonetheless leave two displays without a
+lower limit. \emph{And a lower bound stated more strongly than any proof needs is \textbf{not} free here},
+which is the correction \eqref{eq:hxwindow} records: it must intersect the upper bound (P-g) imports, and the
+strengthened form and (P-g) have no common solution at any $s\le\tfrac12+18\alpha/(8-3\alpha)$, 
+a band that is non-empty at every $\alpha\in(\tfrac14,\approx0.359)$, and \eqref{eq:frontier} forces
+$\alpha>\tfrac14$.
+% BOTH NUMBERS RECOMPUTED WITH (P-g)'s h_u.  The threshold's alpha-term scales by
+% 9/8, so 16 -> 18.  The BAND is the set of s clearing eq:lxwindow and failing
+% eq:hxwindow, non-empty iff 9 alpha/(8(1 - 2 alpha)) < 1/2 + 18 alpha/(8 - 3 alpha),
+% whose root moves from ~0.3494 to ~0.35914; both are printed rounded DOWN, as the
+% old number was, so that "non-empty at every alpha in the interval" stays true.
+\item[--] \textbf{C5$'$(iii)} is a \emph{cross-reference} and not a restriction. It repeats A4(iii) and
+\eqref{eq:frontier}, and every result that needs the propensity rate cites those two directly. Nothing cites
+C5$'$(iii) and nothing should; it is here so that the smoothing-parameter block can be read on its own.
+\item[--] \textbf{C5$'$(iv)} is a \emph{statement of scope} about the estimator, not a restriction on
+$P$. It is
+discharged by construction, \cref{def:hatTexp} and \cref{def:hatAcon} introduce $h_u$ and $h_x$ and no
+bandwidth in $t$, in $\Delta Z$ or in $W$, so there is nothing for a proof to cite it for.
+\end{itemize}
+% RENAMED 2026-08-26, AND THE RENAME IS THE CHEAPER SIDE OF A COLLISION.  These two
+% items read "C5'(iii) is a POINTER and not a restriction" and "C5'(iv) is a SCOPE
+% DECLARATION about the estimator".  POINTER and DECLARATION are both TECHNICAL
+% TERMS of the assumption block's register paragraph, where they mean, respectively,
+% a locating citation inside a definition and a citation of a declarative half; here
+% they meant a clause that restates another clause and a clause that describes the
+% estimator rather than P.  TWO WORDS, FOUR MEANINGS.  The register pair is cited at
+% roughly nine sites and is the load-bearing one, so THIS pair was renamed:
+% "cross-reference" and "statement of scope".  Three sites moved -- these two and
+% lem:aerr's statement in results_supp.tex, which reproduced both words.  DO NOT
+% REVERT: "pointer" and "declaration" are reserved to the register paragraph.
+Why a status sentence and not a retirement, applied to all five alike. A retirement is a claim that the
+clause is unavailable as a hypothesis, and for C1(i) and C5$'$(ii) that claim would be false, the first is a
+live hypothesis of \cref{lem:aerr} and the second is what puts the lower end on the $h_x$ window the two
+printed computations above read. Retiring the remaining three alone would file clauses of one species under two
+registers and leave a reader inferring the difference. The uniform remedy is the one A5(v) already
+carries: state the standing, in one place, in the printed text.
+
+\paragraph{The smoothness budget, in one place.}
+Four smoothness parameters appear above and they do not compete for the same budget once H1 is imposed:
+\begin{center}
+% Wrapping columns, not `llll'.  At natural width this table runs 232pt past the
+% text block; every cell below is prose or a display, so it wraps rather than
+% needing a smaller body font alone.
+\footnotesize
+\begin{tabular}{@{}p{0.23\textwidth}p{0.29\textwidth}p{0.10\textwidth}p{0.28\textwidth}@{}}
+\toprule
+Condition & In terms of $(s,a,r)$ & Route & Source \\
+\midrule
+Mild ill-posedness\textsuperscript{\dag} & $s>a+\tfrac12$ & both & plan \S2.6 scope \\
+$\mu_{\text{\textup{H1}}}>\tfrac12$\textsuperscript{\dag} & $s>a$ & both & implied by the line above, with room \\
+Sieve window non-empty & $s>1$ (splines); $s>\tfrac32$ (polynomials) & \emph{balancing only} & A8 \\
+Sieve conditioning ($L_x\ll n^{1/2}$) &, & both & A8 \\
+Propensity frontier & $\dfrac{2\mu}{2\mu+1}\cdot\dfrac{r}{2r+d_Z}>\dfrac14$ & both & A5(iii) \\
+Kernel bias & $u\mapsto\mathcal M(u,t)$ in $C^{p_K}$ uniformly in $t$, $p_K=8$ & both & C2$'$(ii) \\
+Representer & source index $\mu''>\tfrac32$ for $\ell^\Pi_\star$, independent of $\mu$ & both & A2c, \cref{lem:reprsmooth} \\
+\emph{Linearisation remainder} & $\mu>\tfrac56$ \emph{strict}, at C5$'$(i) as amended & \emph{rate only} & (P-f), \cref{rem:h6bandwidth} \\
+\emph{Sieve entropy} & $L_x\ln n=o\big(n\hat\delta_n^{2}\big)$ & \emph{rate only} & (P-d), \eqref{eq:entropysieve} \\
+\emph{$x$-smoothing bias} & $\mathsf R\,h_x^{s-1/2}=O\big(h_u\hat\delta_n\big)$ (an \emph{upper} end for $h_x$; the $h_u$ is what Step~4 charges in operator norm) & \emph{rate only} & (P-g), \cref{lem:unifop} Step 4 \\
+\emph{Sobolev stability, stagewise} & $P\big(\max_{k\le\bar k}\|\hat\varphi^{(k)}-\vdagger\|_{H^{s}}\le\mathsf R\big)\to1$ & \emph{both} & A5(vi$'$) \\
+\midrule
+\emph{$L_x$ window, rate route} & $s>\dfrac{9\alpha}{8(1-2\alpha)}$ & \emph{rate only} & (P-c)$\,\wedge\,$(P-d), \eqref{eq:lxwindow} \\
+\emph{$L_x$ window, both routes at once} & $s>\dfrac{1}{2(1-2\alpha)}$ & \emph{both, jointly} & A8 lower end $\wedge$ (P-d) \\
+\midrule
+\emph{Kernel order vs.\ Sobolev order} & $p_K\ge s-\tfrac12$, i.e.\ $s\le\tfrac{17}{2}$ at $p_K=8$; against \eqref{eq:lxwindow} this restricts $\alpha<\tfrac{68}{145}$, i.e.\ $9r<68\,d_Z$ & \emph{rate only} & \cref{lem:unifop} Step 4, gates (P-g), (N1) \\
+\emph{Source index, now primitive} & $\mu>\tfrac56$ at (P-a.3), \textbf{not} derived from $s/(2a)$ & \emph{rate only} & (P-a.3), \cref{rem:pasrc} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent\textsuperscript{\dag}These two lines carry $\mu_{\text{\textup{H1}}}=s/(2a)$, H1's index at
+the \textbf{population} operator $\mathcal A_{\mathrm{cond}}$ on all of $\mathcal V$ at $\theta_\dagger$, 
+\textbf{not} the primitive $\mu$ of (P-a.3), which is what every other $\mu$ in this table and in
+\eqref{eq:frontier} means. They are \emph{interpretations} and transfer to the primitive index only under
+the commutativity proviso \cref{rem:pasrc}\textup{(4)} states and declines. \cref{rem:pasrc}\textup{(5)}
+carries the binding reading.
+
+\noindent The table is read at the \textbf{stacked} operator, and that is what makes it exact at every
+$\mathsf L$ rather than merely safe. $a$ is the exponent H1 assumes for $\mathcal A_{\mathrm{cond}}$ on
+the whole three-factor range space, so at $\mathsf L\ge3$ the $a$ in the two daggered lines is already the
+right object and \emph{no line of this table needs re-deriving}; what that operator is, and what it is
+not, is the Discussion paragraph \emph{H1}. Those two lines are also the only ones that condition on
+$a$ at all. Every other row restricts some combination of $s$, $\mu$, $\mu''$, $L_x$, $h_x$, $p_K$,
+$\alpha$ and $r$, and none of them $a$; and $\mu$ has been
+\emph{primitive} at (P-a.3) since the identity was struck, so \eqref{eq:frontier}, \eqref{eq:muhalf}
+and the $\mu>\tfrac56$ line do not move with $a$ in either direction, and the last row names $s/(2a)$ only
+to deny that $\mu$ is derived from it. \emph{The operative content of this table is therefore free of
+$\mathsf L$}, and the flagship configuration $(\mu,s,a,\alpha)=(2,3,\tfrac34,0.32)$ below is a statement
+about four numbers that does not care how many contrasts produced $a=\tfrac34$.
+\emph{There is one reading a reader can be misled by}, and naming it is the whole of what
+$\mathsf L\ge3$ changes here: someone who imports an exponent measured on a \emph{single} contrast, $a_l$
+for cell $l$ against the base, and reads $s>a+\tfrac12$ and $s>a$ at that $a_l$, is reading them
+\emph{conservatively}, under per-contrast polynomial decay the stacked exponent is
+$\min_la_l\le a_l$, and both lines weakly relax as $a$ falls. \emph{That is a statement about the reading
+and not about the table}; it is conditional on per-contrast exponents existing at all, which H1 does not
+assume; and it says nothing about a \emph{merged} binary design, whose operator is a \emph{sum} of
+contrast operators and none of them. The subsumption argument below inherits exactly this and nothing
+more: it turns on $a\le\tfrac34$, which a smaller $a$ makes weakly easier to meet, and it already runs
+under the proviso \cref{rem:pasrc}\textup{(4)} declines.
+
+\noindent Two readings of the table are needed rather than one. \emph{The ``Route'' column is not decoration:} by
+\cref{lem:balance} the first-order bias is controlled by \emph{either} A5(ii)+A5(iv) \emph{or}
+A8+\eqref{eq:nuhat}+A5(vi), not by both, so the $s>1$ line is charged on the balancing route only. On the
+rate route the $s$ budget faces the first two lines, the frontier, the representer condition and
+\emph{the last two rows of the table}, and \emph{nothing from A8's lower end}, which is why
+\cref{prp:phirate} cites A8 by clause, taking its basis and its upper end and \emph{not} its lower end.
+The upper end of A8, which is the conditioning constraint on the
+sieve solve, is charged on both routes and carries no $s$ requirement. The trade-off between
+$\mu$ and $r$ in the frontier should be displayed rather than hidden: at
+$(\mu,d_Z)=(1,3)$ the frontier reads $r>4.5$, at $(1,5)$ it reads $r>7.5$, and at $(2,3)$ it reads
+$r>2.5$.
+
+The representer line is the one that changed at Step 4, and the change is a discharge rather than a
+budget. Through round 8 it read ``source index $\mu''$ for $\ell^\Pi_\star$'' and pointed at
+A2$'$(i), a \emph{primitive}, with no route to it. It now points at A2c and at
+\cref{lem:reprsmooth}: the index is pinned at $\mu''>\tfrac32$, which is the one-dimensional
+$C^{1}$-embedding threshold and not a free choice, and the line records a \emph{sufficient condition}
+rather than an assumption. It still competes for no part of the $s$ budget, because $\mu''$ indexes
+smoothness of $\ell^\Pi_\star$ in the residual and $s$ indexes smoothness of $\vdagger$ in $x$.
+
+The four lines added at Step 6 should be read as one addition and three bookkeeping entries.
+\emph{The addition is $\mu>\tfrac56$}, and it \emph{subsumes} the $\mu_{\text{\textup{H1}}}>\tfrac12$ line,
+which is therefore now slack rather than binding: under H1 and the scope condition $s>a+\tfrac12$ one has
+$\mu_{\text{\textup{H1}}}>\tfrac12+\tfrac1{4a}$, so $\mu>\tfrac56$ is \emph{implied} whenever
+$a\le\tfrac34$, \emph{under the interpolation proviso of \cref{rem:pasrc}\textup{(4)}, without which the
+computed $\mu_{\text{\textup{H1}}}$ is not the $\mu$ of \eqref{eq:muhalf}}; see the dagger note above, and is a
+genuine extra restriction otherwise. \emph{It is strict}, and the strictness is not decoration: at the
+\emph{boundary} configuration $(\mu,d_Z,r)=(1,3,4.5)$ the underlying condition (P-f) holds in powers of
+$n$ with no margin and \emph{fails} once the logarithms A7's amended threshold introduces are counted
+, see \cref{rem:h6bandwidth}, clauses (1) and (5). \emph{The three bookkeeping entries} are the
+sieve-entropy line (which replaces the stronger Sobolev-entropy condition \eqref{eq:entropy}, not
+consumed by any result), the $x$-smoothing line (which is the block's \emph{only} upper bound on $h_x$
+and is currently carried as a proposition hypothesis rather than as a clause of C5$'$), and the
+stagewise Sobolev line (which is A5(vi$'$), an input and not a discharge). \emph{None of those four
+competes with $s$ against the frontier}; they compete with $\mu$, with $L_x$ and with $h_x$
+respectively.
+
+Two further lines \textbf{do} compete with $s$. (P-c) and (P-d) are the two ends of one window for
+$L_x$, and reading
+% ARCHAEOLOGY.  Through round 10 the text asserted that "the s budget is unchanged";
+% it is not.  The two lines were added in the dispatch-8 pass.
+them together at $h_u\asymp\hat\delta_n^{1/p_K}$ gives $n^{9\alpha/(8s)}\ll L_x=o(n^{1-2\alpha}/\ln n)$,
+which is non-empty if and only if \eqref{eq:lxwindow}, $s>9\alpha/\big(8(1-2\alpha)\big)$. That is
+$s>\tfrac{27}{16}=1.6875$ at $\alpha=\tfrac38$ and $s>1$ at $\alpha=0.32$: satisfiable, but at
+$\alpha=\tfrac38$ it consumes most of the available $L_x$ margin, the admissible window there being
+only $\big(n^{0.2411},\,n^{0.25}/\ln n\big)$. \emph{And if A8's \textbf{lower} end is carried as well
+, which it must be by any configuration on which both the rate route and the balancing route are to
+be available, the requirement is instead $s>\big(2(1-2\alpha)\big)^{-1}$, i.e.\ $s>2$ at
+$\alpha=\tfrac38$}: at $\alpha<\tfrac49$ the two thresholds differ by
+$(4-9\alpha)/\big(8(1-2\alpha)\big)>0$ and A8's is strictly the larger.
+\emph{The practical consequence, and it is the reason the line is recorded rather than absorbed}: the
+boundary configuration $(1,3,4.5)$ was priced at $s>1.75$ in earlier rounds, which clears
+\eqref{eq:lxwindow} and does \emph{not} clear A8 in full. It is therefore not an admissible design for
+a paper that keeps both routes open, independently of the fact that it already fails (P-f) by
+$(\ln n)^{1/3}$. The frontier-clearing configuration $(\mu,s,a,\alpha)=(2,3,\tfrac34,0.32)$ clears
+every line in this table. \emph{Read that configuration as \textbf{four} numbers and not as three plus a
+derivation}: $\mu=2$ is (P-a.3)'s primitive index, assumed at the compression of the realised operator at
+$\theta_\circ$, while $(s,a)=(3,\tfrac34)$ fix the scale and the population decay at $\theta_\dagger$; that
+$s/(2a)=2$ \emph{coincides} with the assumed $\mu$ is a property of the numbers chosen and is not an
+identity this block can invoke, the bridge being the proviso \cref{rem:pasrc}\textup{(4)} declines. \emph{The
+coincidence is deliberate and is worth keeping}, a configuration on which the two indices agree is the
+one a reader will find least surprising, but it is not what makes the configuration admissible.
+\emph{Mechanised at \texttt{scripts/symbolic/specs/phirate-sieve-joint-window.yaml}.}
+
+Two lines were added in round 12, and the second changes how the whole table is read.
+% CORRECTED 2026-08-05.  This sentence read "so it binds at no configuration this
+% block contemplates", which rem:phirhyp(2) refutes in the same corpus with an
+% admissible witness.  Both statements were compiled.  The cap is not slack.
+\emph{The first is a budget line that binds}: $p_K\ge s-\tfrac12$, which \cref{lem:unifop}
+Step~4's Taylor expansion consumes and which no earlier round stated. At $p_K=8$ it caps
+$s\le\tfrac{17}{2}$, and \emph{against \eqref{eq:lxwindow}'s floor that cap empties the hypothesis set
+at every $\alpha\ge\tfrac{68}{145}$}, as \cref{rem:phirhyp}\textup{(2)} works out with an admissible
+witness; it is a condition,
+it gates (P-g) and (N1), and it was previously supplied by an appeal to
+$H^{s}\hookrightarrow C^{0,s-1/2}$ that is \textbf{vacuous} for every $s>\tfrac32$ and hence at every
+admissible configuration. The rate $\mathsf Rh_x^{s-1/2}$ survives; its justification did not.
+
+The second is that $\mu$ is no longer a function of $(s,a)$ on the rate route. (P-a.3) states the
+source condition \textbf{spectrally}, at the compression \eqref{eq:compress}, with $\mu$ and
+$\mathsf R_\ast$ primitive; the identity $\mu=s/(2a)$ is \emph{struck} from \cref{prp:phirate}'s
+hypothesis line and re-appears in \cref{rem:pasrc}(4) as an interpretation under an explicitly stated
+interpolation proviso. Three consequences for reading the table. (i) The frontier line and the
+$\mu>\tfrac56$ line are now conditions on a \emph{primitive} $\mu$, so they no longer translate
+automatically into conditions on $s$, the entry ``$\mu=s/(2a)$'' has been removed from the frontier
+row. (ii) \emph{H1 is not retired and the rest of the table is unchanged}: H1 still fixes the scale
+$H^{s}$ that \cref{def:srcball}, A5(vi$'$), (P-c) and (P-g) are written in, still supplies A2's Picard
+form, and still delivers the mild-ill-posedness and $\mu>\tfrac12$ lines \emph{as an interpretation}.
+(iii) \emph{The honest reading of the collapse}: H1's matching is a statement about
+$\mathcal A_{\mathrm{cond}}$ on all of $\mathcal V$, while (P-a.3) is about a finite-rank, sieve-compressed
+operator at a random base point, and \cref{lem:srctransfer}(iii.a) records that a link condition
+\emph{cannot} hold on $\mathcal V$. So H1 never delivered $\mu=s/(2a)$ for the operator (P-a) is about,
+and round 12 makes visible an assumption the block was already carrying rather than adding one. See
+\cref{rem:pasrc}, all four clauses.
+
+% ---------------------------------------------------------------------------
+%  THE REMARKS BELOW WERE EXTRACTED FROM ASSUMPTION STATEMENTS ON 2026-08-03,
+%  under the house style (.claude/references/theorem-environment-style.md): an
+%  ASSUMPTION CARRIES CONDITIONS ONLY, and motivation, worked arithmetic, scope
+%  notes and "what this rules out" go after it.  NOTHING WAS DELETED: every
+%  sentence removed from a statement is below, verbatim except for the connectives
+%  and the splice-point punctuation needed to make it stand outside the
+%  enumeration it used to sit in.
+%
+%  THEY ARE AT THE FOOT OF THE FILE ON PURPOSE.  Nothing printed follows them
+%  here, so they renumber nothing in this file; and this file is input after the
+%  four shared files, so they shift no number the article and the supplement have
+%  to agree on.  They are the first numbered environments in this file, which is
+%  why the placement is stated rather than assumed.
+%
+%  ASSUMPTIONS ARE STILL CITED BY TAG.  \begin{assumption} is \newtheorem*, so a
+%  bare \ref{ass:...} prints nothing; the remarks below name C5', A2c, C4' and C3
+%  in prose and never \ref them.
+% ---------------------------------------------------------------------------
+
+\begin{remark}[How the smoothing-parameter block C5$'$ is read]\label{rem:app5read}
+Two clauses, both of which stood inside the statement of C5$'$. Neither is a condition, and the
+block restricts exactly the same bandwidth sequences without them.
+\begin{enumerate}
+\item[(1)] \emph{What clause \textup{(i)}'s display buys.} It is chosen so that $h_u\to0$ and the smoothing
+bias $h_u^{p_K}$ is $\asymp\hat\delta_n$. No lower bound on $h_u$ is required for this component.
+\item[(2)] \emph{Clause \textup{(ii)}'s displayed form, the stronger inherited form, and the window they
+leave.} The displayed form is the one \cref{lem:aerr} consumes. \emph{The stronger inherited form
+$\big(nh_x^{2}h_u^{3}\big)^{-1}\ln n\to0$ remains available, and is what the two arithmetic readings
+recorded elsewhere in this Discussion are computed at, but it is imposed \textbf{only} where it is
+compatible with an upper bound on $h_x$}, because clause (ii) is a \emph{lower} bound and the block
+carries no upper bound at
+all: the upper bound is \cref{prp:phirate}'s hypothesis (P-g),
+$\mathsf R h_x^{s-1/2}=O\big(h_u\hat\delta_n\big)$.
+At the tuning of clause (i), $h_u\asymp\hat\delta_n^{1/p_K}=n^{-\alpha/8}$, $\hat\delta_n=n^{-\alpha}$,
+$p_K=8$, so that $h_u\hat\delta_n=n^{-9\alpha/8}$, the stronger form reads
+$h_x\gg n^{-(1-3\alpha/8)/2}$ and (P-g) reads
+$h_x=O\big(n^{-9\alpha/(8(s-1/2))}\big)$, so the two leave a non-empty window \emph{if and only if}
+\begin{equation}\label{eq:hxwindow}
+s\;>\;\tfrac12\;+\;\frac{18\,\alpha}{8-3\alpha} ,
+\end{equation}
+whereas the form displayed in the statement reads $h_x\gg n^{-(1-\alpha/8)}$ and is compatible with (P-g)
+as soon as
+$s>\tfrac12+9\alpha/(8-\alpha)$, \emph{the \textbf{displayed-form threshold}, which is what the block
+actually imposes}, hence, since $\alpha<\tfrac12$ by A4(ii), at \emph{every} $s>\tfrac{11}{10}$,
+uniformly in $\alpha$.
+% BOTH THRESHOLDS RECOMPUTED WHEN (P-g) ACQUIRED ITS h_u, AND THE ARITHMETIC IS
+% MECHANICAL: (P-g) is R h_x^{s-1/2} = O(h_u hat-delta_n) = O(n^{-9 alpha/8}), so
+% h_x = O(n^{-9 alpha/(8(s-1/2))}) rather than O(n^{-alpha/(s-1/2)}), and BOTH
+% non-emptiness thresholds have their alpha-dependent term multiplied by 9/8:
+% 16 alpha/(8 - 3 alpha) -> 18 alpha/(8 - 3 alpha) and 8 alpha/(8 - alpha) ->
+% 9 alpha/(8 - alpha).  The uniform bound is sup_{alpha < 1/2} of the second,
+% attained in the limit: 9(1/2)/(8 - 1/2) = 4.5/7.5 = 3/5, so 1/2 + 3/5 = 11/10.
+% It was 8(1/2)/7.5 = 8/15 and 1/2 + 8/15 = 31/30.
+And the strengthening costs this block no configuration, which is worth stating because it is not
+obvious from the thresholds alone. \Cref{rem:h6bandwidth}\textup{(5)}'s two running configurations are
+the frontier-clearing $\alpha=0.32$ and the boundary $\alpha=\tfrac38$. At those, the displayed-form
+threshold reads $s>0.8750$ and $s>0.9427$, against $s>0.8333$ and $s>0.8934$ before, 
+and \eqref{eq:hxwindow} reads $s>1.3182$ and $s>1.4818$, against $s>1.2273$ and $s>1.3727$. \emph{The
+frontier-clearing configuration fixes $s=3$ and clears both, at $+2.13$ against the displayed-form
+threshold and $+1.68$ against \eqref{eq:hxwindow}}; the boundary configuration fixes only $(\mu,d_Z,r)$ and
+leaves $s$ free, so it is quoted at the same $s=3$, where it clears at $+2.06$ and $+1.52$, and it still
+clears at $s=2$, the value below which \cref{rem:h6bandwidth}\textup{(5)} records its sieve window as
+empty, with margins $+1.06$ and $+0.52$. So no conclusion of this corpus is lost to the
+correction, and the reader who wants the one-line version has it: at $s=3$ nothing in this block moves.
+\emph{One printed witness did have to move with it}, \cref{rem:rootngroups}\textup{(5)}'s, which is
+chosen to sit \emph{below} \eqref{eq:re2window} and had to be raised to stay \emph{above}
+\eqref{eq:hxwindow}, and it is the only one.
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[What A2c is, and what it is for]\label{rem:reprsourceread}
+One clause, which stood inside the statement of A2c. It is a status note and not a condition, and
+A2c restricts exactly the same representers without it.
+\begin{enumerate}
+\item[(1)] \emph{A2c is NOT MAINTAINED.} It is a hypothesis \cref{lem:reprsmooth} imposes on a representer it
+quantifies over, on the model of A1d, whose sole consumer was the withdrawn corollary of \cref{rem:a1cwithdrawn}. Its only role is to
+\emph{imply} A2$'$(i) at $\ell^\Pi=\ell^\Pi_\star$, where the budget is written
+$\Lambda^{(\mu'')}_\star$, and it is never asserted. \emph{A2c is stated in the same
+$\bar w$-weighted $L^{1}(\Pi_t)$ geometry as A2$'$(i.a)--(i.b) themselves}, which is what
+makes \cref{lem:reprsmooth}(iii) a one-line integration of a slicewise inequality rather than an
+interchange of a supremum with an integral.
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[How \cref{def:hatT}'s two construction conventions are read]\label{rem:hatTread}
+Four clauses, each of which stood inside the definition. None of it is construction:
+\eqref{eq:foldbal}, the truncation, the definition of $\widehat{\widetilde W}_i$ and \eqref{eq:hatT} are
+unchanged by its removal.
+\begin{enumerate}
+\item[(1)] What the balanced split costs, and where it is consumed.
+\emph{This is a construction convention and it costs nothing, the analyst chooses the split, and
+$n_{\mathrm m}=\lceil n/2\rceil$ serves, but it is \textbf{used}}: every variance bound for the
+$\varphi$-step is
+denominated in $n_{\mathrm m}$ and every
+rate in $n$, so the two must be tied. It is consumed at \cref{lem:opnoise} Step~5,
+\cref{prp:stopfeas}(i) and \cref{prp:phirate} Step~1 (N2.3), each of which converts an
+$n_{\mathrm m}^{-1/2}$ or $n_{\mathrm m}/L_x$ into the corresponding statement in $n$. Without
+\eqref{eq:foldbal} no bound for the $\varphi$-step is false, but nothing is stated in $n$ either.
+\item[(2)] Three things follow from the truncation and all three are used. (a) The truncation can only decrease
+$\|\hat\varrho-\varrho\|_{L^{2}}$, because $\varrho(\Delta Z)$ lies in \eqref{eq:trunset}
+almost surely by A4(i) and the metric projection onto a closed convex set containing the target
+is a pointwise contraction; so A4(iii) is preserved. \emph{Convexity is what the argument uses, not
+one-dimensionality}: at $\mathsf L=2$ the set \eqref{eq:trunset} is the interval
+$[\varepsilon_\varrho,1-\varepsilon_\varrho]$ and the sentence is the one earlier rounds printed. (b) With
+$\widehat{\widetilde W}_{i,l}:=\un\{W_i=l\}-\hat\varrho_l(\Delta Z_i)$ as \cref{def:hatT} defines it, we have
+$\varepsilon_\varrho\le\big|\widehat{\widetilde W}_{i,l}\big|\le1$ \emph{surely}, for every $i$ and every
+$l$, because $\un\{W_i=l\}\in\{0,1\}$ while $\hat\varrho_l(\Delta Z_i)\in[\varepsilon_\varrho,1-\varepsilon_\varrho]$:
+the two cases $W_i=l$ and $W_i\ne l$ give $1-\hat\varrho_l\ge\varepsilon_\varrho$ and
+$\hat\varrho_l\ge\varepsilon_\varrho$ respectively. \emph{This is the degeneracy guard}: a row and a
+column of \eqref{eq:gram} vanish only if $\widehat{\widetilde W}_i$ vanishes as a vector, which the bound
+excludes at every $l$. (c) \emph{$\hat\varrho$ is a probability vector}, its implied base cell
+$\hat\varrho_0=1-\sum_{l\ge1}\hat\varrho_l$ being at least $\varepsilon_\varrho$, which is what
+\eqref{eq:trunset} buys over the box $[\varepsilon_\varrho,1-\varepsilon_\varrho]^{\mathsf L-1}$, on
+which the implied base cell may be negative. \emph{Clauses \textup{(a)} and \textup{(b)} would hold on
+the box too}, each using only $\hat\varrho_l\in[\varepsilon_\varrho,1-\varepsilon_\varrho]$; what needs
+\eqref{eq:trunset} is that $\hat\varrho$ estimate a probability vector at all, hence that $\hat\varrho_0$
+and $\hat\Omega$ mean anything and that the reported $\min_l\hat\varrho_l$ be the overlap diagnostic it
+is taken for. \emph{A consequence with no consumer in the estimator as adopted}, recorded because the
+application reports it and a normalised variant would need it:
+$\lambda_{\min}(\hat\Omega_i)\ge\varepsilon_\Omega$ surely, by \eqref{eq:omegafloor} read at
+$\hat\varrho(\Delta Z_i)$. \emph{At $\mathsf L=2$ the box and \eqref{eq:trunset} coincide and clause
+\textup{(c)} says nothing new}, which is why no earlier round had to distinguish them.
+% ARCHAEOLOGY, ROUNDS 2-4.  Round 2 printed a further clause here bounding the
+% NORMALISED contrast, with "at most two entries are nonzero" and the Euclidean
+% bound min{sqrt 2, sqrt(sans-L - 1)} eps_varrho^{-1}.  BOTH WERE WRONG: at
+% W_i = 0 every entry equals -1/hat-varrho_0, so the Euclidean norm there is
+% sqrt(sans-L - 1)/hat-varrho_0, and the round-2 constant understates at
+% sans-L >= 4 -- AT SECTION 6's OWN DESIGN -- by sqrt(3)/sqrt(2).  Round 3
+% corrected it in place.  ROUND 4 REMOVES THE CLAUSE, the estimator no longer
+% carrying the normalised contrast; the corrected arithmetic moves to rem:htread,
+% where the reading now lives.  Round 3 also grounded eq:trunset on the need for
+% Omega-hat^{-1} to exist; THAT GROUND GOES WITH THE NORMALISATION, and clause
+% (c) states the one that survives it.
+\item[(3)] \emph{If only a smaller lower bound $\varepsilon\in(0,\varepsilon_\varrho]$ is known
+to the analyst, truncating at $\varepsilon$ serves equally and every constant below carries
+$\varepsilon$ in place of $\varepsilon_\varrho$}, provided $\varepsilon<1/\mathsf L$, without
+which \eqref{eq:trunset} is empty at $\varepsilon$ and there is nothing to project onto. At
+$\mathsf L=2$ that proviso is $\varepsilon<\tfrac12$ and is implied by
+$\varepsilon\le\varepsilon_\varrho$; at $\mathsf L\ge3$ it is also implied, since A4(i) already puts
+$\varepsilon_\varrho<1/\mathsf L$. It is stated because a reader who reads clause \textup{(3)} alone,
+as a licence to pick any smaller $\varepsilon$, must not read it as a licence to pick a larger one.
+\item[(4)] \eqref{eq:hatT} is the object A7 names.
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[How the kernel block C3 is read]\label{rem:app3read}
+Two clauses, both of which stood inside the statement of C3. Neither is a condition, and the block
+restricts exactly the same kernels without them.
+\begin{enumerate}
+\item[(1)] \emph{What \eqref{eq:rescaled} is for.} $\Theta_{I}$ is the object every bound below C3 is
+stated for, and the object \eqref{eq:intker} integrates.
+\item[(2)] \emph{How clause \textup{(ii)} is read.} The family is indexed by the \textbf{realised
+truncation interval} $I\in\mathfrak I$ --- the interval, in scaled coordinates, over which the kernel
+is actually integrated at the evaluation point. That index encodes both \emph{how far} the nearer
+endpoint is, in bandwidths, and \emph{which} endpoint it is; the scalar boundary index of earlier
+rounds, and the reflection convention it needed, are absorbed into it. Support is no longer a
+condition: what \textup{(ii)} requires is the \textbf{envelope} $\bar\Theta$, and the defining property
+\eqref{eq:truncmom} is a \textbf{truncated} moment condition, as before.
+\end{enumerate}
+% ARCHAEOLOGY.  Clause (2) read, through dispatch 25, "The boundary index is a
+% distance in BANDWIDTHS".  That was the round-12 repair of a genuinely ambiguous
+% scalar; the interval index makes the distance one of two things the index
+% carries, and the reflection the other.  Clause (1) is unchanged but for the
+% symbol.
+\end{remark}
+
+% ===========================================================================
+%  rem:htread IS NEW IN DISPATCH 25, ROUND 4, AND IT IS THE ONLY NUMBERED
+%  ENVIRONMENT THE DISPATCH ADDS.  This file is position 5 of 8, so every
+%  theorem-like number in results_s3_supp.tex, results_supp.tex and proofs.tex
+%  ADVANCES BY ONE.  Nothing breaks -- every reference is a \cref -- but printed
+%  numbers move, and the file's own contract requires that to be said.
+%
+%  WHY IT EXISTS.  Rounds 2 and 3 put Omega^{-1} into the estimator, on the
+%  operator and then on both sides.  THE AUTHOR REVERSED THAT; the estimator
+%  carries the raw contrast.  What the two rounds established about what the
+%  contrast MEANS is worth keeping, and this is where it is kept.  IT IS AN
+%  INTERPRETATION, NOT A METRIC, and the remark says so in its first sentence so
+%  that no later reader mistakes it for a specification.
+%
+%  IT ALSO CARRIES THE CORRECTION OF THE DISPATCH'S WORST ERROR.  Round 3 stated
+%  the moments of the normalised contrast backwards at both ends: it computed the
+%  BOUNDED quadratic form and cited it where the DIVERGENT squared norm belonged,
+%  and it asserted non-integrability where the true failure is undefinedness.
+%  Both are corrected here, with the arithmetic printed, because a remark that
+%  exists to explain an IPW object must not repeat the standard IPW error.
+% ===========================================================================
+
+\begin{remark}[The inverse-probability reading of the contrast, and why the estimator does not use it]\label{rem:htread}
+This remark is interpretation. Nothing in the assumption block, in $\psi$ or in the operator is
+stated at the object it introduces, and the paper does \textbf{not} estimate at it.
+\begin{enumerate}
+\item[(1)] \emph{The normalised contrast.} Wherever every cell is non-null, so that $\Omega(\Delta Z)$
+is invertible, set
+\begin{equation}\label{eq:omeganorm}
+\widetilde W^{\Omega}\;:=\;\Omega(\Delta Z)^{-1}\widetilde W ,
+\qquad\text{so that}\qquad
+\widetilde W^{\Omega}_l\;=\;\frac{\un\{W=l\}}{\varrho_l(\Delta Z)}-\frac{\un\{W=0\}}{\varrho_0(\Delta Z)} ,
+\end{equation}
+the second equality being \eqref{eq:omegainv}. \emph{This is the vector of inverse-probability
+{\upshape(}Horvitz--Thompson{\upshape)} contrasts of each cell against the base}, and at $\mathsf L=2$ it
+is $(W-\varrho)/\{\varrho(1-\varrho)\}=\un\{W=1\}/\varrho-\un\{W=0\}/(1-\varrho)$, the identity a binary
+design writes down without comment.
+\item[(2)] \emph{What it is for.} By \eqref{eq:omegaprefac} the raw contrast has conditional forward
+residual $\Omega(z)d(u\mid z)$, a matrix mixture of the cell-versus-base differences, while
+$E[\widetilde W^{\Omega}\un\{\Delta U\le u\}\mid\Delta Z=z]=d(u\mid z)$ is the difference itself. \emph{So
+\eqref{eq:omeganorm} is the reading under which the restriction is most directly legible}, and the
+quadratic form $\widetilde W'\Omega^{-1}\widetilde W=(1-\varrho_W)/\varrho_W$ is base-cell-free where the
+componentwise weighting $\operatorname{diag}(\varrho_l(1-\varrho_l))^{-1}$ is not.
+\item[(3)] Two moments, and they are different objects. Conditionally on $\Delta Z$, at a point
+where every cell is non-null,
+\[
+E\big[\widetilde W'\Omega^{-1}\widetilde W\,\big|\,\Delta Z\big]=\operatorname{tr}(\Omega^{-1}\Omega)=\mathsf L-1 ,
+\qquad
+E\big[\big\|\Omega^{-1}\widetilde W\big\|^{2}\,\big|\,\Delta Z\big]=\operatorname{tr}\big(\Omega^{-1}\big)
+=\sum_{l\ge1}\frac1{\varrho_l}+\frac{\mathsf L-1}{\varrho_0} .
+\]
+The first is bounded by $\mathsf L-1$ whatever the cell probabilities are; the second diverges as
+any cell probability tends to zero. At $\mathsf L=4$ with a thin non-base cell at $0.05$ and the other
+three at $0.31\overline{6}$ they are $3.00$ and $35.79$, against $\varepsilon_\varrho^{-1}=20$: \emph{the
+second is not controlled by the level bound}, exceeding it here by a factor of $1.79$. Under A4(i) it is
+at most $2(\mathsf L-1)/\varepsilon_\varrho$, so the \emph{worst case} is a factor $2(\mathsf L-1)$, 
+$6$ at $\mathsf L=4$, which the configuration above does not attain.
+% ROUND-5 CORRECTION.  Round 4 wrote "exceeding it by a factor of order sans-L"
+% and attached that to THIS example, whose realised ratio is 35.79/20 = 1.79.
+% The order-sans-L statement is the WORST CASE, 2(sans-L - 1), reached only as a
+% cell probability approaches the floor with the others spread differently.
+% Attaching a worst case to a worked example as though it were the example's
+% value is the species of over-claim this block polices elsewhere.
+\item[(4)] \emph{And the first absolute moment is free of $\varrho$ altogether}:
+$E[|\widetilde W^{\Omega}_l|\mid\Delta Z]=\varrho_l/\varrho_l+\varrho_0/\varrho_0=2$, exactly, at every
+$l$ and every cell configuration. This is the standard inverse-probability pattern, the mean is
+untouched and the variance diverges, and it is the reason (3)'s two displays must not be substituted
+for one another.
+\item[(5)] Where $\Omega$ is singular, $\widetilde W^{\Omega}$ is \textbf{undefined}, not
+non-integrable. $\Omega$ has no inverse there and \eqref{eq:omeganorm} names nothing; where it is
+defined, clause (4) shows it is integrable with a $\varrho$-free bound. The two failures are
+different and the corpus must not conflate them.
+\item[(6)] Why the estimator does not use any of this. Normalising would replace
+$\mathcal A_{\mathrm{cond}}$ by a different operator, and A2's range condition, A$2'$, A1c and H1, 
+the last through $\sigma_j(\mathcal A_{\mathrm{cond}})\asymp j^{-a}$, are all stated at
+$\mathcal A_{\mathrm{cond}}$, with $\mu_{\text{\textup{H1}}}=s/(2a)$ and the smoothness-budget table's
+two daggered lines downstream of $a$, \eqref{eq:frontier} is \emph{not}, its $\mu$ being primitive
+at \textup{(P-a.3)}.
+% REPAIRED 2026-08-09.  This clause printed TWO errors, both struck elsewhere in
+% this file and both surviving here: a bare "mu = s/(2a)", against rem:pasrc(5)'s
+% binding reading and against the striking of that identity recorded at :1927,
+% :1931 and :1938; and the claim that eq:frontier is downstream of `a', which
+% round 12 struck -- eq:frontier's mu is PRIMITIVE at (P-a.3) and does not move
+% with `a' in either direction.
+%
+% The identical pair was found and repaired at :964 by the budget-table re-read,
+% which correctly declined to touch THIS site because rem:htread is Phase-1
+% settled text and outside the re-read's declared scope.  It named the two-token
+% repair instead of making it silently, and the orchestrator applied it here.
+% That is the scope discipline working as intended: the twin was declared, not
+% quietly fixed and not quietly left.
+\emph{A4's note (c) already records
+that the two operators must not be assumed to share range or kernel}, and the mechanism is the same one
+that defeats the weight-class argument in the paragraph \emph{A4}: $\mathcal W$'s $z$-sections are
+real-analytic while $\Omega$ is only H\"older. \emph{The gain would be interpretational and the price is
+the whole smoothness-and-ill-posedness budget}, so the paper keeps the raw contrast and keeps the reading
+here.
+\item[(7)] \emph{What is \textbf{not} claimed.} $\Omega^{-1}$ is not the efficient weight: under A1 the
+conditional variance of the indicator moment is $\Omega(z)F(u\mid z)$, so the efficient weight differs
+from $\Omega^{-1}$ by a scalar depending on both $u$ and $z$, and no efficiency calculation for this
+estimator exists in this corpus. \emph{Nor is any conditioning improvement claimed}: $\Omega^{-1}$
+up-weights thin cells, which is where the application's own design sits.
+\end{enumerate}
+\end{remark}

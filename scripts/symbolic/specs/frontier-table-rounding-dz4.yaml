@@ -1,0 +1,30 @@
+claim_id: frontier-table-rounding-dz4
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (the reason the mu = 2 row is printed as exact fractions: 'Round 2 wrote \"r > 3.33\" against a true threshold of 10/3 = 3.333..., ROUNDING A STRICT LOWER BOUND DOWN: every r in (3.33, 10/3] passes the printed test and fails the frontier'); the current table is at assumptions.tex and no longer prints 3.33"
+# CLAIM.  The withdrawn rendering "3.33" was the 2-decimal rendering of the exact
+# threshold 10/3.  This spec pins the rounding error exactly: 10/3 - 3.33 =
+# 1/300 = 0.00333... > 0, i.e. the PRINTED bound was BELOW the true bound.
+#
+# ROUND-12 STATUS: THE SUBJECT IS STILL LIVE, BUT ITS ROLE HAS CHANGED, AND THE
+# SOURCE LINE IS CORRECTED ACCORDINGLY.  Through round 11 this spec priced a value
+# the table PRINTED.  The mu = 2 row now prints exact fractions, so 3.33 no longer
+# appears as a table entry.  It does still appear in the paper, at
+# assumptions.tex, as the QUOTED HISTORICAL DEFECT that the exact-fraction
+# convention exists to prevent -- and the paper cites the direction of this very
+# residual as its reason ("every r in (3.33, 10/3] passes the printed test and fails
+# the frontier").  So this spec is now the mechanised form of the paper's own
+# justification, not a check on a rendering.  It remains a POSITIVE assertion (exit
+# 0) of the residual that frontier-table-mu2-dz4-printed.yaml exhibits as a
+# by-design MISMATCH; the pair is the record of the defect and of its size.
+#
+# THE DIRECTION IS THE SUBSTANCE.  +1/300 means the rounding was UNSAFE.  The
+# d_Z = 5 entry's residual is -1/300, i.e. conservative
+# (frontier-table-rounding-dz5.yaml).  Two opposite conventions in one row is the
+# finding; the sign of each residual is how it was found.
+#
+# PREDICTED: MATCH.  Falsification: claimed_end "-1/300" leaves residual 2/300;
+# claimed_end "1/30" leaves residual -9/300.  Both MISMATCH, so neither the
+# magnitude nor the sign can be perturbed silently.
+variables: {}
+start: "10/3 - 333/100"
+operation: none
+claimed_end: "1/300"

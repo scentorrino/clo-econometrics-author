@@ -1,0 +1,19 @@
+claim_id: p4b-prefactor
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (convention (P4b)); consumed at proofs.tex (lem:quantu Step 2)"
+# CLAIM (P4b), the sibling display of eq:kernelcompare at the SMALLER
+# conditioning field sigma(Delta Z), where P(W = 1 | Delta Z) = varrho by
+# definition:
+#     E[Wtilde g(W) | Delta Z] = varrho(1-varrho) g_1 + (1-varrho)(0-varrho) g_0
+#                              = varrho(1-varrho) {g_1 - g_0}.
+# The comparison with kernelcompare-tower is the whole content of the C-2
+# correction: the SAME expansion with p_X in place of varrho does NOT collapse.
+variables:
+  rho:
+    domain: real
+  g1:
+    domain: real
+  g0:
+    domain: real
+start: "rho*(1-rho)*g1 + (1-rho)*(0-rho)*g0"
+operation: none
+claimed_end: "rho*(1-rho)*(g1-g0)"

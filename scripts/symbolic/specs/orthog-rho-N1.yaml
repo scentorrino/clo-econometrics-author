@@ -1,0 +1,31 @@
+claim_id: orthog-rho-N1
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:orthog Part (iii))"
+# CLAIM.  Perturbing the propensity, varrho -> varrho + t3*r, enters only through
+# Wtilde = W - varrho(dZ), so
+#   psi(t3) - psi(0) = -t3 * r(dZ) * Lstar( dU, dZ ),
+# again EXACTLY linear in t3.  Taking expectations and conditioning on Delta Z,
+#   E[psi(t3)] - E[psi(0)] = -t3 * E[ r(dZ) * E[Lstar | dZ] ],
+# which vanishes for every bounded r and every t3 IF AND ONLY IF
+# E[Lstar | Delta Z] = 0 a.s. -- which is N1.  This spec checks the algebraic
+# step; the "only if" uses r = sign(E[Lstar | dZ]) and is in the proof.
+# THE POINT.  N1 is not cosmetic: it is EXACTLY what demotes the propensity from
+# a sqrt(n) nuisance to a product-rate one.  Without it the derivative above is
+# a nonzero linear functional of r.
+variables:
+  dZ:
+    domain: real
+  dU:
+    domain: real
+  W:
+    domain: real
+  rho:
+    domain: real
+  r:
+    domain: real
+  Lstar:
+    domain: real
+  t3:
+    domain: real
+start: "(dZ*dU + (W - rho - t3*r)*Lstar) - (dZ*dU + (W - rho)*Lstar)"
+operation: expand
+claimed_end: "-t3*r*Lstar"

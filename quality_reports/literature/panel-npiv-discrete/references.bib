@@ -1,0 +1,3113 @@
+% =============================================================================
+% references.bib — panel-npiv-discrete
+% ROUND 2 + CLEANUP PASS + G-1 CLOSURE (2026-07-28). Stage 1 accepted at 86/100.
+% BUILD-FIX PASS 2026-07-29: +2 approximation-theory entries (Area M) that
+%   `quality_reports/theory/panel-npiv-discrete/proofs.tex` cites and that were
+%   absent from ALL THREE bibliographies — the two undefined keys broke the build.
+%
+% BUILD-FIX PASS 2 (2026-07-29, after the first end-to-end compile this project
+%   has ever had): +2 entries, `feve2014` (Area G) and `bierens1990` (Area H).
+%   Both were cited by `paper/sections/theorems/` and both made biber report
+%   "I didn't find a database entry". THESE TWO ARE THE FIRST DELIBERATE
+%   DUPLICATES OF instrumental.bib IN THIS FILE — see the count note below.
+%
+% BUILD-FIX PASS 3 (2026-07-30): +10 entries. Closes the EIGHT remaining
+%   unresolved cited keys measured off biber's own log in the 221-page build,
+%   adds the author's companion paper CFF (2025) so it can be cited, and splits
+%   one key that was carrying two different Dunker papers. See the PASS 3 block
+%   at the foot of this file for per-entry provenance. THIS PASS IS WHERE THE
+%   "DO NOT DUPLICATE instrumental.bib" POLICY WAS ABANDONED ON PURPOSE: six
+%   more keys are now deliberate duplicates, because a key that lives only in
+%   Dropbox renders `[?]`.
+%
+% PASS 4 (2026-07-31): +2 entries. NOT a build fix and NOT a literature search —
+%   an OMISSION REPAIR. Both are the AUTHOR'S OWN WORK and both were absent:
+%   `florens2012` = Florens, Racine & Centorrino (2018), NPIV derivative
+%   estimation, cited THREE TIMES and load-bearing in the companion paper CFF
+%   (2025); and `beyhum2024` = Beyhum, Centorrino, Florens & Van Keilegom (2023).
+%   Before this pass a grep for "racine" over this file returned ZERO hits, and the
+%   single "beyhum" string in it was a COMMENT naming a DIFFERENT paper
+%   (`beyhumlapentalavergne2025`), not an entry. Both were COPIED from the author's
+%   own bibliographies rather than composed from recall; see the PASS 4 block at the
+%   foot of this file for per-entry provenance.
+%   NEITHER NEW KEY IS CITED IN ANY .tex YET, and that is expected — this pass
+%   makes the citation possible and the writer will make it when the introduction
+%   is drafted. NO .tex WAS EDITED IN THIS PASS. Do not expect CHECK 5 to
+%   reference either key.
+%
+% PASS 5 (2026-07-31): +4 entries. AN INTRODUCTION-ENABLING PASS. The four keys
+%   are the ones the drafted introduction needs and could not resolve, named by
+%   `positioning.md` rather than guessed from the key strings:
+%     poirier2017          the §5 open-extension sentence — positioning.md §1.4
+%                          calls it "the single most efficient novelty argument
+%                          available"; §4 lists it as lead item 1. The introduction
+%                          currently stands on three legs instead of four, with the
+%                          independence axis omitted entirely.
+%     chen2012b            the "isn't this just a corollary of Chen--Pouzo?"
+%                          pre-emption — positioning.md §3 Competitor 3, §4 table.
+%     florens2006          Competitor 1 (Florens, Johannes & Van Bellegem 2012).
+%     florenslapenta2024   Competitor 2 (Florens & Lapenta 2024).
+%   ALL FOUR WERE FOUND ON DISK AND COPIED. Nothing in this pass was composed from
+%   recall or from a web search: every field of every entry is warranted against a
+%   file on disk, and PASS 5 ADDS NO `% ON-DISK UNVERIFIED` FLAG ANYWHERE — the
+%   first pass since the flag was introduced for which that is true. The web was
+%   used only to ADJUDICATE between disagreeing on-disk copies (twice: `chen2012b`
+%   and the `florens2006` title), never to source a field.
+%   THREE OF THE FOUR KEYS ARE FOSSILS OR NEAR-COLLISION HAZARDS and each is kept
+%   as the author keys it — see the PASS 5 block at the foot. NONE IS CITED IN ANY
+%   .tex YET; the writer owns the citation sites. NO .tex OR .qmd WAS EDITED.
+%
+% ENTRY COUNT: 89 entries (87 before PASS 9) (79 before PASS 7). 63 are NEW; NINETEEN are deliberate
+%   copies of entries in the author's master bibliography
+%   /Users/samuele/Library/CloudStorage/Dropbox/Nonparametric_IV/instrumental.bib
+%   (`feve2014`, `bierens1990`, `conway2000`, `severini2006`,
+%   `centorrinofeveflorens2019`, `florens2012`, and from PASS 5 `chen2012b`,
+%   `florens2006`) or in the sibling project's in-repo
+%   bibliography
+%   /Users/samuele/Documents/github_repo/clo-econometrics-author/quality_reports/
+%   literature/volatility-loc-scale/references.bib
+%   (`dunker2014`, `engl2000`, `hanke1995`, `beyhum2024`, and from PASS 5
+%   `florenslapenta2024`), plus `poirier2017`, whose BASE is that sibling file and
+%   which is then enriched with a `doi` taken from the master's own bdsk-url, plus
+%   `dunker2021`, whose
+%   FIELDS come from instrumental.bib's `dunker2018` entry under a corrected key.
+%   instrumental.bib is OUTSIDE THE REPOSITORY and therefore invisible to the
+%   build. N-21: a key that lives only there passes `/tools validate-bib` and
+%   still renders `[?]`. Copied from the user's own entries so
+%   the files cannot drift; drop the duplicates at the instrumental.bib merge.
+%
+% AREA LETTERS A--L MATCH `annotated_bibliography.md` EXACTLY. Mapping:
+%   A partially linear IV / root-n theta      G panel nonparametrics
+%   B root-n estimability                     H Bierens / ICM / characteristic kernels
+%   C orthogonal moments / balancing          I continuum of moments (CGMM)
+%   D discrete instruments                    J semiparametric efficiency anchors
+%   E weak-identification-robust inference    K linear-NPIV canon
+%   F hedonic application                     L regularisation theory
+%   M spline approximation theory             <- NEW 2026-07-29, THIS FILE ONLY
+%   O operator theory / operator monotonicity <- NEW 2026-07-30, THIS FILE ONLY
+%   Areas K and L are no longer empty here — see the PASS 3 and PASS 4 blocks. Each
+%   PASS 3, PASS 4 and PASS 5 entry is tagged with its area letter rather than being
+%   filed under a new one.
+%
+% SYNC DEBT (2026-07-29, extended 2026-07-30, 2026-07-31 and again at PASS 5 —
+%   deliberate, flagged, not silently fixed): Areas M and O do NOT exist in
+%   `annotated_bibliography.md`, and that file's coverage table still reads
+%   "58 entries / Total 96". It is now stale by TWENTY-TWO keys (2 from pass 1, 2 from
+%   pass 2, 10 from pass 3, 2 from pass 4, 4 from pass 5). Not corrected here
+%   because annotated_bibliography.md is a
+%   critic-cleared Stage-1 artifact (86/100) and every one of these passes was
+%   scoped to bibliography repair. Fold in at its next revision: "+M. Spline
+%   approximation theory | 2", "+O. Operator theory and operator monotonicity | 3",
+%   and the Area K/L rows cease to be zero. PASS 4 ADDS NO NEW AREA LETTER — its
+%   two keys fall in areas that already exist (K for `florens2012`, B for
+%   `beyhum2024`), so only the counts move. NEITHER DOES PASS 5: its four keys fall
+%   in A (`florens2006`, `florenslapenta2024`), B (`chen2012b`) and J
+%   (`poirier2017`), all of which already exist, and all four papers ALREADY HAVE
+%   PROSE ENTRIES in annotated_bibliography.md (A3, A4, and the Competitor entries)
+%   — what was missing was the BibTeX, not the annotation. So for PASS 5 the sync
+%   debt is a COUNT debt only, not a coverage debt.
+%
+% VERIFICATION STANDARD:
+%   "% VERIFIED <date>"  = confirmed against publisher/Crossref/arXiv/catalogue.
+%                          FROM PASS 3 ONWARD THE SOURCE IS NAMED INLINE, and
+%                          whether it was ON DISK or online is stated, because
+%                          those are not the same warrant.
+%   "% UNVERIFIED"       = a bibliographic FIELD could not be confirmed.
+%   "% PIN UNVERIFIED"   = every field is confirmed, but the CITATION PIN used in
+%                          the manuscript (a chapter/theorem number) is not. New
+%                          flag, introduced 2026-07-29 for Area M. Contains the
+%                          substring UNVERIFIED so a grep for it still surfaces.
+%   "% ON-DISK UNVERIFIED" = every field named IS confirmed, but NOT against any
+%                          file on disk — the warrant is Crossref or a catalogue,
+%                          reached online. New flag, introduced 2026-07-30 for the
+%                          four PASS 3 entries that had to be CREATED rather than
+%                          copied. It is a WEAKER warrant than the two-independent-
+%                          on-disk-sources standard used for `feve2014` and
+%                          `centorrinofeveflorens2019`, and the file says so rather
+%                          than letting a bare "VERIFIED" imply parity. Contains
+%                          the substring UNVERIFIED so a grep still surfaces it.
+%                          PASS 4 applies it PER FIELD rather than per entry — see
+%                          `florens2012` (one field) and `beyhum2024` (three).
+%                          PASS 5 USES IT ZERO TIMES. Every field of all four PASS 5
+%                          entries is warranted on disk. Where the web was consulted
+%                          it was to ADJUDICATE a conflict between on-disk copies,
+%                          and the field adopted still comes from a file on disk.
+%
+% ALREADY IN instrumental.bib — annotate, DO NOT duplicate:
+%   robinson1988, ai2003, severini2012,
+%   chenchristensen2015, chenchristensen2013, chenchernozhukovleenewey2014,
+%   santos2011, freyberger2015,
+%   beyhumlapentalavergne2025, fevrier2015,
+%   dhaultfoeuille2011, torgovitsky2015, torgovitsky2017, dunker2018,
+%   loh2022, manski1983, chay2005, masten2016, bierens1982,
+%   babii2017a, carrasco2007, carrasco2007h, lavergne2008,
+%   centorrinoflorens2021, centorrino2017, newey2003, hall2005, darolles2011,
+%   blundell2007, horowitz2011, chenreiss2011.
+%   REMOVED FROM THIS ROLL 2026-07-30 because they are now duplicated below and
+%   the roll had become a false signal: severini2006, conway2000, dunker2014,
+%   hanke1995, engl2000, centorrinofeveflorens2019 (plus feve2014, bierens1990,
+%   removed in pass 2).
+%   REMOVED FROM THIS ROLL AT PASS 5, same reason — all four are now entries below:
+%   chen2012b, florens2006, florenslapenta2024, poirier2017.
+%   REMOVED FROM THIS ROLL AT PASS 6: `chen2012`. It is now an entry at the foot of
+%   this file and MUST NOT be confused with `chen2012b`. They are two different
+%   Chen & Pouzo papers: `chen2012` is Econometrica 80(1), 277--321 (2012),
+%   "Estimation of Nonparametric Conditional Moment Models With Possibly Nonsmooth
+%   Generalized Residuals"; `chen2012b` is Econometrica 83(3), 1013--1079 (2015),
+%   "Sieve Wald and QLR Inferences...". positioning.md §3 Competitor 3 cites the
+%   pair as "Chen & Pouzo (2012, 2015)", so BOTH are wanted; PASS 5 added the 2015
+%   one (it carries the sieve-Riesz-representer / root-n-normality result the
+%   introduction's pre-emption turns on) and PASS 6 closed the pair. NEITHER IS
+%   REPO-ABSENT ANY LONGER; both resolve, and neither renders `[?]`.
+%   NOTHING WAS REMOVED FROM THIS ROLL IN PASS 4: neither `florens2012` nor
+%   `beyhum2024` was ever on it. That is the point of the pass — they were not
+%   recorded as present-elsewhere, they were simply MISSING, in this file and in
+%   the roll alike. `beyhumlapentalavergne2025` stays: it is Beyhum, Lapenta &
+%   Lavergne, a DIFFERENT paper, and its presence on this roll is what made a
+%   grep for "beyhum" look like a hit.
+%   `dunker2018` STAYS in this roll — it is not cited anywhere in this project.
+%   Note, however, that instrumental.bib's `dunker2018` entry carries year 2021
+%   and volume 15: the key name is a fossil, the fields are the 2021 paper. The
+%   sibling in-repo file volatility-loc-scale/references.bib has the SAME KEY with
+%   volume 12 / year 2018, which is wrong. See the `dunker2021` note below.
+%
+% NOT ADDED, DELIBERATELY: `chenreiss2011`.
+%   It appears on the plan, the frontier map, positioning, the annotated
+%   bibliography, the librarian-critic report and three theory memos — and it is
+%   cited in NO .tex file anywhere in the repository (checked 2026-07-30 over
+%   every .tex, not only the theory corpus: zero `\cite`-family occurrences).
+%   Adding it would not break the build; it would be a false signal for the next
+%   reader, who would conclude the key is live. If a proof ever cites it, copy it
+%   from instrumental.bib rather than re-typing it.
+%
+% FOR /tools validate-bib — TWO DUPLICATE PAIRS IN instrumental.bib (not edited here):
+%   (1) chernozhukov2007 / newey2007  — both Chernozhukov, Imbens & Newey.
+%   (2) chenlee2013 / chenchernozhukovleenewey2014 — both Chen, Chernozhukov,
+%       Lee & Newey, Econometrica 82(2), 785--809, 2014.
+%   (3) ADDED 2026-07-30: `dunker2018` (instrumental.bib, and again in
+%       volatility-loc-scale/references.bib) and `dunker2021` (this file) are THE
+%       SAME PAPER under two keys and, across the three files, three different
+%       (volume, year) pairs. Reconcile at the merge; the correct fields are
+%       EJS 15(2), 6151--6190, 2021.
+%   (4) ADDED 2026-07-31: NOT a duplicate pair, but the same class of hazard —
+%       instrumental.bib carries `florens2012` (Florens, Racine & Centorrino 2018,
+%       added below) IMMEDIATELY BESIDE `florens2012a` (Florens & Simoni, J.
+%       Econometrics 172(2), 458--475). Two different papers, one character apart.
+%       `florens2012a` is NOT in this file and is not cited here; do not conflate.
+%   (5) ADDED AT PASS 5 — THE WORST ONE IN THE REPOSITORY, AND IT IS A CROSS-FILE
+%       COLLISION, NOT A DUPLICATE. The key `florens2012` MEANS TWO DIFFERENT PAPERS
+%       IN TWO DIFFERENT IN-REPO .bib FILES:
+%         THIS FILE, `florens2012`  = Florens, Racine & Centorrino (2018),
+%           "Nonparametric Instrumental Variable Derivative Estimation",
+%           J. Nonparametr. Stat. 30(2), 368--391 — matching both Dropbox masters.
+%         volatility-loc-scale/references.bib:69--74, `florens2012` = Florens,
+%           Johannes & Van Bellegem (2012), "Instrumental Regression in Partially
+%           Linear Models", Econometrics Journal 15, 304--324 — which the masters
+%           and THIS FILE key `florens2006`.
+%       So the sibling's `florens2012` is this file's `florens2006`, and this file's
+%       `florens2012` is absent from the sibling entirely. A naive merge of the two
+%       in-repo bibliographies SILENTLY DROPS ONE OF THE TWO PAPERS, whichever loses
+%       the key clash, and biber will not warn — the key resolves, to the wrong work.
+%       NOT FIXED HERE: the sibling file is out of scope for this pass, and renaming
+%       a key in either file breaks live citations in that project. Recorded so the
+%       merge is done by hand. The master's `florens2006` is used here because it is
+%       the key positioning.md and annotated_bibliography.md §A3 both name.
+%   (6) ADDED AT PASS 5: volatility-loc-scale/references.bib:88--92 carries
+%       `chen2012b` WITH THE WRONG JOURNAL, VOLUME AND PAGES — "Annals of
+%       Statistics, volume 43, number 3, pages 1011--1044". The title in that entry
+%       is the Econometrica paper's title verbatim, so it is the same work
+%       misattributed, not a second paper. Adjudicated in full at the entry below.
+%       FIX IT IN THE SIBLING AT THE MERGE; this file carries the master's fields.
+%
+% OPEN — BIBLIOGRAPHY AUTHORITY IS UNDECLARED (recorded 2026-07-29, NOT resolved):
+%   Three files are in play with no declared authority:
+%     (1) instrumental.bib (Dropbox) — named by plan §10.2 as THE paper bibliography;
+%     (2) this file — where every new Stage-1 entry has actually accumulated;
+%     (3) Bibliography_base.bib (repo root) — the template's centralised bib.
+%   A key present in (2) but not (1) still breaks `paper/main.tex`, and a key
+%   absent from whichever file a checker happens to read produces a FALSE
+%   "missing citation" — that has already happened once in this project.
+%   Librarian's view: make (2) authoritative for /tools validate-bib during
+%   Stage 1--2 and merge it into (1) once, at hand-off, because (2) is the only
+%   file whose provenance is recorded per entry. User decision required.
+%   PASS 5 RAISES THE STAKES ON THIS. Hazard (5) above shows the two IN-REPO .bib
+%   files have already collided on a key, and hazard (6) shows one of them carries a
+%   wrong journal for a key this file also uses. The undeclared authority is no
+%   longer a tidiness question.
+%
+%   PASS 3 ADDENDUM — WHICH FILE THE BUILD ACTUALLY READS, measured not assumed.
+%   `scripts/build-theory/build.sh:36,66,73` copies THIS FILE into the build
+%   directory and emits `\addbibresource{references.bib}` (plus
+%   Bibliography_base.bib). So the theory-corpus build resolves against (2) and
+%   these ten entries do remove the ten `[?]`. But the SHARED paper preamble,
+%   `paper/preambles/preamble.tex:122`, still loads Bibliography_base.bib ALONE —
+%   a 2-entry template stub — and `paper/main.tex` does not exist yet. When it is
+%   created it must carry
+%     \addbibresource{../quality_reports/literature/panel-npiv-discrete/references.bib}
+%   or every key in this file will render `[?]` again, silently, at exit code 0.
+%   Not fixable from this file. Flagged for whoever writes `paper/main.tex`.
+%
+%   PASS 4 ADDENDUM. Both PASS 4 keys were checked against Bibliography_base.bib
+%   as well: zero hits for "racine", "beyhum" and "keilegom" in that file, so
+%   neither entry collides with the template stub.
+%
+%   PASS 5 ADDENDUM. All four PASS 5 keys were checked against Bibliography_base.bib
+%   too: zero hits for "poirier", "lapenta", "chen2012" and "florens" in that file,
+%   so none of the four collides with the template stub either.
+% =============================================================================
+
+
+% =============================================================================
+% AREA A — Partially linear IV and root-n estimation of the parametric component
+%   TWO MORE AREA A ENTRIES LIVE IN THE PASS 5 BLOCK AT THE FOOT of this file, and
+%   they are the two named COMPETITORS of this project, not background: `florens2006`
+%   (Florens, Johannes & Van Bellegem 2012 — positioning.md §3 Competitor 1;
+%   annotated_bibliography.md §A3) and `florenslapenta2024` (Florens & Lapenta 2024
+%   — Competitor 2; §A4). They are filed at the foot, with their area letter recorded,
+%   rather than inline here, per the convention set by passes 3 and 4.
+% =============================================================================
+
+@article{chenq2021,
+	author = {Chen, Qihui},
+	journal = {Journal of Econometrics},
+	number = {2},
+	pages = {368--380},
+	title = {Robust and optimal estimation for partially linear instrumental variables models with partial identification},
+	volume = {221},
+	year = {2021}}
+
+@article{aichen2012,
+	author = {Ai, Chunrong and Chen, Xiaohong},
+	journal = {Journal of Econometrics},
+	number = {2},
+	pages = {442--457},
+	title = {The semiparametric efficiency bound for models of sequential moment restrictions containing unknown functions},
+	volume = {170},
+	year = {2012}}
+
+% VERIFIED 2026-07-28 — arXiv page fetched.
+@misc{girardlapenta2026,
+	author = {Girard, Lucas and Lapenta, Elia},
+	howpublished = {arXiv:2604.11393 [econ.EM]},
+	note = {Submitted 13 April 2026},
+	title = {Average Marginal Effects in One-Step Partially Linear Instrumental Regressions},
+	year = {2026}}
+
+% % UNVERIFIED — published title wording: likely "...with endogenous VARIABLES"
+% rather than "...regressors". Volume/pages from the librarian-critic's check.
+@article{listengos1996,
+	author = {Li, Qi and Stengos, Thanasis},
+	journal = {Journal of Econometrics},
+	number = {1--2},
+	pages = {389--397},
+	title = {Semiparametric estimation of partially linear panel data models with endogenous variables},
+	volume = {71},
+	year = {1996}}
+
+
+% =============================================================================
+% AREA B — root-n estimability under ill-posedness and under independence
+%   ONE MORE AREA B ENTRY IS IN THE PASS 5 BLOCK AT THE FOOT: `chen2012b`, Chen &
+%   Pouzo (2015), the framework-level overlap positioning.md §1.5 and §3 Competitor 3
+%   require the introduction to pre-empt.
+% =============================================================================
+
+% Published version of the mimeo already in the bib as `babii2017a`.
+@article{babiiflorens2025,
+	author = {Babii, Andrii and Florens, Jean-Pierre},
+	journal = {Econometric Theory},
+	number = {6},
+	pages = {1284--1321},
+	title = {Is Completeness Necessary? {E}stimation in Nonidentified Linear Models},
+	volume = {41},
+	year = {2025}}
+
+@article{escanciano2022,
+	author = {Escanciano, Juan Carlos},
+	doi = {10.1017/S0266466621000116},
+	journal = {Econometric Theory},
+	number = {2},
+	pages = {301--338},
+	title = {Semiparametric Identification and {F}isher Information},
+	volume = {38},
+	year = {2022}}
+
+% VERIFIED 2026-07-28 — OUP page fetched: vol 88, issue 3, pp 998--1028,
+% print issue July 2026, online 3 December 2025.
+@article{bennett2026jrssb,
+	author = {Bennett, Andrew and Kallus, Nathan and Mao, Xiaojie and Newey, Whitney K. and Syrgkanis, Vasilis and Uehara, Masatoshi},
+	journal = {Journal of the Royal Statistical Society Series B: Statistical Methodology},
+	note = {Published online 3 December 2025; print issue July 2026},
+	number = {3},
+	pages = {998--1028},
+	title = {Inference on strongly identified functionals of weakly identified functions},
+	volume = {88},
+	year = {2026}}
+
+@misc{bennett2023source,
+	author = {Bennett, Andrew and Kallus, Nathan and Mao, Xiaojie and Newey, Whitney K. and Syrgkanis, Vasilis and Uehara, Masatoshi},
+	howpublished = {arXiv:2307.13793 [stat.ML]},
+	note = {Submitted 27 July 2023},
+	title = {Source Condition Double Robust Inference on Functionals of Inverse Problems},
+	year = {2023}}
+
+% Relevant to Assumption A4: if point identification requires the weights to take
+% arbitrarily large values, the parameter is point identified but NOT root-n
+% estimable ("irregularly identified"). Bears on the A2-and-A4 interaction when
+% the propensity varrho(DZ) has limited overlap (689/300 split).
+@article{khantamer2010,
+	author = {Khan, Shakeeb and Tamer, Elie},
+	doi = {10.3982/ECTA7372},
+	journal = {Econometrica},
+	number = {6},
+	pages = {2021--2042},
+	title = {Irregular Identification, Support Conditions, and Inverse Weight Estimation},
+	volume = {78},
+	year = {2010}}
+
+
+% =============================================================================
+% AREA C — Orthogonal moments, cross-fitting, balancing / Riesz representers
+% =============================================================================
+
+@article{chernozhukov2018dml,
+	author = {Chernozhukov, Victor and Chetverikov, Denis and Demirer, Mert and Duflo, Esther and Hansen, Christian and Newey, Whitney and Robins, James},
+	doi = {10.1111/ectj.12097},
+	journal = {The Econometrics Journal},
+	number = {1},
+	pages = {C1--C68},
+	title = {Double/debiased machine learning for treatment and structural parameters},
+	volume = {21},
+	year = {2018}}
+
+@article{chernozhukov2022lr,
+	author = {Chernozhukov, Victor and Escanciano, Juan Carlos and Ichimura, Hidehiko and Newey, Whitney K. and Robins, James M.},
+	doi = {10.3982/ECTA16294},
+	journal = {Econometrica},
+	number = {4},
+	pages = {1501--1535},
+	title = {Locally Robust Semiparametric Estimation},
+	volume = {90},
+	year = {2022}}
+
+@article{chernozhukov2022adml,
+	author = {Chernozhukov, Victor and Newey, Whitney K. and Singh, Rahul},
+	doi = {10.3982/ECTA18515},
+	journal = {Econometrica},
+	number = {3},
+	pages = {967--1027},
+	title = {Automatic Debiased Machine Learning of Causal and Structural Effects},
+	volume = {90},
+	year = {2022}}
+
+@article{chernozhukov2022riesz,
+	author = {Chernozhukov, Victor and Newey, Whitney K. and Singh, Rahul},
+	doi = {10.1093/ectj/utac002},
+	journal = {The Econometrics Journal},
+	number = {3},
+	pages = {576--601},
+	title = {Debiased machine learning of global and local parameters using regularized {R}iesz representers},
+	volume = {25},
+	year = {2022}}
+
+@misc{singh2024krrr,
+	author = {Singh, Rahul},
+	howpublished = {arXiv:2102.11076 [stat.ML]},
+	note = {Submitted 22 February 2021; revised 4 July 2024},
+	title = {Kernel Ridge {R}iesz Representers: Generalization, Mis-specification, and the Counterfactual Effective Dimension},
+	year = {2024}}
+
+@article{atheyimbenswager2018,
+	author = {Athey, Susan and Imbens, Guido W. and Wager, Stefan},
+	doi = {10.1111/rssb.12268},
+	journal = {Journal of the Royal Statistical Society Series B: Statistical Methodology},
+	number = {4},
+	pages = {597--623},
+	title = {Approximate residual balancing: debiased inference of average treatment effects in high dimensions},
+	volume = {80},
+	year = {2018}}
+
+@article{hirshbergwager2021,
+	author = {Hirshberg, David A. and Wager, Stefan},
+	doi = {10.1214/21-AOS2080},
+	journal = {The Annals of Statistics},
+	number = {6},
+	pages = {3206--3227},
+	title = {Augmented minimax linear estimation},
+	volume = {49},
+	year = {2021}}
+
+@article{zubizarreta2015,
+	author = {Zubizarreta, Jos{\'e} R.},
+	doi = {10.1080/01621459.2015.1023805},
+	journal = {Journal of the American Statistical Association},
+	number = {511},
+	pages = {910--922},
+	title = {Stable Weights that Balance Covariates for Estimation With Incomplete Outcome Data},
+	volume = {110},
+	year = {2015}}
+
+% VERIFIED 2026-07-28 — OUP page fetched: vol 88, issue 3, pp 699--723,
+% print issue July 2026, online 24 April 2025.
+@article{brunssmith2026,
+	author = {Bruns-Smith, David and Dukes, Oliver and Feller, Avi and Ogburn, Elizabeth L.},
+	doi = {10.1093/jrsssb/qkaf019},
+	journal = {Journal of the Royal Statistical Society Series B: Statistical Methodology},
+	note = {Published online 24 April 2025; print issue July 2026. With discussion and authors' reply},
+	number = {3},
+	pages = {699--723},
+	title = {Augmented balancing weights as linear regression},
+	volume = {88},
+	year = {2026}}
+
+% VERIFIED 2026-07-28 — arXiv page fetched.
+@misc{bakhitov2026,
+	author = {Bakhitov, Edvard},
+	howpublished = {arXiv:2603.29889 [econ.EM]},
+	note = {Submitted 31 March 2026; revised 2 April 2026},
+	title = {Penalized {GMM} Framework for Inference on Functionals of Nonparametric Instrumental Variable Estimators},
+	year = {2026}}
+
+% % UNVERIFIED — PMLR page range not confirmed.
+@inproceedings{chernozhukov2022rieszznet,
+	author = {Chernozhukov, Victor and Newey, Whitney K. and Quintas-Mart{\'\i}nez, V{\'\i}ctor and Syrgkanis, Vasilis},
+	booktitle = {Proceedings of the 39th International Conference on Machine Learning},
+	series = {Proceedings of Machine Learning Research},
+	title = {{RieszNet} and {ForestRiesz}: Automatic Debiased Machine Learning with Neural Nets and Random Forests},
+	volume = {162},
+	year = {2022}}
+
+@misc{neweyrobins2018,
+	author = {Newey, Whitney K. and Robins, James M.},
+	howpublished = {arXiv:1801.09138 [math.ST]; cemmap working paper CWP41/17},
+	title = {Cross-fitting and fast remainder rates for semiparametric estimation},
+	year = {2018}}
+
+% VERIFIED 2026-07-28 — arXiv page fetched. Round 1 keyed this `zhen2026` and
+% mis-transcribed the first author. First author is Zikai SHEN.
+@misc{shen2026,
+	author = {Shen, Zikai and Kallus, Nathan and Meunier, Dimitri and Zenati, Houssam and Gretton, Arthur and Bibaut, Aur{\'e}lien},
+	howpublished = {arXiv:2604.24660 [stat.ML]},
+	note = {Submitted 27 April 2026; revised 18 May 2026},
+	title = {Nonparametric Instrumental Variable Analysis Without Structural Equations: Debiased Inference on Functionals of Inverse Problems with No Solutions},
+	year = {2026}}
+
+
+% =============================================================================
+% AREA D — Discrete instruments with a continuous endogenous regressor
+% =============================================================================
+
+@article{demonte2024,
+	author = {De Monte, Enrico},
+	journal = {Journal of Econometric Methods},
+	number = {1},
+	pages = {49--66},
+	title = {Nonparametric Instrumental Regression with Two-Way Fixed Effects},
+	volume = {13},
+	year = {2024}}
+
+
+% =============================================================================
+% AREA E — Weak-identification-robust inference (block absent from instrumental.bib)
+% =============================================================================
+
+@article{stockwright2000,
+	author = {Stock, James H. and Wright, Jonathan H.},
+	doi = {10.1111/1468-0262.00151},
+	journal = {Econometrica},
+	number = {5},
+	pages = {1055--1096},
+	title = {{GMM} with Weak Identification},
+	volume = {68},
+	year = {2000}}
+
+@article{kleibergen2005,
+	author = {Kleibergen, Frank},
+	doi = {10.1111/j.1468-0262.2005.00610.x},
+	journal = {Econometrica},
+	number = {4},
+	pages = {1103--1123},
+	title = {Testing Parameters in {GMM} Without Assuming that They Are Identified},
+	volume = {73},
+	year = {2005}}
+
+@article{andrewscheng2012,
+	author = {Andrews, Donald W. K. and Cheng, Xu},
+	doi = {10.3982/ECTA9456},
+	journal = {Econometrica},
+	number = {5},
+	pages = {2153--2211},
+	title = {Estimation and Inference With Weak, Semi-Strong, and Strong Identification},
+	volume = {80},
+	year = {2012}}
+
+@article{andrewsstocksun2019,
+	author = {Andrews, Isaiah and Stock, James H. and Sun, Liyang},
+	journal = {Annual Review of Economics},
+	pages = {727--753},
+	title = {Weak Instruments in Instrumental Variables Regression: Theory and Practice},
+	volume = {11},
+	year = {2019}}
+
+
+% =============================================================================
+% AREA F — Hedonic pollution application
+% =============================================================================
+
+@article{rosen1974,
+	author = {Rosen, Sherwin},
+	journal = {Journal of Political Economy},
+	number = {1},
+	pages = {34--55},
+	title = {Hedonic Prices and Implicit Markets: Product Differentiation in Pure Competition},
+	volume = {82},
+	year = {1974}}
+
+@article{greenstonegallagher2008,
+	author = {Greenstone, Michael and Gallagher, Justin},
+	journal = {The Quarterly Journal of Economics},
+	number = {3},
+	pages = {951--1003},
+	title = {Does Hazardous Waste Matter? {E}vidence from the Housing Market and the Superfund Program},
+	volume = {123},
+	year = {2008}}
+
+@article{bishop2020,
+	author = {Bishop, Kelly C. and Kuminoff, Nicolai V. and Banzhaf, H. Spencer and Boyle, Kevin J. and von Graevenitz, Kathrine and Pope, Jaren C. and Smith, V. Kerry and Timmins, Christopher D.},
+	journal = {Review of Environmental Economics and Policy},
+	number = {2},
+	pages = {260--281},
+	title = {Best Practices for Using Hedonic Property Value Models to Measure Willingness to Pay for Environmental Quality},
+	volume = {14},
+	year = {2020}}
+
+
+% =============================================================================
+% AREA G — Panel nonparametrics and first-differenced integral equations
+% =============================================================================
+
+% VERIFIED 2026-07-29 — TWO INDEPENDENT SOURCES, and they agree on every field.
+%   (1) The user's PDF, read first-party: title page and Elsevier metadata give
+%       "Non parametric analysis of panel data models with endogenous variables",
+%       Frédérique Fève and Jean-Pierre Florens (Toulouse School of Economics),
+%       Journal of Econometrics 181 (2014) 151–164,
+%       doi:10.1016/j.jeconom.2014.03.009.
+%   (2) The user's own instrumental.bib, entry `feve2014` — copied here rather
+%       than re-authored, so the two files cannot drift.
+% Note the title really is "Non parametric" as two words in the published
+% version; it is not a typo and should not be "corrected" to "Nonparametric".
+%
+% WHY IT IS HERE AND NOT ONLY IN instrumental.bib: it is cited five times in
+% `rem-nophifree` and biber reported "I didn't find a database entry" for it in
+% the first end-to-end build of this project (2026-07-29). It is the closest
+% competitor — same first-differenced panel design, same difference-of-densities
+% adjoint structure — and its Prop. 2.2 is the citable precedent for the A1b(iii)
+% gap, since the authors themselves call that assumption "too strong."
+@article{feve2014,
+	author = {F{\`e}ve, Fr{\'e}d{\'e}rique and Florens, Jean-Pierre},
+	doi = {10.1016/j.jeconom.2014.03.009},
+	journal = {Journal of Econometrics},
+	number = {2},
+	pages = {151--164},
+	title = {Non parametric analysis of panel data models with endogenous variables},
+	volume = {181},
+	year = {2014}}
+
+@article{sulu2013,
+	author = {Su, Liangjun and Lu, Xun},
+	journal = {Journal of Econometrics},
+	number = {2},
+	pages = {112--133},
+	title = {Nonparametric dynamic panel data models: Kernel estimation and specification testing},
+	volume = {176},
+	year = {2013}}
+
+@techreport{evdokimov2010,
+	author = {Evdokimov, Kirill},
+	institution = {Department of Economics, Princeton University},
+	title = {Identification and Estimation of a Nonparametric Panel Data Model with Unobserved Heterogeneity},
+	type = {Working paper},
+	year = {2010}}
+
+% % UNVERIFIED — publication status. arXiv number and title confirmed;
+% latest revision December 2024. The only entry still carrying this flag.
+@misc{deaner2025,
+	author = {Deaner, Ben},
+	howpublished = {arXiv:1810.00283 [econ.EM]},
+	title = {Proxy Controls and Panel Data},
+	year = {2025}}
+
+@techreport{chernozhukov2025fs,
+	author = {Chernozhukov, Victor and Deaner, Ben and Gao, Ying and Hausman, Jerry A. and Newey, Whitney K.},
+	institution = {National Bureau of Economic Research},
+	number = {33325},
+	title = {Fisher-{S}chultz Lecture: Linear Estimation of Structural and Causal Effects for Nonseparable Panel Data},
+	type = {NBER Working Paper},
+	year = {2025}}
+
+% VERIFIED 2026-07-28 — arXiv page fetched.
+@misc{baiardi2026,
+	author = {Baiardi, Anna and Clarke, Paul S. and Naghi, Andrea A. and Polselli, Annalivia},
+	howpublished = {arXiv:2603.20464 [econ.EM]},
+	note = {Submitted 20 March 2026},
+	title = {Double Machine Learning for Static Panel Data with Instrumental Variables: New Method and Applications},
+	year = {2026}}
+
+
+% =============================================================================
+% AREA H — Conditional-to-unconditional moment devices:
+%          Bierens, ICM, and characteristic kernels
+%          (bierens1982, lavergne2008 are in instrumental.bib and NOT here —
+%           see the N-21 warning below before relying on that.)
+% =============================================================================
+
+% VERIFIED 2026-07-29 — copied from the user's instrumental.bib (entry
+% `bierens1990`), cross-checked against the Econometric Society listing:
+% Econometrica 58(6), 1443–1458; JSTOR 2938323.
+%
+% N-21, AND WHY THIS ENTRY MOVED. The Area H banner previously recorded
+% bierens1990 as "already in instrumental.bib" and stopped there. That file lives
+% outside the repository (Dropbox/Nonparametric_IV/), so the key resolved for the
+% VALIDATOR and not for the BUILD: the first end-to-end compile of this project
+% (2026-07-29) had biber report "I didn't find a database entry for 'bierens1990'"
+% while the citation sat in `lem-bierens` at two places. This is the exact
+% asymmetry N-21 names — checker authority is not build authority — so the entry
+% is duplicated here deliberately.
+%
+% IT IS THE LOAD-BEARING CITATION FOR THE WHOLE DEVICE. `lem:bierenscore` cites
+% "\citet[proof of Thm.~1]{bierens1990}" for the real-analytic identity-theorem
+% step, and Thm. 1 is what fixes w = exp rather than a general analytic weight —
+% so the citation must be exact, not approximate. bierens1982 and lavergne2008
+% remain repo-absent; add them here too if a proof ever cites them.
+@article{bierens1990,
+	author = {Bierens, Herman J.},
+	journal = {Econometrica},
+	number = {6},
+	pages = {1443--1458},
+	title = {A Consistent Conditional Moment Test of Functional Form},
+	volume = {58},
+	year = {1990}}
+
+@article{bierensploberger1997,
+	author = {Bierens, Herman J. and Ploberger, Werner},
+	journal = {Econometrica},
+	number = {5},
+	pages = {1129--1151},
+	title = {Asymptotic Theory of Integrated Conditional Moment Tests},
+	volume = {65},
+	year = {1997}}
+
+@article{stinchcombewhite1998,
+	author = {Stinchcombe, Maxwell B. and White, Halbert},
+	journal = {Econometric Theory},
+	number = {3},
+	pages = {295--325},
+	title = {Consistent Specification Testing With Nuisance Parameters Present Only Under The Alternative},
+	volume = {14},
+	year = {1998}}
+
+@article{escanciano2006,
+	author = {Escanciano, Juan Carlos},
+	journal = {Econometric Theory},
+	number = {6},
+	pages = {1030--1051},
+	title = {A Consistent Diagnostic Test for Regression Models Using Projections},
+	volume = {22},
+	year = {2006}}
+
+@article{fanli2000,
+	author = {Fan, Yanqin and Li, Qi},
+	journal = {Econometric Theory},
+	number = {6},
+	pages = {1016--1041},
+	title = {Consistent Model Specification Tests: Kernel-Based Tests versus {B}ierens' {ICM} Tests},
+	volume = {16},
+	year = {2000}}
+
+% The choice of unconditional family affects IDENTIFICATION, not only power.
+@article{dominguezlobato2004,
+	author = {Dom{\'\i}nguez, Manuel A. and Lobato, Ignacio N.},
+	doi = {10.1111/j.1468-0262.2004.00545.x},
+	journal = {Econometrica},
+	number = {5},
+	pages = {1601--1615},
+	title = {Consistent Estimation of Models Defined by Conditional Moment Restrictions},
+	volume = {72},
+	year = {2004}}
+
+@article{sriperumbudur2010,
+	author = {Sriperumbudur, Bharath K. and Gretton, Arthur and Fukumizu, Kenji and Sch{\"o}lkopf, Bernhard and Lanckriet, Gert R. G.},
+	journal = {Journal of Machine Learning Research},
+	pages = {1517--1561},
+	title = {Hilbert Space Embeddings and Metrics on Probability Measures},
+	volume = {11},
+	year = {2010}}
+
+@article{gretton2012,
+	author = {Gretton, Arthur and Borgwardt, Karsten M. and Rasch, Malte J. and Sch{\"o}lkopf, Bernhard and Smola, Alexander},
+	journal = {Journal of Machine Learning Research},
+	pages = {723--773},
+	title = {A Kernel Two-Sample Test},
+	volume = {13},
+	year = {2012}}
+
+@article{muandet2017,
+	author = {Muandet, Krikamol and Fukumizu, Kenji and Sriperumbudur, Bharath and Sch{\"o}lkopf, Bernhard},
+	doi = {10.1561/2200000060},
+	journal = {Foundations and Trends in Machine Learning},
+	number = {1--2},
+	pages = {1--141},
+	title = {Kernel Mean Embedding of Distributions: A Review and Beyond},
+	volume = {10},
+	year = {2017}}
+
+% % UNVERIFIED — PMLR page range not confirmed.
+@inproceedings{muandet2020,
+	author = {Muandet, Krikamol and Jitkrittum, Wittawat and K{\"u}bler, Jonas},
+	booktitle = {Proceedings of the 36th Conference on Uncertainty in Artificial Intelligence (UAI)},
+	series = {Proceedings of Machine Learning Research},
+	title = {Kernel Conditional Moment Test via Maximum Moment Restriction},
+	volume = {124},
+	year = {2020}}
+
+% % UNVERIFIED — page range not confirmed.
+@article{zhang2023mmr,
+	author = {Zhang, Rui and Imaizumi, Masaaki and Sch{\"o}lkopf, Bernhard and Muandet, Krikamol},
+	doi = {10.1515/jci-2022-0073},
+	journal = {Journal of Causal Inference},
+	number = {1},
+	title = {Instrumental variable regression via kernel maximum moment loss},
+	volume = {11},
+	year = {2023}}
+
+@inproceedings{dikkala2020,
+	author = {Dikkala, Nishanth and Lewis, Greg and Mackey, Lester and Syrgkanis, Vasilis},
+	booktitle = {Advances in Neural Information Processing Systems},
+	pages = {12248--12262},
+	title = {Minimax Estimation of Conditional Moment Models},
+	volume = {33},
+	year = {2020}}
+
+@inproceedings{singhsahanigretton2019,
+	author = {Singh, Rahul and Sahani, Maneesh and Gretton, Arthur},
+	booktitle = {Advances in Neural Information Processing Systems},
+	pages = {4595--4607},
+	title = {Kernel Instrumental Variable Regression},
+	volume = {32},
+	year = {2019}}
+
+% VERIFIED 2026-07-28 — arXiv page fetched; title, author, date and abstract
+% confirmed. CONCURRENT WORK — re-check for later versions before submission.
+@misc{escanciano2026,
+	author = {Escanciano, Juan Carlos},
+	howpublished = {arXiv:2607.24382 [econ.EM]},
+	note = {Submitted 27 July 2026. Concurrent work},
+	title = {Locally Robust Kernel Specification Tests for Conditional Moment Restrictions},
+	year = {2026}}
+
+@article{fukumizu2004,
+	author = {Fukumizu, Kenji and Bach, Francis R. and Jordan, Michael I.},
+	journal = {Journal of Machine Learning Research},
+	pages = {73--99},
+	title = {Dimensionality Reduction for Supervised Learning with Reproducing Kernel {H}ilbert Spaces},
+	volume = {5},
+	year = {2004}}
+
+@article{fukumizu2009,
+	author = {Fukumizu, Kenji and Bach, Francis R. and Jordan, Michael I.},
+	journal = {The Annals of Statistics},
+	number = {4},
+	pages = {1871--1905},
+	title = {Kernel dimension reduction in regression},
+	volume = {37},
+	year = {2009}}
+
+
+% =============================================================================
+% AREA I — Continuum of moment conditions (CGMM)
+%          `carrasco2007` and `carrasco2007h` are already in instrumental.bib.
+% =============================================================================
+
+% The foundational CGMM paper.
+@article{carrascoflorens2000,
+	author = {Carrasco, Marine and Florens, Jean-Pierre},
+	doi = {10.1017/S0266466600166010},
+	journal = {Econometric Theory},
+	number = {6},
+	pages = {797--834},
+	title = {Generalization of {GMM} to a Continuum of Moment Conditions},
+	volume = {16},
+	year = {2000}}
+
+% The adversarial/variational route to a continuum of moments.
+@article{bennettkallus2023vmm,
+	author = {Bennett, Andrew and Kallus, Nathan},
+	journal = {Journal of the Royal Statistical Society Series B: Statistical Methodology},
+	number = {3},
+	pages = {810--841},
+	title = {The variational method of moments},
+	volume = {85},
+	year = {2023}}
+
+% ADDED AT G-1 CLOSURE. Poirier (2017) cites this (as "Donald et al. 2008",
+% presumably the working-paper version) in his conclusion, when flagging the
+% choice of the basis dimensions K and L via higher-order MSE expansions as
+% unfinished business. Directly relevant to plan §14's open weighting question.
+% VERIFIED 2026-07-28 — JoE 152(1), 28--36, 2009.
+@article{donaldimbensnewey2009,
+	author = {Donald, Stephen G. and Imbens, Guido W. and Newey, Whitney K.},
+	journal = {Journal of Econometrics},
+	number = {1},
+	pages = {28--36},
+	title = {Choosing instrumental variables in conditional moment restriction models},
+	volume = {152},
+	year = {2009}}
+
+
+% =============================================================================
+% AREA J — Semiparametric efficiency anchors
+%          BKRW (1993) and Newey (1990, 1994) are mandated by
+%          .claude/references/domain-profile.md. Only `newey1994h` (Newey &
+%          McFadden, Handbook ch. 36) was in instrumental.bib — a different work.
+%          THE PRIMARY AREA J CITATION IS NOT IN THIS BLOCK. `poirier2017` — the
+%          efficiency bound under independence restrictions for a finite-dimensional
+%          parameter, which positioning.md §3 Competitor 5 names as "the primary
+%          citation for `prp:effbound`" — is in the PASS 5 block at the foot.
+% =============================================================================
+
+@article{chamberlain1987,
+	author = {Chamberlain, Gary},
+	journal = {Journal of Econometrics},
+	number = {3},
+	pages = {305--334},
+	title = {Asymptotic efficiency in estimation with conditional moment restrictions},
+	volume = {34},
+	year = {1987}}
+
+@book{bkrw1993,
+	address = {Baltimore},
+	author = {Bickel, Peter J. and Klaassen, Chris A. J. and Ritov, Ya'acov and Wellner, Jon A.},
+	publisher = {Johns Hopkins University Press},
+	title = {Efficient and Adaptive Estimation for Semiparametric Models},
+	year = {1993}}
+
+@article{newey1990,
+	author = {Newey, Whitney K.},
+	doi = {10.1002/jae.3950050202},
+	journal = {Journal of Applied Econometrics},
+	number = {2},
+	pages = {99--135},
+	title = {Semiparametric efficiency bounds},
+	volume = {5},
+	year = {1990}}
+
+% NOTE: distinct from `newey1994h` (Newey & McFadden, Handbook ch. 36).
+@article{newey1994var,
+	author = {Newey, Whitney K.},
+	journal = {Econometrica},
+	number = {6},
+	pages = {1349--1382},
+	title = {The Asymptotic Variance of Semiparametric Estimators},
+	volume = {62},
+	year = {1994}}
+
+@article{ichimuranewey2022,
+	author = {Ichimura, Hidehiko and Newey, Whitney K.},
+	doi = {10.3982/QE826},
+	journal = {Quantitative Economics},
+	number = {1},
+	pages = {29--61},
+	title = {The influence function of semiparametric estimators},
+	volume = {13},
+	year = {2022}}
+
+
+% =============================================================================
+% AREA K — Linear-NPIV canon
+%   newey2003, hall2005, blundell2007, darolles2011 and horowitz2011 are ALL
+%   already in instrumental.bib and are annotated only — they are NOT here. N-21
+%   applies to every one of them: if a proof ever cites one, COPY it here from
+%   instrumental.bib or it will render `[?]` at exit code 0.
+%   THIS AREA IS NO LONGER EMPTY as of 2026-07-31. `florens2012` — Florens,
+%   Racine & Centorrino (2018), NPIV derivative estimation — is in the PASS 4
+%   block at the foot of this file. It is filed under K because it is an
+%   econometrics NPIV paper, but its LOAD-BEARING role in this project is Area L:
+%   it supplies the Landweber--Fridman step-size bound ||D^{-1}|| <= (1/2)|I_1|
+%   and is the benchmark against which CFF (2025) declares its rate equivalent to
+%   the linear-inverse-problem case.
+%
+% AREA L — Regularisation theory for (nonlinear) ill-posed problems
+%   THIS BANNER WAS WRONG UNTIL 2026-07-30 and its wrongness cost a build. It
+%   read "No entries here: hanke1995, engl2000 and chenreiss2011 are ALL already
+%   in instrumental.bib. Annotated only." — which is true of instrumental.bib and
+%   irrelevant to the build, since instrumental.bib is outside the repository.
+%   `hanke1995` and `engl2000` were cited from live sites in results.tex,
+%   proofs.tex and assumptions.tex and rendered `[?]`. Both are now IN THIS FILE,
+%   in the PASS 3 block at the foot, together with `bakushinskii1984`,
+%   `dunker2014` and `dunker2021`. `chenreiss2011` is genuinely uncited and
+%   deliberately still absent — see the header note.
+%   `hanke1995` remains the anchor for LF convergence on a NONLINEAR ill-posed
+%   equation (tangential cone condition); see annotated_bibliography.md Area L and
+%   frontier_map.md §2.10.
+% =============================================================================
+
+
+% =============================================================================
+% AREA M — Spline approximation theory
+%   ADDED 2026-07-29. Both keys are cited by
+%   `quality_reports/theory/panel-npiv-discrete/proofs.tex` in the proof of
+%   `lem:balance`(iii), Step 4, for
+%       ||(I - P^{Leb}_{Lx}) zeta||_{L2(dx)} <= C Lx^{-s} ||zeta||_{H^s},
+%   the bound that IS Step 4 and therefore one of the two independent routes
+%   N-18 rests on. Neither key existed in instrumental.bib, Bibliography_base.bib
+%   or this file before this pass — the two undefined keys broke the build.
+%   These are TOOL references (proximity 5, zero competition): they are cited for
+%   a numbered theorem, not for a research contribution.
+% =============================================================================
+
+% VERIFIED 2026-07-29.
+%   Crossref, DOI 10.1017/CBO9780511618994: type monograph, Cambridge University
+%     Press, edition-number 3, published 2007-08-16, print ISBN 9780521705127,
+%     electronic ISBN 9780511618994, author Larry Schumaker.
+%   Cambridge Core book page: Cambridge Mathematical Library series; contents
+%     confirm Ch. 6 = "Approximation Power of Splines", pp. 210--267 — the chapter
+%     that contains Thm. 6.27. Its sections are 6.1 Introduction, 6.2 Piecewise
+%     Constants, 6.3 Piecewise Linear Functions, 6.4 Direct Theorems, 6.5 Direct
+%     Theorems in Intermediate Spaces, 6.6 Lower Bounds, 6.7 n-Widths, 6.8--6.9
+%     Inverse Theory, 6.10 Historical Notes, 6.11 Remarks. A bound of the cited
+%     form is a direct theorem, i.e. §6.4 or §6.5 — consistent with the pin.
+%
+% EDITION AND THEOREM NUMBERING — READ BEFORE TRUSTING THE PIN "Thm. 6.27".
+%   Schumaker's own book list (math.vanderbilt.edu/schumake/books.pdf) records
+%   three editions of this title:
+%     1st  Wiley--Interscience, 1980 (catalogued elsewhere as 1981);
+%     2nd  Krieger, Malabar, Fla., 1993, 553 pp.;
+%     3rd  "Third Edition (with supplement)", Cambridge University Press, 2007,
+%          600 pp.  <- THIS ENTRY.
+%   Evidence that the 3rd edition does NOT renumber the main text:
+%     (a) the author himself labels it "with supplement", not "revised";
+%     (b) CUP's description limits the new material to "a supplement outlining
+%         some of the major advances in the theory since 1981, and some 250 new
+%         references";
+%     (c) in the 3rd edition the thirteen chapters still end at p. 523, with
+%         Supplement 524--533, References 534--558, New References 559--576,
+%         Index 577--582 — i.e. the ~47-page difference from the 553-page 2nd
+%         edition is entirely appended matter, not interpolated text.
+%   This is an INFERENCE from (a)--(c), not a sentence read off the Preface to
+%   the 3rd Edition (paywalled; not obtained). It is strong but not certain.
+%   Independent corroboration of the pin's CONTENT: several econometrics and
+%   statistics papers cite "Schumaker (2007, Theorem 6.27)" for exactly the
+%   spline approximation-power bound used here — an error of order J^{-p-1} in
+%   the number of basis functions J.
+%   ACTION IF CHALLENGED: check a physical 3rd edition, pp. ~230--250.
+@book{schumaker2007,
+	address = {Cambridge},
+	author = {Schumaker, Larry L.},
+	doi = {10.1017/CBO9780511618994},
+	edition = {3},
+	isbn = {9780521705127},
+	publisher = {Cambridge University Press},
+	series = {Cambridge Mathematical Library},
+	title = {Spline Functions: Basic Theory},
+	year = {2007}}
+
+% VERIFIED 2026-07-29 — every bibliographic field confirmed.
+%   Crossref, DOI 10.1007/978-3-662-02888-9: type book, Springer Berlin
+%     Heidelberg, 1993, series "Grundlehren der mathematischen Wissenschaften",
+%     print ISBN 9783642080753 (softcover reprint), electronic 9783662028889.
+%   Springer book page: Grundlehren volume 303, hardcover ISBN 9783540506270,
+%     softcover 9783642080753, X + 452 pp.
+%   Library of Congress record via Open Library (LCCN 93018420, OCLC 27684647):
+%     Springer-Verlag, Berlin / New York, 1993, x + 449 p., ISBN 3-540-50627-6
+%     (US 0-387-50627-6), "Grundlehren der mathematischen Wissenschaften, v. 303".
+%   => VOLUME 303 CONFIRMED against both the publisher and a library catalogue.
+%   (Page count differs by source: Springer x+452, LC and the Journal of
+%   Approximation Theory review x+449. Not carried in this entry.)
+%
+% PIN UNVERIFIED — "Ch. 13, Thm. 6.2" could not be confirmed against the book.
+%   No primary table of contents is obtainable: Springer publishes no chapter
+%   list for this Grundlehren volume, and zbMATH, the LC catalogue and
+%   HathiTrust all refuse automated access. Secondary sources consistently give
+%   Ch. 12 = "Spline Approximation" and Ch. 13 = "Spline Interpolation and
+%   Projections onto Spline Spaces".
+%   WHY CH. 13 IS NEVERTHELESS THE RIGHT CHAPTER FOR *THIS* BOUND: proofs.tex
+%   bounds I - P^{Leb}_{Lx}, an L^2 ORTHOGONAL PROJECTION onto the spline span,
+%   not the best approximation from it. That object is Ch. 13's subject. If the
+%   intended statement is instead the best-approximation (direct/Jackson) bound,
+%   the correct chapter is 12, not 13. The two give the same Lx^{-s} rate because
+%   the L^2 projection is bounded, but the pin must match the object.
+%   The theorem NUMBER 6.2 is unverified either way; treat schumaker2007 as the
+%   load-bearing pin and this as the approximation-theory cross-reference.
+@book{devorelorentz1993,
+	address = {Berlin},
+	author = {DeVore, Ronald A. and Lorentz, George G.},
+	doi = {10.1007/978-3-662-02888-9},
+	isbn = {9783540506270},
+	number = {303},
+	publisher = {Springer-Verlag},
+	series = {Grundlehren der mathematischen Wissenschaften},
+	title = {Constructive Approximation},
+	year = {1993}}
+
+
+% =============================================================================
+% BUILD-FIX PASS 3 — 2026-07-30. TEN ENTRIES.
+%
+% WHY. The first end-to-end theory-corpus build (2026-07-29; latexmk exit 0;
+%   221 pages) was read against BIBER'S OWN LOG rather than against a grep.
+%   EIGHT of the fourteen keys cited by
+%     quality_reports/theory/panel-npiv-discrete/{assumptions,results,proofs}.tex
+%     and paper/sections/theorems/*.tex
+%   drew "I didn't find a database entry". LaTeX downgrades that to a warning, so
+%   the build exits 0 and renders `[?]`. That is why it went unnoticed. The eight:
+%     bakushinskii1984  bhatia1997  conway2000   dunker2014
+%     engl2000          hanke1995   loewner1934  severini2006
+%   Each of the eight has at least one LIVE (non-comment) citation site; none is
+%   an artefact of a commented-out line. Checked by re-deriving CHECK 5's key set
+%   by hand (`check_rendering_sync.py:516--578`) and reading each site.
+%   Sites, for the record — all line numbers as of 2026-07-30:
+%     bakushinskii1984  results.tex:3368, :3795
+%     bhatia1997        results.tex:3114; proofs.tex:4041
+%     conway2000        proofs.tex:491        (also :2782, but that one is a comment)
+%     dunker2014        results.tex:3729
+%     engl2000          results.tex:3368, :3556, :3650, :3672, :3795;
+%                       proofs.tex:497; assumptions.tex:1077
+%     hanke1995         results.tex:2654, :3650, :3672
+%     loewner1934       proofs.tex:4039
+%     severini2006      assumptions.tex:2198
+%
+% PROVENANCE, PER ENTRY, IN THREE CLASSES — stated because they are NOT equal:
+%
+%   [COPIED-REPO]   Copied CHARACTER-FOR-CHARACTER from the sibling project's
+%     in-repo bibliography, quality_reports/literature/volatility-loc-scale/
+%     references.bib. N-21: an entry that exists elsewhere in the repository is
+%     COPIED, never re-typed, so two renderings of one reference cannot drift —
+%     a re-typed entry differing in a page range or an edition is a silent
+%     inconsistency across the author's papers. CONSEQUENCE, DELIBERATE: these
+%     three carry the SIBLING FILE'S FORMATTING (two-space indent, packed fields)
+%     and not this file's tab-indented one-field-per-line style. That is the
+%     point: `diff` between the two files stays empty for these entries.
+%
+%   [COPIED-MASTER] Copied from the author's own master bibliography,
+%     /Users/samuele/Library/CloudStorage/Dropbox/Nonparametric_IV/instrumental.bib.
+%     Every BIBLIOGRAPHIC field is reproduced character-for-character, including
+%     brace-protection and any oddity of spacing (see `severini2006`). Dropped:
+%     BibDesk housekeeping only — `abstract`, `keywords`, `date-added`,
+%     `date-modified`, `bdsk-url-*` — none of which any bibliography style
+%     prints, so the RENDERING is identical, which is what N-21 protects. The
+%     dropped fields are named per entry. This follows the precedent set by
+%     `feve2014` and `bierens1990` in pass 2.
+%
+%   [CREATED]       No entry existed under this key in ANY .bib on disk. All five
+%     were grepped, for the KEY and for the AUTHOR SURNAME: this file;
+%     Bibliography_base.bib; volatility-loc-scale/references.bib;
+%     Dropbox/Nonparametric_IV/instrumental.bib; Dropbox/DNN_IV/instrumental.bib.
+%     The WORK was identified from the CITATION CONTEXT — what the .tex uses it
+%     FOR, quoted per entry — and the FIELDS were then confirmed against
+%     Crossref. NO FIELD OF THESE ENTRIES IS CONFIRMED AGAINST A FILE ON DISK,
+%     except where a second, on-disk source is named explicitly; all four
+%     therefore carry the `% ON-DISK UNVERIFIED` flag defined in the header.
+%     Nothing is invented: every field's source is stated, and anything
+%     unconfirmed says so.
+% =============================================================================
+
+
+% ---------------------------------------------------------------------------
+% AREA L — Regularisation theory. [COPIED-REPO] x3, [CREATED] x2.
+% ---------------------------------------------------------------------------
+
+% [COPIED-REPO] — character-for-character from
+%   quality_reports/literature/volatility-loc-scale/references.bib:124--128.
+%   Formatting differs from this file's on purpose; see the PASS 3 banner.
+%
+% CITED AT results.tex:3729, `rem:lfnonlinear`(c): "The Dunker et al. noise model
+% is adopted and their regulariser is not." This key is the OPERATOR-NOISE MODEL
+% the paper adopts — five authors, JoE 2014 — and it is correct at that site.
+%
+% DRIFT ALREADY PRESENT ACROSS THE THREE FILES, flagged and NOT silently fixed:
+%   instrumental.bib's own `dunker2014` differs from the copy above in three
+%   respects: title in sentence case ("Iterative estimation of solutions to noisy
+%   ..."), `pages = {444 - 455}` (spaced hyphen, not an en-dash), and it carries
+%   `number = {Part 3}`, which the sibling entry omits. The `Part 3` issue label
+%   is CORROBORATED first-party: the reference list of the author's own CFF (2025)
+%   gives "J. Econometrics 178 (Part 3), 444--455". So the sibling copy is
+%   content-correct but issue-incomplete. Reconcile at the merge; not touched here
+%   because N-21 required a verbatim copy of the in-repo entry.
+@article{dunker2014,
+  author  = {Dunker, Fabian and Florens, Jean-Pierre and Hohage, Thorsten and Johannes, Jan and Mammen, Enno},
+  title   = {Iterative Estimation of Solutions to Noisy Nonlinear Operator Equations in Nonparametric Instrumental Regression},
+  journal = {Journal of Econometrics}, volume = {178}, pages = {444--455}, year = {2014}
+}
+
+% [COPIED-REPO] — character-for-character from
+%   quality_reports/literature/volatility-loc-scale/references.bib:197--201.
+%
+% THE MOST HEAVILY CITED OF THE EIGHT — seven live sites across all three source
+% files, and it was ALREADY rendering `[?]` at assumptions.tex:1077 (Hypothesis
+% H1's source-index pin, "\citet[\S8.5]{engl2000}") before Part H was ever
+% written. Pins in use: §3.3 (the Bakushinskii veto, results.tex:3368, :3795),
+% §8.5 (Hilbert-scale interpolation range, results.tex:3556, assumptions.tex:1077),
+% Ch. 2 (singular systems of compact operators, proofs.tex:497), Ch. 11 (nonlinear
+% Landweber and the discrepancy principle, results.tex:3650), and Thm. 6.5
+% (proofs.tex:3977, item (F-f) — the one external theorem `prp:phirate` rests on).
+% None of those pins is verified by me; they are the theorist's.
+%
+% CORROBORATION AND DRIFT, flagged not fixed: two independent on-disk sources add
+% the series and its volume, which the copy above lacks —
+%   (1) instrumental.bib:2254--2261: publisher "Kluwer Academic Publishers",
+%       series "Mathematics and Its Applications", volume 375, address Dordrecht;
+%   (2) the reference list of the author's own CFF (2025), read first-party:
+%       "Engl, H.W., Hanke, M., Neubauer, A., 2000. Regularization of inverse
+%       problems. In: Mathematics and Its Applications, vol. 375, Kluwer Academic
+%       Publishers, Dordrecht."
+% They agree with each other and are compatible with the copy above (which shortens
+% the publisher to "Kluwer Academic" and omits series/volume). Enrich at the merge.
+@book{engl2000,
+  author    = {Engl, Heinz W. and Hanke, Martin and Neubauer, Andreas},
+  title     = {Regularization of Inverse Problems},
+  publisher = {Kluwer Academic}, year = {2000}, address = {Dordrecht}
+}
+
+% [COPIED-REPO] — character-for-character from
+%   quality_reports/literature/volatility-loc-scale/references.bib:209--213.
+%
+% CITED AT results.tex:2654 ("Range invariance in the sense of
+% \citet[(2.6)--(2.7)]{hanke1995}"), :3650 and :3672 — the tangential-cone /
+% discrepancy-principle apparatus for NONLINEAR Landweber. assumptions.tex:1811
+% records the scope caveat in a comment: hanke1995 proves the discrepancy
+% principle for an EXACTLY KNOWN operator with noisy data, whereas here the noise
+% is IN THE OPERATOR. That is the theorist's problem, not the entry's.
+%
+% THIS COPY IS THE BETTER OF THE TWO ON DISK, and the direction of the difference
+% matters at the merge: instrumental.bib:744--756 carries the same paper with a
+% SCRAPE ARTEFACT IN THE TITLE — "A convergence analysis of the Landweber
+% iteration fornonlinear ill-posed problems" (missing space, from an abstract
+% harvest) — plus `number = {1}` and `month = {Nov}`, which this copy omits. So:
+% take the TITLE from here and the ISSUE/MONTH from there. Numerische Mathematik
+% 72, 21--37, 1995 agrees in both files.
+@article{hanke1995,
+  author  = {Hanke, Martin and Neubauer, Andreas and Scherzer, Otmar},
+  title   = {A Convergence Analysis of the {L}andweber Iteration for Nonlinear Ill-Posed Problems},
+  journal = {Numerische Mathematik}, volume = {72}, pages = {21--37}, year = {1995}
+}
+
+% [CREATED] — absent from all five .bib files on disk (key AND surname
+%   "Bakushinski*" grepped in each).
+% ON-DISK UNVERIFIED — the warrant is Crossref, reached online. No file on disk
+%   carries this reference.
+%
+% IDENTIFICATION FROM THE CITATION CONTEXT, which is decisive here.
+%   results.tex:3365--3368, `def:lfstep`(2b), titled "The general statement is
+%   Bakushinskii's veto": "That *no* rule depending on the data alone --- and not
+%   on the noise level --- can make a regularisation method convergent for a
+%   genuinely ill-posed problem is \citet{bakushinskii1984}; see
+%   \citet[\S3.3]{engl2000}."
+%   results.tex:3793--3796 repeats it: "the general statement, that a purely
+%   data-driven choice of regularisation parameter cannot be convergent for an
+%   ill-posed problem, is \citet{bakushinskii1984} (see \citet[\S3.3]{engl2000})".
+%   That is one specific, named result — the "Bakushinskii veto" — and the work it
+%   comes from is the 1984 two-page note on the quasi-optimality and ratio
+%   criteria, which is exactly what Engl--Hanke--Neubauer's heuristic-parameter-
+%   choice section cites for it. There is no other 1984 Bakushinskii candidate.
+%
+% FIELDS: Crossref, queried 2026-07-30 —
+%   DOI 10.1016/0041-5553(84)90253-2; title "Remarks on choosing a regularization
+%   parameter using the quasi-optimality and ratio criterion"; author
+%   A. B. Bakushinskii; USSR Computational Mathematics and Mathematical Physics;
+%   volume 24, issue 4, pages 181--182; 1984; type journal-article.
+%   Every field below is from that record.
+%
+% TWO CAVEATS, neither affecting the fields as given.
+%   (1) This journal is the English translation of Zhurnal Vychislitel'noi
+%       Matematiki i Matematicheskoi Fiziki. The Russian original's volume and
+%       pages are NOT recorded here because they were not verified — do not add
+%       them from memory.
+%   (2) The surname is transliterated variously (Bakushinskii / Bakushinsky /
+%       Bakushinskiĭ). The key and the entry both use the Crossref form.
+% PIN NOT CHECKED: whether the veto is §3.3 in engl2000 is the theorist's pin,
+%   not verified by me. It is consistent with the section being about heuristic
+%   (noise-level-free) parameter choice.
+@article{bakushinskii1984,
+	author = {Bakushinskii, A. B.},
+	doi = {10.1016/0041-5553(84)90253-2},
+	journal = {USSR Computational Mathematics and Mathematical Physics},
+	number = {4},
+	pages = {181--182},
+	title = {Remarks on choosing a regularization parameter using the quasi-optimality and ratio criterion},
+	volume = {24},
+	year = {1984}}
+
+% [CREATED] — NEW KEY, and it exists to end a collision rather than to fill a gap.
+%   NOT CITED ANYWHERE YET. Added at the theorist's request so the citation can be
+%   made; do not expect CHECK 5 to reference it.
+% ON-DISK UNVERIFIED FOR TWO FIELDS ONLY — `doi` and `number` come from Crossref.
+%   Author, title, journal, volume, pages and year ARE confirmed on disk, twice
+%   and independently; see below. This is the best-warranted of the four CREATED
+%   entries.
+%
+% THE FINDING. `results.tex:3737--3742` states it against itself, and the entry
+% exists because of that paragraph: "**The key is wrong**: the IRGN /
+% above-$\tfrac12$ claim belongs to Dunker (2021), whereas \texttt{dunker2014} is
+% Dunker, Florens, Hohage, Johannes \& Mammen (2014), the *operator-noise model*
+% this remark's opening adopts. One key is carrying two papers and the one priced
+% as the alternative is absent from the bibliography under any key." The claim
+% needing this key is at results.tex:3728--3730: "Their iteratively regularised
+% Gauss--Newton method ... is the standard answer to exactly the qualification
+% problem in (3), attaining source indices above $\tfrac12$."
+%
+% WHICH WORK IT IS — established on disk, twice, before any web lookup.
+%   (1) The reference list of the author's own CFF (2025), read first-party from
+%       the PDF: "Dunker, F., 2021. Adaptive estimation for some nonparametric
+%       instrumental variable models with full independence. Electron. J. Stat.
+%       15, 6151--6190." CFF's p. 2 cites "Dunker et al. (2014); Dunker (2021)"
+%       side by side as two distinct works, which is the same split this file needs.
+%   (2) instrumental.bib:1128--1137, entry `dunker2018` — SAME TITLE, SAME PAGES,
+%       `volume = {15}`, `year = 2021`. Its abstract settles that this is the IRGN
+%       paper: "We prove convergence rates of the risk for the ITERATIVELY
+%       REGULARIZED NEWTON METHOD applied to these problems." The fields below are
+%       that entry's, character-for-character, under a corrected key.
+%
+% FIELDS ADDED BEYOND THE MASTER ENTRY, from Crossref, queried 2026-07-30:
+%   DOI 10.1214/21-EJS1938 (returned lower-cased by the API; the canonical form is
+%   given here) and `number = {2}` — Crossref reports Electronic Journal of
+%   Statistics, volume 15, issue 2, 2021. Crossref does NOT carry the page range;
+%   `pages = {6151--6190}` rests on the two on-disk sources above, which agree.
+%
+% THE KEY-NAME MESS, recorded so nobody "fixes" it twice. The same paper sits in
+%   the repo as `dunker2018` (volatility-loc-scale/references.bib:130--138) with
+%   `volume = {12}`, `number = {2}`, `year = {2018}` — WRONG on both volume and
+%   year, since EJS 15 is the 2021 volume and pages 6151--6190 cannot fall in
+%   volume 12. Three files, two keys, three (volume, year) pairs. `dunker2018` is
+%   cited in NO .tex file of this project, so nothing renders wrongly today; this
+%   entry is the one to cite, and the reconciliation belongs to the merge.
+%   NOT DONE HERE: no citation site was rewritten. results.tex:3729 still reads
+%   \citep{dunker2014}, which is correct for the noise-model sentence; the IRGN
+%   sentence four lines later is the one that needs \citep{dunker2021}. That edit
+%   is the theorist's file, not the librarian's.
+@article{dunker2021,
+	author = {Fabian Dunker},
+	doi = {10.1214/21-EJS1938},
+	journal = {Electronic Journal of Statistics},
+	number = {2},
+	pages = {6151--6190},
+	title = {{Adaptive estimation for some nonparametric instrumental variable models with full independence}},
+	volume = {15},
+	year = {2021}}
+
+
+% ---------------------------------------------------------------------------
+% AREA O — Operator theory and operator monotonicity (NEW AREA, THIS FILE ONLY).
+%   Three TOOL references: cited for a numbered classical result, never for a
+%   research contribution. Proximity 5, zero competition, zero positioning risk.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER] — instrumental.bib:2167--2172, verbatim. That entry carries NO
+%   BibDesk housekeeping at all, so this is a complete character-for-character
+%   copy with nothing dropped and nothing added.
+%
+% CITED AT proofs.tex:491, closing Step 3 of the compactness lemma: "An integral
+% operator with square-integrable kernel is Hilbert--Schmidt, and every
+% Hilbert--Schmidt operator between separable Hilbert spaces is compact
+% \citep{conway2000}." Step 4 immediately uses the singular system of that compact
+% operator (pinned to engl2000 Ch. 2 instead). A graduate operator-theory text is
+% exactly the right kind of source for that sentence, and Conway's *A Course in
+% Operator Theory* (AMS, Graduate Studies in Mathematics) is the one the author's
+% own bibliography carries.
+%
+% TWO NOTES. (1) The `[Ch.~II]` pin was DEPINNED in round 6 — proofs.tex:2782 and
+% :5081 record that, and the surviving citation at :491 is unpinned; a second,
+% commented site at :2782 flags that a "Weyl's theorem" invocation elsewhere has
+% no citation at all. Both are the theorist's. (2) The master entry records no
+% series VOLUME for Graduate Studies in Mathematics. Not added, because it was not
+% verified — do not fill it in from memory.
+@book{conway2000,
+	author = {Conway, J.B.},
+	publisher = {American Mathematical Society},
+	series = {{Graduate Studies in Mathematics}},
+	title = {{A Course in Operator Theory}},
+	year = {2000}}
+
+% [CREATED] — absent from all five .bib files (key AND surname). NOTE: the master
+%   bibs DO contain `bhatia1994` = Rajendra Bhatia & Kalyan Sinha, Indiana Univ.
+%   Math. J., 913--925 — A DIFFERENT WORK, not a candidate for this citation, and
+%   left where it is.
+% ON-DISK UNVERIFIED — the warrant is Crossref plus bookseller catalogues, reached
+%   online. No file on disk carries this reference. Two fields are catalogue-only:
+%   see FIELD CHOICES below.
+%
+% IDENTIFICATION FROM THE CITATION CONTEXT — two sites, both about Löwner theory.
+%   proofs.tex:4038--4042, item (ii.a): "By L\"owner's theorem, $z\mapsto z^{p}$
+%   is operator monotone on $[0,\infty)$ if and only if $0\le p\le1$ ---
+%   \citet{loewner1934}; the modern account, WITH BOTH THE INTEGRAL REPRESENTATION
+%   AND THE FINITE-ORDER CRITERION used below, is \citet[Ch.~V]{bhatia1997}".
+%   results.tex:3113--3114: "the general $2\mu>1$ case by L\"owner's
+%   divided-difference criterion for MATRIX MONOTONICITY OF ORDER TWO
+%   \citep[Ch.~V]{bhatia1997}".
+%   A modern graduate text whose Chapter V contains Löwner's theorem, the integral
+%   representation of operator monotone functions, and the Löwner matrix of
+%   divided differences for monotonicity of order n: that is Bhatia's *Matrix
+%   Analysis*. There is no other 1997 Bhatia book.
+%
+% FIELDS: Crossref, queried 2026-07-30 —
+%   DOI 10.1007/978-1-4612-0653-8; title "Matrix Analysis"; author Rajendra
+%   Bhatia; type book; published 1997; publisher "Springer New York", location
+%   "New York, NY"; series "Graduate Texts in Mathematics"; ISBNs 9781461268574
+%   (print, the softcover reprint) and 9781461206538 (electronic).
+%
+% THE PIN [Ch.~V] IS CORRECT, and this is the one pin in this pass I did check.
+%   Crossref's chapter records for this book give, in order: I A Review of Linear
+%   Algebra (1--27); II Majorisation and Doubly Stochastic Matrices (28--56);
+%   III Variational Principles for Eigenvalues (57--83); IV Symmetric Norms
+%   (84--111); **V OPERATOR MONOTONE AND OPERATOR CONVEX FUNCTIONS (112--151)**;
+%   VI--X spectral variation and matrix inequalities. Chapter V is precisely the
+%   Löwner-theory chapter both sites cite it for.
+%
+% FIELD CHOICES, stated because two of them are not from the Crossref record.
+%   `isbn` = 9780387948461 is the 1997 Springer-Verlag New York HARDCOVER, and
+%   `number` = 169 is the Graduate Texts in Mathematics volume. Neither is in the
+%   Crossref record; both come from catalogue listings (Amazon / AbeBooks, and the
+%   standard citation string "R. Bhatia, Matrix Analysis, Grad. Texts in Math.
+%   169, Springer-Verlag, New York, 1997"). Treat GTM 169 as catalogue-confirmed,
+%   not publisher-confirmed. `publisher`/`address` follow that same 1997 imprint
+%   rather than Crossref's modern "Springer New York / New York, NY".
+@book{bhatia1997,
+	address = {New York},
+	author = {Bhatia, Rajendra},
+	doi = {10.1007/978-1-4612-0653-8},
+	isbn = {9780387948461},
+	number = {169},
+	publisher = {Springer-Verlag},
+	series = {Graduate Texts in Mathematics},
+	title = {Matrix Analysis},
+	year = {1997}}
+
+% [CREATED] — absent from all five .bib files (key AND both spellings of the
+%   surname, "Loewner" and "L{\"o}wner", grepped in each).
+% ON-DISK UNVERIFIED — the warrant is Crossref, reached online. No file on disk
+%   carries this reference.
+%
+% IDENTIFICATION FROM THE CITATION CONTEXT. proofs.tex:4038--4039 cites it for the
+% THEOREM ITSELF, not for an exposition: "By L\"owner's theorem, $z\mapsto z^{p}$
+% is operator monotone on $[0,\infty)$ if and only if $0\le p\le1$ ---
+% \citet{loewner1934}". Fourteen lines later the proof uses the divided-difference
+% (Löwner-matrix) criterion for monotonicity of order n at n=2. Both are results of
+% the 1934 paper that founded the subject; `bhatia1997` is cited alongside as the
+% modern account. This is what makes $\mu\le\tfrac12$ the exact range of validity
+% of the Heinz step in `lem:srctransfer`(i), so the citation is load-bearing for a
+% SCOPE claim, not decorative.
+%
+% FIELDS: Crossref, queried 2026-07-30 —
+%   DOI 10.1007/BF01170633; title "Über monotone Matrixfunktionen"; author Karl
+%   Löwner; Mathematische Zeitschrift; volume 38, issue 1, pages 177--216; 1934;
+%   type journal-article. Every field below is from that record.
+%
+% NAME FORM. Crossref gives "Karl Löwner", which is the 1934 German-language form
+%   and is used here. The same author published later work as "Charles Loewner"
+%   after emigrating, so some bibliographies render this reference "Loewner, C.
+%   (1934)". The key uses the ASCII transliteration `loewner1934` and the entry the
+%   umlaut form; that mismatch is intentional and keeps the key ASCII.
+@article{loewner1934,
+	author = {L{\"o}wner, Karl},
+	doi = {10.1007/BF01170633},
+	journal = {Mathematische Zeitschrift},
+	number = {1},
+	pages = {177--216},
+	title = {{\"U}ber monotone Matrixfunktionen},
+	volume = {38},
+	year = {1934}}
+
+
+% ---------------------------------------------------------------------------
+% AREA B — root-n estimability. [COPIED-MASTER] x1.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER] — instrumental.bib:1583--1595. Every bibliographic field
+%   verbatim. Dropped: `date-added`, `date-modified`, `bdsk-url-1`, `bdsk-url-2`.
+%   The DOI recorded in that entry's bdsk-url-2 is 10.1017/S0266466606060117; it is
+%   NOT added as a `doi` field, so that the two files render identically.
+%
+% DO NOT "FIX" THE AUTHOR FIELD. It reads `Severini,Thomas A. and Tripathi,Gautam`
+% — no space after either comma — exactly as the master has it. biber parses
+% "Severini,Thomas A." as Last=Severini, First=Thomas A. and renders it correctly,
+% so the missing spaces are cosmetic. Normalising them here would put a diff
+% between this file and the master for no rendering gain, which is the drift N-21
+% exists to prevent.
+%
+% CITED AT assumptions.tex:2196--2199, and it is the load-bearing citation for the
+% SCOPE of the paper's central assumption: "A2 is the Severini--Tripathi condition
+% and is the binding assumption for $\sqrt n$ *through this moment function*: in
+% the linear model its necessity for $\sqrt n$-estimability is known
+% \citep{severini2006}, but in the present nonlinear problem necessity remains
+% conjectural, and two claims must be kept apart --- necessity for this moment, and
+% necessity for $\sqrt n$-estimability by *some* estimator." The theory memo
+% records this as the fix to review item M-4. Note the paper title says "Nonparametric
+% LINEAR Models", which is exactly the restriction the sentence draws on — so the
+% title is doing work here and must be exact.
+% Distinct from `severini2012` (Severini & Tripathi, in instrumental.bib, uncited).
+@article{severini2006,
+	author = {Severini,Thomas A. and Tripathi,Gautam},
+	journal = {Econometric Theory},
+	month = {4},
+	number = {2},
+	pages = {258--278},
+	title = {{Some Identification Issues in Nonparametric Linear Models with Endogenous Regressors}},
+	volume = {22},
+	year = {2006}}
+
+
+% ---------------------------------------------------------------------------
+% AREA G — Panel nonparametrics / the companion paper. [COPIED-MASTER] x1.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER] — instrumental.bib:28--41. NOT CITED ANYWHERE YET: this entry
+%   is added so the citation CAN be made. The theorist owns the citation sites;
+%   no .tex was edited. Key to cite: `centorrinofeveflorens2019`.
+%
+% WHY THIS KEY AND NOT `centorrinofeveflorens2025`. The author's own master
+% bibliography already holds this paper — under the key `centorrinofeveflorens2019`,
+% whose NAME is a fossil of the 2019 Stony Brook mimeo but whose FIELDS were
+% updated to the published version on 2025-07-25. Creating a second key for a
+% reference the author already keys would guarantee a double-cite at the merge.
+% N-21 again: copy, do not re-create. (DNN_IV/instrumental.bib still carries the
+% old mimeo fields under the same key — "Mimeo - Stony Brook University", 2019 —
+% so that file is the stale one; the Nonparametric_IV copy is authoritative.)
+%
+% VERIFIED 2026-07-30 — TWO INDEPENDENT SOURCES, agreeing on every field.
+%   (1) FIRST-PARTY, ON DISK: page 1 of
+%       /Users/samuele/Library/CloudStorage/Dropbox/Baron_Myerson/literature/
+%       Centorrino,Feve,Florens(2025).pdf — Elsevier running head "Journal of
+%       Econometrics 247 (2025) 105950"; title "Iterative estimation of
+%       nonparametric regressions with continuous endogenous variables and
+%       discrete instruments"; authors Samuele Centorrino (International Monetary
+%       Fund), Frédérique Fève and Jean-Pierre Florens (Toulouse School of
+%       Economics, University Toulouse Capitole); doi 10.1016/j.jeconom.2025.105950;
+%       received 9 June 2022, revised 9 October 2024, accepted 2 January 2025;
+%       ISSN 0304-4076. JEL C01, C14, C18, C26. An article-number journal: 105950
+%       IS the pagination, hence `pages = {105950}` and no page range.
+%   (2) instrumental.bib:28--41, as above. Fields identical.
+% ONE FIELD ADDED beyond the master entry: `doi`. Its value is the master entry's
+%   own bdsk-url-2 and is printed on the PDF's first page, so it introduces no new
+%   content — and it matches how `feve2014` was handled in pass 2 of this file.
+%   Dropped: `abstract`, `keywords`, `date-added`, `date-modified`, `bdsk-url-*`.
+%
+% WHY IT MATTERS TO THIS PAPER — the reason the theorist asked for it. CFF (2025)
+% is the companion: same nonlinear integral equation under FULL INDEPENDENCE, same
+% Landweber--Fridman regulariser, binary instrument in the simulation, returns to
+% education application. Its p. 2 supplies the citation split this pass acts on
+% ("Dunker et al. (2014); Dunker (2021)"), and `tcc_free_route_assessment.md:512`
+% asks for CFF beside `hanke1995`/`engl2000` at `rem:lfnonlinear`(3). Its
+% conclusion states the open problem this project attacks: "Future work should
+% focus on providing valid inference procedures and carefully studying the case
+% with additional exogenous controls." Read on disk; supplementary Sections A--D
+% were NOT read (derivative_route_assessment.md declares that scope).
+@article{centorrinofeveflorens2019,
+	author = {Samuele Centorrino and Fr{\'e}d{\'e}rique F{\`e}ve and Jean-Pierre Florens},
+	doi = {10.1016/j.jeconom.2025.105950},
+	issn = {0304-4076},
+	journal = {Journal of Econometrics},
+	pages = {105950},
+	title = {Iterative estimation of nonparametric regressions with continuous endogenous variables and discrete instruments},
+	volume = {247},
+	year = {2025}}
+
+
+% =============================================================================
+% PASS 4 — 2026-07-31. TWO ENTRIES. AUTHOR'S-OWN-WORK OMISSION REPAIR.
+%
+% WHY. This pass is NOT a build fix and NOT a literature search. A style
+%   extraction from the author's own published papers turned up two references
+%   that are the AUTHOR'S OWN WORK and that this file did not carry under any key:
+%     florens2012  Florens, Racine & Centorrino (2018), J. Nonparametr. Stat.
+%     beyhum2024   Beyhum, Centorrino, Florens & Van Keilegom (2023), JBES
+%   The absence was confirmed, not assumed, before anything was written:
+%     - a case-insensitive grep for "racine" over this file returned ZERO hits;
+%     - the ONLY "beyhum" string in this file was in the "ALREADY IN
+%       instrumental.bib" roll, naming `beyhumlapentalavergne2025` — Beyhum,
+%       Lapenta & Lavergne, a DIFFERENT paper. A comment, not an entry. That is
+%       precisely the kind of false positive N-21 was written about: the string
+%       matched, the citation would still have rendered `[?]`.
+%     - Bibliography_base.bib: zero hits for "racine", "beyhum", "keilegom".
+%
+% NEITHER KEY IS CITED IN ANY .tex YET. That is the expected state, not an
+%   oversight: this pass makes the citation POSSIBLE. The writer owns the citation
+%   sites and will place them when the introduction is drafted. NO .tex FILE WAS
+%   EDITED IN THIS PASS, and CHECK 5 will not reference either key until then.
+%
+% PROVENANCE CLASSES — the same three defined in the PASS 3 banner, plus one new
+%   compound label made necessary by `beyhum2024`:
+%
+%   [COPIED-REPO, THEN ENRICHED]  The base fields are copied from an in-repo or
+%     master entry, but FIELDS WERE ADDED on top. The label is compound because
+%     the PASS 3 [COPIED-REPO] promise — "`diff` between the two files stays empty
+%     for these entries" — CANNOT hold once a field is added, whatever the layout.
+%     So the rationale for carrying the sibling file's packed formatting
+%     evaporates, and such an entry is written in THIS file's tab-indented
+%     alphabetical style instead. Every added field is named, with its warrant.
+%
+% SOURCES CONSULTED FOR THIS PASS, in the order N-21 prescribes, all on disk:
+%   (1) /Users/samuele/Library/CloudStorage/Dropbox/Nonparametric_IV/instrumental.bib
+%       — the authoritative master. CARRIES BOTH ENTRIES. This is the whole reason
+%       the rule says master-first: neither paper had to be composed from recall.
+%   (2) /Users/samuele/Library/CloudStorage/Dropbox/DNN_IV/instrumental.bib
+%       — the known-stale second master. Carries both keys too. For `florens2012`
+%       it is NOT stale (byte-identical to (1)); for `beyhum2024` it IS (mangled
+%       author field, see that entry).
+%   (3) quality_reports/literature/volatility-loc-scale/references.bib — the
+%       sibling in-repo project. Carries `beyhum2024`; does NOT carry `florens2012`.
+%   (4) /tmp/cff.txt — extracted text layer of the author's own published companion
+%       ~/Dropbox/Baron_Myerson/literature/Centorrino,Feve,Florens(2025).pdf.
+%       ITS REFERENCE LIST IS A FIRST-PARTY BIBLIOGRAPHIC RECORD and it carries
+%       BOTH papers (lines 1413 and 1379--1380). It is the tie-breaker used below.
+%   (5) ~/Dropbox/"Exogeneity in Continuous Time"/
+%       Centorrino_Exogeneity_Continuous_Time_Models.tex — the author's solo paper.
+%       CHECKED AND FOUND TO CITE NEITHER. It also uses an incompatible key
+%       convention (`Florens1996`, `Bandi2008`, `FlorensZmirou1993` — capitalised),
+%       so it is not a key-naming precedent for this file either. Recorded so the
+%       next reader does not re-check it.
+% =============================================================================
+
+
+% ---------------------------------------------------------------------------
+% AREA K — Linear-NPIV canon (load-bearing role is Area L). [COPIED-MASTER] x1.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER] — instrumental.bib:2359--2368, and DNN_IV/instrumental.bib:2178--2187,
+%   which are BYTE-IDENTICAL to each other. Dropped: `date-added`, `date-modified`
+%   (BibDesk housekeeping; no style prints either).
+%
+% THE KEY IS `florens2012` AND IT IS A FOSSIL. The name records the 2012
+%   date-added; the paper is 2018. This is exactly the `centorrinofeveflorens2019`
+%   situation and it is resolved the same way: USE THE AUTHOR'S OWN KEY. Do NOT
+%   create `florensracinecentorrino2018` — a second key for a reference the author
+%   already keys guarantees a double-cite at the instrumental.bib merge, which is
+%   the mistake this project has already been bitten by once.
+%   NEAR-COLLISION, recorded so nobody trips on it: both masters carry
+%   `florens2012a` = Florens & Simoni, J. Econometrics 172(2), 458--475, sitting
+%   immediately below this entry. A DIFFERENT PAPER, one character apart. It is not
+%   in this file and is not cited here.
+%   SECOND NEAR-COLLISION, ADDED AT PASS 5 AND WORSE THAN THE FIRST: the sibling
+%   in-repo file volatility-loc-scale/references.bib:69--74 USES THE KEY
+%   `florens2012` FOR A COMPLETELY DIFFERENT PAPER — Florens, Johannes & Van
+%   Bellegem (2012), which this file and both masters key `florens2006` (added at
+%   PASS 5, below). Same key, two papers, two in-repo files. See hazard (5) in the
+%   header. Do not merge the two .bib files without resolving that by hand.
+%
+% VERIFIED 2026-07-31 — THREE ON-DISK SOURCES plus Crossref, agreeing on every
+% bibliographic field (volume 30, issue 2, pages 368--391, year 2018).
+%   (1) instrumental.bib:2359--2368 (authoritative master).
+%   (2) DNN_IV/instrumental.bib:2178--2187 — byte-identical to (1). The second
+%       master is stale for `centorrinofeveflorens2019`; it is NOT stale here.
+%   (3) FIRST-PARTY, ON DISK: the reference list of the author's own CFF (2025),
+%       /tmp/cff.txt:1413 — "Florens, J.-P., Racine, J., Centorrino, S., 2018.
+%       Nonparametric instrumental variable derivative estimation. J. Nonparametr.
+%       Stat. 30 (2), 368--391."  This is the author's own PUBLISHED rendering of
+%       the reference, and it is what settles the two corrections below.
+%   (4) Crossref, queried 2026-07-31 by DOI, record fetched directly rather than
+%       through a ranked search: DOI 10.1080/10485252.2018.1428745; title
+%       "Nonparametric instrumental variable derivative estimation"; authors
+%       J. P. Florens, J. S. Racine, S. Centorrino; container-title "Journal of
+%       Nonparametric Statistics"; volume 30; issue 2; page 368-391; issued
+%       2018-02-02; ISSN 1048-5252 / 1029-0311; type journal-article.
+%
+% TWO DEPARTURES FROM THE MASTER TEXT. Both are deliberate, and both fall on the
+% RENDERING side of the line this file already draws — `severini2006` ("cosmetic,
+% does not reach the page, preserve verbatim") versus `hanke1995` ("scrape artefact
+% in the master, do not propagate it into print").
+%   (a) JOURNAL NAME — THE MASTER HAS A TYPO IN BOTH FILES.
+%       Both masters read:  journal = {Jounal of Nonparametric Statistics}
+%       — "Jounal", missing the r. Corrected here to "Journal of Nonparametric
+%       Statistics". The warrant is NOT my spelling: source (3), the author's own
+%       published reference list, abbreviates it "J. Nonparametr. Stat.", and
+%       source (4) gives the full name. Propagating the typo would have created
+%       drift AWAY FROM the author's published rendering, not toward it — which
+%       inverts the purpose of N-21. FIX IT IN BOTH MASTERS AT THE MERGE; this
+%       file is not the only place it will bite.
+%   (b) PAGE-RANGE DASH. Both masters read `pages = {368-391}` — a single hyphen,
+%       which renders as a hyphen and not an en-dash. Set to `368--391` here, to
+%       match the en-dash in the author's published rendering (source 3) and this
+%       file's uniform convention. Same class of change as (a), smaller stakes.
+% The master's exact text is quoted above in full for both departures, so the
+% original is recoverable from this file without opening Dropbox.
+%
+% ONE FIELD ADDED BEYOND THE MASTER: `doi`.
+% ON-DISK UNVERIFIED — `doi` ONLY. It is the single field in this entry not
+%   confirmed against any file on disk: neither master carries a doi or a bdsk-url
+%   for this entry, and CFF's reference list prints no DOI (Elsevier house style).
+%   Warrant is Crossref alone, by direct DOI resolution. DELETE THIS ONE LINE if
+%   you want the entry 100% on-disk-warranted; every other field survives that cut.
+%
+% NAME FORM, NOT CHANGED. The masters give "Jeffrey Racine" and CFF gives
+%   "Racine, J." — no middle initial. Crossref gives "J. S. Racine". The master
+%   form is kept because two on-disk sources AND the author's published rendering
+%   agree on it. Likewise the title keeps the master's Title Case with brace
+%   protection; CFF renders it sentence case, but that is Elsevier's copyediting
+%   applied to the output, not the author's input.
+%
+% WHY IT IS HERE. It is CITED THREE TIMES in the companion paper CFF (2025) and is
+% load-bearing there: it supplies the ||D^{-1}|| <= (1/2)|I_1| step-size bound, and
+% it is the benchmark against which CFF declares its rate equivalent to the
+% LINEAR-INVERSE-PROBLEM case. One of those three sites is visible in the extracted
+% text at /tmp/cff.txt:898, where CFF cites it for the MISE rate of the estimated
+% operators beside Li & Racine (2008) and Darolles et al. (2011). THIS project uses
+% derivative-based Landweber--Fridman regularisation, so a panel-NPIV paper that
+% omits it will be asked about it — by a referee if not by the author.
+@article{florens2012,
+	author = {Jean-Pierre Florens and Jeffrey Racine and Samuele Centorrino},
+	doi = {10.1080/10485252.2018.1428745},
+	journal = {Journal of Nonparametric Statistics},
+	number = {2},
+	pages = {368--391},
+	title = {{Nonparametric Instrumental Variable Derivative Estimation}},
+	volume = {30},
+	year = {2018}}
+
+
+% ---------------------------------------------------------------------------
+% AREA B — root-n estimability / identification. [COPIED-REPO, THEN ENRICHED] x1.
+%   AREA ASSIGNMENT IS PROVISIONAL — see "WHERE IT SITS" below. It is filed under B
+%   on the evidence of how the author's own companion paper cites it, not on a
+%   citation site in this project, because there is not one yet.
+% ---------------------------------------------------------------------------
+
+% [COPIED-REPO, THEN ENRICHED]. The AUTHOR, TITLE, JOURNAL and YEAR fields are the
+%   sibling in-repo bibliography's, verbatim —
+%   quality_reports/literature/volatility-loc-scale/references.bib:118--122:
+%     @article{beyhum2024,
+%       author  = {Beyhum, Jad and Centorrino, Samuele and Florens, Jean-Pierre and {Van Keilegom}, Ingrid},
+%       title   = {Instrumental Variable Estimation of Dynamic Treatment Effects on a Duration Outcome},
+%       journal = {Journal of Business \& Economic Statistics}, year = {2023}
+%     }
+%   FOUR fields are added on top of that base (`doi`, `volume`, `number`, `pages`),
+%   so this entry cannot diff clean against the sibling whatever its layout — which
+%   is why it is written in THIS file's tab-indented alphabetical style rather than
+%   the sibling's packed style. The PASS 3 [COPIED-REPO] entries kept the sibling's
+%   formatting because nothing was added to them; that rationale does not apply.
+%
+% THE KEY IS `beyhum2024` AND IT IS A FOSSIL, exactly like `florens2012` above and
+%   `centorrinofeveflorens2019` before it: the key says 2024, the `year` field says
+%   2023. IT IS ALSO THE KEY IN ALL THREE ON-DISK .bib FILES THAT CARRY THIS PAPER
+%   — Nonparametric_IV/instrumental.bib:72--84, DNN_IV/instrumental.bib:14--25, and
+%   volatility-loc-scale/references.bib:118--122. One key across four files is worth
+%   more than a tidy key in one, so it is kept. Do NOT create
+%   `beyhumcentorrinoflorensvankeilegom2023`.
+%   NOT TO BE CONFUSED WITH, and all distinct works:
+%     `beyhumlapentalavergne2025` — Beyhum, Lapenta & Lavergne, Econometrics J.
+%        28(2), 176--197. In the "ALREADY IN instrumental.bib" roll at the head of
+%        this file; it is the string that made a grep for "beyhum" look like a hit.
+%     `beydum2021` — Beyhum, Florens & Van Keilegom, JBES, THREE authors, right-
+%        censored duration outcomes. Note the master's own key misspells the name.
+%        In both masters; not in this file; not cited here.
+%
+% WHICH ON-DISK VERSION WAS USED AS THE BASE, AND WHY NOT THE MASTER.
+%   The three on-disk copies are NOT equal and the choice matters:
+%   (1) Nonparametric_IV/instrumental.bib:72--84 — author field correct
+%       ("Jad Beyhum and Samuele Centorrino and ... and Ingrid {Van Keilegom}");
+%       carries the `doi`; but carries `volume = {0}`, `number = {0}`,
+%       `pages = {1-11}` — Taylor & Francis ONLINE-FIRST PLACEHOLDERS, which would
+%       render "vol. 0, no. 0, pp. 1--11" in print. Also carries
+%       `publisher = {Taylor & Francis}` with a BARE, UNESCAPED AMPERSAND. That is
+%       a latent hard LaTeX error ("Misplaced alignment tab character &") for any
+%       style that prints `publisher`, and it sits in the same entry as a correctly
+%       escaped `Journal of Business \& Economic Statistics`. FIX IT IN THE MASTER
+%       AT THE MERGE. `publisher` is omitted here rather than escaped, because
+%       biblatex authoryear does not print it for @article, so omitting changes
+%       nothing on the page and carries no landmine forward.
+%   (2) DNN_IV/instrumental.bib:14--25 — STALE AND BROKEN. Its author field reads
+%       `{Jad Beyhum, Samuele Centorrino, Jean-Pierre Florens and Ingrid Van Keilegom}`
+%       — comma-separated inside one brace group, which biber parses as a single
+%       name with "Jad Beyhum" as the surname. It would render wrongly. DISCARDED,
+%       and recorded here so nobody adopts it later. Fix or delete at the merge.
+%   (3) volatility-loc-scale/references.bib:118--122 — IN-REPO, clean, Last-First
+%       form with `{Van Keilegom}` brace-protected, no placeholders, no unescaped
+%       ampersand. USED AS THE BASE, per N-21's repo-first preference: it is the
+%       copy a `diff` against another repo file would be measured against.
+%   (1) and (3) parse to the same author list; they differ only in name order form.
+%
+% FIELD-BY-FIELD WARRANT — this entry is mixed, and the flag is applied PER FIELD.
+%   ON DISK, three sources agreeing: author, title, journal, year.
+%     Third source is FIRST-PARTY: the reference list of the author's own CFF
+%     (2025), /tmp/cff.txt:1379--1380 — "Beyhum, J., Centorrino, S., Florens, J.-P.,
+%     Van Keilegom, I., 2023. Instrumental variable estimation of dynamic treatment
+%     effects on a duration outcome. J. Bus. Econom. Statist. 1--11."
+%   ON DISK, two sources agreeing: `doi` = 10.1080/07350015.2023.2231053. It is a
+%     `doi` field in master (1) and a bdsk-url-1 in BOTH masters. Adding it follows
+%     the precedent set by `centorrinofeveflorens2019` in pass 3.
+%   ON-DISK UNVERIFIED — `volume`, `number`, `pages` ONLY. THESE THREE ARE NOT
+%     CONFIRMED AGAINST ANY FILE ON DISK. Every on-disk source froze at the
+%     online-first state: master (1) has the 0/0/1-11 placeholders and CFF's
+%     reference list prints "1--11" with no volume at all. The warrant is online and
+%     is two independent sources that agree:
+%       - Crossref, queried 2026-07-31 by DOI: volume 42, journal-issue 2,
+%         page 732-742, publisher Informa UK Limited, ISSN 0735-0015 / 1537-2707,
+%         issued date-parts [[2023,7,24]];
+%       - the Taylor & Francis article page's own title string, "Journal of
+%         Business & Economic Statistics: Vol 42, No 2", with the print issue
+%         dated April 2024. (The T&F page itself returns HTTP 403 to automated
+%         fetching; the title string was read from a search listing.)
+%     NOTHING HERE IS INVENTED. If you want strict parity with the author's own
+%     published rendering in CFF (2025), DELETE these three lines — the entry then
+%     renders exactly as CFF renders it, and is 100% on-disk-warranted.
+%
+% THE (YEAR, VOLUME) TENSION — REAL, DELIBERATE, AND RECORDED SO NOBODY "FIXES" IT
+%   TWICE. `year = {2023}` sits beside `volume = {42}`, `number = {2}`, and JBES
+%   42(2) is the APRIL 2024 print issue. Both halves are defensible and the pairing
+%   is Crossref's own: its record carries volume 42 / issue 2 / pages 732-742 AND
+%   issued 2023-07-24 in the same object. 2023 is kept because
+%     (i) all three on-disk .bib copies say 2023;
+%     (ii) the author's own PUBLISHED paper CFF (2025) cites it as "Beyhum et al.,
+%          2023" in the text (/tmp/cff.txt:205) and dates it 2023 in the reference
+%          list — so rendering it (2024) here would make the author's two papers
+%          cite one work under two years, which is precisely the drift N-21 exists
+%          to prevent.
+%   THE THREE COHERENT OPTIONS, for whoever decides: (a) leave as-is — complete,
+%   flagged, matches the author's citation year; (b) delete volume/number/pages —
+%   exact parity with CFF's rendering, incomplete but unimpeachable; (c) move to
+%   year 2024 — matches the print issue, breaks parity with CFF. NOT DECIDED HERE.
+%
+% WHERE IT SITS, and why the area letter is provisional. There is no citation site
+%   in this project yet, so the area cannot be read off a proof. It is filed under
+%   Area B on the evidence of how the author's own companion cites it: CFF (2025)
+%   footnote 2 (/tmp/cff.txt:203--206) lists it for GLOBAL IDENTIFICATION
+%   CONDITIONS — "Global identification conditions could also be analyzed, but they
+%   are less interpretable and difficult to verify in practice (see, e.g.
+%   Chernozhukov and Hansen, 2005; Fève et al., 2018; Beyhum et al., 2023)" — which
+%   is identification-in-a-nonlinear-inverse-problem, Area B's subject. It is also
+%   the author's own prior work on a NONLINEAR NPIV operator equation, so an Area L
+%   or nonlinear-NPIV filing would be equally defensible. RE-FILE IT once the writer
+%   places the citation and the role is known.
+@article{beyhum2024,
+	author = {Beyhum, Jad and Centorrino, Samuele and Florens, Jean-Pierre and {Van Keilegom}, Ingrid},
+	doi = {10.1080/07350015.2023.2231053},
+	journal = {Journal of Business \& Economic Statistics},
+	number = {2},
+	pages = {732--742},
+	title = {Instrumental Variable Estimation of Dynamic Treatment Effects on a Duration Outcome},
+	volume = {42},
+	year = {2023}}
+
+
+% =============================================================================
+% PASS 5 — 2026-07-31. FOUR ENTRIES. THE INTRODUCTION'S MISSING CITATIONS.
+%
+% WHY. The introduction was drafted and its STRONGEST NOVELTY ARGUMENT had to be
+%   left out, because the key did not resolve. `positioning.md` §1.4 calls
+%   Poirier's §5 open-extension sentence "the single most efficient novelty
+%   argument available" and says it "belongs in the introduction"; §4 lists it as
+%   lead item 1. Without `poirier2017` the introduction stands on three legs
+%   instead of four, with the INDEPENDENCE AXIS omitted entirely. The other three
+%   keys are the same story at lower stakes — the "isn't this just a corollary of
+%   Chen--Pouzo?" pre-emption (§4 objection table, row 1) and Competitors 1 and 2
+%   (§3). All four are named by positioning.md; none was guessed from its key
+%   string, which for three of the four would have produced the wrong paper.
+%
+% THE IDENTITIES, because THREE OF THE FOUR KEYS DO NOT SAY WHAT THEY MEAN:
+%   poirier2017         Poirier (2017), JoE 196(1), 1--22. THE ONE HONEST KEY.
+%   chen2012b           NOT the 2012 paper. Chen & Pouzo (2015), Econometrica
+%                       83(3), 1013--1079, "Sieve Wald and QLR Inferences...".
+%                       The 2012 paper is the SEPARATE key `chen2012`, added in
+%                       PASS 6 at the foot. positioning.md §3 Competitor 3 wants
+%                       both; both now resolve.
+%   florens2006         NOT a 2006 paper. Florens, Johannes & Van Bellegem (2012),
+%                       Econometrics Journal 15(2), 304--324. Competitor 1.
+%   florenslapenta2024  Florens & Lapenta (2024), TEST 33(3), 897--920.
+%                       Competitor 2. Key and year agree.
+%   FOSSIL-KEY POLICY, unchanged and applied again: keys in this project record the
+%   date the entry was ADDED, not the year of publication, and they are kept anyway
+%   so that ONE KEY MEANS ONE PAPER across every file the author owns —
+%   `centorrinofeveflorens2019` IS the 2025 paper, `florens2012` IS the 2018 paper,
+%   `beyhum2024` IS the 2023 paper, and now `chen2012b` IS the 2015 paper and
+%   `florens2006` IS the 2012 paper. DO NOT "CORRECT" A KEY TO MATCH ITS
+%   PUBLICATION YEAR. That guarantees a double-cite at the instrumental.bib merge.
+%
+% WHAT THIS PASS DID NOT DO. No .tex and no .qmd file was opened for writing. None
+%   of the four keys is cited anywhere yet — this pass makes the citation POSSIBLE
+%   and the writer owns the sites. Do not expect CHECK 5 to reference any of them.
+%
+% SOURCES CONSULTED, in the order N-21 prescribes:
+%   (1) Dropbox/Nonparametric_IV/instrumental.bib — the authoritative master.
+%       CARRIES ALL FOUR: poirier2017:14--26, chen2012b:1551--1563,
+%       florens2006:2327--2337, florenslapenta2024:3662--3669.
+%   (2) Dropbox/DNN_IV/instrumental.bib — the known-stale second master. Carries
+%       only TWO of the four: chen2012b:1362--1374 and florens2006:2146--2156, both
+%       BYTE-IDENTICAL to (1). `poirier2017` and `florenslapenta2024` are ABSENT
+%       from it entirely (grepped for the keys and for the surnames "Poirier" and
+%       "Lapenta": zero hits). Absence, not staleness — recorded as a per-entry
+%       disagreement below.
+%   (3) quality_reports/literature/volatility-loc-scale/references.bib — the sibling
+%       in-repo project, and the repo-first source when it carries an entry. It
+%       carries THREE of the four: poirier2017:158--163, chen2012b:88--92,
+%       florenslapenta2024:580--588. It does NOT carry `florens2006` UNDER THAT KEY
+%       — it carries THE SAME PAPER under the key `florens2012`, which in THIS file
+%       is a different paper. See header hazard (5).
+%       ITS `chen2012b` IS WRONG (journal, volume, pages) — see that entry.
+%   (4) Bibliography_base.bib — zero hits for all four. No collision with the stub.
+%   (5) This project's own `annotated_bibliography.md` (§A3, §A4) and
+%       `positioning.md` (§1.4, §3, §4) — read FIRST, to fix each key's identity
+%       before any lookup. §A3 already flags `florens2006` as "IN BIB (key
+%       misleads)" and already prints the singular title used below.
+%
+% ONE NEW CONVENTION, forced by the sources rather than chosen: WHERE THE REPO-FIRST
+%   PREFERENCE WAS OVERRIDDEN. PASS 3 established that an in-repo entry is copied
+%   rather than re-typed. That rule assumes the in-repo entry is CORRECT. For
+%   `chen2012b` it is not — the sibling misattributes the paper to a different
+%   journal — so the master is used and the sibling's error is documented rather
+%   than propagated. Repo-first is a tie-breaker between EQUALLY CORRECT copies, not
+%   a licence to carry a wrong one forward. That reading is applied once, here, and
+%   the evidence for it is set out in full at that entry.
+%
+% PROVENANCE LABELS USED IN THIS PASS: all four are the ones already defined in the
+%   PASS 3 and PASS 4 banners — [COPIED-MASTER] x2, [COPIED-REPO] x1,
+%   [COPIED-REPO, THEN ENRICHED] x1. NO ENTRY IN THIS PASS IS [CREATED], and no
+%   field of any of them carries `% ON-DISK UNVERIFIED`.
+% =============================================================================
+
+
+% ---------------------------------------------------------------------------
+% AREA J — Semiparametric efficiency anchors. [COPIED-REPO, THEN ENRICHED] x1.
+%   THE LEAD ENTRY OF THIS PASS, and the one the introduction is waiting on.
+% ---------------------------------------------------------------------------
+
+% [COPIED-REPO, THEN ENRICHED]. Base = the sibling in-repo bibliography,
+%   quality_reports/literature/volatility-loc-scale/references.bib:158--163:
+%     @article{poirier2017,
+%       author  = {Poirier, Alexandre},
+%       title   = {Efficient estimation in models with independence restrictions},
+%       journal = {Journal of Econometrics},
+%       volume  = {196}, number = {1}, pages = {1--22}, year = {2017}
+%     }
+%   ONE field is added on top of that base (`doi`), so the entry cannot diff clean
+%   against the sibling whatever its layout — hence this file's tab-indented
+%   alphabetical style, per the PASS 4 definition of the compound label.
+%
+% VERIFIED 2026-07-31 — TWO ON-DISK SOURCES, INDEPENDENTLY TRANSCRIBED, agreeing on
+% every field. This is the strongest warrant class in this file and it applies to
+% every field of this entry, `doi` included.
+%   (1) Dropbox/Nonparametric_IV/instrumental.bib:14--26 — the authoritative master.
+%       Author "Alexandre Poirier"; Journal of Econometrics; volume 196; number 1;
+%       pages 1-22; year 2017; title "Efficient estimation in models with
+%       independence restrictions". Carries the abstract and two bdsk-urls.
+%   (2) volatility-loc-scale/references.bib:158--163 — in-repo, a separate
+%       transcription (Last-First name order, en-dashed pages), not a copy of (1).
+%   The two agree on journal, volume, number, pages, year and title. They differ
+%   only in the two cosmetic respects recorded under DEPARTURES below.
+%   NOT INDEPENDENT OF EACH OTHER IN ONE SENSE: both are the author's own files. But
+%   they were typed at different times in different formats, so a shared typo is
+%   improbable, and no field here rests on a single reading.
+%
+% THE `doi` IS ON DISK — IT IS NOT A WEB LOOKUP. Master (1) records
+%   bdsk-url-2 = {https://doi.org/10.1016/j.jeconom.2016.07.007}
+%   and bdsk-url-1 = the ScienceDirect landing page S0304407616301646. The `doi`
+%   field below is that bdsk-url-2 with the resolver prefix stripped — the same
+%   move made for `centorrinofeveflorens2019` in pass 3 and `beyhum2024` in pass 4.
+%   NO `% ON-DISK UNVERIFIED` FLAG IS WARRANTED and none is applied.
+%
+% TWO DEPARTURES FROM THE MASTER TEXT, both toward the in-repo copy, neither from
+% my own judgement:
+%   (a) PAGE-RANGE DASH. Master reads `pages = {1-22}` — a single hyphen. Set to
+%       `1--22` here. The warrant is ON DISK: the sibling in-repo copy already
+%       reads `1--22`, and positioning.md §1.3/§3 and annotated_bibliography.md
+%       both print "1–22". Same class of change as `florens2012`(b) in pass 4, with
+%       a stronger warrant, because here a second on-disk .bib already has the
+%       en-dash.
+%   (b) AUTHOR NAME ORDER. Master reads `{Alexandre Poirier}` (First-Last, one
+%       field); the base used here reads `{Poirier, Alexandre}` (Last-First). biber
+%       parses BOTH to Last=Poirier, First=Alexandre and renders them identically,
+%       so this reaches neither the page nor the sort key. The in-repo form is kept
+%       because it is the base this entry was copied from, and because Last-First
+%       is unambiguous for any future compound surname edit. Recorded rather than
+%       silently normalised.
+%   The master's exact text is quoted above for both, so the original is recoverable
+%   from this file without opening Dropbox.
+%
+% DISAGREEMENT BETWEEN THE TWO MASTERS: `poirier2017` IS ABSENT FROM DNN_IV
+%   ENTIRELY — no such key, and zero hits for the surname "Poirier". So the second
+%   master is not stale here; it simply never had the paper. Nothing to reconcile;
+%   ADD IT TO DNN_IV AT THE MERGE if that file is kept.
+%
+% WHY THIS ENTRY IS THE POINT OF THE PASS. positioning.md §1.4, "The strongest
+% single piece of novelty evidence in this file — and it is Poirier's own", quotes
+% his §5 conclusion verbatim: "Several extensions of this paper may be interesting.
+% The first would be to generalize our results to models with unconditional
+% independence restriction with nuisance functions of the type
+% rho(Y, X, theta, h(.)) ⟂ Z, where h(.) is a nonparametric object." THE NEAREST
+% COMPETITOR ON THE INDEPENDENCE AXIS NAMES THIS PAPER'S SETTING AS AN OPEN PROBLEM
+% HE DOES NOT UNDERTAKE. §4 lead item 1 says to quote it and then state the honest
+% caveat — Poirier writes UNCONDITIONAL independence, this paper maintains the
+% CONDITIONAL form ΔU ⟂ W | ΔZ, so it is the closest available statement of the
+% gap and not a literal description of what we do.
+% THREE OTHER LOAD-BEARING ROLES, all from positioning.md §3 Competitor 5:
+%   (i)   PRIMARY CITATION FOR `prp:effbound` — the efficiency bound under
+%         independence restrictions for a finite-dimensional parameter is his
+%         theorem. That is why the entry is filed in AREA J and not in A or I.
+%   (ii)  PRECEDENT FOR THE OPEN WEIGHTING QUESTION (plan §14): he faced the same
+%         ill-posed optimal-weighting operator and resolved it with a FINITE BUT
+%         GROWING BASIS rather than Tikhonov on the continuum — see also
+%         `donaldimbensnewey2009` in Area I, which he cites for choosing K and L.
+%   (iii) PRECEDENT FOR THE A1 DISCUSSION — his conditional-independence section
+%         shows a conditional MOMENT restriction loses identification that
+%         conditional INDEPENDENCE buys. Cross-reference at Lemma L1 / Remark R1,
+%         BUT STATE THE DIRECTION DIFFERENCE: here independence is uninformative
+%         about theta and supplies the debiasing channel instead.
+% The full text was read first-party at G-1 closure (working-paper PDF, pdftotext
+% -layout); positioning.md §1.3 records what that read established.
+@article{poirier2017,
+	author = {Poirier, Alexandre},
+	doi = {10.1016/j.jeconom.2016.07.007},
+	journal = {Journal of Econometrics},
+	number = {1},
+	pages = {1--22},
+	title = {Efficient estimation in models with independence restrictions},
+	volume = {196},
+	year = {2017}}
+
+
+% ---------------------------------------------------------------------------
+% AREA B — root-n estimability. [COPIED-MASTER] x1.
+%   THE ONE ENTRY IN THIS PASS WHERE THE REPO-FIRST PREFERENCE WAS OVERRIDDEN.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER] — instrumental.bib:1551--1563, and DNN_IV/instrumental.bib:1362--1374,
+%   which are BYTE-IDENTICAL to each other. Dropped: `date-added`, `date-modified`,
+%   `bdsk-url-1` (BibDesk housekeeping) and `publisher` (see below). `issn` is KEPT,
+%   following `centorrinofeveflorens2019`.
+%
+% THE KEY SAYS 2012 AND THE PAPER IS 2015. THIS IS A DISAMBIGUATION HAZARD AND IT IS
+% THE MAIN REASON THIS ENTRY NEEDED positioning.md READ FIRST. `chen2012b` is
+%   Chen & Pouzo (2015), "Sieve Wald and QLR Inferences on Semi/Nonparametric
+%   Conditional Moment Models", Econometrica 83(3), 1013--1079.
+% It is NOT Chen & Pouzo (2012), "Estimation of Nonparametric Conditional Moment
+% Models With Possibly Nonsmooth Generalized Residuals", Econometrica 80(1),
+% 277--321 — that paper is the SEPARATE key `chen2012`, one character shorter,
+% sitting 594 lines further down the same master file (instrumental.bib:2145--2153).
+% Anyone resolving this key from the string alone gets the wrong paper.
+%   positioning.md §3 Competitor 3 cites the PAIR as "Chen & Pouzo (2012, 2015),
+%   Econometrica 80(1) and 83(3), 1013--1079", and §1.5 leans on the 2015 result
+%   specifically: "give sqrt-n normality for regular functionals under a sieve Riesz
+%   representer condition". That is this entry. `chen2012` REMAINS REPO-ABSENT and
+%   will render `[?]` the moment the writer cites it — N-21 applies to it exactly as
+%   it applied to the eight keys of pass 3. COPY IT FROM instrumental.bib:2145--2153
+%   when the introduction needs it; do not re-type it.
+%
+% THE SIBLING IN-REPO COPY IS WRONG, AND THIS IS WHY THE MASTER WAS USED.
+%   volatility-loc-scale/references.bib:88--92 reads, verbatim:
+%     @article{chen2012b,
+%       author  = {Chen, Xiaohong and Pouzo, Demian},
+%       title   = {Sieve {W}ald and {QLR} Inferences on Semi/Nonparametric Conditional Moment Models},
+%       journal = {Annals of Statistics}, volume = {43}, number = {3}, pages = {1011--1044}, year = {2015}
+%     }
+%   Journal, volume and pages are all wrong. Evidence, in order of weight:
+%     (1) BOTH MASTERS, byte-identical to each other, give Econometrica 83(3),
+%         1013--1079, and carry bdsk-url-1 = http://dx.doi.org/10.3982/ECTA10771.
+%         The 10.3982 prefix is the Econometric Society's and "ECTA" is
+%         Econometrica's own article-id stem — the DOI itself names the journal.
+%     (2) Crossref, queried 2026-07-31 BY DIRECT DOI RESOLUTION (not a ranked
+%         search) on 10.3982/ECTA10771: title "Sieve Wald and QLR Inferences on
+%         Semi/Nonparametric Conditional Moment Models"; authors Xiaohong Chen
+%         (Cowles Foundation, Yale) and Demian Pouzo (UC Berkeley);
+%         container-title "Econometrica"; volume 83; issue 3; page 1013-1079;
+%         year 2015. Every field matches the masters exactly.
+%     (3) A Crossref search restricted to Annals of Statistics (ISSN 0090-5364)
+%         volume-43 year returned NO Chen--Pouzo paper at all.
+%     (4) positioning.md §3 Competitor 3 gives "83(3), 1013--1079".
+%   The sibling's TITLE is the Econometrica paper's title verbatim, so this is ONE
+%   WORK MISATTRIBUTED, not a second paper being confused with it. THE WEB WAS USED
+%   ONLY TO ADJUDICATE BETWEEN TWO ON-DISK COPIES; the fields adopted below still
+%   come from a file on disk, which is why no `% ON-DISK UNVERIFIED` flag applies.
+%   NOT FIXED IN THE SIBLING — that file is out of scope for this pass and is a
+%   different project's critic-cleared artifact. Logged as header hazard (6). FIX IT
+%   THERE AT THE MERGE, in the sibling and not here.
+%
+% ONE FIELD ADDED BEYOND THE MASTER: `doi` = 10.3982/ECTA10771, taken from the
+%   master's own bdsk-url-1 with the dx.doi.org resolver prefix stripped. ON DISK in
+%   both masters; independently confirmed by (2) above. Same move as
+%   `centorrinofeveflorens2019` and `poirier2017`.
+%
+% ONE FIELD DROPPED THAT IS NOT HOUSEKEEPING: `publisher = {Blackwell Publishing Ltd}`.
+%   Master's exact text quoted so nothing is lost. Omitted rather than carried
+%   because biblatex authoryear does not print `publisher` for @article — the
+%   rendering is unchanged — and because the `publisher` field is where both masters
+%   keep their six-apiece BARE UNESCAPED AMPERSANDS ("Taylor & Francis", "John
+%   Wiley & Sons"), each a latent "Misplaced alignment tab character &" for any
+%   style that does print it. THIS PARTICULAR VALUE CONTAINS NO AMPERSAND and was
+%   not itself dangerous; the omission is prophylactic and follows the `beyhum2024`
+%   precedent, where the same field in the same position did carry one.
+%
+% WHY IT IS HERE. positioning.md §4's objection table, row 1: "Isn't this a corollary
+% of Chen--Pouzo?" — asked by any sieve-trained referee, and §1.5 concedes the
+% framework-level overlap outright ("Under the amended A1 our model is of that
+% form"). The prepared answer is four reasons, and the introduction is where they go:
+% (1) their residual is finite-dimensional, ours is a continuum in u and t — and by
+% Dominguez & Lobato (2004) an arbitrarily chosen finite family need not be
+% equivalent to the conditional restriction at all; (2) PSMD needs a nonparametric
+% estimate of E[.|ΔZ] with dim ΔZ = 3--5, which is exactly what the Bierens device
+% removes; (3) their theta-asymptotics need stochastic equicontinuity over the sieve,
+% and an LF iterate with a data-driven stopping rule is not Donsker; (4) no negative
+% result, no panel. The claim being pre-empted is FRAMEWORK-LEVEL, not RESULT-LEVEL,
+% and the entry is filed in Area B because the overlap is about root-n normality for
+% a regular functional under a sieve Riesz representer condition.
+@article{chen2012b,
+	author = {Chen, Xiaohong and Pouzo, Demian},
+	doi = {10.3982/ECTA10771},
+	issn = {1468-0262},
+	journal = {Econometrica},
+	number = {3},
+	pages = {1013--1079},
+	title = {{Sieve Wald and QLR Inferences on Semi/Nonparametric Conditional Moment Models}},
+	volume = {83},
+	year = {2015}}
+
+
+% ---------------------------------------------------------------------------
+% AREA A — Partially linear IV. [COPIED-MASTER] x1, [COPIED-REPO] x1.
+%   THE TWO NAMED COMPETITORS. annotated_bibliography.md §A3 and §A4.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER] — instrumental.bib:2327--2337, and DNN_IV/instrumental.bib:2146--2156,
+%   which are BYTE-IDENTICAL to each other. Dropped: `date-added`, `date-modified`
+%   (housekeeping) and `publisher` (see below). Neither master carries a doi or a
+%   bdsk-url for this entry.
+%
+% THE KEY SAYS 2006 AND THE PAPER IS 2012. Another fossil, and this file's own
+%   annotated_bibliography.md §A3 already labels it "IN BIB (key misleads)" and
+%   closed the question at plan §5: "The entry is the published version, year 2012.
+%   Key name and singular/plural title are cosmetic." The paper is
+%   Florens, Johannes & Van Bellegem (2012), The Econometrics Journal 15(2),
+%   304--324 — positioning.md §3 COMPETITOR 1. Keep the key.
+%
+% THE WORST KEY COLLISION IN THE REPOSITORY LIVES ON THIS ENTRY. READ HEADER
+%   HAZARD (5) BEFORE MERGING ANYTHING. The sibling in-repo bibliography carries
+%   THIS PAPER under the key `florens2012`
+%   (volatility-loc-scale/references.bib:69--74) — and `florens2012` IN THIS FILE
+%   is Florens, Racine & Centorrino (2018), a completely different paper, added at
+%   pass 4. So:
+%       this file:  florens2006 = FJVB 2012 ;  florens2012 = FRC 2018
+%       sibling:    florens2012 = FJVB 2012 ;  FRC 2018 absent
+%   A naive merge silently drops one paper and resolves the surviving key to the
+%   wrong work, with no biber warning, because the key resolves. THE MASTER'S KEY
+%   `florens2006` IS USED HERE because it is what both masters use, what
+%   positioning.md §3 uses, and what annotated_bibliography.md §A3 uses — three of
+%   the four naming sources, including both of this project's own artifacts.
+%   NOT FIXED IN THE SIBLING: renaming a key there would break that project's live
+%   citations. Resolve by hand at the merge.
+%   Distinguish also from the master's neighbours `florens2002` (Florens &
+%   Malavolti, working paper), `florens2003` (@inbook) and `florens2008` (Florens,
+%   Heckman, Meghir & Vytlacil, Econometrica 76(5)) — none of them this paper, none
+%   of them in this file.
+%
+% VERIFIED 2026-07-31 — every field. Note honestly that sources (1) and (2) are
+% BYTE-IDENTICAL and therefore ONE reading duplicated, not two independent ones;
+% the genuine corroboration is (3) and (4).
+%   (1) instrumental.bib:2327--2337 (authoritative master).
+%   (2) DNN_IV/instrumental.bib:2146--2156 — byte-identical to (1).
+%   (3) ON DISK, IN REPO, INDEPENDENTLY TRANSCRIBED: this project's own
+%       annotated_bibliography.md:69 (§A3) — "The Econometrics Journal 15(2),
+%       304–324" — and the sibling's references.bib:71 and its
+%       annotated_bibliography.md:262 — "Econometrics Journal 15, 304-324".
+%   (4) Crossref, queried 2026-07-31, DOI 10.1111/j.1368-423x.2011.00358.x:
+%       authors Jean-Pierre Florens (Toulouse 1, TSE), Jan Johannes (UCLouvain,
+%       ISBA), Sébastien Van Bellegem (UCLouvain, CORE); container-title "The
+%       Econometrics Journal"; volume 15; issue 2; page 304-324; year 2012.
+%   Volume, issue, pages, year, journal and author list agree across all four.
+%
+% ONE DEPARTURE FROM THE MASTER TEXT — A TYPO IN BOTH MASTERS, CORRECTED.
+%   Both masters read:  title = {{Instrumental Regressions in Partially Linear Models}}
+%   — "RegressionS", plural. The published title is SINGULAR, "Instrumental
+%   Regression in Partially Linear Models". Corrected here. THE WARRANT IS NOT MY
+%   SPELLING and it is not the web alone — THREE ON-DISK IN-REPO FILES already print
+%   the singular form, including this project's own critic-cleared Stage-1 artifact:
+%     - annotated_bibliography.md:69 (THIS project, 86/100) — "Instrumental
+%       Regression in Partially Linear Models";
+%     - volatility-loc-scale/references.bib:71 — same, singular;
+%     - volatility-loc-scale/annotated_bibliography.md:262 — same, singular;
+%   and Crossref (4) returns "Instrumental regression in partially linear models".
+%   Propagating the plural would have put the bibliography at odds with the very
+%   annotated bibliography the introduction is drafted from — drift away from the
+%   project's own artifacts, which inverts the purpose of N-21. Same class of change
+%   as the `Jounal of Nonparametric Statistics` fix on `florens2012` in pass 4, with
+%   a stronger warrant because three of the corroborating sources are on disk.
+%   FIX IT IN BOTH MASTERS AT THE MERGE. The master's exact text is quoted above so
+%   the original is recoverable from this file without opening Dropbox.
+%   The double braces are the master's own and are KEPT: they protect the Title Case
+%   from a style that would sentence-case it.
+%
+% ONE FIELD DROPPED THAT IS NOT HOUSEKEEPING: `publisher = {Blackwell Publishing Ltd}`,
+%   master's exact text. Omitted for the same reason as on `chen2012b` above:
+%   biblatex authoryear does not print it for @article, so the rendering is
+%   unchanged, and `publisher` is the field where the masters keep their bare
+%   unescaped ampersands. This value contains none; the omission is prophylactic.
+%
+% NO `doi` FIELD IS ADDED, DELIBERATELY. Neither master carries one, so unlike
+%   `poirier2017` and `chen2012b` there is no on-disk warrant for it and adding it
+%   would require the first `% ON-DISK UNVERIFIED` flag of this pass for a field
+%   nothing needs. FOR THE RECORD, so a later pass need not re-derive it: Crossref
+%   gives 10.1111/j.1368-423x.2011.00358.x (DOIs are case-insensitive; the canonical
+%   Wiley form capitalises the X). ADD IT DELIBERATELY OR NOT AT ALL.
+%
+% WHY IT IS HERE. positioning.md §3 COMPETITOR 1, proximity 1: Tikhonov
+% regularisation of the linear ill-posed equation, with sqrt-n normality of
+% theta-hat under a source-type condition — the closest prior result on the
+% root-n-for-the-parametric-component axis. The introduction must distinguish it,
+% and the one-liner is already drafted at §3: "Florens, Johannes and Van Bellegem
+% (2012) obtain sqrt-n inference on theta when the nuisance solves a LINEAR
+% ill-posed equation; with a binary instrument the equation is nonlinear, the
+% adjoint depends on the unknown structural function, and the projection argument
+% that partials out phi is unavailable." Also: no panel; a continuous instrument, so
+% the projection route is open to them; no conditioning variable, hence no Bierens
+% device.
+@article{florens2006,
+	author = {Florens, Jean-Pierre and Johannes, Jan and {Van Bellegem}, S\'{e}bastien},
+	journal = {The Econometrics Journal},
+	number = {2},
+	pages = {304--324},
+	title = {{Instrumental Regression in Partially Linear Models}},
+	volume = {15},
+	year = {2012}}
+
+% [COPIED-REPO] — character-for-character from
+%   quality_reports/literature/volatility-loc-scale/references.bib:580--588,
+%   INCLUDING ITS FORMATTING (two-space indent, aligned `=`), so that `diff`
+%   between the two in-repo files stays empty for this entry. That is the PASS 3
+%   [COPIED-REPO] contract and it holds here because NOTHING WAS ADDED: no `doi`,
+%   no `issn`, no field of any kind.
+%
+% THE ONE KEY IN THIS PASS THAT SAYS WHAT IT MEANS. `florenslapenta2024` is
+%   Florens & Lapenta (2024) — key year and publication year agree, no fossil, no
+%   near-collision. Checked against every `*lapenta*` key on disk: the only others
+%   are `beyhumlapentalavergne2025` (Beyhum, Lapenta & Lavergne, Econometrics J.
+%   28(2), 176--197 — in both masters and in the sibling, on this file's "already in
+%   instrumental.bib" roll, not an entry here) and `girardlapenta2026` (Girard &
+%   Lapenta, arXiv:2604.11393 — an entry in Area A of this file, above). Three
+%   distinct Lapenta papers, three distinct keys, no ambiguity.
+%
+% VERIFIED 2026-07-31 — TWO ON-DISK SOURCES, INDEPENDENTLY TRANSCRIBED, AGREEING ON
+% EVERY FIELD, AND WITH NO DEPARTURE OF ANY KIND. This is the cleanest entry of the
+% pass: nothing corrected, nothing added, nothing flagged.
+%   (1) Dropbox/Nonparametric_IV/instrumental.bib:3662--3669 — the authoritative
+%       master. Author "Florens, Jean-Pierre and Lapenta, Elia"; TEST; volume 33;
+%       number 3; pages 897--920; year 2024; title "Partly linear instrumental
+%       variables regressions without smoothing on the instruments". Carries no
+%       BibDesk housekeeping at all, and no doi or bdsk-url.
+%   (2) volatility-loc-scale/references.bib:580--588 — in-repo. IDENTICAL FIELD
+%       VALUES AND IDENTICAL AUTHOR NAME FORM; the two differ only in whitespace.
+%       That is why repo-first could be honoured here without any loss: unlike
+%       `chen2012b`, the in-repo copy is correct, and unlike `poirier2017`, the
+%       master has nothing extra to contribute.
+%   Corroborated in prose by this project's own annotated_bibliography.md §A4 and
+%   positioning.md §3 Competitor 2, both "TEST 33(3), 897--920".
+%
+% DISAGREEMENT BETWEEN THE TWO MASTERS: ABSENT FROM DNN_IV ENTIRELY — no such key,
+%   and zero hits for the surname "Lapenta" anywhere in that file. Same situation as
+%   `poirier2017`: absence, not staleness. ADD IT TO DNN_IV AT THE MERGE if that
+%   file is kept.
+%
+% WHY IT IS HERE. positioning.md §3 COMPETITOR 2, proximity 1: the same partly
+% linear model attacked by LANDWEBER--FRIDMAN — this paper's own regulariser —
+% while avoiding smoothing on the instruments. It is therefore the competitor
+% closest to this project's machinery, and the distinction is a fine one that the
+% introduction must draw precisely rather than gesture at. The drafted one-liner
+% (§3): "Florens and Lapenta (2024) apply Landweber--Fridman to a partly linear
+% model with a LINEAR conditional-mean operator and keep the instrument out of the
+% smoothing by FIXING ITS BANDWIDTH. We apply it to a nonlinear operator generated
+% by an independence restriction, keep the conditioning variables out of the
+% smoothing by a Bierens weight family — EXACT RATHER THAN APPROXIMATE — and obtain
+% sqrt-n inference through a Neyman-orthogonal moment rather than a projection."
+% The load-bearing words are "linear" and "fixed-bandwidth": their device is not a
+% conditional-to-unconditional conversion and comes with no consistency guarantee.
+% No panel, no orthogonalisation, no cross-fitting.
+@article{florenslapenta2024,
+  author  = {Florens, Jean-Pierre and Lapenta, Elia},
+  title   = {Partly linear instrumental variables regressions without smoothing on the instruments},
+  journal = {TEST},
+  volume  = {33},
+  number  = {3},
+  pages   = {897--920},
+  year    = {2024}
+}
+
+% ---------------------------------------------------------------------------
+% PASS 6 — one entry, closing the Chen--Pouzo pair. [COPIED-MASTER] x1.
+%
+% WHY A WHOLE PASS FOR ONE ENTRY. positioning.md Sec.3 cites Competitor 3 as
+%   "Chen & Pouzo (2012, 2015)". PASS 5 added only the 2015 half (`chen2012b`),
+%   leaving the introduction able to cite one of a matched pair. This closes it.
+%
+% THE PAIR, AND NEITHER KEY SAYS WHAT IT MEANS:
+%   `chen2012`   = Chen & Pouzo (2012), Econometrica 80(1),  277--321.  THIS ENTRY.
+%   `chen2012b`  = Chen & Pouzo (2015), Econometrica 83(3), 1013--1079. PASS 5.
+%   Both are fossils. DO NOT rename either to match its publication year, and do
+%   not merge them: they are different papers.
+%
+% [COPIED-MASTER], Nonparametric_IV/instrumental.bib:2145--2153, which is
+%   BYTE-IDENTICAL to DNN_IV/instrumental.bib:1974--1982. Zero disagreement on any
+%   field; the second master is not stale here. Master text, verbatim:
+%     @article{chen2012,
+%       author = {Chen, Xiaohong and Pouzo, Demian},
+%       journal = {Econometrica}, number = {1}, pages = {277--321},
+%       title = {{Estimation of Nonparametric Conditional Moment Models With
+%                 Possibly Nonsmooth Generalized Residuals}},
+%       volume = {80}, year = {2012}, publisher = {Blackwell Publishing Ltd}}
+%
+% THE WEB WAS NOT USED AT ALL on this pass — not to source a field, not to
+%   adjudicate one, because the two masters agree byte-for-byte. No field carries
+%   `% ON-DISK UNVERIFIED`. PASS 5 was the first pass to add no unverified flag;
+%   this is the first to need no online lookup of any kind.
+%
+% MASTER vs SIBLING, and a CORRECTION TO HAZARD (6) ABOVE.
+%   volatility-loc-scale/references.bib:82--86 DOES carry `chen2012`, and on
+%   journal, volume, number, pages, author and year it is CORRECT and agrees with
+%   the masters. Hazard (6) — the sibling attributing a Chen--Pouzo paper to
+%   "Annals of Statistics" 43, 1011--1044 — applies to `chen2012b` AND TO IT
+%   ALONE. Do not generalise it to `chen2012`, and do not "fix" the sibling's
+%   `chen2012` at the merge.
+%   The ONLY disagreement is the title: masters have "...Models With Possibly..."
+%   in double braces, the sibling "...Models with Possibly..." in single. The
+%   masters' form is adopted per the standing Nonparametric_IV preference, and it
+%   is right on the merits (Econometrica capitalises the preposition) and matches
+%   how PASS 5 rendered the paired `chen2012b`. THIS IS NOT A "DEPARTURE" CASE:
+%   the two title overrides in this file (`florens2012`'s "Jounal",
+%   `florens2006`'s "Regressions") were word-level typos in the master. Here there
+%   is no typo, only a case convention. Three in-repo files print lowercase "with"
+%   (annotated_bibliography.md:117 and the sibling's two) but those are PROSE
+%   renderings, not bibliographic transcriptions, and do not adjudicate.
+%
+% TWO DELIBERATE OMISSIONS, both on settled precedent:
+%   `publisher = {Blackwell Publishing Ltd}` dropped — biblatex authoryear does not
+%     print it for @article, and `publisher` is where both masters keep their bare
+%     unescaped ampersands. Precedent: beyhum2024, chen2012b, florens2006.
+%   NO `doi`, NO `issn` — and the asymmetry with `chen2012b` is real and intended.
+%     That entry could take both because its master record carries a bdsk-url and an
+%     issn. THIS master record carries no BibDesk housekeeping whatsoever. Adding a
+%     DOI would need a web lookup and would spend the first unverified flag since
+%     pass 4 on a field nothing renders. Same reasoning as florens2006.
+%
+% NEW HAZARD FOUND WHILE HERE, for the validate-bib roll — a FOURTH duplicate pair
+%   in the master: `chen2011` (master:2134--2143) and `chenreiss2011`
+%   (master:3710--3717) are THE SAME PAPER, Chen & Reiss, Econometric Theory 27(3),
+%   497--521, differing in title case, page dash and the `Rei{\ss}` spelling.
+%   `chen2011` sits DIRECTLY ABOVE `chen2012` in the master, so anyone copying by
+%   line number is one entry away from the wrong paper. `chenreiss2011` is the key
+%   this file deliberately excludes as uncited.
+%
+% Bibliography_base.bib: zero hits for "chen" and "pouzo". No collision.
+% ---------------------------------------------------------------------------
+@article{chen2012,
+	author = {Chen, Xiaohong and Pouzo, Demian},
+	journal = {Econometrica},
+	number = {1},
+	pages = {277--321},
+	title = {{Estimation of Nonparametric Conditional Moment Models With Possibly Nonsmooth Generalized Residuals}},
+	volume = {80},
+	year = {2012}}
+
+% ---------------------------------------------------------------------------
+% PASS 7 — one entry, Area L. [COPIED-MASTER] x1.
+%
+% WHY. main.qmd Sec.3 asserts "Lepskii-type balancing over the regularisation
+%   index is purely data-driven and attains the optimal rate up to a logarithmic
+%   factor" with NO CITATION, while the sentence immediately above it cites
+%   `bakushinskii1984` — the veto AGAINST purely data-driven selection. The paper
+%   was citing the authority against and asserting the authority for. Flagged as
+%   D8 in quality_reports/reviews/manuscript_review_main-qmd_2026-07-31.md, and
+%   load-bearing for OBES specifically: that paragraph is the answer to the
+%   journal profile's standing question, "What do I set the tuning parameter to?"
+%
+% [COPIED-MASTER], Nonparametric_IV/instrumental.bib:3590--3597, verbatim.
+%   THE MASTER IS A STRICT SUPERSET of the in-repo sibling copy at
+%   volatility-loc-scale/references.bib, which carries the same author, title,
+%   journal, volume, pages and year but OMITS `number = {3}`. No field conflicts
+%   between them — this is the one case so far where master and sibling agree and
+%   the master simply knows more, so repo-first does not arise as a question.
+%
+% NO `doi`. The master record carries none, and Theory of Probability and Its
+%   Applications 35(3) predates routine DOI assignment. Adding one would need a
+%   web lookup and an unverified flag for a field nothing renders. Consistent with
+%   florens2006 and chen2012.
+%
+% NOT TO BE CONFUSED WITH the Lepskii-method literature this file does NOT carry
+%   (Mathe & Pereverzev, Bauer & Hohage — `bauerhohage2005` sits directly below it
+%   in the master at :3599). If the paper ever needs the *inverse-problems*
+%   formulation of the balancing principle rather than the original Gaussian
+%   white-noise one, that is the entry to copy, and it is a different citation.
+%
+% ON-DISK UNVERIFIED: none. Two on-disk sources agree; the web was not used.
+% ---------------------------------------------------------------------------
+@article{lepskii1990,
+	author = {Lepskii, O. V.},
+	journal = {Theory of Probability and Its Applications},
+	number = {3},
+	pages = {454--466},
+	title = {On a problem of adaptive estimation in {G}aussian white noise},
+	volume = {35},
+	year = {1990}}
+
+% =============================================================================
+% PASS 8 — SEVEN ENTRIES. THE MATH-REFERENCE CLOSURE PASS.
+%   Six books supplied by the author + Adams. EVERY LOCATOR BELOW WAS READ OFF
+%   THE OBJECT ON DISK, not recalled. FIVE OF THE CLAIMED LOCATORS WERE WRONG;
+%   the corrections are recorded at each entry under "PIN CORRECTED".
+%   None of these keys is cited in any .tex yet — the theorist owns the sites.
+% =============================================================================
+
+% ---------------------------------------------------------------------------
+% AREA P — Probability, concentration and empirical-process tools (NEW AREA).
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER] Nonparametric_IV/instrumental.bib:3677--3681, verbatim.
+%   Absent from DNN_IV, volatility-loc-scale and Bibliography_base.
+% VERIFIED 2026-08-01 ON DISK: OUP, First Edition 2013, ISBN 978-0-19-953525-5.
+% PIN VERIFIED: Thm 6.2 bounded differences, p.171 sec 6.1 <- as claimed.
+%               Lemma 2.2 Hoeffding's lemma, p.27 sec 2.3.
+%               Thm 2.10 Bernstein, p.37 + Cor 2.11, p.38 <- as claimed.
+% PIN CORRECTED: BENNETT'S INEQUALITY IS **THEOREM 2.9**, p.35 sec 2.7 -- NOT
+%   Thm 2.10, which is Bernstein under a moment condition. Different results.
+% NUMBERING HAZARD: display "(2.10)" p.36 is the CLASSICAL Bernstein bound, an
+%   EQUATION, not Theorem 2.10.
+% NOT FOUND: no numbered Azuma result exists in this book. The Doob-filtration
+%   route is NARRATIVE, sec 1.1 pp.3--4; the subject index has NO "Azuma" entry.
+@book{blm2013,
+	author = {Boucheron, St{\'e}phane and Lugosi, G{\'a}bor and Massart, Pascal},
+	publisher = {Oxford University Press},
+	title = {Concentration Inequalities: A Nonasymptotic Theory of Independence},
+	year = {2013}}
+
+% [CREATED FROM THE OBJECT] absent from all five .bib files.
+% THE EDITION DECIDES EVERY NUMBER AND IT IS **THE FIRST, 1997**: (C) 1997
+%   Applied Probability Trust; ISBN 0-387-94957-7; LCCN 97-5787; Preface signed
+%   May 1997; 23 chapters ending p.433. THE 2ND (2002) AND 3RD (2021) RENUMBER
+%   HEAVILY. Every pin below is 1st-edition numbering.
+% SERIES DISCREPANCY ON THE OBJECT: printed banner reads "Probability and its
+%   Applications"; the LC block on the same page says "Springer series in
+%   statistics". The printed banner is used.
+% PIN VERIFIED: Thm 5.1 conditional expectation (Kolmogorov), p.81 -- THIS IS
+%   THE QUASI-INTEGRABLE ONE; its clause "The following additional properties
+%   hold whenever the corresponding expressions exist for the absolute values"
+%   names exactly which operations survive.
+%   Thm 5.4 disintegration, p.85 (with Thm 5.3, conditional distribution, p.84).
+%   Lemma 2.11 conditioning, p.29 -- THE FREEZING LEMMA. Note it is an
+%   EXPECTATION identity in Ch.2; the conditional form is Thm 5.4 at nu = P.
+%   CITE BOTH if the proof freezes under a conditioning sigma-field.
+@book{kallenberg1997,
+	address = {New York},
+	author = {Kallenberg, Olav},
+	isbn = {0-387-94957-7},
+	publisher = {Springer-Verlag},
+	series = {Probability and its Applications},
+	title = {Foundations of Modern Probability},
+	year = {1997}}
+
+% [COPIED-MASTER] Nonparametric_IV/instrumental.bib:3671--3675, verbatim.
+% VERIFIED 2026-08-01 ON DISK: Springer Series in Statistics, (C) 1996,
+%   ISBN 978-1-4757-2547-6, DOI 10.1007/978-1-4757-2545-2, LCCN 95-49099.
+%   NOT enriched with isbn/doi/series: N-21 keeps this byte-identical to master.
+% PIN VERIFIED: OUTER EXPECTATION is sec 1.2 "Outer Integrals and Measurable
+%   Majorants", p.6 -- Lemma 1.2.1 (measurable cover), 1.2.2 (the *-algebra),
+%   1.2.3 (outer probability), 1.2.4 (dominated family). sec 1.1 is an
+%   INTRODUCTION carrying no numbered result, so "secs 1.1--1.2" resolves to 1.2.
+% PIN CORRECTED: THE SEPARABLE-VERSION DEVICE IS **NOT** IN sec 1.2. It is
+%   sec 1.7 "The Ball Sigma-Field and Measurability of Suprema", pp.45--48:
+%   Example 1.7.4 (pointwise separable processes) and Example 1.7.5 (measurable
+%   supremum, Suslin index set). THESE ARE NUMBERED **EXAMPLES**, not theorems.
+% M-7 REMAINS OPEN AND THIS ENTRY DOES NOT CLOSE IT: Thm 2.7.1 covers HOLDER
+%   balls at an exponent HALF AN ORDER WORSE than the Birman--Solomjak Sobolev
+%   bound (F-e) needs. NOT a substitute; do not pin it as one.
+@book{vandervaart1996,
+	author = {van der Vaart, Aad W. and Wellner, Jon A.},
+	publisher = {Springer},
+	title = {Weak Convergence and Empirical Processes: With Applications to Statistics},
+	year = {1996}}
+
+% ---------------------------------------------------------------------------
+% AREA O — Operator theory (EXTENDED: was 3 entries, now 5).
+% ---------------------------------------------------------------------------
+
+% [CREATED FROM THE OBJECT] absent from all five .bib files. (The masters' only
+%   "Kato" is Kengo Kato, co-author of belloni2014 -- A DIFFERENT PERSON.)
+% VERIFIED 2026-08-01 ON DISK, two title pages in one PDF: OUTER "Reprint of the
+%   1980 Edition", Classics in Mathematics, ISBN 3-540-58661-X, (C) 1995;
+%   INNER "Corrected Printing of the Second Edition", 1980, LCCN 76-4553.
+%   Key follows the object; numbering is the 1980 2nd edition's, IDENTICAL in
+%   the reprint. No number={132}: it would render as a Classics volume number.
+% PIN VERIFIED, SECTION RIGHT, NUMBER SUPPLIED: Ch.IV sec 5.6 "Structure of the
+%   spectrum of a closed operator", p.242, is the right section, and the result
+%   is **THEOREM 5.35, p.244**: "The essential spectrum is conserved under a
+%   relatively compact perturbation." ITS FOOTNOTE 1 SAYS: "The theorem was
+%   proved by WEYL [1] for selfadjoint operators" -- so Kato himself names it,
+%   and the corpus's case is a STRICT SPECIAL CASE. Cite Kato (1995, Thm IV.5.35).
+% PIN FOUND: THE WEYL CRITERION IS NOT IN sec 5.6. It is **Theorem IV.5.11,
+%   p.233** (Kato's footnote attributes it to Wolf); pair-of-subspaces version
+%   Thm IV.4.23, p.227; link to Sigma_e is eq.(5.33), p.242. KATO NOWHERE USES
+%   THE PHRASE "Weyl criterion" -- do not pin it as a name.
+@book{kato1995,
+	address = {Berlin},
+	author = {Kato, Tosio},
+	edition = {2},
+	isbn = {3-540-58661-X},
+	note = {Reprint of the 1980 edition; originally published as vol. 132 of the Grundlehren der mathematischen Wissenschaften},
+	publisher = {Springer-Verlag},
+	series = {Classics in Mathematics},
+	title = {Perturbation Theory for Linear Operators},
+	year = {1995}}
+
+% [CREATED FROM THE OBJECT] absent from all five .bib files.
+% VERIFIED 2026-08-01 ON DISK: GTM 19, 2nd Edition Revised and Enlarged,
+%   (C) 1974, 1982 Springer-Verlag New York, ISBN 978-1-4684-9332-0,
+%   DOI 10.1007/978-1-4684-9330-6, LCCN 82-763.
+% PIN CORRECTED, AND THE RESULT IS NOT A NUMBERED PROBLEM AT ALL:
+%   Problem 220 is "CONTINUITY OF NUMERICAL RANGE", p.117 -- NOT the identity.
+%   What the corpus wants is UNNUMBERED NARRATIVE: sec 218 "Numerical radius",
+%   p.117 (1/2||A|| <= w(A) <= ||A||), and sec 219: "If A is normal, then
+%   w(A) = ||A||." NO PROOF, NO PROBLEM NUMBER. Best pin: \citet[\S219]{halmos1982}.
+% THE FIELD -- DECISIVE. HALMOS IS COMPLEX-ONLY. Problem 210, p.112: "the set
+%   W(A) of all COMPLEX numbers of the form (Af,f)". Over R the identity is FALSE
+%   for general operators (a 90-degree rotation has <Ah,h> == 0) though true for
+%   self-adjoint S. THE CORPUS'S INLINE REAL-FIELD PROOF MUST STAY; this entry
+%   supports a "see also", NOT a discharge.
+% BONUS, BEARING ON M-6: Halmos DOES carry the multiplication-operator facts
+%   scoped to Conway GTM 96 -- Problem 64 "Norm of a multiplication", p.35
+%   (||M_phi|| = ||phi||_inf, sigma-finite) and Problem 67 "Spectrum of a
+%   multiplication", p.35 (spectrum = essential range of the multiplier).
+%   LIMIT THAT MATTERS: Halmos gives the SPECTRUM, not the ESSENTIAL spectrum.
+%   On a NON-ATOMIC space they coincide, but HALMOS DOES NOT SAY SO. M-6 is
+%   PARTIALLY closed; the non-atomic step remains uncited.
+@book{halmos1982,
+	address = {New York},
+	author = {Halmos, Paul R.},
+	doi = {10.1007/978-1-4684-9330-6},
+	edition = {2},
+	isbn = {978-1-4684-9332-0},
+	number = {19},
+	publisher = {Springer-Verlag},
+	series = {Graduate Texts in Mathematics},
+	title = {A Hilbert Space Problem Book},
+	year = {1982}}
+
+% [CREATED FROM THE OBJECT] absent from all five .bib files. Filed in Area O for
+%   its CONFIRMED role (M-9); its Area M role is CONTESTED -- read beside adams1975.
+% VERIFIED 2026-08-01 ON DISK: Universitext, Springer, ISBN 978-0-387-70913-0,
+%   DOI 10.1007/978-0-387-70914-7, LCCN 2010938382, (C) 2011. THIS IS THE ENGLISH
+%   EDITION; the Preface records a 1983 French predecessor. No edition number on
+%   the title page, so none is asserted. French/English numbering differ.
+% PIN VERIFIED -- M-9 IS EXACTLY RIGHT: Theorem 2.2 (Banach--Steinhaus, uniform
+%   boundedness), p.32 sec 2.2, WITH THE UNCOUNTABLE-INDEX CLAUSE the corpus needs.
+% PIN PARTIAL -- M-3a: Thm 8.8, p.212, IS the 1-D Sobolev embedding, but it is
+%   W^{1,p}(I) -> L^inf(I), **INTEGER ORDER ONLY**. This book has NO fractional
+%   H^s. The nearest H^2 -> C^1 statement is an UNNUMBERED remark, p.217.
+% PIN CORRECTED -- M-3b: COROLLARY 8.10, p.215, IS "DIFFERENTIATION OF A PRODUCT".
+%   It is NOT an embedding of any kind. There is no H^mu -> C_b^1 corollary here.
+% THE CONSTANT -- THE QUESTION THAT DECIDES rem:l21route(d): THE THEOREM AS
+%   STATED SUPPLIES NONE ("There exists a constant C"). The PROOF goes further but
+%   not far enough: display (8), p.213, gives C = e^{1/e} ~ 1.4447 FOR I = R ONLY
+%   (footnote 7, via p^{1/p} <= e^{1/e}); for a general interval it chains through
+%   Thm 8.6's extension operator, footnote 6, p.209: "C = 4 in (ii) and
+%   C = 4(1+1/|I|) in (iii)". TRACEABLE, NEVER STATED, INTEGER ORDER ONLY.
+%   NOT the corpus's own sqrt(2) and 2. THE INLINE PROOF IS NOT DISCHARGED.
+@book{brezis2011,
+	address = {New York},
+	author = {Brezis, Haim},
+	doi = {10.1007/978-0-387-70914-7},
+	isbn = {978-0-387-70913-0},
+	publisher = {Springer},
+	series = {Universitext},
+	title = {Functional Analysis, Sobolev Spaces and Partial Differential Equations},
+	year = {2011}}
+
+% ---------------------------------------------------------------------------
+% AREA M — Approximation and function-space theory (EXTENDED: was 2, now 3).
+%   READ BESIDE brezis2011 IN AREA O: two candidates for the SAME item (M-3),
+%   and NEITHER discharges the constant. Verdict at the foot of this entry.
+% ---------------------------------------------------------------------------
+
+% [CREATED FROM THE OBJECT] absent from all five .bib files. THE SCAN HAS NO TEXT
+%   LAYER; every field was read VISUALLY off the rendered pages.
+% THE EDITION IS THE FIRST, 1975 -- CONFIRMED, AND IT DECIDES THE NUMBER.
+%   Title page: "SOBOLEV SPACES / ROBERT A. ADAMS / ACADEMIC PRESS 1975", series
+%   "Pure and Applied Mathematics", eds. Eilenberg & Bass. NO Fournier, no edition
+%   statement, 268 numbered pages. The claimed locator "Thm 4.12 Part I Case A" is
+%   ADAMS & FOURNIER (2003), THE SECOND EDITION -- a different book. The Preface
+%   settles it in the author's own words: "the very important Sobolev imbedding
+%   theorem (THEOREM 5.4)".
+%   NO isbn, NO LCCN, NO SERIES VOLUME: THE COPYRIGHT PAGE IS ABSENT FROM THE SCAN.
+%   Those fields were NOT supplied from recall. Add them only against a hard copy.
+% PIN CORRECTED TWICE -- THE NUMBER AND THE CASE:
+%   (1) THE THEOREM IS **5.4**, p.97, not 4.12.
+%   (2) **CASE A IS THE WRONG BRANCH.** Part I Case A (mp < n) yields W^{j,q} and
+%       L^q targets and CANNOT produce a continuous target. The embedding into
+%       continuous functions is PART I **CASE C** (mp > n), display (8), p.97.
+% FRACTIONAL ORDER -- WHERE ADAMS BEATS BREZIS, AND WHERE IT STOPS:
+%   Thm 7.57(c), p.217: "If n < (s-j)p ... then W^{s,p} -> C_B^j." At n=1, p=2
+%   this is EXACTLY the corpus's two thresholds: j=0 => s > 1/2; j=1 => mu > 3/2.
+%   **THE HYPOTHESIS FAILS AT n=1 AND THIS MUST BE PRINTED IF THE PIN IS USED**:
+%   Thm 7.57 is stated for "1 < p < n", and here p > n. Adams himself, p.218:
+%   "The restriction p < n in the above theorem is unnatural and was placed only
+%   for the purpose of achieving a very simple proof." Thm 7.58 drops it but
+%   targets W^{chi,q} with q < infinity -- it cannot reach C_B^j -- and is given
+%   WITHOUT PROOF.
+% THE CONSTANT: NO. sec 5.3, p.97, states the policy -- the constant "can be
+%   chosen to depend on Omega only through the dimension n and various such
+%   parameters of the cone C". CHARACTERISED, NEVER EVALUATED.
+% VERDICT ON M-3, BOTH CANDIDATES, ON THE CORPUS'S CRITERION (compact interval,
+%   non-integer s, EXPLICIT CONSTANT): **NEITHER DISCHARGES rem:l21route(d). THE
+%   INLINE PROOF STAYS.** If a pin is wanted for the FORM: ADAMS Thm 7.57(c) for
+%   the THRESHOLDS at non-integer order, WITH the p < n caveat printed; BREZIS
+%   Thm 8.8 for the 1-D INTEGER-order case, where the constant is at least
+%   traceable.
+@book{adams1975,
+	address = {New York},
+	author = {Adams, Robert A.},
+	publisher = {Academic Press},
+	series = {Pure and Applied Mathematics},
+	title = {Sobolev Spaces},
+	year = {1975}}
+
+% =============================================================================
+% PASS 9 — TWO ENTRIES for the one-step definition's running text, which named
+%   both works with no \cite call. AREA J (semiparametric efficiency anchors).
+% =============================================================================
+
+% [COPIED-MASTER, THEN ENRICHED] Nonparametric_IV/instrumental.bib:890--904.
+%   THE KEY IS `newey1994h` AND IT IS A FOSSIL -- the trailing "h" is Handbook,
+%   not a year or a disambiguator. DO NOT CREATE `neweymcfadden1994`: this entry
+%   is in the master AND in the sibling volatility-loc-scale/references.bib under
+%   the same key, so a composed key would have been the fourth duplicate-pair
+%   hazard on this file's validate-bib roll.
+%   Master text carried, verbatim: author, pages, publisher, series, title,
+%   volume, year. DROPPED: abstract (172 words), date-added, date-modified,
+%   bdsk-url-1/2 -- this file's settled practice for BibDesk housekeeping.
+%   ENRICHED, one field, from the sibling at volatility-loc-scale:369--374:
+%     chapter = {36}   -- the sibling carries it and the master does not; it is
+%     how the corpus's prose names the work ("Newey and McFadden (1994, ch. 36)").
+%   ONE CORRECTION, and the master text is recorded so it is recoverable:
+%     master reads   pages = {2111 - 2245}   (single hyphen, spaces both sides)
+%     written here   pages = {2111--2245}    (en dash, this file's convention,
+%     the same repair applied to florens2012 at PASS 4).
+%     FIX IT IN THE MASTER AT THE MERGE.
+@incollection{newey1994h,
+	author = {Newey, Whitney K. and McFadden, Daniel},
+	booktitle = {Handbook of Econometrics},
+	chapter = {36},
+	pages = {2111--2245},
+	publisher = {Elsevier},
+	series = {Handbook of Econometrics},
+	title = {{Large sample estimation and hypothesis testing}},
+	volume = {4},
+	year = {1994}}
+
+% [COMPOSED -- NOT VERIFIED AGAINST AN OBJECT]. A NEW PROVENANCE CLASS, AND IT IS
+%   THE WEAKEST WARRANT IN THIS FILE. Read this before relying on the entry.
+%   Swept before composing, as N-21 requires: `vaart', `Asymptotic Statistics'
+%   and `vandervaart1998' return ZERO in all four .bib files on disk --
+%   Nonparametric_IV, DNN_IV, volatility-loc-scale and Bibliography_base. The
+%   only van der Vaart present anywhere is `vandervaart1996` (Weak Convergence
+%   and Empirical Processes, with Wellner), added at PASS 8 FROM THE OBJECT.
+%   THE 1998 BOOK IS A DIFFERENT WORK AND THE TWO MUST NOT BE CONFLATED: 1996 is
+%   the empirical-process monograph, 1998 is the graduate asymptotics text, and
+%   this corpus cites both for different things.
+%   NO PDF OF THE 1998 BOOK IS ON DISK, so unlike every entry in PASS 8 the
+%   fields below could not be read off a title page. They are composed at the
+%   author's instruction. The series volume (Cambridge Series in Statistical and
+%   Probabilistic Mathematics, no. 3) and the ISBN are DELIBERATELY OMITTED
+%   rather than recalled -- an omitted field is honest, a recalled one is not.
+% % ON-DISK UNVERIFIED: author, title, publisher, year, series.
+%   To discharge: open any copy, read the title page, and either confirm these
+%   five or correct them, then delete this flag and the class label above.
+@book{vandervaart1998,
+	author = {van der Vaart, Aad W.},
+	publisher = {Cambridge University Press},
+	series = {Cambridge Series in Statistical and Probabilistic Mathematics},
+	title = {Asymptotic Statistics},
+	year = {1998}}
+
+% ---------------------------------------------------------------------------
+% PASS 10 — ONE ENTRY, closing the last unsourced item on the missing-reference
+%   register (M-7). AREA M (approximation and function-space theory).
+% ---------------------------------------------------------------------------
+
+% [CREATED FROM THE OBJECT] — absent from all four .bib files on disk (grepped
+%   for both surnames; zero hits everywhere).
+% VERIFIED 2026-08-01 ON DISK — title page and table of contents of
+%   paper/birman-solomjak.pdf, supplied by the author:
+%     "AMERICAN MATHEMATICAL SOCIETY TRANSLATIONS / Series 2 / Volume 114 /
+%      Quantitative Analysis in Sobolev Imbedding Theorems and Applications to
+%      Spectral Theory / by M. S. BIRMAN and M. Z. SOLOMJAK / AMERICAN
+%      MATHEMATICAL SOCIETY / PROVIDENCE, RHODE ISLAND / 1980"
+%
+% THIS IS NOT THE WORK THE MISSING-REFERENCE REGISTER ORIGINALLY NAMED, AND THE
+%   DIFFERENCE MATTERS. M-7 was scoped to "Birman & Solomjak (1967), Mat.
+%   Sbornik 73(115)" -- the piecewise-polynomial approximation paper. THIS is the
+%   1980 AMS Translations MONOGRAPH, a longer and later work. Its
+%   **Chapter 2, "Approximation theorems. Entropy"**, is the chapter that carries
+%   the entropy material (P-4)/(F-e) needs, per the table of contents on disk.
+%
+% PIN AVAILABLE: **Ch. 2, pp. 21--35**. NO THEOREM NUMBER IS AVAILABLE AND NONE
+%   IS ASSERTED. Cite as \citet[Ch.~2]{birman1980}, NOT with a theorem number.
+%   Same chapter-level discipline the file applies at `conway2000` and at
+%   `schumaker2007`'s depinned sites.
+%
+% WARRANT UPGRADED 2026-08-02, AND THE SOURCE CHANGED. The earlier warrant was a
+%   TWO-PAGE LIBRARY ToC SCAN (dandelon service, 40 kB). The author then supplied
+%   the AMS front matter and end matter (19 pp.), which carries the BOOK'S OWN
+%   table of contents in BOTH English (p. iii) and Russian (p. v), the copyright
+%   page, the Foreword (pp. vii--viii), and the full Bibliography (pp. 125--132).
+%   Three things are now read off the book itself rather than off a catalogue:
+%     (a) Ch. 2 is "Approximation theorems. Entropy" and runs pp. 21--35
+%         (Appendix 2, "Proof of Theorems 1.4 and 1.7", begins p. 36);
+%     (b) THE NUMBERING SCHEME IS chapter.number -- the Appendix 2 title cites
+%         "Theorems 1.4 and 1.7", so a future pin takes the form "Thm. 2.x";
+%     (c) the Foreword states the approximation device "was presented by the
+%         authors in [2]" -- their own 1967 paper, now entered below as
+%         `birmansolomjak1967`.
+%
+% STILL UNREAD, AND THAT IS WHY NO THEOREM NUMBER APPEARS. The upload is FRONT
+%   MATTER AND END MATTER ONLY (its filename, "endmatter", is accurate; the
+%   author's covering note "this is the entire manuscript" is not). Pages 21--35
+%   -- the body of Ch. 2, where the numbered entropy statement lives -- ARE NOT IN
+%   IT. Nothing here licenses a theorem number and none is written.
+% CANDIDATE LOCI, RECORDED AS CANDIDATES AND NOT AS FINDINGS. Ch. 1 is
+%   "Introduction. Survey of basic results" and Appendix 2 is devoted to proving
+%   **Theorems 1.4 and 1.7**. A statement surveyed in Ch. 1 and given a dedicated
+%   proof appendix is a plausible home for the entropy bound. NOT VERIFIED -- pp.
+%   1--20 and 36--42 are also absent. To discharge: open pp. 21--35 (or pp. 1--20),
+%   find the statement, and replace [Ch.~2] with the number.
+%
+% WHAT IT IS FOR. `lem:unifop` (3c) carries a compiled tag "(F-e)" with NO
+%   CITATION ATTACHED -- a live defect, not merely a length item. The bound
+%   wanted is log N(eps, {||f||_{H^s} <= R}, ||.||_inf) <= c (R/eps)^{1/s} for
+%   s > 1/2 on a compact interval.
+%   NOTE, AND DO NOT SUBSTITUTE: van der Vaart & Wellner Thm 2.7.1 is NOT this
+%   result. It covers HOLDER balls at exponent eps^{-1/(s-1/2)}, half an order
+%   worse. `vandervaart1996` is in this file and must not be pinned here.
+%
+% % ON-DISK UNVERIFIED: none. Every field below is on the scanned title page.
+%   ISBN and page count are NOT on that page and are deliberately omitted.
+@book{birman1980,
+	address = {Providence, Rhode Island},
+	author = {Birman, M. Sh. and Solomjak, M. Z.},
+	number = {114},
+	publisher = {American Mathematical Society},
+	series = {American Mathematical Society Translations, Series 2},
+	title = {Quantitative Analysis in {S}obolev Imbedding Theorems and Applications to Spectral Theory},
+	year = {1980}}
+
+% ---------------------------------------------------------------------------
+% PASS 11 — TWO ENTRIES. One closes the ORIGINAL scoping of M-7 (the 1967
+%   paper, not the 1980 monograph); one closes M-10 and M-6a and RE-KEYS a live
+%   citation. AREA M (approximation theory) and AREA O (operator theory).
+% ---------------------------------------------------------------------------
+
+% [CREATED FROM AN OBJECT — BUT FROM A SECONDARY SOURCE, AND THAT IS THE POINT
+%   OF THIS PARAGRAPH.] Absent from all five .bib files on disk (both surnames
+%   grepped; zero hits). N-21 does not apply — there is nothing to copy.
+%
+% THIS IS THE WORK M-7 ORIGINALLY NAMED. The register scoped M-7 to "Birman &
+%   Solomjak (1967), Mat. Sbornik 73(115)" — the piecewise-polynomial
+%   approximation paper. `birman1980` above is the LATER MONOGRAPH and was
+%   entered as the nearest obtainable object; this is the paper itself.
+%
+% WARRANT, STATED EXACTLY. Every field is read off reference **[2]** of the
+%   BIBLIOGRAPHY OF THE 1980 MONOGRAPH (p. 125, in the front/end matter the
+%   author supplied on 2026-08-02):
+%     "2. M. S. Birman and M. Z. Solomjak, Piecewise-polynomial approximations
+%      of functions of the classes W_p^alpha, Mat. Sb. 73 (115) (1967),
+%      331-355; English transl. in Math. USSR Sb. 2 (1967)."
+%   The volume "73 (115)" matches the register's original scoping exactly.
+%   THIS IS THE AUTHORS CITING THEIR OWN PAPER — a strong warrant, but a
+%   SECONDARY one: it is NOT the 1967 paper's own title page. The `title` field
+%   also carries an OCR REPAIR: the scan renders the class as "W£", which is
+%   the AMS translation's $W_p^\alpha$ garbled; the Foreword (p. vii) prints the
+%   same class as "W_p^alpha" in running text, which is what fixes it. Anyone
+%   pinning a page or a theorem inside this paper must open the paper.
+%
+% WHAT IT IS FOR, AND WHY IT IS NOT THE PIN. The Foreword (p. vii) states the
+%   approximation device "was presented by the authors in [2], namely, a special
+%   method of piecewise-polynomial approximation with an 'irregular' grid", and
+%   that a nonlinear version of it "enabled us to overcome the difficulties in
+%   estimating the entropy of the imbedding of W_p^alpha into L_q for q > p".
+%   So this paper is the DEVICE; Ch. 2 of the monograph is the ENTROPY
+%   STATEMENT. **(F-e) should be pinned to \citet[Ch.~2]{birman1980}, not here.**
+%   This entry exists so the device has a primary citation and so the register's
+%   original scoping is discharged rather than quietly redefined.
+%
+% % ON-DISK UNVERIFIED: none of the fields below — each is on p. 125 of the
+%   object. NOT ASSERTED AND DELIBERATELY OMITTED: issue number, DOI, and the
+%   page range of the English translation (the entry gives only "Math. USSR Sb.
+%   2 (1967)" with no pages). An omitted field is honest; a recalled one is not.
+@article{birmansolomjak1967,
+	author = {Birman, M. Sh. and Solomjak, M. Z.},
+	journal = {Matematicheskii Sbornik},
+	note = {English translation in {M}ath. {USSR} {S}bornik {\bfseries 2} (1967)},
+	number = {115},
+	pages = {331--355},
+	title = {Piecewise-Polynomial Approximations of Functions of the Classes $W_p^\alpha$},
+	volume = {73},
+	year = {1967}}
+
+% [CREATED FROM AN OBJECT — BUT NOT FROM THE USER'S ON-DISK DJVU. READ THE THREE
+%   WARNINGS BEFORE RELYING ON IT.] Absent from all five .bib files (key AND
+%   title). Checked 2026-08-01: Nonparametric_IV/instrumental.bib and
+%   DNN_IV/instrumental.bib carry `conway2000` ONLY; volatility-loc-scale/
+%   references.bib carries no Conway at all. N-21 does not apply.
+%
+% WARNING 1 — THE OBJECT READ IS NOT THE FILE ON THE USER'S DISK. `djvutxt` was
+%   unavailable to the agent that produced this entry. The on-disk DjVu
+%     .../Conway J A course in functional analysis (GTM 96, Springer, 1985)
+%     (ISBN 0387960422)(420s).djvu
+%   is not readable by other means either: its 420 TXTz chunks are BZZ-compressed
+%   and no plain text survives a raw scan. Every field below was read off the
+%   TITLE PAGE (p. iii) and COPYRIGHT PAGE (p. iv) of a DIFFERENT COPY — a PDF
+%   facsimile read page by page as images. A real object, every field warranted
+%   against it, but NOT the user's file.
+%   RECORDED WHILE WE ARE HERE, because it changes what is worth attempting:
+%   the OTHER Conway DjVu on disk (*A Course in Operator Theory*) has **zero**
+%   TXTz and zero TXTa chunks — it is IMAGE-ONLY. `djvutxt` will return empty for
+%   every page of it even with the binary installed. Only OCR would read it.
+%
+% WARNING 2 — IT IS ALSO A DIFFERENT EDITION, AND THAT IS LOAD-BEARING.
+%   Object read: SECOND EDITION, 1990, ISBN 0-387-97245-5 (copyright page: "A
+%   course in functional analysis / John B. Conway. -- 2nd ed.", (C) 1990
+%   Springer-Verlag New York, LCCN 90-9585, QA320.C658 1990). The user's DjVu is,
+%   by filename and ISBN, the FIRST EDITION, 1985, ISBN 0387960422. The
+%   2nd-edition preface (p. xi) states: "The most significant difference between
+%   this edition and the first is that the last chapter, Fredholm Theory, has
+%   been completely rewritten and simplified." Chapters I--X changed only by
+%   added exercises and notes, which do NOT shift x.y numbering. CONSEQUENCE:
+%     - the Chapter II and Chapter IX pins below are safe across both editions;
+%     - ANY CHAPTER XI PIN IS UNSAFE and must not be attached to a 1985 entry.
+%   The entry is keyed and dated to the edition actually verified.
+%
+% WARNING 3 — A DIFFERENT WORK FROM `conway2000`, WHICH IS ALREADY IN THIS FILE.
+%   conway2000 = *A Course in OPERATOR Theory*, AMS Graduate Studies in Math. 21.
+%   This = *A Course in FUNCTIONAL Analysis*, Springer GTM 96. Same author,
+%   different series, different publisher, different book. DO NOT MERGE.
+%
+% M-10 — CLOSED, AND IT RE-KEYS A LIVE CITATION. `prp:compact` Step 3
+%   (proofs.tex:1461--1464) carries a BARE \citep{conway2000} for "an integral
+%   operator with square-integrable kernel is Hilbert--Schmidt, and every
+%   Hilbert--Schmidt operator between separable Hilbert spaces is compact".
+%   CORRECT PIN: \citet[Prop.~II.4.7]{conway1990}, p. 43 — "If $(X,\Omega,\mu)$
+%   is a measure space and $k\in L^2(X\times X,\Omega\times\Omega,\mu\times\mu)$,
+%   then $(Kf)(x)=\int k(x,y)f(y)d\mu(y)$ is a compact operator and
+%   $\|K\|\le\|k\|_2$." Both clauses in one proved, numbered result, plus a norm
+%   bound. In GTM 96, Ch. II is "Operators on Hilbert Space" with Sec. 4
+%   "Compact Operators" — which is what the round-6 [Ch.~II] pin pointed at.
+%   WHY RE-KEY RATHER THAN RE-PIN conway2000: NOT because the result is absent
+%   from GSM 21 — NOBODY HAS OPENED GSM 21 (image-only, Warning 1), so no such
+%   claim is made. Because II.4.7 is verified, numbered and page-located, and the
+%   conway2000 citation is bare and unverified. A verified pin beats an
+%   unverified one; that is the whole of the argument.
+%   NOTE: Conway does not say "Hilbert--Schmidt" at II.4.7. The named version is
+%   Exercise IX.2.19(g),(h), p. 267, whose own text reads "see Proposition II.4.7
+%   and Lemma II.4.8". IX.2.19 IS AN UNPROVED EXERCISE; PIN II.4.7 FOR A PROOF
+%   STEP, the exercise only if the literal vocabulary is wanted.
+%   CONSEQUENCE FOR conway2000: if this re-key is taken, its ONLY live citation
+%   is gone and it becomes UNCITED. Harmless to biber; but the domain profile's
+%   "Operator monotonicity, Lowner--Heinz" anchor row then points at an uncited
+%   entry. Flagged, not acted on here.
+%
+% M-6a — CLOSED, AND STRONGER THAN halmos1982. `lem:formstruct`(i),
+%   $\|M_f\|=\|f\|_\infty$: \citet[Thm.~II.1.5]{conway1990}, p. 28. Conway STATES
+%   sigma-finiteness as a hypothesis and then SHOWS IT NECESSARY (an infinite
+%   atom at 0 on [0,1] gives $M_\phi=0$ while $\|\phi\|_\infty=1$), noting the
+%   extension to decomposable spaces. Halmos Problem 64 states the identity
+%   without exhibiting the failure mode. Restated at IX.2.6(c).
+%
+% M-6b — PARTIALLY CLOSED, AND THE REMAINDER IS A REAL GAP. For the SPECTRUM of
+%   a multiplication: \citet[Ex.~IX.2.6(d)]{conway1990}, p. 265 defines
+%   ess-ran(phi) and proves $\sigma(M_\phi)=$ ess-ran(phi) on a sigma-finite
+%   space. That matches halmos1982 Problem 67.
+%   WHAT THIS ENTRY DOES *NOT* CLOSE — SAY SO PLAINLY. Conway NEVER states the
+%   ESSENTIAL-spectrum version, and NON-ATOMICITY IS NOWHERE A HYPOTHESIS IN THE
+%   BOOK. Evidence, not impression: the index lists "essential spectrum, 358" —
+%   ONE page, all inside Sec. XI.4 — and that section carries no multiplication
+%   operator at all (its examples are the Bergman shift, the unilateral shift,
+%   $S\oplus S^*$). The index has NO entry for "atom", "atomic" or "non-atomic";
+%   the sole occurrence in the book is the prompt of Exercise IX.2.19(i).
+%   NEAREST BRIDGE: \citet[Prop.~XI.4.6]{conway1990}, p. 359 — for $N$ normal,
+%   $\sigma_e(N)=\sigma_{le}(N)=\sigma_{re}(N)$ and $\sigma(N)\setminus\sigma_e(N)$
+%   is the set of isolated points of $\sigma(N)$ that are eigenvalues of FINITE
+%   multiplicity. With IX.2.6(a) ($M_\phi$ normal) that reduces the gap to "no
+%   isolated finite-multiplicity eigenvalues", which is what non-atomicity buys —
+%   BUT CONWAY DOES NOT ASSEMBLE IT AND DOES NOT NAME NON-ATOMICITY.
+%   **THE INLINE PROOF AT `lem:solset`(iii) STAYS.** XI.4.6 is a "see also" ONLY,
+%   and only under a 2nd-edition entry (Warning 2).
+%
+% % ON-DISK UNVERIFIED: none — every field is read off the title and copyright
+%   pages of the object described in Warning 1. NO `doi` IS ASSERTED: the 1990
+%   copyright page carries none, so any DOI would be catalogue-sourced.
+@book{conway1990,
+	address = {New York},
+	author = {Conway, John B.},
+	edition = {2},
+	isbn = {0-387-97245-5},
+	number = {96},
+	publisher = {Springer-Verlag},
+	series = {Graduate Texts in Mathematics},
+	title = {A Course in Functional Analysis},
+	year = {1990}}
+
+% ---------------------------------------------------------------------------
+% PASS 12 — SECTION 6 (empirical application). Two entries, both COPIED, not
+%   composed. Added 2026-08-03 when §6 was drafted and named three works in
+%   prose that no key resolved; the third (Cropper et al. 2023) is NOT here,
+%   deliberately — see the note at the foot of this block.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/Nonparametric_IV/instrumental.bib,
+%   verbatim, N-21 satisfied.] The same entry is in DNN_IV/instrumental.bib.
+%
+% THE APPLICATION'S SOURCE PAPER. §6 uses this paper's county panel: 1970/1980
+%   mean TSP, 1975 nonattainment designation, log property value. Its own
+%   headline is an elasticity of housing values to particulates of -0.20 to
+%   -0.35, obtained by LINEAR IV at the same design — which is the number §6's
+%   own linear-IV panel should be read against.
+%
+% NOTE THE ROLL WAS A FALSE SIGNAL. This file's header records `chay2005` as
+%   "ALREADY IN instrumental.bib" — true of the MASTER, but `instrumental.bib`
+%   is not a file in this repository, so the roll read as "already available"
+%   when nothing here could resolve the key. A roll entry naming a file outside
+%   the repo is not a citation.
+%
+% `abstract`, `date-added`, `date-modified` and `bdsk-url-1` are carried
+%   verbatim from the master rather than trimmed, so the two files stay
+%   byte-comparable at this entry.
+@article{chay2005,
+	author = {Kenneth Y. Chay and Michael Greenstone},
+	journal = {Journal of Political Economy},
+	number = {2},
+	pages = {376--424},
+	publisher = {The University of Chicago Press},
+	title = {{Does Air Quality Matter? Evidence from the Housing Market}},
+	volume = {113},
+	year = {2005},
+	bdsk-url-1 = {http://www.jstor.org/stable/10.1086/427462}}
+
+% [COPIED from the sibling sub-review bibliography,
+%   quality_reports/literature/panel-npiv-discrete/varphi-inference/references.bib:211,
+%   INCLUDING ITS UNVERIFIED FLAGS — those are not decoration and must not be
+%   dropped on the copy.]
+%
+% WHY IT IS HERE. §6.2 uses it for the frontier statement: this is the
+%   mathematics state of the art for NONLINEAR forward maps, and it delivers
+%   Bernstein--von Mises for SMOOTH LINEAR FUNCTIONALS ONLY, via linearisation
+%   at the truth. Econometrics and the inverse-problems literature stop at the
+%   same boundary — valid inference for the regular root-n part, silence beyond
+%   — which is what makes this paper's theta theorem a frontier result rather
+%   than a shortfall.
+%   DO NOT cite it as licensing a band for varphi. It does the opposite.
+%
+% The sub-review file is NOT \addbibresource'd by main.qmd; only this file is.
+%   That is why the key rendered as undefined until now.
+@article{monardnicklpaternain2021,
+	author = {Monard, Fran{\c c}ois and Nickl, Richard and Paternain, Gabriel P.},
+	title = {Statistical guarantees for {B}ayesian uncertainty quantification in non-linear inverse problems with {G}aussian process priors},
+	journal = {The Annals of Statistics},   % ON-DISK UNVERIFIED
+	volume = {49},                          % ON-DISK UNVERIFIED
+	number = {6},                           % ON-DISK UNVERIFIED
+	year = {2021},
+	doi = {10.1214/21-AOS2082}}             % ON-DISK UNVERIFIED
+
+% ---------------------------------------------------------------------------
+% CROPPER, MULLER, PARK & PEREZ-ZETUNE (2023), J. Env. Econ. Manage. 121 —
+%   NAMED IN §6.1 PROSE, DELIBERATELY NOT ENTERED. Searched 2026-08-03: 106
+%   .bib files under ~/Library/CloudStorage/Dropbox contain NO Cropper entry
+%   (the two "cropper" hits are inside other entries' abstract text), and no
+%   copy of the paper was located on disk.
+%
+%   It is LOAD-BEARING, not incidental: it is the contrary evidence on the
+%   designation mismatch, and §6.1 confronts it by name in the sentence before
+%   the misclassification case is made. A citation composed from recall is
+%   exactly what this file forbids, and this session has already produced six
+%   wrong locators that way. The prose names it in full instead, which is
+%   correct but not a citation.
+%
+%   TO CLOSE: put the PDF on disk, read the title page, and enter it here. Then
+%   convert the §6.1 prose mention to \citet{cropper2023}.
+% ---------------------------------------------------------------------------
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/Documents_MAC/Research Proposals/
+%   Data-Adaptive Estimation of Nonparametric IV Models/instrumental.bib:120--131,
+%   verbatim. N-21 satisfied — this was NOT composed.]
+%
+% Added 2026-08-03. §7's fifth open item needed it and could not have it: the
+% only Babii key in this file was `babiiflorens2025` (*Is Completeness
+% Necessary?*), a DIFFERENT paper, and the writer correctly declined to cite it
+% for honest sets rather than ship a miscitation. The claim was stated
+% generically instead. With this entry the attribution can be restored.
+%
+% WHAT IT IS FOR, AND THE DIRECTION OF THE CITATION. This is the honest-sets
+%   paper, and §6.2 / §7 cite it for why it does NOT apply here:
+%     * Assumption 3.1 puts (phi, T) in a class requiring T a bounded LINEAR
+%       operator, T* its Hilbert adjoint, and the source condition
+%       phi = (T*T)^beta T* psi -- spectral calculus of T*T. Linearity is
+%       ESSENTIAL, not convenience: it carries the estimator, the bias bound of
+%       Proposition 3.1 (which IS the honesty), the critical values and the
+%       coupling. Delete linearity and the proof goes.
+%     * Assumption 3.2(v) is COMPLETENESS ("T is 1-1"), which a binary
+%       instrument cannot deliver -- an independent second kill.
+%     * Assumption 3.2(vi) fixes alpha_n ~ n^{-c_2}, a DETERMINISTIC
+%       regularisation index. This paper's index is the random stopping time of
+%       a discrepancy rule, which is the obstruction shared with chen2012b.
+%   DO NOT cite it as licensing a band for varphi. It is cited for the opposite.
+%
+% KEY YEAR IS A FOSSIL AND IS KEPT: the master keys it `babii2016` against the
+%   2016 TSE mimeo. The literature review that located it refers to it as
+%   "Babii (2020)", the Econometric Theory version. The master's fields describe
+%   the mimeo and are carried verbatim; NO published volume, number or pages are
+%   asserted, because none was read.
+% % ON-DISK UNVERIFIED: none of the fields below -- each is verbatim from the
+%   master. The PDF itself was NOT opened in this pass; the assumption numbers
+%   quoted above come from the sub-review at
+%   quality_reports/literature/panel-npiv-discrete/varphi-inference/, which read
+%   the arXiv object.
+@article{babii2016,
+	author = {Andrii Babii},
+	journal = {Mimeo - Toulouse School of Economics},
+	title = {{Honest confidence sets in nonparametric IV regression and other ill-posed models}},
+	url = {https://arxiv.org/pdf/1611.03015v1.pdf},
+	year = {2016}}
+
+% [CREATED FROM THE OBJECT] — absent from all 106 .bib files under
+%   ~/Library/CloudStorage/Dropbox (checked 2026-08-03) and from every .bib in
+%   this repository. N-21 does not apply: there was nothing to copy.
+%
+% READ ON DISK 2026-08-03: .../Nonparametric_IV/Discrete Instruments/
+%   Nonparametric_Panel/literature/WP_23-14.pdf, supplied by the author.
+%   Title page (p. i): "The Impact of the Clean Air Act on Particulate Matter in
+%   the 1970s / Maureen Cropper, Nicholas Muller, Yongjoon Park, and Victoria
+%   Perez-Zetune / WP 23-14 / May 2023". Publisher from the "About RFF" page.
+%
+% THIS IS THE WORKING PAPER, NOT THE JOURNAL VERSION, AND THE ENTRY SAYS SO.
+%   An HTML comment in main.qmd (Section 6.1) records the published version as
+%   J. Env. Econ. Manage. 121, 102867 (2023). THOSE FIELDS ARE NOT ASSERTED
+%   HERE: the volume and article number were never read off an object, and the
+%   RFF front matter states these papers "have not necessarily undergone formal
+%   peer review", so the WP and the article may differ. To upgrade, open the
+%   published PDF and replace this entry wholesale.
+%
+% WHAT IT ESTABLISHES, READ OFF THE ABSTRACT AND SEC. 2 — AND IT IS NOT THE
+%   PURE INDICTMENT THIS PROJECT'S OWN RECORDS ASSUME.
+%   Official designation was by AIR QUALITY CONTROL REGION (247 AQCRs, groups of
+%   contiguous counties in one airshed) between 1972 and 1978; the county-level
+%   variable used throughout the literature -- and in this paper's Section 6 --
+%   marks a county nonattainment if ANY of its monitors violated the NAAQS.
+%   Their difference-in-differences estimates of the TSP reduction:
+%       official AQCR designation : 10.2 (1969-78 panel), 9.1 (1971-78 panel)
+%       literature county defn    :  6.0 (1969-78 panel), 7.7 (1971-78 panel)
+%   all in micrograms per cubic metre. Their own words: the county definition
+%   yields "similar, albeit slightly SMALLER, average treatment effects".
+%
+%   ATTENUATION IS THE SIGNATURE OF **NON-DIFFERENTIAL** MISCLASSIFICATION, which
+%   is precisely the condition Section 6.1 must defend and currently defends
+%   without evidence. Two smaller-not-different point estimates are weak support,
+%   not proof, and the abstract does not decompose the gap -- but the direction
+%   is the paper's, not against it. See the note beside this entry in
+%   Section 6.1; the framing there predates the object being read.
+@techreport{cropper2023,
+	address = {Washington, DC},
+	author = {Cropper, Maureen and Muller, Nicholas and Park, Yongjoon and Perez-Zetune, Victoria},
+	institution = {Resources for the Future},
+	month = {5},
+	number = {WP 23-14},
+	title = {The Impact of the {C}lean {A}ir {A}ct on Particulate Matter in the 1970s},
+	type = {Working Paper},
+	year = {2023}}
+
+% ---------------------------------------------------------------------------
+% TWO ENTRIES CREATED FROM A **SECONDARY** SOURCE, 2026-08-03, AND THE WARRANT
+%   IS WEAKER THAN EVERY OTHER ENTRY IN THIS FILE. READ THIS BEFORE CITING THEM.
+%
+% Both are transcribed from the reference list of `cropper2023` (RFF WP 23-14,
+%   pp. 6-7, read on disk), NOT from the papers themselves. Neither object was
+%   opened. Neither is in any .bib under ~/Library/CloudStorage/Dropbox.
+%
+% WHAT THEY ARE FOR. Section 6.1 uses them for ONE claim and no other: that the
+%   strategic-monitor-siting channel is documented, which is the mechanism by
+%   which the imputed designation's misclassification could be DIFFERENTIAL and
+%   the attenuation reading of cropper2023 could fail. They are cited exactly as
+%   cropper2023 cites them, for exactly what cropper2023 says they show.
+%   DO NOT extend either citation beyond that without opening the paper: no page
+%   number, no result number and no quotation may be attributed to either.
+%
+% Grainger et al. is an UNPUBLISHED working paper as of cropper2023 (May 2023)
+%   and may have been published since; Murphy (2016) is a mimeo and Murphy (2017)
+%   is the thesis that appears to supersede it. Section 6.1 cites the 2016 mimeo
+%   because that is the item cropper2023 attributes the siting point to.
+% ---------------------------------------------------------------------------
+
+% % ON-DISK UNVERIFIED: every field. Secondary transcription; object not opened.
+@misc{murphy2016,
+	author = {Murphy, Joshua D.},
+	note = {Mimeo, 6 May 2016. Cited here as attributed by \citet{cropper2023}; the object was not read},
+	title = {The Benefits of Reducing Particulate Pollution: Re-examining Evidence from the {C}lean {A}ir {A}ct},
+	year = {2016}}
+
+% % ON-DISK UNVERIFIED: every field. Secondary transcription; object not opened.
+@techreport{grainger2019,
+	address = {Madison, WI},
+	author = {Grainger, Corbett and Schreiber, Andrew and Chang, Wonjun},
+	institution = {Department of Economics, University of Wisconsin--Madison},
+	note = {Unpublished as of \citet{cropper2023}; may have appeared since. Cited as attributed there; the object was not read},
+	title = {Do Regulators Strategically Avoid Pollution Hotspots When Siting Monitors? {E}vidence from Remote Sensing of Air Pollution},
+	type = {Working Paper},
+	year = {2019}}
+
+% ---------------------------------------------------------------------------
+% INHERITED FROM THE TEMPLATE STUB, 2026-08-03. Moved here from
+%   Bibliography_base.bib so this project has exactly ONE file carrying entries.
+%
+% Both are the clo-author template's example references, not this paper's. NEITHER
+%   IS CITED anywhere in the manuscript or the corpus, and neither is expected to
+%   be: this is a nonparametric-IV methods paper and these are applied-causal
+%   texts. They are carried rather than dropped so that consolidating the two
+%   files loses nothing, and so that a fork diffing against the template still
+%   finds them.
+% Copied VERBATIM from Bibliography_base.bib, which now carries no entries.
+% ---------------------------------------------------------------------------
+
+@book{Angrist2009_mostly_harmless,
+  author    = {Angrist, Joshua D. and Pischke, J{\"o}rn-Steffen},
+  title     = {Mostly Harmless Econometrics: An Empiricist's Companion},
+  publisher = {Princeton University Press},
+  address   = {Princeton, NJ},
+  year      = {2009}}
+
+@article{Imbens2004_nonparametric,
+  author  = {Imbens, Guido W.},
+  title   = {Nonparametric Estimation of Average Treatment Effects Under Exogeneity: A Review},
+  journal = {Review of Economics and Statistics},
+  volume  = {86},
+  number  = {1},
+  pages   = {4--29},
+  year    = {2004}}
+
+% ADDED 2026-08-08 from the user's own copies at
+%   ~/Library/CloudStorage/Dropbox/Endogenous RCM/Papers/
+% Verified against the PDFs, not from memory: the published version is a 5-page
+% NOTE (received 9 July 2014, accepted 13 January 2016, editor Bryan S. Graham).
+%
+% BOTH ENTRIES ARE NEEDED AND THEY ARE NOT INTERCHANGEABLE.  The published note
+% contains the identification result; it does NOT contain the empirical
+% application.  The Chay-Greenstone TSP analysis -- which is the part that bears
+% on this paper's Section 6 -- survives only in the 2014 working paper.  Citing
+% masten2016 for the weak-instrument evidence would point a reader at a document
+% that does not contain it.
+%
+% NOTE ON THE HEADER ROLL of this file: it listed `masten2016' among the keys
+% present while no entry existed, exactly as it did for `chay2005'.  The roll is
+% not evidence that a key resolves.
+@article{masten2016,
+	author = {Matthew A. Masten and Alexander Torgovitsky},
+	journal = {The Review of Economics and Statistics},
+	number = {5},
+	pages = {1001--1005},
+	title = {{Identification of Instrumental Variable Correlated Random Coefficients Models}},
+	volume = {98},
+	year = {2016},
+	month = {12},
+	doi = {10.1162/REST_a_00603}}
+
+@techreport{mastentorgovitsky2014,
+	author = {Matthew A. Masten and Alexander Torgovitsky},
+	title = {{Instrumental Variables Estimation of a Generalized Correlated Random Coefficients Model}},
+	year = {2014},
+	type = {Working paper},
+	note = {Working-paper version of \textcite{masten2016}; contains the Chay--Greenstone TSP application, which the published note omits}}

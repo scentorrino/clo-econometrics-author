@@ -1,0 +1,24 @@
+claim_id: frechet-CA-constitution
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:frechet Step 3); constant defined at results.tex"
+# CLAIM (Step 3).  |R_h(u,t)| <= [int_0^1 (1-varsigma) d varsigma] * bar-w(t) *
+# ||bar f_1||_inf * E[(Delta h)^2], and E[(Delta h)^2] <= 4 cpi ||h||^2
+# (eq:deltahbound), therefore
+#     |R_h(u,t)| <= 2 cpi ||bar f_1||_inf bar-w(t) ||h||^2,
+# and integrating against Pi (which replaces bar-w by c_Pi) gives
+#     ||R_h||_{L^2(Pi)} <= 2 cpi ||bar f_1||_inf c_Pi ||h||^2 = C_A ||h||^2.
+# This spec checks the whole Step-3 constant, from the Taylor 1/2 through
+# eq:deltahbound to C_A = 2 cpi f1bar cPi.
+variables:
+  cpi:
+    domain: positive
+  f1bar:
+    domain: positive
+  cPi:
+    domain: positive
+  Hn:
+    domain: positive
+  varsigma:
+    domain: positive
+start: "integrate(1-varsigma, (varsigma, 0, 1)) * cPi * f1bar * (4*cpi*Hn**2)"
+operation: none
+claimed_end: "(2*cpi*f1bar*cPi)*Hn**2"

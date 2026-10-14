@@ -1,0 +1,21 @@
+\begin{tabular}{llrrrrc}
+\toprule
+ & & \multicolumn{2}{c}{Design H} & \multicolumn{2}{c}{Shipped design} & \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Condition & Source & Threshold & Realised & Threshold & Realised & Both pass \\
+\midrule
+Propensity frontier $\kappa\alpha>1/4$ & A5(iii), eq:frontier & 0.250 & 0.382 & 0.250 & 0.256 & yes \\
+$r>d_Z(2\mu+1)/(2(2\mu-1))$ & A5(iii), eq:frontier & 0.611 & 2.625 & 2.500 & 2.667 & yes \\
+Linearisation remainder $\mu>5/6$ & (P-f), eq:muhalf & 0.833 & 5.000 & 0.833 & 2.000 & yes \\
+Mild ill-posedness $s>a+1/2$ & H1, plan sec.2.6 scope & 0.900 & 4.000 & 1.250 & 3.000 & yes \\
+$L_x$ window, rate route & (P-c)$\wedge$(P-d), eq:lxwindow & 2.953 & 4.000 & 1.000 & 3.000 & yes \\
+$L_x$ window, both routes & A8 lower end $\wedge$ (P-d) & 3.125 & 4.000 & 1.389 & 3.000 & yes \\
+$h_x$ window & eq:hxwindow, (P-g) & 1.497 & 4.000 & 1.227 & 3.000 & yes \\
+Kernel order $p_K\ge s-1/2$ & lem:unifop Step 4 & 3.500 & 8.000 & 2.500 & 8.000 & yes \\
+Spline degree $>s-1/2$ & A8 basis clause & 3.500 & 4.000 & 2.500 & 4.000 & yes \\
+$1\le d_Z\le p-1$ & A4(ii) & 1.000 & 1.000 & 3.000 & 3.000 & yes \\
+\midrule
+\multicolumn{7}{l}{Design H: $(\mu,s,a,r,d_Z,p_K)=(5,4,2/5,21/8,1,8)$, $p=2$; $\kappa\alpha=0.3818$, frontier margin $0.1318$.} \\
+\multicolumn{7}{l}{Shipped: $(\mu,s,a,r,d_Z,p_K)=(2,3,3/4,8/3,3,8)$, $p=4$; $\kappa\alpha=0.2560$, frontier margin $0.0060$.} \\
+\bottomrule
+\end{tabular}

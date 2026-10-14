@@ -1,0 +1,13 @@
+claim_id: frontier-table-mu0p75-dz5
+source: quality_reports/theory/panel-npiv-discrete/assumptions.tex:L452-459 (A5(iii) substitution table)
+# Table entry (mu = 0.75, d_Z = 5) of the eighteen-entry substitution table.
+# The threshold is recomputed FROM THE GENERAL FORMULA r > d_Z(2mu+1)/(2(2mu-1))
+# and compared with the value printed in the comment block.
+variables:
+  mu:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "d_Z*(2*mu+1)/(2*(2*mu-1))"
+operation: "substitute(mu=3/4, d_Z=5)"
+claimed_end: "25/2"

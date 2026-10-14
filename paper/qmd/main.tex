@@ -1,0 +1,2614 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  12pt]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+% ============================================================================
+%  preamble.tex — shared LaTeX header
+%  Project: clo-econometrics-author
+%
+%  RESOLUTION: paper/latexmkrc puts './preambles//' on TEXINPUTS, so a document
+%  at paper/main.tex reaches this file with \input{preamble}. Do not hard-code
+%  the path.
+%
+%  AUTHORITY: the body of this file implements the reference preamble in
+%  .claude/rules/working-paper-format.md, which the writer-critic scores
+%  against. The theory block at the end implements
+%  .claude/references/theorem-environment-style.md. Change either rule first,
+%  then this file — not the reverse.
+%
+%  CREATED 2026-07-29 to close F-13. That item was recorded against a copy of
+%  a preamble living outside this repository; no preamble.tex existed here at
+%  all, so every \IR, \un, \upmodels, \vdagger and every theorem environment in
+%  quality_reports/theory/ and paper/sections/theorems/ was undefined at
+%  document level. See the F-13 note in the theory block below.
+% ============================================================================
+
+\usepackage[left=1.0in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+\usepackage{setspace}
+\doublespacing
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ====== Typography and Fonts ======
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[normalem]{ulem}
+\usepackage[T1]{fontenc}
+
+% ====== Section Styling ======
+%
+%  UNDO PANDOC'S \paragraph REDEFINITION BEFORE titlesec LOADS. Do not remove,
+%  and do not "simplify" to a bare \usepackage{titlesec}.
+%
+%  This preamble is shared by TWO build paths and only one of them has the
+%  problem:
+%    - scripts/build-theory/build.sh -> driver.tex -> xelatex.  Nothing has
+%      touched \paragraph, \oldparagraph is undefined, and BOTH lines below are
+%      no-ops.  This path was never broken.
+%    - paper/qmd/ -> quarto -> pandoc -> pdflatex.  Pandoc's default template
+%      emits a "Make \paragraph and \subparagraph free-standing" block that does
+%      `\let\oldparagraph\paragraph` and then \renewcommand's \paragraph into a
+%      wrapper around \oldparagraph.  Quarto's include-in-header splices THIS
+%      file in AFTER that block, so titlesec loaded against a \paragraph that is
+%      no longer \@startsection-shaped, recorded no format for it, and the build
+%      died at the first use:
+%          ! Package titlesec Error: No format for this command.
+%          l.2557 \paragraph{Discussion.}
+%      (\paragraph{Discussion.} comes from the theory corpus, which is \input
+%      raw, so the qmd cannot avoid it and the corpus should not be edited to
+%      dodge a template collision.)
+%
+%  THE FIX IS RESTORATION, NOT REDECLARATION.  The obvious alternative --
+%  `\titleformat{\paragraph}{...}` after loading titlesec -- would have titlesec
+%  take ownership of pandoc's wrapper and would also impose a \paragraph style on
+%  the LaTeX path, which is not this file's business.  Restoring first means
+%  titlesec sees the stock article \paragraph on both paths and behaves
+%  identically on both.  Pandoc's free-standing-paragraph cosmetic is discarded
+%  deliberately: this document uses \paragraph as a run-in heading.
+\ifx\oldparagraph\undefined\else\let\paragraph\oldparagraph\fi
+\ifx\oldsubparagraph\undefined\else\let\subparagraph\oldsubparagraph\fi
+\usepackage{titlesec}
+\usepackage[title]{appendix}
+\usepackage{titling}
+\pretitle{\begin{center}\large\bfseries}
+\posttitle{\end{center}}
+\preauthor{\begin{center}\normalsize}
+\postauthor{\end{center}}
+\predate{\begin{center}\normalsize}
+\postdate{\end{center}}
+
+% ====== Math Packages ======
+\usepackage{amssymb, amsmath, amsfonts, mathtools}
+\usepackage{dsfont}
+\usepackage{amsthm}
+\usepackage{aliascnt}   % shared theorem counters that cleveref can still name
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\1}[1]{\mathds{1}\left[#1\right]}
+
+% ====== Table Packages ======
+\usepackage{array, booktabs, makecell, cellspace}
+\usepackage{siunitx}
+\usepackage[flushleft]{threeparttable}
+\usepackage{rotating, tabularx}
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs, siunitx}
+
+% ====== Figure and Caption Packages ======
+\usepackage{graphicx, subcaption}
+\usepackage{pdflscape, tikz}
+\usepackage{caption}
+\captionsetup{font=small, labelfont=bf, justification=justified}
+\captionsetup[figure]{labelfont=bf}
+\usepackage{float}
+
+% ====== List Formatting ======
+\usepackage{enumitem}
+
+% ====== Bibliography and Citation (biblatex + biber) ======
+\usepackage{xurl}
+\usepackage{xcolor}
+\definecolor{citationcolor}{RGB}{0, 127, 255}
+
+\usepackage[backend=biber,
+            style=authoryear,
+            maxcitenames=3,
+            mincitenames=1,
+            maxbibnames=99,
+            giveninits=true,
+            uniquename=false,
+            uniquelist=true,
+            dashed=false,
+            urldate=long,
+            url=true,
+            natbib=true]{biblatex}
+
+% Bibliography resource.
+%
+% N-21 (standing rule): checker authority is not build authority. The file
+% named here is what the BUILD resolves against; /tools validate-bib may read a
+% different file. A key that exists only in the validator's file passes
+% validation and still breaks the build. Before pinning any citation, check the
+% key against THIS name.
+%
+% DEMONSTRATED 2026-07-29, not hypothetical. A full latexmk build of the four
+% panel-npiv-discrete theorem files against this resource alone produced FOUR
+% undefined citations out of four cited keys:
+%   chernozhukov2018dml, stinchcombewhite1998
+%       -> present in quality_reports/literature/panel-npiv-discrete/
+%          references.bib (60 entries), absent here. Exactly N-21's case.
+%   bierens1990, feve2014
+%       -> PRESENT IN NO .bib FILE IN THE REPOSITORY AT ALL. Both are
+%          load-bearing (the Bierens device; the Feve-Florens comparison whose
+%          full text was verified this session). For the librarian.
+% Bibliography_base.bib itself currently holds 2 entries and is a template stub.
+%
+% A PROJECT ADDS ITS OWN BIBLIOGRAPHY IN ITS main.tex, NOT HERE — this preamble
+% is shared across projects, so naming one project's file would break the rest:
+%     \addbibresource{../quality_reports/literature/<project>/references.bib}
+% Use the RELATIVE PATH, not the bare name. Two different files are named
+% references.bib (panel-npiv-discrete and volatility-loc-scale) and BIBINPUTS
+% is set to '..//', so a bare \addbibresource{references.bib} resolves to
+% whichever kpathsea finds first — silently, and possibly to the wrong project.
+%
+% AND THE FAILURE EXITS 0. Omitting the project bibliography does not break the
+% build: biber reports "I didn't find a database entry", LaTeX downgrades it to a
+% warning, and every citation renders [?] in a document that compiled fine. On
+% this project 8 of 14 keys sat in that state for weeks. `latexmk' exiting 0 is
+% not a verification — scripts/build-theory/build.sh separates the two, and any
+% main.tex added here should be checked the same way.
+\addbibresource{Bibliography_base.bib}
+
+% Citation color settings
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\color{citationcolor}\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\color{citationcolor}\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+% ====== Custom Column Types ======
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+
+% ====== Footnote Settings ======
+\interfootnotelinepenalty=10000
+\setlength{\footnotesep}{0.5cm}
+
+% ====== URL Bleeding Fixes ======
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{9000}
+
+% ====== Hyperref (loaded second-to-last) ======
+\usepackage[hidelinks, breaklinks, colorlinks=true,
+            linkcolor=citationcolor, citecolor=citationcolor,
+            urlcolor=citationcolor]{hyperref}
+
+% ====== Cleveref (loaded after hyperref) ======
+\usepackage[nameinlink]{cleveref}
+
+
+% ============================================================================
+%  THEORY BLOCK
+%  Consumed by quality_reports/theory/{project}/{assumptions,results,proofs}.tex
+%  and paper/sections/theorems/*.tex, which declare at their head:
+%      "Requires \IR, \un, \upmodels, \vdagger from preamble.tex."
+% ============================================================================
+
+% ---- Theorem environments -------------------------------------------------
+%
+%  F-13, and the fix.
+%  ------------------
+%  The out-of-repo preamble F-13 was recorded against wrote
+%
+%        \newtheorem{remark}[]{Remark}
+%        \newtheorem{example}[]{Example}
+%
+%  An EMPTY optional argument is not the same as an absent one. LaTeX reads the
+%  bracket as "share the counter named by this argument", finds no name, and
+%  raises an error rather than silently defaulting to an own-counter or
+%  unnumbered environment. Never emit \newtheorem{x}[]{X}. The three valid
+%  forms are:
+%        \newtheorem{x}{X}            own counter
+%        \newtheorem{x}[theorem]{X}   shares the `theorem` counter
+%        \newtheorem*{x}{X}           unnumbered
+%
+%  WHICH ONE FOR remark: unnumbered.
+%  .claude/references/theorem-environment-style.md specifies
+%  \theoremstyle{remark} + \newtheorem*{remark}{Remark}. Remarks are scope
+%  notes placed after proofs and are referred to in prose, not by number. This
+%  is the answer to the open question "are remarks numbered?" — they are not.
+%
+%  SHARED COUNTER for the result environments. The same reference lists
+%  "numbering theorems and propositions in separate sequences" as an
+%  anti-pattern: "number them in one sequence, or under one shared counter."
+%  So theorem/proposition/lemma/corollary/definition/remark all advance
+%  `theorem`. Result 7 is Result 7 wherever it appears.
+%
+%  WHY aliascnt AND NOT THE PLAIN \newtheorem{lemma}[theorem]{Lemma} FORM.
+%  ---------------------------------------------------------------------
+%  cleveref names a reference from the COUNTER it was made against, not from
+%  the environment. Under the plain shared-counter form every environment
+%  writes to the counter literally named `theorem`, so \cref{lem:adjoint}
+%  renders "theorem 12" — and \crefname{lemma}{...} cannot fix it, because no
+%  reference is ever tagged `lemma`. This was verified by compilation, not
+%  assumed: the first version of this file did exactly that and the smoke test
+%  printed "theorem 1, theorem 2, ..." for a lemma, a proposition, a theorem
+%  and a corollary in a row. With 255 \cref calls across the theory files
+%  (124 lem:, 71 prp:, 35 cor:, 25 def:, 6 rem:) that is not cosmetic.
+%
+%  \newaliascnt{lemma}{theorem} creates a counter named `lemma` that IS
+%  `theorem` — one shared sequence, but references carry the environment's own
+%  name, so \crefname works and \cref{lem:adjoint} renders "Lemma 12".
+%  \aliascntresetthe keeps \thelemma in step with \thetheorem.
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\newtheorem{hyp}{Hypothesis}
+
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+%  ASSUMPTIONS ARE UNNUMBERED BY DESIGN.
+%  The blocks carry their own tags in the optional argument —
+%  \begin{assumption}[A1: Conditional exogeneity] — and those tags are not a
+%  sequence: A1b, A1c, A1d, A2$'$, B1, C2$'$ all exist. An automatic counter
+%  would print "Assumption 7 (A1c: ...)", giving every assumption two
+%  identifiers, one of which no proof ever cites. Proofs cite the tag.
+\theoremstyle{definition}
+\newtheorem*{assumption}{Assumption}
+
+%  REMARKS ARE NUMBERED. SETTLED 2026-07-29 WITH USER APPROVAL.
+%  -----------------------------------------------------------
+%  .claude/references/theorem-environment-style.md previously specified
+%  \newtheorem*{remark}{Remark} — unnumbered. The reference has been amended to
+%  match this file; see its "Remarks are numbered" section for the rationale.
+%
+%  The reason, kept here so nobody "simplifies" it back: the theory files
+%  cross-reference remarks BY CLAUSE —
+%
+%        \cref{rem:R1}(iv)        \cref{rem:adjointreconcile}(iv)
+%
+%  and an unnumbered environment writes no counter, so a \label inside it
+%  silently captures the enclosing \section and the reference renders
+%  "section 3(iv)". That is WRONG OUTPUT, NOT AN ERROR: nothing fails, nothing
+%  warns, and the wrong number reaches the page. Verified by compilation.
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newtheorem*{example}{Example}
+
+%  cleveref names. Required for every aliascnt environment — the alias makes
+%  the reference nameable, \crefname supplies the name.
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{assumption}{Assumption}{Assumptions}
+\Crefname{assumption}{Assumption}{Assumptions}
+\crefname{hyp}{Hypothesis}{Hypotheses}
+\Crefname{hyp}{Hypothesis}{Hypotheses}
+
+% ---- Blackboard sets ------------------------------------------------------
+\newcommand{\IR}{\mathbb{R}}
+\newcommand{\IQ}{\mathbb{Q}}
+\newcommand{\IN}{\mathbb{N}}
+\newcommand{\IZ}{\mathbb{Z}}
+\newcommand{\IC}{\mathbb{C}}
+\newcommand{\IE}{\mathbb{E}}
+
+% ---- Project symbols ------------------------------------------------------
+%
+%  \un — the indicator, used as a BARE SYMBOL followed by literal braces:
+%        \un\{u\in[1,2]\}    ->   1{u in [1,2]}
+%  It takes no argument. All 40 uses in the theory files are of this form, so
+%  it must NOT be defined as \newcommand{\un}[1]{...}; that would silently
+%  absorb the following token. \1[#1] above is the bracketed argument-taking
+%  variant from the project standard; the two coexist deliberately.
+\newcommand{\un}{\mathds{1}}
+
+%  \upmodels — statistical independence, a binary relation:
+%        \Delta U \upmodels W \mid \Delta Z
+%  Rotated \models, the conventional glyph. \mathrel gives it relation spacing;
+%  rotatebox needs graphicx, loaded above.
+\newcommand{\upmodels}{\mathrel{\rotatebox[origin=c]{90}{$\models$}}}
+
+%  \vdagger — the true structural function \varphi_\dagger. Defined as a macro
+%  rather than written out because it appears ~65 times and the dagger
+%  subscript is load-bearing notation: \dagger marks the truth throughout,
+%  against \star for a selected/normalised object. See the notation glossary.
+%
+%  HAZARD, found by the first compilation of results.tex (2026-07-30). Because
+%  the subscript is baked in, \vdagger CANNOT TAKE A FURTHER SUBSCRIPT:
+%  `\Delta\vdagger_i' expands to \varphi_{\dagger}_i and dies with
+%  "! Double subscript."  This is the only macro in this preamble with a
+%  baked-in subscript, so the hazard is confined to this one name.  Write the
+%  unit-indexed truth out as \varphi_{\dagger i} (as `eq:diffs' now does).
+\newcommand{\vdagger}{\varphi_{\dagger}}
+% ============================================================================
+%  PAPER HEADER -- project `panel-npiv-discrete`.
+%
+%  Spliced in AFTER paper/preambles/preamble.tex by the `include-in-header'
+%  list in main.qmd and supplement.qmd.  Two jobs, both of which have to happen
+%  after the shared preamble has loaded biblatex and cleveref.
+% ============================================================================
+
+% ---------------------------------------------------------------------------
+%  1.  THE BIBLIOGRAPHY, DECLARED HERE AND NOT BY THE `bibliography:' KEY.
+%
+%  WHY.  Quarto's `bibliography:' key routed the path through pandoc, which
+%  LaTeX-escaped the underscore in it:
+%      \addbibresource{../../quality\_reports/literature/.../references.bib}
+%  biber then reported "Cannot find '../../quality\_reports/...'" and ABORTED
+%  THE RUN.  An aborted biber leaves a ZERO-BYTE .bbl, so the reference list was
+%  empty and all twenty cited keys rendered as bare text -- "in the manner of
+%  bierens1990" -- in a document that compiled and exited 0.
+%
+%  The path is written here, unescaped, relative to paper/qmd/ where quarto
+%  runs LaTeX.  It is the project's own bibliography, named in full rather than
+%  as a bare `references.bib': two files in this repository carry that name.
+% ---------------------------------------------------------------------------
+\addbibresource{../../quality_reports/literature/panel-npiv-discrete/references.bib}
+
+% ---------------------------------------------------------------------------
+%  2.  POINTERS INTO THE ONLINE SUPPLEMENT.
+%
+%  WHY THESE EXIST.  The article and the supplement are separate documents, so a
+%  \cref from a statement printed in the article to a statement printed in the
+%  supplement has no target and renders "??" in a document that still exits 0.
+%  There were 259 such calls, over 69 distinct targets.  Each is written as one
+%  of the two commands below.
+%
+%  RESOLVE-IF-PRESENT, ADDED 2026-08-05.  The original definitions printed the
+%  label stem unconditionally -- "Lemma S:secondord" -- in BOTH documents.  In
+%  the article that is the lesser evil, since the target genuinely lives
+%  elsewhere.  In the SUPPLEMENT it was simply wrong: the target is in the same
+%  document and already numbered, so the reader was shown an internal handle
+%  ("S:secondord") for an object whose own heading two hundred pages earlier
+%  reads "Lemma 54".  The commands now test whether the label is defined in the
+%  document being compiled and print the number when it is:
+%
+%    in the supplement   \suppref{Lemma}{secondord}  ->  Lemma 54
+%    in the article      \suppref{Lemma}{secondord}  ->  Lemma S:secondord
+%
+%  No call site changes.  The test is \@ifundefined{r@<label>}, which reads the
+%  .aux, so the first LaTeX pass prints the fallback and a later pass prints the
+%  number; the reference machinery already requires multiple passes.
+%
+%  \ref and not \cref, deliberately: the Kind word is supplied by the call site
+%  and is always capitalised, so \ref preserves today's rendering exactly and
+%  does not depend on how cleveref's names are configured.
+% ---------------------------------------------------------------------------
+\makeatletter
+\@namedef{suppkind@Lemma}{lem}
+\@namedef{suppkind@Proposition}{prp}
+\@namedef{suppkind@Corollary}{cor}
+\@namedef{suppkind@Theorem}{thm}
+\@namedef{suppkind@Definition}{def}
+\@namedef{suppkind@Remark}{rem}
+\def\suppref#1#2{%
+  \@ifundefined{suppkind@#1}%
+    {#1~\textup{S:#2}}%                       % unknown Kind: unchanged fallback
+    {\edef\supp@lab{\@nameuse{suppkind@#1}:#2}%
+     \@ifundefined{r@\supp@lab}%
+       {#1~\textup{S:#2}}%                    % not in this document: fallback
+       {#1~\expandafter\ref\expandafter{\supp@lab}}}%
+}
+\def\suppeq#1{%
+  \@ifundefined{r@eq:#1}{\textup{(S:#1)}}{\eqref{eq:#1}}%
+}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[style=authoryear,]{biblatex}
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Root-n estimation of a parametric component in a panel NPIV model with a discrete instrument},
+  pdfauthor={Samuele Centorrino},
+  pdfkeywords={panel data, nonparametric instrumental
+variables, discrete instrument, ill-posed inverse problems},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Root-\(n\) estimation of a parametric component in a panel NPIV
+model with a discrete instrument}
+\author{Samuele Centorrino}
+\date{2026-08-28}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We estimate the slope vector of a partially linear panel model whose
+nonparametric argument is a continuous endogenous regressor and whose
+only instrument is discrete, with \(\mathsf L\ge2\) cells. First
+differencing removes the individual effect. A conditional-mean
+restriction cannot then identify the unknown function, so we impose
+conditional independence between the differenced error and the
+instrument. That makes the function the solution of an ill-posed
+nonlinear operator equation, which a Bierens family turns into
+unconditional moments and Landweber--Fridman regularisation solves. A
+cross-fitted one-step on a Neyman-orthogonal moment estimates the slope
+vector, \(\sqrt n\)-consistently and asymptotically normally and with a
+consistent variance estimator, whenever the first-stage rate is faster
+than \(n^{-1/4}\). A hedonic application on a county panel illustrates
+the estimator at \(\mathsf L=4\), reading a regulatory designation as
+the pair of triggers that produces it.
+\end{abstract}
+
+
+\textbf{JEL codes:} C14, C23, C26
+
+\textbf{Keywords:} panel data, nonparametric instrumental variables,
+discrete instrument, ill-posed inverse problems
+
+\section{Introduction}\label{introduction}
+
+Fixed effects and instrumental variables are the workhorse answers to
+endogeneity in panel data, and applied work uses them together. A
+first-difference transformation removes whatever is fixed about the
+unit, and an instrument handles what is left. Both steps are almost
+always taken inside a linear specification.
+
+We relax linearity in one regressor and keep it in the others. Over two
+periods the model is \[
+Y_{ij}\;=\;\vdagger(X_{ij})\;+\;Z_{ij}'\theta_\dagger\;+\;\eta_i\;+\;U_{ij},
+\qquad j\in\{1,2\},
+\] with \(X_{ij}\) a scalar continuous regressor correlated with
+\(U_{ij}\), \(Z_{ij}\in\IR^{p}\), and \(\eta_i\) an individual effect
+that may depend on everything observed. Differencing the two periods
+removes \(\eta_i\) and leaves \[
+\Delta Y_i\;=\;\vdagger(X_{i2})-\vdagger(X_{i1})\;+\;\Delta Z_i'\theta_\dagger\;+\;\Delta U_i .
+\]
+
+The instrument \(W_i\) takes finitely many values,
+\(W_i\in\{0,1,\dots,\mathsf L-1\}\) with \(\mathsf L\ge2\) fixed and
+known to the analyst, and that single fact is what the rest of the paper
+is about. Sans-serif \(\mathsf L\) is the number of instrument cells
+throughout, and \(\mathsf L=2\) is the binary case rather than the
+paper's scope.
+
+The parameter of interest is \(\theta_\dagger\). It is what a
+first-differenced linear panel regression already reports, and the point
+here is to report it again without having forced \(X\) into a line. A
+researcher who suspects one regressor enters nonlinearly, and who has a
+discrete instrument for it, can run the estimator of Section 3 and read
+a slope vector and a standard error in the usual way.
+
+That estimator has two steps and only the second concerns
+\(\theta_\dagger\). The first solves for \(\vdagger\) by a regularised
+iteration at a rate slower than \(n^{-1/2}\); the second is a one-step
+correction on a moment built to be insensitive to that error. The
+propensity score \(\varrho=(\varrho_1,\dots,\varrho_{\mathsf L-1})'\),
+whose \(l\)-th coordinate is \(\varrho_l(z)=P(W=l\mid\Delta Z=z)\), is
+the only conditional expectation the procedure estimates
+nonparametrically.
+
+Take the exogeneity condition to be a conditional mean,
+\(E[\Delta U\mid W,\Delta Z]=0\). What it delivers about \(\vdagger\) is
+the \(\mathsf L-1\) contrasts between the \(W\)-cells at each value of
+\(\Delta Z\), and identification asks those contrasts to separate every
+candidate from \(\vdagger\). That is a completeness condition on the
+instrument, and a \(W\) with finitely many values does not supply one
+\citep[see][]{dominguezlobato2004,severini2006}. The obstruction is a
+property of the instrument rather than of any estimator, and neither a
+larger sample nor a larger \(\mathsf L\) removes it.
+
+Instruments of this kind are common in applied panel work, and the
+two-cell case is the canonical one. A randomised offer, an eligibility
+rule crossed once, a programme a unit is or is not exposed to: each
+supplies \(W\in\{0,1\}\) and nothing more. Others supply a few cells and
+no continuum: a randomisation into a small number of arms, a rule with
+several thresholds, a designation that records which of two triggers
+fired.
+
+Discrete instruments can be accommodated either by weakening what is
+asked of the data, reporting a pseudo-solution or a set rather than a
+function \citep[see][]{babiiflorens2025,chenq2021}; or by strengthening
+the exogeneity condition from mean independence to independence
+\citep[see][among others]{centorrinofeveflorens2019,dunker2014,dunker2021}.
+
+The latter route is the one we undertake in this paper, in the
+conditional form \(\Delta U\upmodels W\mid\Delta Z\).
+
+What independence buys is a family of restrictions where the mean
+condition gave \(\mathsf L-1\). Every indicator of the residual is an
+admissible test function, so the contrasts
+\(\widetilde W_l=\un\{W=l\}-\varrho_l(\Delta Z)\) are asked to be
+uncorrelated with all of them at once, and the system that results has
+enough content to pin down a function on a continuum. Assumption
+A1b(iii) is that it does, and the completeness condition that reaches
+its linearised form is stated given the residual as well as the
+controls.
+
+Those \(\mathsf L-1\) contrasts are the whole of what the instrument
+supplies, and nothing in the \(W\) direction is approximated. Every
+conditionally centred function of \((W,\Delta Z)\) is a
+\(\Delta Z\)-measurable linear combination of them, so a Bierens-type
+device is needed only in the \(\Delta Z\) direction. That is why A1
+itself is unchanged at every \(\mathsf L\): it is the statement
+\(\Delta U\upmodels W\mid\Delta Z\) about \(\sigma\)-fields, and what
+was binary in a previous draft of this paper was the representation and
+never the assumption.
+
+What it costs is nonlinearity, and the cost is not cosmetic. The
+equation the family defines is nonlinear in \(\varphi\), so its
+linearisation \(\mathcal A_{\mathrm{cond}}\) is a Fréchet derivative
+taken at the unknown truth and not a fixed conditional-expectation
+operator. The sample version is then noisy as an operator, and not
+merely in its right-hand side.
+
+Nonlinearity also reaches \(\theta_\dagger\). A debiasing weight that
+ignored the residual could be orthogonal only where the moment is
+already free of \(\varphi\), and by \cref{prp:nophifree} and
+\cref{cor:udep} that is a design with nothing to debias. So the weight
+varies with the residual, and the moment carries a quadratic term in
+\(\varphi\). That term is why the first stage faces a rate condition at
+all, and why the condition is \(\delta_n=o(n^{-1/4})\) rather than a
+product of two estimation errors.
+
+This is why the result is not a corollary of the linear theory.
+
+On the discrete-instrument side the closest work is the cross-section
+version of the \(\varphi\)-problem, which we solve in a previous paper
+\citep{centorrinofeveflorens2019}. It takes the instrument independent
+of the structural error, writes the restriction as an operator equation,
+and estimates the structural function by an iterative Landweber--Fridman
+scheme, with an upper bound on the mean integrated squared error and
+explicit guidance on the initial condition. There is no parametric
+component in that paper, no panel, and no \(\sqrt n\) statement about
+anything.
+
+The machinery carries over and the question does not. Adding
+\(Z'\theta\) changes little about how \(\vdagger\) is computed and much
+about what has to be proved. The parameter \(\theta_\dagger\) must be
+identified without recourse to a source condition, and the moment used
+to estimate it must be made insensitive to a first stage converging at a
+nonparametric rate.
+
+On the panel side the closest prior work is \citet{feve2014}. They
+analyse first-differenced panel models with endogenous regressors as a
+linear inverse problem solved by Tikhonov regularisation, and their
+adjoint is an integral against the same difference of joint densities
+that runs through this paper. Their operator is linear, there is no
+parametric component anywhere in it, and nothing requires the instrument
+to be discrete.
+
+Their non-identification condition and their Proposition 2.2 are used
+here rather than distinguished. The first, that the operator annihilates
+every \(\varphi\) when the two periods are exchangeable given the
+instrument, is the linear-case form of \cref{prp:nophifree}; the second,
+of which they write that its assumption is too strong, does not
+transplant at all. Their completeness hypothesis is posed on
+\(g\mapsto E[g\mid W]\); the conditional-independence analogue would be
+posed on \(\Lambda\mapsto E[\widetilde W\Lambda\mid\Delta U,\Delta Z]\),
+and that operator annihilates the constants, because \(\widetilde W\) is
+conditionally centred. The analogue is therefore not merely stronger
+than theirs but unsatisfiable, and we record it as a route that is
+closed rather than as one we take.
+
+On the third side, \(\sqrt n\) estimation of a finite-dimensional object
+whose nuisance solves an ill-posed equation is settled for linear
+operators. \citet{severini2006} give the condition, that the relevant
+representer lie in the range of the adjoint. \citet{florens2006} put it
+to work in the partially linear model, obtaining \(\sqrt n\) normality
+of the slope under Tikhonov regularisation. \citet{florenslapenta2024}
+reach the same model by Landweber--Fridman, keeping the instrument out
+of the smoothing by fixing its bandwidth.
+
+That literature now runs without completeness, reaches strongly
+identified functionals of weakly identified functions, and delivers
+one-step estimators of average marginal effects
+\citep[see][among others]{bennett2023source,bennett2026jrssb,chenq2021,girardlapenta2026}.
+Every operator in that list is linear.
+
+A nonlinear framework does cover this model in principle.
+\citeauthor{chen2012} (\citeyear{chen2012}, \citeyear{chen2012b}) treat
+conditional moment models whose generalized residual is nonsmooth and
+nonlinear in the unknown function, and deliver \(\sqrt n\) normality for
+regular functionals under a sieve Riesz representer condition. To the
+best of our understanding, instantiating it here would call for a
+continuum of generalized residuals, nonparametric smoothing in a
+three-to-five dimensional conditioning variable, and a Donsker property
+for a regularised inverse with a data-driven stopping rule. The
+estimator of Section 3 needs none of the three.
+
+On the independence side the nearest work is \citet{poirier2017}, who
+computes the semiparametric efficiency bound for a finite-dimensional
+parameter under independence restrictions. His examples are a linear
+instrumental-variables model and a partially linear model whose
+nonparametric argument is exogenous, so no structural inverse appears in
+either.
+
+He then names the step he does not take: an independence restriction
+whose residual depends on an unknown function as well as on a
+finite-dimensional parameter \citep[\S5]{poirier2017}.
+
+That is the case we take up, and the differences should be recorded. He
+writes the restriction unconditionally and we maintain the conditional
+form, and the nuisance here additionally solves an ill-posed nonlinear
+operator equation. His sentence is therefore the closest available
+statement of the gap and not a description of what we do.
+
+The combination is new to the best of our knowledge: an ill-posed
+\emph{nonlinear} operator equation for the nuisance, a discrete
+instrument, a differenced panel, and a \(\sqrt n\) statement about the
+parametric component.
+
+We contribute to the existing literature in several directions.
+
+First, a negative result. \Cref{prp:nophifree} shows that a moment with
+weight \(g\) is free of \(\varphi\) exactly when the two periods'
+\(g\)-tilted marginals of the endogenous regressor coincide. At
+\(g\equiv1\) that is marginal stationarity of \(X\). So the
+partialling-out argument behind the partially linear
+instrumental-variables literature is unavailable here, and its
+unavailability is a property of the differenced design and not of our
+estimator.
+
+Second, an orthogonal moment and the condition it needs. We add to the
+differenced least-squares moment a term \(\widetilde W\) times a weight
+evaluated at the residual, and \cref{prp:orthog} shows that the moment's
+derivative in \(\varphi\) vanishes in every direction if and only if the
+weight's derivative solves
+\(\mathcal A^\ast_{\mathrm{cond}}\ell^\Pi=-\nu/\pi\). That is the range
+condition of \citet{severini2006}, read at the Fréchet derivative of a
+nonlinear operator instead of at a fixed one. We prove it sufficient and
+do not show it necessary.
+
+Third, a device that keeps the conditioning variables out of the
+nonparametric machinery. \Cref{lem:bierens} converts the conditional
+restriction into an unconditional family indexed by a scalar residual
+threshold and a Bierens index, in the manner of \citet{bierens1990} and
+at the generality of \citet{stinchcombewhite1998}
+\citep[see also][]{bierensploberger1997,escanciano2006,fanli2000}. The
+conversion is an equivalence and not an approximation, so no conditional
+law given \(\Delta Z\) is ever estimated, and the Landweber--Fridman
+machinery carries over with a larger index set and no new curse of
+dimensionality.
+
+Finally, the theorem. \Cref{thm:rootn} states that the cross-fitted
+one-step estimator is \(\sqrt n\)-consistent and asymptotically normal
+with influence function \(J^{-1}\psi_\star\), that
+\(J=E[\Delta Z\Delta Z']\) exactly, and that the sample sandwich is
+consistent for the limiting variance. The studentised statement holds in
+every direction, and the positive definiteness it needs is implied by
+the theorem's own hypotheses rather than added to them.
+
+The rate the theorem asks of the first stage is stated in primitives.
+\Cref{prp:phirate} delivers the first-stage rate \(\delta_n\), and the
+frontier \eqref{eq:frontier} asks that it be faster than \(n^{-1/4}\).
+
+Read in the primitives, the frontier is a smoothness requirement on the
+propensity score: \(r>d_Z(2\mu+1)/\{2(2\mu-1)\}\), with \(r\) its Hölder
+smoothness, \(d_Z\) its number of non-degenerate arguments and \(\mu\)
+the source index. At \(d_Z=1\) it approaches \(r>2\) as
+\(\mu\downarrow\tfrac56\) and weakens at every larger \(\mu\), so a
+scalar conditioning variable and five derivatives clear it throughout.
+
+What we do not do is worth stating here rather than leaving to be found.
+The estimator has two ingredients that we assume to exist and build
+nowhere, and it rests on three conditions we take as primitive rather
+than derive. Section 3 lists both sets, Section 7 repeats them, and the
+supplement's remark on open verification obligations inventories a
+separate matter: the four forward obligations of the block, of which two
+remain open.
+
+We assume global identification of \(\vdagger\) and do not derive it,
+and we offer no primitive for the linearised condition either: the
+instrument-completeness route that would have reached it is
+unsatisfiable in this design, for the reason given in Section 2. Nor
+would that condition have delivered a neighbourhood of uniqueness had it
+been reachable: \(\mathcal A_{\mathrm{cond}}\) is compact by
+\cref{prp:compact}, hence not bounded below, so by \cref{prp:frechet}(i)
+a competitor becomes admissible at a radius shrinking to zero along the
+singular system.
+
+The theorem covers mildly ill-posed problems. Under exponentially
+decaying singular values the rate attainable from any source condition
+is logarithmic, so \eqref{eq:frontier} fails at every \(r\).
+
+Near the frontier the asymptotics do not bind at any sample size anyone
+will run, and that is quantified rather than gestured at. At \(\mu=2\),
+with a scalar conditioning variable and five derivatives in the first
+stage, the remainder rises in \(n\) before it falls and the turn comes
+at \(n^{\ast}\approx1{,}140\). At the configuration the supplement's
+first Monte Carlo experiment runs, which sits just inside the frontier,
+it comes at \(n^{\ast}\approx10^{58}\).
+
+The paper is organised as follows. Section 2 sets out the model, the
+operator equation and the identification results, including the negative
+result on \(\varphi\)-free moments and the localisation result. Section
+3 defines the estimator, the stopping rule and the cross-fitting scheme.
+Section 4 contains the asymptotic theory and the frontier condition.
+Section 5 reports a Monte Carlo experiment that runs the shipped
+estimator on estimated nuisances at three instrument cardinalities and
+at sample sizes that bracket the application's; the supplement carries
+it in full, together with three further experiments, one at the
+configuration the theory names, one at a configuration with room to
+spare at the frontier, and one that varies the instrument's cardinality
+on the first of those two designs. Section 6 illustrates the estimator
+on a first-differenced county panel, estimating a hedonic price function
+for air quality with a regulatory designation read as four instrument
+cells, and the last section concludes. Proofs of all results are in the
+online supplement.
+
+\section{Local identification under
+independence}\label{local-identification-under-independence}
+
+% Statements only, twice over. assumptions_main holds the numbered conditions
+% and none of the discussion around them; results_s2 holds this section's
+% statements -- the model, the spaces, the operator equation, the Bierens
+% device, the identification results, the weight and the orthogonality. NO
+% COUNT IS STATED HERE OR BELOW: this read "the 15 core statements" against 17
+% numbered environments plus 2 remarks on disk, and it moves whenever a
+% statement is added or withdrawn. The interpretation of the assumptions, the retirement records
+% and the smoothness-budget table are in the supplement, and so are the proofs.
+\input{../../quality_reports/theory/panel-npiv-discrete/assumptions_main}
+
+We ask two things of the differenced residual in A1, and the two halves
+do different work. The mean-zero half, \(E[\Delta U\mid\Delta Z]=0\),
+delivers restriction (B) of \cref{def:admissible}, the unconditional
+orthogonality \(E[\Delta Z\,\Delta U]=0\); the conditional-independence
+half, \(\Delta U\upmodels W\mid\Delta Z\), delivers restriction (A).
+Each implication runs one way, A1 being the stronger statement in both.
+Only the first identifies \(\theta_\dagger\).
+
+We build everything else from the second: the operator equation, the
+debiasing weight, the Jacobian of the moment, and its orthogonality in
+two of the three nuisance directions.
+
+Restriction (B) identifies \(\theta_\dagger\) on its own. Under A1 and
+A1b(iv),
+\(\theta_\dagger=\big(E[\Delta Z\Delta Z']\big)^{-1}E[\Delta Z(\Delta Y-\Delta\vdagger)]\),
+the inverse existing and the expectations being finite by that same
+clause. Neither the source condition A2 nor a rank condition on any
+other matrix enters. That is worth stating plainly rather than leaving
+to be inferred: routing identification of the parametric component
+through a matrix built from the representer would make it contingent on
+a source condition, and it is not.
+
+Restriction (A) carries no first-order information about
+\(\theta_\dagger\), and that is a theorem rather than a shortcoming of
+the argument. By \cref{lem:shiftinv} the set of pairs admitted by (A) is
+a product set, so no functional of the conditional law of the residual
+given \((W,\Delta Z)\) distinguishes \(\theta_\dagger\) from any other
+value.
+
+It does not follow that \(\theta_\dagger\) is unidentified, the display
+above having identified it, and it does not follow that (A) is idle. A
+Neyman correction is mean-zero at the truth \emph{by construction},
+which is what makes it a correction rather than a second restriction,
+and that is a property of every Riesz representer in the
+debiased-machine-learning construction
+\citep{chernozhukov2018dml,chernozhukov2022adml,chernozhukov2022riesz}
+and not a defect peculiar to this model.
+
+The comparison with \citet{poirier2017} runs the other way, and the
+direction is worth stating. He shows that replacing a conditional
+independence restriction by a conditional moment restriction loses
+identification; here identification of \(\theta_\dagger\) comes from the
+mean restriction, and conditional independence supplies the debiasing
+channel instead.
+
+What (A) costs is over-identification. Under an \emph{unconditional}
+independence assumption the residual at a wrong \(\theta\) would fail to
+be independent of \(W\) whenever \(\Delta Z\) and \(W\) are dependent,
+so (A) would deliver a testable restriction on \(\theta\). Under A1 as
+stated, \(\theta_\dagger\) is exactly identified by (B) and (A) is a
+pure debiasing device. Solvability of the operator equation remains
+testable in the usual nonparametric-instrumental-variables sense; what
+carries no over-identifying restriction is \(\theta\).
+
+What we get from the conditional-independence half and not from the
+mean-zero half is one identity:
+\(E[\widetilde W\,\Xi(\Delta U,\Delta Z)]=0\) for every integrable
+\(\Xi\) (Lemma L-1(v) of the supplement).
+
+From that identity, the \(\theta\)-Jacobian of the debiased moment is
+\(-J\) with \(J=E[\Delta Z\Delta Z']\) \emph{exactly}, the debiasing
+summand of \eqref{eq:JSig} being the zero matrix (part (iv) of the
+moment-validity lemma of the supplement). We do not assume the local
+rank condition such a moment would ordinarily require, nonsingularity of
+a matrix built from \(\ell_\star\) and therefore statable only under A2:
+it follows from A1 and A1b(iv).
+
+Where that identity stops is where our difficulty lives, and it belongs
+beside it. \(\Delta h\) is \(\sigma(X_1,X_2)\)-measurable and not
+\(\sigma(\Delta U,\Delta Z)\)-measurable, so the same tower step does
+not run in the structural direction: A2 is precisely the assertion that
+the pairing there equals \(-E[\Delta Z\,\Delta h]\) for every
+\(h\in\mathcal V\), and were it zero for every \(h\) the instrument
+would not move the regressor at all.
+
+We convert that conditional restriction rather than approximate it.
+
+\Cref{lem:bierens} carries (A) to \(T(\vdagger,\theta_\dagger)=0\) in
+\(L^{2}(\Pi)\). The contrasts \(\widetilde W\) replace the
+\(W\)-argument by the finite index \(l\) and the Bierens index \(t\)
+removes the \(z\)-argument, leaving a family indexed by \((u,t,l)\) with
+\(u\) scalar and \(l\) running over \(\{1,\dots,\mathsf L-1\}\); the
+problem is therefore still amenable to the existing Landweber--Fridman
+machinery, at an enlarged index set and no new curse of dimensionality.
+B1(iv.d)'s third factor on the reference measure is the whole of the
+cost: no Bierens-type device is needed in the \(W\) direction, because
+the space of conditionally centred functions of \((W,\Delta Z)\) is
+finite-dimensional and \eqref{eq:contrast} is a basis for it.
+
+It is also cheaper than it looks. It requires no moment condition
+whatsoever on \(\Delta Y\), \(\Delta U\) or \(\Delta Z\), and no
+Lebesgue density for \(\Delta U\) or \(\Delta Z\). That is, \(\Delta Z\)
+may be discrete, \(\Delta U\) may have atoms, and neither need have a
+finite mean. That is exactly what boundedness of \(\Phi\) in B1(i)
+purchases, and the smoothness and moment conditions of C1, C2\('\) and
+A1b(iv) enter only when the operator is differentiated or the parameter
+is identified. Compactness of \(\mathcal T\) is sufficient and is not
+assumed; what the proofs consume is the integrability of B1(iv.c) and
+B1(v).
+
+The weight is the exponential, and B1(ii) fixes it as a correction
+rather than a convenience. Under the textbook condition, with \(w\)
+real-analytic and non-polynomial, the converse direction of the Bierens
+core lemma of the supplement fails against the maintained componentwise
+\(\arctan\), which is odd. For \(w=\cos\) and a two-point \(V\) the
+family sees only the even part of the image measure, and the
+supplement's remark on the choice of weight exhibits the witness inside
+the paper's own transform.
+
+That failure reaches \cref{lem:bierens} itself, condition (c) then
+holding whenever the \emph{unconditional} restriction does while the
+\(\Delta Z\)-conditional one fails through opposite-signed violations
+that cancel. Repair is not a matter of strengthening \(\Phi\) but of
+adding an intercept and indexing the family over a subset of
+\(\IR^{1+p}\). It is \citet[Thm.~3.1]{stinchcombewhite1998}, and it is
+load-bearing rather than a \emph{see also}. We do not adopt it.
+
+Adopting it would change the range space and redo the envelope
+bookkeeping of B1(iv)--(v) throughout. We maintain \(w=\exp\), which is
+what \citet[Thm.~1]{bierens1990} characterises, and the additional
+generality is consumed nowhere in the programme.
+
+Identification of \(\vdagger\) separates into a linearised statement and
+a global one, and we offer a primitive for neither. \Cref{prp:kerchar}
+characterises the kernel of the linearisation. The obvious primitive
+would be the transplant of \citet[Prop.~2.2]{feve2014} to the
+conditional-independence design, an instrument-completeness condition on
+\(\Lambda\mapsto E[\widetilde W\Lambda\mid\Delta U,\Delta Z]\).
+\emph{That transplant is unavailable, and not because it is strong.}
+Under conditional exogeneity \(\widetilde W\) is centred given
+\(\Delta Z\), so the operator annihilates every function that is almost
+surely a function of \((\Delta U,\Delta Z)\), the constants included;
+the completeness condition fails at \(\Lambda\equiv1\) at every law the
+model admits. In \citet{feve2014} the restriction is a conditional mean
+and the operator is \(g\mapsto E[g\mid W]\), which does not annihilate
+constants, and their operator is linear in \(\varphi\), so injectivity
+\emph{is} identification. Our design is the harder one twice over: the
+operator equation is nonlinear, so the linearised and global statements
+come apart, and the completeness hypothesis that would have delivered
+the linearised one cannot be posed.
+
+The obstruction is nameable. Membership of \(\mathcal V_{CI}\) is a
+family indexed by test functions of the \emph{observed} residual at the
+trial value, whereas running the linearised argument globally would need
+the strictly larger family indexed also by test functions of the
+\emph{true} residual, about which the restriction says nothing at a
+trial \(\varphi\). They coincide at \(\varphi=\vdagger\) and nowhere
+else. \Cref{prp:compact} closes off the obvious repair:
+\(\mathcal A_{\mathrm{cond}}\) is compact, hence not bounded below, so
+A1c does not even deliver a neighbourhood of uniqueness.
+
+We acknowledge that A1b(iii) is assumed rather than derived, and that no
+primitive for it is offered anywhere in this paper. An earlier draft
+carried one for the linearised condition and we have withdrawn it: the
+hypothesis it rested on is empty in this model, for the reason above.
+\emph{We would rather record a route as
+closed than leave a corollary standing whose hypotheses nothing satisfies.}
+
+Global identification has been treated directly in a nonlinear
+instrumental-variables problem with a duration outcome
+\citep{beyhum2024}. Conditions of that kind are harder to interpret than
+the linearised one and are difficult to check on data.
+
+What a finer instrument does to that hypothesis runs the opposite way to
+the reflex, and \cref{def:cellsets} and \cref{prp:localise} say what it
+does instead. A conflict between two cells refutes A1, and where a
+violation exists the cells in conflict with a maximal consistent set are
+where the failure sits. That route is available in a design where
+A1b(iii) is assumed rather than derived, because \cref{prp:localise}(ii)
+carries no identification hypothesis at all.
+
+Two readings have to be blocked, and each is the one a reader arriving
+from the linear literature will supply. Extra cells do not buy
+identification: A1b(iii) at a coarsening of \(W\), together with A1,
+\emph{implies} A1b(iii) at the full instrument, so a finer instrument
+makes the identification hypothesis weaker and never stronger. Nor do
+they buy testability or instrument strength, for the reasons
+\cref{rem:localise}(5) gives. And the mechanism is not the conditioning
+of the inverse problem: the degree of ill-posedness is a property of the
+singular values of \(\mathcal A_{\mathrm{cond}}\), and the cardinality
+of \(W\) does not act on it in any way this paper can state. What the
+extra cells add are moment directions, restrictions on the same
+\(\varphi\), and the per-cell decomposition of those directions is the
+localisation.
+
+\Cref{prp:localise}(iv) is where the design earns its keep and where the
+binary case is not merely weaker but empty. One limit belongs with it
+and is carried by neither statement: consistency of every cell set is
+necessary for A1 and not sufficient, since the diagnostic detects
+\(\mathcal V_{CI}=\emptyset\) and a violation that some other
+\(\varphi\in\mathcal V\) reconciles is invisible to it, so a cell
+showing no conflict is not exonerated.
+
+\Cref{prp:nophifree} is our negative result and it is an equivalence,
+not an impossibility theorem. Read its condition \(\nu_g\equiv0\) at
+\(g\equiv1\) and it is marginal stationarity of \(X\); read at
+\(g=\Delta Z\) it is \(\nu\equiv0\), the design in which the debiasing
+weight degenerates and the moment collapses to the differenced
+least-squares one.
+
+The condition was reached independently in the linear case.
+\citet{feve2014} observe that their operator annihilates every
+\(\varphi\) under exchangeability of the two periods given the
+instrument, which is \eqref{eq:tilted} imposed simultaneously for every
+bounded \(g=g(W)\). What \cref{prp:nophifree} adds is the
+one-weight-at-a-time equivalence, theirs being the simultaneous
+condition and correspondingly stronger, and the enlargement of \(g\)
+from functions of \(W\) to functions of \((W,\Delta Z)\), which is the
+class the debiasing construction actually searches.
+
+\emph{The proposition does not assert that \eqref{eq:tilted} holds or
+fails.} Whether it fails is a property of the application, testable
+through the Picard diagnostic and through \(\hat\nu_g\) directly, and we
+report it rather than assert it.
+
+A design in which it holds for the weights of interest is one in which
+there is nothing to debias.
+
+\Cref{cor:udep} closes the chain from that equivalence to the shape of
+the remainder. If the debiasing weight did not vary with the residual,
+the moment would reduce to a \(\sigma(W,\Delta Z)\)-measurable weight
+times the residual, and orthogonality would then force
+\eqref{eq:tilted}. So in any design where \eqref{eq:tilted} fails for
+such weights the selected \(\ell_\star\) must have
+\(\partial_u\ell_\star\not\equiv0\).
+
+That is what puts a quadratic term in \(\varphi\) into the moment, and
+it is why the second-order remainder of \S4 is unavoidable within this
+moment class rather than an artefact of the expansion.
+
+Necessity is not sufficiency here. The condition
+\(\partial_u\ell_\star\not\equiv0\) is necessary and not sufficient for
+the second-order form to be nonzero: the conditional expectation
+\(q=E[\widetilde W\,\partial_u\ell_\star\mid X_1,X_2]\) can still vanish
+by cancellation, and excluding that is the separate hypothesis O-16
+carried explicitly by \cref{prp:sharpquad}(iii)--(iv). And we make no
+claim about whether the moment class is exhausted.
+
+% The statements of this section, printed where the prose above discusses
+% them.  Before the three-way split they printed under Section 4, forty pages
+% after the paragraphs that refer to them.
+\input{../../quality_reports/theory/panel-npiv-discrete/results_s2_identification}
+
+\section{Estimation}\label{estimation}
+
+Recall that the differenced model is
+\(\Delta Y=\Delta\vdagger+\Delta Z'\theta_\dagger+\Delta U\), with
+\(\vdagger\) the unknown function and \(W\) taking values in
+\(\{0,1,\dots,\mathsf L-1\}\). We estimate \(\vdagger\) in a
+\(\varphi\)-step, which solves an ill-posed inverse problem by
+regularisation and returns a rate slower than \(n^{-1/2}\); the
+\(\theta\)-step is a cross-fitted one-step on a moment built to be
+insensitive to that error to first order. The multinomial first stage
+fits the \(\mathsf L-1\) propensities
+\(\varrho_1,\dots,\varrho_{\mathsf L-1}\), which is why A0 asks that
+\(\mathsf L\) be known: the analyst has to know how many functions to
+fit. A4(i)'s overlap floor \(\varepsilon_\varrho\) lies in
+\((0,1/\mathsf L)\) and is imposed at every cell including the base one,
+so it tightens mechanically as cells are added, and
+\eqref{eq:omegafloor} converts it into
+\(\lambda_{\min}(\Omega(\Delta Z))\ge\varepsilon_\varrho/\mathsf L\).
+
+One requirement of the assumption block is a restriction on how the
+analyst writes \(\Delta Z\), and it is stated here because it is
+invisible where it is imposed. A4(ii) asks that the number \(d_Z\) of
+non-degenerate coordinates of \(\Delta Z\) satisfy \(1\le d_Z\le p-1\),
+degenerate meaning almost surely equal to a constant. Read against
+A1b(iv) the upper bound is sharper than it looks. It says at least one
+coordinate of \(\Delta Z\) is almost surely constant; that constant
+cannot be zero, since a zero coordinate makes a row and a column of
+\(E[\Delta Z\Delta Z']\) vanish and A1b(iv) fails; and there cannot be
+two of them, since two non-zero constant coordinates make two rows of
+that matrix proportional and A1b(iv) fails again. So the two clauses
+together force \(d_Z=p-1\) exactly, and force \(\Delta Z\) to carry
+exactly one constant coordinate, non-zero: \emph{the differenced
+equation must include a period effect.} What is not required is that the
+period effect be non-zero in the population, its coefficient being an
+ordinary component of \(\theta_\dagger\) that may be zero; what is
+required is that the coordinate be present, so that \(\Delta Z\) spans
+an intercept in differences. A specification in which every coordinate
+of \(\Delta Z\) varies is excluded by A4(ii), and one in which two do
+not is excluded by A1b(iv).
+
+The lower bound does different work and is not a modelling choice. At
+\(d_Z=0\) the propensity exponent \(\alpha=r/(2r+d_Z)\) is \(\tfrac12\)
+exactly, A5(i)'s declared floor puts \(\hat\delta_n\) at
+\(n^{-1/2}\sqrt{\ln n}\), and the sieve-entropy condition
+\(L_x\ln n=o(n\hat\delta_n^{2})\) then reads \(L_x=o(1)\), which no
+integer \(L_x\ge1\) satisfies. \Cref{prp:phirate} has no admissible
+sieve dimension there and \cref{thm:rootn} is vacuous rather than false.
+That is not a pathology of the propensity, which at \(d_Z=0\) is a
+constant and estimable at the parametric rate; what fails is the
+\(\varphi\)-step's entropy budget, which needs room between the noise
+level and the sieve dimension.
+
+The \(\varphi\)-step is the iterated linearisation of \cref{def:lfstep},
+run on the spline sieve of A8
+\citep[see][]{devorelorentz1993,schumaker2007} at the relaxation
+\eqref{eq:normconst} \citep[see][]{dunker2014,engl2000}.
+
+That every pass is applied to a linear equation is what makes a
+tangential cone condition \citep{hanke1995} unnecessary, and the point
+is stronger than convenience. The cone condition is not merely strong
+here: the supplement refutes it, proving that its event has probability
+zero, and proving that for every bounded candidate linearisation and for
+the one unbounded candidate as well.
+
+The refutation is bounded, and the three qualifiers are load-bearing:
+the condition is posed on \(\mathcal V\), in the levels
+parameterisation, off the sieve. A cone condition restricted to
+\(\mathcal S_n\) is untouched by the refutation and is also unproved, as
+part (3) of the supplement's remark on where the failure stops records,
+and in a space of derivatives the proposition dissolves altogether at a
+cost in the source index \eqref{eq:muhalf} will not pay. Nothing in the
+argument above needs any of that: the \(\varphi\)-step is licensed by
+the linearity of each pass, not by the refutation.
+
+The derivative parameterisation is available and we decline it.
+Estimating the derivative of the structural function is standard in the
+linear problem and carries into the nonlinear one, where it lifts a
+saturation ceiling on the source index
+\citep{florens2012,centorrinofeveflorens2019}. Here it pushes the wrong
+way. Composing with the inverse derivative operator raises the degree of
+ill-posedness from \(a\) to \(a+1\) \emph{and} lowers the source index
+from \(s/(2a)\) to \((s-1)/\{2(a+1)\}\). At the frontier-clearing
+configuration \((s,a)=(3,\tfrac34)\) of the Monte Carlo that returns
+\(\tfrac47\) in place of \(2\), below the \(\tfrac56\) that
+\eqref{eq:muhalf} requires.
+
+We leave recovering marginal effects from \(\hat\varphi\) to future
+research.
+
+We stop the iteration on a discrepancy principle at a level that is
+stage-dependent and deterministic, and both features are load-bearing.
+
+Stage-dependent, because the data error of the stage-\(k\) equation is
+not \(\hat\delta_n\) but \(\hat\delta_n\ln n\) plus the linearisation
+remainder \(h_u^{-2}\varepsilon_{k-1}^{2}\). A fixed level sits below
+the true data error in exactly the regime the recursion must pass
+through, and there the classical discrepancy guarantee does not apply.
+
+Deterministic, for two reasons of different status. The first is this
+paper's own and is sharp: the realised residual cannot supply the level,
+because bounding the unobservable error from below through the residual
+would require a lower bound on \(\|\hat{\mathcal A}v\|\) in terms of
+\(\|v\|\). That \(\|\hat{\mathcal A}v_\dagger\|\ll\|v_\dagger\|\) is
+available is not an accident of this construction but the definition of
+ill-posedness. The second is classical and is cited: no rule depending
+on the data alone can make a regularisation method convergent for a
+genuinely ill-posed problem \citep{bakushinskii1984}.
+
+\emph{That statement is weaker than it looks here.} It is worst-case and
+deterministic, and in the statistical setting we inhabit it does not
+exclude data-driven selection. Lepskii-type balancing over the
+regularisation index is purely data-driven and attains the optimal rate
+up to a logarithmic factor \citep[see][]{dunker2021,lepskii1990}. We
+therefore prefer the schedule of \eqref{eq:lfsched}, and are not forced
+into it.
+
+It is preferred at a stated price. That schedule is \emph{computable}
+from four inputs and it is not \emph{known}: what \(\mathsf c_{14}\) and
+\(\mathsf c_{15}\) must dominate are analytic constants built from the
+kernel, from the design, and from the spectral pre-image radius
+\(\mathsf R_\ast\) of (P-a.3).
+
+The error is not symmetric in direction. Chosen too large, the rule
+stops earlier, the rate is unchanged in order and the constant degrades.
+Chosen too small, the implemented level again sits below the true data
+error at some stage and the discrepancy guarantee is void, leaving
+whatever the cap \eqref{eq:cap} returns. This is the one place the
+procedure carries a tuning constant the theory does not pin, and we say
+so here rather than leave it to be discovered.
+
+\Cref{prp:phirate} is the rate. It discharges A5(i) rather than assuming
+it, and it reaches neither A5(ii) nor A5(iii), which \cref{thm:rootn}
+carries as hypotheses at (T-4). Two further things we do not claim
+should be read with it. It is an upper bound and not a sharpness
+statement, and nothing there says \(\delta_n\) cannot be improved. And
+the source index \(\mu\) is \emph{primitive}, at (P-a.3), together with
+\(\mathsf R_\ast\).
+
+What pins \(\mu\) is not the identity \(\mu=s/(2a)\), and the reason is
+worth giving to a referee who asks. The passage from a Hilbert-scale
+source condition plus a link condition to the \emph{spectral} condition
+the classical discrepancy theorem consumes is operator interpolation at
+exponent \(2\mu\). That is available only at \(2\mu\le1\), while
+\eqref{eq:muhalf} forces \(2\mu>\tfrac53\).
+
+The \(\theta\)-step runs on the debiased moment \(\psi\) of
+\eqref{eq:psidef}: the differenced least-squares moment plus
+\(\widetilde W\) times a weight evaluated at the residual. We compute
+every nuisance out of fold (\cref{def:crossfit}) and take the one-step
+\eqref{eq:onestep} from the plug-in preliminary \eqref{eq:prelimtheta}
+\citep[see][]{chernozhukov2018dml,neweyrobins2018}.
+
+The preliminary inherits the first-stage rate,
+\(\|\hat\theta^{(0)}-\theta_\dagger\|=O_P(n^{-1/2})+O_P(\delta_n)\), and
+it inherits it because \(\theta_\dagger\) is identified by restriction
+(B) alone (the plug-in preliminary lemma of the supplement); no
+condition on the weight, on the propensity or on A2 enters it. Its
+variance estimator is the sample sandwich \eqref{eq:Sighat}, which
+carries a transpose because \(\hat J\) is not symmetric even though
+\(J\) is.
+
+We run the \(\varphi\)-step at a fixed anchor \(\theta_\circ\), licensed
+by \cref{cor:opsol} and \cref{lem:shiftinv} under A1b(iii) rather than
+assumed. What is \(\theta\)-dependent is the conditioning, and the
+mechanism is worth naming: in \eqref{eq:Adef} a conditional density is
+evaluated at a \(\theta\)-dependent point, which moves the singular
+values of the operator and with them every constant \cref{prp:phirate}
+is read at. The population solution set is \(\theta\)-free; the operator
+is not.
+
+Debiasing enters through the choice of weight, and \cref{prp:orthog}
+prices all three nuisance directions. The adjoint equation its first
+clause turns on is A2. In the weight direction the derivative vanishes
+at every perturbation and not merely to first order, because \(\psi\) is
+bi-affine there.
+
+In the propensity direction the equivalence is with N1, conditional
+centring given \(\Delta Z\). N1 can always be arranged by a
+straightforward re-anchoring, at no cost to \(\partial_uL\) and none to
+\(E[\psi]\), but it does not hold automatically, and
+\cref{prp:orthog}(iii) is the statement of exactly what its failure
+costs. That equivalence is what demotes \(\varrho\) from a \(\sqrt n\)
+nuisance to a product-rate one. Forming the weight never requires a
+weighting measure on \(\mathcal T\) to be chosen: by Lemma L-2 of the
+supplement the estimator solves for \(L\) inside a dense class, so we
+compute no \(t\)-integral in forming it, which is also the argument
+against a continuum-GMM formulation \citep{carrascoflorens2000}.
+
+\emph{We assume two ingredients of this estimator to exist with stated
+properties and construct neither in this paper; three further conditions
+we take as primitive rather than derive. Each is named in a hypothesis
+rather than buried in a regularity condition.}
+
+The two unbuilt ingredients are estimators. A5(iv) prices the
+representer estimator \(\hat\ell\), and no construction attaining that
+rate is supplied. The preliminary \(\hat\varphi^{(0)}\) has no supplier
+either, the schedule \eqref{eq:lfsched} needing it at a declared
+deterministic envelope \(\hat\varepsilon_0\) of polynomial order, for
+which consistency will not do.
+
+The three primitives are conditions, not objects. Both \(\mu\) and
+\(\mathsf R_\ast\) are primitive, as above. Global identification of
+\(\vdagger\) is assumed at A1b(iii) and not derived. And on the sieve
+branch of the first-order bias, the sieve display of Lemma L-7 in the
+supplement is assumed.
+
+Obligations of a second kind are construction claims rather than
+assumptions and are carried explicitly by the hypotheses that consume
+them. The first is that \(\hat L^{(-k)}\) \emph{is} an anchored
+antiderivative \(L^{\,\hat b^{(-k)}}_{\hat\ell^{(-k)}}\) of a bounded,
+\(u\)-continuous \(\hat\ell^{(-k)}\), which is (R-a) of
+\cref{thm:rootn}. The second is that the direction
+\(\hat L^{(-k)}-L_\star\) is conditionally centred, which is (R-c), a
+disjunction whose first branch assumes N1\('\) and whose second
+\emph{prices the failure} at \(r_n\epsilon^{L}_n\) through the fourth
+term of the supplement's bias decomposition. Pricing a failure is the
+honest third option, and it is neither a discharge nor an evasion. The
+supplement's remark on open verification obligations is the single
+inventory.
+
+% The four statements that define the estimator: the sieve Landweber--Fridman
+% varphi-step, the debiased moment with its two matrices, the cross-fitting
+% scheme, and the preliminary and one-step theta-estimator.
+\input{../../quality_reports/theory/panel-npiv-discrete/results_s3_estimation}
+
+\section{Asymptotic properties}\label{asymptotic-properties}
+
+% The four asymptotic statements.  The other 62 environments of results.tex are
+% in results_supp.tex, which supplement.qmd inputs ahead of proofs.tex; the
+% prose here and in Sections 2 and 3 refers to them BY NAME.  results_s2 +
+% results_s3 + results_s4 + results_supp are the undivided results.tex.
+\input{../../quality_reports/theory/panel-npiv-discrete/results_s4_asymptotics}
+
+\Cref{thm:rootn} is our main result, and what carries it is an
+\emph{exact} decomposition rather than an expansion. The bias
+decomposition of the supplement writes the conditional bias of the
+debiased moment at the estimated nuisances as the balancing pairing
+\(-\langle\nu_{g_k}/\pi,h_k\rangle\) plus exactly three remainders, one
+quadratic in the structural error and two products of two estimation
+errors. There is no Taylor remainder in the weight or the propensity
+directions, because the moment is bi-affine there. What makes each of
+the three \(o_P(n^{-1/2})\) is the frontier \eqref{eq:frontier}.
+
+The empirical-process term costs nothing at scale \(n^{-1/2}\), and that
+is a positioning commitment rather than a technical convenience. Lemma
+L-8 of the supplement obtains
+\(\sqrt n\sum_{k=1}^{\mathsf F}\tfrac{n_k}{n}(\mathbb E_{n,k}-E)[\hat\psi^{(-k)}-\psi_\star]=o_P(1)\)
+from conditional Chebyshev at a frozen nuisance, so the only input is
+\(L^{2}(P)\)-consistency of the estimated moment: no entropy condition,
+no Donsker property, no stochastic equicontinuity at the estimated
+point. We make that concession once, in the \(\varphi\)-step, where we
+take a uniform law with a rate over a slowly growing ball at scale
+\(\hat\delta_n\gg n^{-1/2}\). A penalised sieve minimum-distance
+treatment of \(\theta\) would need the harder statement at the harder
+scale.
+
+The sandwich is simpler than its construction suggests. At the
+\(J=E[\Delta Z\Delta Z']\) of \S2, the variance splits exactly, by the
+same tower step applied to the cross term:
+\(\Sigma=E[\Delta Z\Delta Z'\Delta U^{2}]+E[L_\star\widetilde W\widetilde W'L_\star']\).
+So the sandwich is the variance the infeasible plug-in
+\eqref{eq:prelimtheta} would have at a \emph{known} \(\vdagger\), plus a
+positive semidefinite term that does not vanish under overlap.
+
+That the second term does not vanish is reached differently at
+\(\mathsf L\ge3\), and the binary route is unavailable there rather than
+merely weaker. At \(\mathsf L=2\),
+\(\widetilde W^{2}\ge\varepsilon_\varrho^{2}\) surely under A4(i), which
+bounds the term below by \(\varepsilon_\varrho^{2}E[L_\star L_\star']\).
+At \(\mathsf L\ge3\) that argument fails outright:
+\(\widetilde W\widetilde W'\) has rank one, so no sure inequality
+\(\widetilde W\widetilde W'\succeq cI\) holds at any \(c>0\), and
+\(L_\star\widetilde W\widetilde W'L_\star'\) is singular at every sample
+point once \(p>1\). The route that works at every \(\mathsf L\) is the
+conditional one, and it is what \eqref{eq:omegafloor} was written for:
+under A1,
+\(E[\widetilde W\widetilde W'\mid\Delta U,\Delta Z]=\Omega(\Delta Z)\),
+and A4(i) gives
+\(\Omega(\Delta Z)\succeq(\varepsilon_\varrho/\mathsf L)I\).
+
+\emph{What the debiasing weight buys is not variance but the removal of
+the first-order bias} that the plug-in carries at exact order
+\(\|h_k\|\). That is the standard debiasing trade
+\citep[see][]{chernozhukov2022lr,ichimuranewey2022}, and it is not a
+defect.
+
+We do not compare the estimator to a semiparametric efficiency bound.
+The bound \citet{poirier2017} computes under independence restrictions
+is for a model without a structural inverse
+\citep[see also][]{aichen2012,bkrw1993}, and computing one here, where
+the nuisance solves an ill-posed nonlinear operator equation, is a step
+we leave to future research.
+
+No correction for the estimation of \(\varrho\) appears in the influence
+function, and its absence is a consequence rather than an omission. By
+\cref{prp:orthog}(iii) the \(\varrho\)-derivative of the moment vanishes
+exactly under N1, so there is nothing for a correction to remove; Lemma
+L-11 of the supplement states this as a property of the limit and not as
+an approximation to it.
+
+The positivity the studentised statement needs is \emph{implied by the
+theorem's hypotheses rather than assumed}. Notice that its conclusion is
+quantified over every \(\vartheta\) with \(\|\vartheta\|=1\), not over
+the directions on which the sandwich happens to be positive. By part (v)
+of the moment-validity lemma of the supplement, \(\Sigma\succ0\) follows
+from A1b(iv) and C2\('\)(i), both of which the theorem already carries,
+since \(E[\Delta Z\Delta Z']\) nonsingular gives
+\(P(\vartheta'\Delta Z\ne0)>0\) and a conditional density for
+\(\Delta U\) gives \(P(\Delta U=0)=0\).
+
+A proviso that a theorem's hypotheses entail belongs in its conclusion
+and not on the user's checklist.
+
+The scope is mild ill-posedness, and severe ill-posedness is a place the
+theorem does not reach rather than a gap in the proof. What
+\eqref{eq:frontier} requires is that \(\delta_n\) be a \emph{polynomial}
+rate faster than \(n^{-1/4}\), which under H1's
+\(\sigma_j\asymp j^{-a}\) is what a source condition delivers. Under
+exponentially decaying singular values the rate attainable from
+\emph{any} source condition is logarithmic in \(n\), so A5(ii) fails at
+every \(r\) and the theorem is unavailable.
+
+H1's scale supplies a shorter reading of that scope, and it needs
+qualifying. The reading pairs mild ill-posedness with \(s>a+\tfrac12\),
+hence \(\mu>\tfrac12+1/(4a)\), and at \(a\le\tfrac34\) that inequality
+is taken to deliver the source-index restriction the theorem carries.
+
+The inequalities in that reading are statements about
+\(\mu_{\text{H1}}=s/(2a)\), the index of A2 at the \emph{population}
+operator on all of \(\mathcal V\) at \(\theta_\dagger\), whereas
+\eqref{eq:muhalf} and \eqref{eq:frontier} carry (P-a.3)'s primitive
+\(\mu\) at the finite-rank compression of the realised operator at
+\(\theta_\circ\). The bridge between them is the operator interpolation
+that the supplement's remark on (P-a.3) shows unavailable at every
+\(2\mu>1\), and the commutativity proviso that would restore it is
+stated and declined.
+
+Read as an interpretation it is right; read as a scope statement it both
+excludes designs the theorem covers and claims designs it does not.
+
+The rate condition cannot be relaxed by bounding the remainder more
+carefully, \emph{and that is a weaker claim than necessity}.
+\Cref{prp:sharpquad} makes the direct bound order-sharp under O-16(a),
+so no argument that merely improves it will weaken \eqref{eq:frontier}.
+
+The sharpness statement invites readings that the supplement's scope
+remark blocks. It does not say that the realised remainder at
+\(h_k=\hat\varphi^{(-k)}-\vdagger\) fails to be \(o_P(\|h_k\|^{2})\): a
+regularisation path confined to directions on which the form is small
+could do better, and nothing here excludes that. It does not say that
+\(\delta_n=o(n^{-1/4})\) is \emph{necessary} for
+\(\sqrt n\)-estimability of \(\theta_\dagger\) by some estimator. And it
+does not say the moment class is exhausted.
+
+What relaxing the frontier would require is a different selection, one
+with a smaller \(\sigma_q\) and compact part, which is open. The
+alternative is a restriction on the \emph{direction} of the first-stage
+error, which is an extra hypothesis and not a sharper argument. The
+sharpness statement carries a hypothesis of its own, O-16, which asserts
+that the form does not degenerate and which does not follow from
+\cref{cor:udep}. Here \(q\) can vanish by cancellation inside the
+conditional expectation, and \(q\not\equiv0\) alone is not enough
+either, an antisymmetric \(q\,f_{X_1,X_2}\) making the form vanish
+against the symmetric \((\Delta h)^{2}\).
+
+\emph{We acknowledge that near the frontier the theorem's asymptotics do
+not bind at any sample size anyone will run, and we would rather say so
+than let a referee find it.}
+
+Write \(\hat\delta_n=n^{-\alpha}\) and \(\kappa=2\mu/(2\mu+1)\). The
+\(\theta\)-remainder is \(O_P(n^{-1/2}+\sqrt n\,\delta_n^{2})\) and its
+second term is \(\sqrt n\,\delta_n^{2}=n^{-\beta}(\ln n)^{2\kappa}\)
+with \(\beta=2\kappa\alpha-\tfrac12\), which is strictly positive by
+\eqref{eq:frontier}. In \(t=\ln n\) that is \(e^{-\beta t}t^{2\kappa}\),
+which is \emph{increasing} for \(t<2\kappa/\beta\), so the remainder
+\emph{rises} in \(n\) up to \(n^{\ast}=\exp\{2\kappa/\beta\}\) and only
+then falls. The Monte Carlo experiment at the configuration this theory
+names, which the supplement carries, runs at \(\mu=2\), hence
+\(\kappa=\tfrac45\), and at \(\alpha=0.32\), so that
+\(\kappa\alpha=0.256>\tfrac14\) and the design sits \emph{inside} the
+frontier. There one gets \(\beta=0.012\) and
+\(n^{\ast}=e^{400/3}\approx10^{58}\).
+
+That threshold is a fact about where the design sits and not about the
+theorem, and the same formula prices designs that sit elsewhere. It is
+not an artefact of a badly chosen parameterisation: \(\beta\downarrow0\)
+as \(\kappa\alpha\downarrow\tfrac14\), so \(n^{\ast}\uparrow\infty\) at
+the frontier and the \(10^{58}\) is a property of \eqref{eq:frontier}
+itself. But \(n^{\ast}\) falls away from the frontier as steeply as it
+climbs towards it, and it does so well inside the admissible range
+rather than at its edge.
+
+Take \(d_Z=1\). A first stage with \(r=5\) derivatives gives
+\(\alpha=\tfrac5{11}\), hence \(\beta=\tfrac5{22}\) and
+\(n^{\ast}=e^{176/25}\approx1{,}140\) at \(\mu=2\), and
+\(n^{\ast}=e^{352/61}\approx320\) at \(\mu=4\); at \(r=12\) and
+\(\mu=10\), \(n^{\ast}=e^{400/87}\approx99\). These are ordinary smooth
+designs with a scalar conditioning variable, satisfying every hypothesis
+the theorem carries, and at them the turn happens at sample sizes anyone
+will run. \emph{So the concession is that the asymptotics do not bind
+near the frontier, and that the configuration that experiment runs is
+near it.} It is not that they bind nowhere.
+
+Nothing in this weakens \eqref{eq:rootn}. The \(o_P(1)\) there is a
+statement about the limit and it is proved. What changes is how
+finite-sample evidence should be read. Below \(n^{\ast}\) the object
+that describes the estimator is \cref{cor:ratefloor}, in which
+\(\delta_n^{2}\), \(\delta_n\epsilon_n\), \(r_n\delta_n\) and
+\(r_n\epsilon^{L}_n\) appear as \emph{terms} of the rate and not as
+remainders sent to zero.
+
+That corollary is honest about its own exponents in the same way. On the
+branch that prices \(\hat\ell\) directly, two of them, \(\epsilon_n\)
+and \(\epsilon^{L}_n\), are assumed and not derived, because neither has
+a supplier in the maintained block. Only on the sieve branch for the
+first-order bias, together with N1\('\) at each estimated direction, do
+both unsupplied symbols disappear, and the primitives the surviving
+exponents are functions of are \((\mu,r,d_Z,s)\).
+
+So the correct reading of \eqref{eq:frontier} is that it is a
+\emph{qualitative} frontier: crossing it makes the remainder vanish
+eventually and says nothing about where.
+
+Finally, the theorem is \emph{pointwise in \(P\)}, and this is the
+quantifier the finite-sample caveats all sit inside. Every hypothesis is
+imposed at a single data-generating law, and \(\mu\),
+\(\mathsf R_\ast\), \(a\), \(s\), \(\varepsilon_\varrho\), \(r\),
+\(\bar c_\pi\), the representer's budgets and the singular system of
+\(\mathcal A_{\mathrm{cond}}\) are all \(P\)-specific constants.
+
+The consequences are real limitations rather than formalities. The
+\(o_P(1)\) in \eqref{eq:rootn} is not uniform over any neighbourhood of
+\(P\), so the theorem does not deliver confidence sets whose coverage is
+honest over a class, and no such class is defined here. The \(10^{58}\)
+of the previous paragraph is that gap displayed numerically: within any
+class containing laws arbitrarily close to the frontier the convergence
+cannot be uniform. And \(\lambda_{\min}(\Sigma)>0\) holds at each \(P\)
+and may be arbitrarily small along a sequence of laws, so the positivity
+established above is pointwise too.
+
+A uniform statement would need a class on which those constants are
+bounded, a uniform version of \eqref{eq:phirate} at a random compressed
+operator, and a Lindeberg condition uniform in \(P\). We attempt none of
+the three.
+
+\section{Monte Carlo}\label{monte-carlo}
+
+% cleveref's stock English names for these two counters are lower case, so
+% \cref{tab:x} would render "table 1" against the "Theorem 12" / "Section 5"
+% shape the rest of this document uses.  Declared HERE and not in
+% preambles/preamble.tex on purpose: the preamble is shared with the theory
+% corpus build, which declares no float and would be changed for no reason.
+% \crefname is legal in the body provided it precedes the first \cref, which it
+% does: the article's first float is tab:sim-merged-rootn-balanced below.
+% SHORTENED 2026-08-27 BY THE SECTION 5 CUT, which retired a clause claiming
+% this section held every float in the article.  That clause was false when
+% written -- Section 6 held six tables and a figure -- and it is now false in
+% the other direction as well.  It is preserved, with its correction, in the
+% pre-cut copy at
+% quality_reports/archive/section5_20260827/section5_verbatim.qmd.
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
+
+We run the shipped estimator on a multinomial design, on the code
+Section 6 estimates with and with every nuisance fitted from the sample.
+The instrument is drawn at four cells and read at
+\(\mathsf L\in\{2,3,4\}\) off one draw, so the cardinality varies inside
+a replication and the three readings are paired. Three laws are drawn
+from that design: a balanced one; a skewed one, which moves the
+distribution of the differenced controls and leaves the propensity
+correctly specified; and a third that misspecifies \(\hat\varrho\), the
+nuisance A4(iii) prices. The estimator cross-fits at \(\mathsf F=5\)
+folds, so the operator is built on \(\lceil0.4n\rceil\) design points.
+Everything below is produced by
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}.
+
+The grid is \(n\in\{400,800,1{,}600\}\) and it is chosen to bracket the
+panel of Section 6, which has \(n=983\) counties and so sits between its
+second and third points. \emph{That is the experiment and not a
+limitation of it.} Three further experiments run the same estimator
+against population objects computed in closed form, with the nuisances
+injected at controlled rates rather than fitted, and they reach
+\(n=181{,}019\) at \(5{,}000\) replications in every cell; the
+supplement carries all three, in its first four sections. The first of
+them, at the configuration the theory names, finds the estimator
+matching its limit law at large \(n\) only: the simulated standard
+deviation clears a two-standard-error bar against its asymptotic value
+at \(n=181{,}019\) at one of two equally admissible constants and at
+neither below \(n=64{,}000\). The second, run at a configuration with
+more than twenty times the frontier margin and a propensity no smoother,
+meets a pre-committed coverage criterion from \(n=354\) upward, which
+locates that verdict in the design rather than in \cref{thm:rootn}. What
+none of the three can answer is how the shipped code behaves at a sample
+size a reader has, because none of them runs the shipped code. \emph{Nor
+do the three suites merge into a single cardinality contrast}: they
+differ in the design, in the estimator and in the nuisance regime, and
+their sample-size grids do not intersect at any point, so a table whose
+columns read \(\mathsf L=2\) and \(\mathsf L=4\) but whose rows came
+from two of them would attribute three differences to the cardinality.
+The supplement sets the three beside each other under a rule that keeps
+one design, one estimator and one nuisance regime to a row (Table S29 of
+the supplement).
+
+One precision statement governs everything below. The suite was run at
+\(120\) replications and returns between \(112\) and \(120\) usable
+ones, the shortfall being the draws on which the boundary kernel drove
+\(\hat\pi\) non-positive at a design point, so that the adjoint could
+not be formed and the replication was dropped rather than returned
+degraded; the count is a property of the cell and is identical across
+the three cardinalities in all nine of them, which is what leaves the
+paired contrast defined. At a coverage rate near \(0.95\) the Monte
+Carlo standard error is about \(0.02\), so two of them resolve to about
+\(\pm0.040\) and a gap smaller than that is not evidence of anything.
+\emph{That is the smallest resolution in the suite and it is calibrated
+at one point}: at the misspecified constant, where coverage runs from
+\(0.277\) to \(0.795\), the printed standard errors are \(0.038\) to
+\(0.046\). Every reading below is priced at the standard error its own
+cell prints. What the dropped draws could have done is bounded rather
+than merely disclosed, and each table carries the bound in its own
+header row: at most \(0.024\) on the balanced design and at most
+\(0.063\) on the misspecified one. The selection is real and its
+direction is known, a draw surviving when the nonparametric stage
+behaved, so the printed rates are the optimistic reading of that
+interval.
+
+On the balanced design the estimator behaves as the theorem asks at
+every cardinality. The bias at \(n=1{,}600\) is inside two of its own
+Monte Carlo standard errors at all nine cells, the largest being the
+constant at four cells at \(-0.0200\) \((0.0125)\). The quantity
+\cref{thm:rootn} makes constant in \(n\), \(\sqrt n\) times the
+simulated standard deviation, falls across the grid at seven of the nine
+cells and is larger at \(n=1{,}600\) than at \(n=400\) at two, both of
+them the constant, by \(19.19\) and \(5.35\) per cent; \emph{neither
+move is resolved from flat}, at \(1.50\) and \(0.45\) of the standard
+error Panel B prints, which is computed from the fourth moment rather
+than from the Gaussian formula because the realised kurtosis reaches
+\(10.8\) over the suite. Coverage of the nominal \(95\%\) interval at
+\(n=1{,}600\) sits between \(0.866\) and \(0.975\) at all nine cells
+(\cref{tab:sim-merged-rootn-balanced}).
+
+\emph{That range is true and it conceals the shape of its own low end.}
+Three of the nine cells sit more than two Monte Carlo standard errors
+below nominal and they are not scattered: all three are the constant, at
+\(0.882\), \(0.866\) and \(0.866\) down the three cardinalities. The
+shortfall does not shrink in \(n\) either. At four cells the constant
+runs \(0.863\), \(0.842\) and \(0.866\) across the three sample sizes,
+which is flat and \(2.7\) standard errors under nominal at the largest
+of them. What kind of failure that is, the interval answers and the
+limit law does not. The mean estimated standard error over the simulated
+standard deviation is below one in \(77\) of the suite's \(81\) cells
+and below \(0.75\) in \(18\) of them; take the coverage a centred normal
+carrying that ratio would deliver and subtract the realised coverage,
+and the difference is inside \(\pm0.070\) at all \(54\) well-specified
+cells, at a root mean square of \(0.024\) (Table S32 of the supplement).
+\emph{The entire well-specified coverage shortfall is the interval's
+scale and not the limit law.}
+
+% GEOMETRY, FOR THE THREE FLOATS THIS SECTION STILL PRINTS.  RE-CUT 2026-08-27
+% FROM A CERTIFICATE THAT MEASURED SEVEN.  Five of those seven moved to the
+% supplement in the same pass and their clauses went with them; what is below is
+% the part that measures what is left.  The full historical record -- the
+% provenance of each measurement, the two-ended sidewaystable failure, and the
+% three occasions on which a certificate here was found stale -- is in the
+% byte-identical pre-cut copy at
+% quality_reports/archive/section5_20260827/section5_verbatim.qmd.
+%
+% THE MEASUREMENTS CARRY ACROSS THE MOVE UNCHANGED, and that is a fact about the
+% two documents and not an assumption: main.qmd and supplement.qmd load the same
+% paper/preambles/preamble.tex and run at \textwidth = 469.76pt and
+% \textheight = 650.43pt.
+%
+% WIDTHS, at \footnotesize and the stock 6pt \tabcolsep: balanced 400.5pt,
+% misspec 422.0pt.  Both fit upright.  tab:sim-merged-stopping does not: the
+% shipped table sets 491.6pt and main.log reports Overfull \hbox (21.79979pt too
+% wide).  NOT RESIZED, on the author's standing ruling: an oversized ORDINARY
+% float overflows the margin rather than clipping, unlike a sidewaystable, and
+% pdftotext on the rendered page confirms no printed text is lost.
+%
+% HEIGHTS, measured at the FLOAT and not at the tabular -- caption + tabular +
+% notes, \sbox'ed in a \begin{minipage}{\textwidth} with setspace's in-float
+% \baselinestretch reset applied, which is the protocol that predicted main.log
+% to 1e-5pt across a 12pt change: balanced 662.93pt, misspec 614.93pt, against
+% \textheight = 650.43pt.  The misspec float clears it.  The balanced one is
+% 12.50pt over and the build says so in its own words, "Float too large for page
+% by 12.49736pt"; that leaves 59.77pt of clearance to the paper edge, which is
+% the wall that deletes text.  THE OVERRUN IS NOT THE NUMBER THAT DECIDES
+% WHETHER TEXT SURVIVES.  The clearance is, and it is stated beside the overrun
+% for that reason.
+%
+% RE-MEASURE AFTER ANY EDIT TO A CAPTION OR A NOTE: one \footnotesize row is
+% 12.000pt exactly, and both spanning header rows added in the 2026-08-26 and
+% 2026-08-27 passes cost that and nothing else.
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{The shipped engine at three cardinalities: the balanced design}
+\label{tab:sim-merged-rootn-balanced}
+\footnotesize
+\input{../tables/sim/sim_merged_rootn_balanced}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Block III of Table S29 of the supplement: a multinomial
+design run through the shipped engine with every nuisance estimated from the
+sample, at $\mathsf L\in\{2,3,4\}$ off one draw. \emph{The realised replication
+count is in this table's own header row and is not repeated here}, so that the
+two cannot drift apart; the shortfall against the $120$ drawn is the draws on
+which the boundary family drove $\hat\pi$ non-positive, so that the adjoint could
+not be formed.
+Rows are the three coefficients of $\theta_\dagger$, whose true values are
+$(0,\,1.0,\,-0.5)$. Panel A is the bias with its Monte Carlo standard error;
+Panel B is $\sqrt n$ times the simulated standard deviation, which
+\cref{thm:rootn} makes constant in $n$, so a column flat down the three sample
+sizes is the theorem's prediction; Panel C is coverage of a nominal $95\%$
+interval with its Monte Carlo standard error. \emph{At those counts a
+coverage rate resolves to about $\pm0.04$}, so a gap smaller than that is not
+evidence; Table S33 of the supplement carries the paired contrast, which is
+the sharper comparison. No population variance exists for this block, so no
+standard-deviation ratio against an asymptotic value is reported for it. Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_rootn\_balanced.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The third design is the one that breaks, and it breaks in the
+propensity. Its constant's bias does not fall in \(n\) at four cells,
+running \(-0.3040\), \(-0.3242\) and \(-0.3830\), and \(\sqrt n\) times
+its standard deviation \emph{rises}, \(6.031\), \(6.960\) and \(8.605\),
+where the theorem makes it constant; that move is \(3.40\) of its own
+standard error and so, unlike the two at the balanced design, it
+\emph{is} resolved from flat. Coverage of the constant at \(n=1{,}600\)
+is \(0.697\) at two cells, \(0.294\) at three and \(0.277\) at four, and
+the paired bias difference against the binary arm is \(-0.2287\)
+\((0.0226)\) and \(-0.2765\) \((0.0241)\), which are \(10.1\) and
+\(11.5\) standard errors and are not a resolution artefact. The two
+slope coefficients are untouched, covering between \(0.891\) and
+\(0.950\) at every cardinality at that sample size
+(\cref{tab:sim-merged-rootn-misspec}). The damage is therefore confined
+to the coordinate the propensity enters, and it grows with the number of
+cells at the two larger sample sizes. \emph{At \(n=400\) it does not}:
+coverage there runs \(0.795\), \(0.661\) and \(0.732\) and the bias
+\(-0.1813\), \(-0.3266\) and \(-0.3040\), so four cells show less damage
+than three on both measures. Both reversals are inside the bound
+\(\mathrm{SE}\le\mathrm{SE}_3+\mathrm{SE}_4\), at \(0.82\) and \(0.38\)
+of it, and \(n=400\) under this design is the thinnest cell in the
+suite, at \(112\) usable replications.
+
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{The shipped engine at three cardinalities: a misspecified propensity}
+\label{tab:sim-merged-rootn-misspec}
+\footnotesize
+\input{../tables/sim/sim_merged_rootn_misspec}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} As \cref{tab:sim-merged-rootn-balanced}, at the design that
+misspecifies $\hat\varrho$ and therefore violates (T-4). \emph{This is the arm
+that is supposed to fail}, and it is included so that a match at the other two
+designs is a non-rejection by a procedure shown able to reject. What the table
+adds beyond the failure is where it lands and how it moves: the damage is
+confined to the constant, the coordinate the propensity enters, and it grows with
+the number of cells at $n=800$ and $n=1{,}600$ but not at $n=400$, where four
+cells sit above three on both bias and coverage by less than
+$\mathrm{SE}_3+\mathrm{SE}_4$; the two slope coefficients cover between $0.873$
+and $0.950$ at every cell. Panels and resolution are as in
+\cref{tab:sim-merged-rootn-balanced}, and the realised replication count is in
+this table's own header row; its $n=400$ cell is the thinnest in the suite.
+Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_rootn\_misspec.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The stopping rule fails in the same place and in the same direction, and
+its constant is where the failure is visible. At the two well-specified
+designs the discrepancy rule selects an iterate inside its budget in
+most replications at every cardinality, at \(1.000\), \(0.917\) and
+\(0.875\) on the balanced design at \(n=1{,}600\) and \(1.000\),
+\(0.792\) and \(0.667\) on the skewed one. At the misspecified design it
+selects one in \(0.875\) of replications at two cells, \(0.250\) at
+three and \emph{none at all} at four, and a rule that never fires
+returns the cap, which is the configuration Section 6's bootstrap runs
+under and says so (\cref{tab:sim-merged-stopping}). \emph{The threshold
+is not pinned down by the data, and we do not claim otherwise.} The same
+table's first block sweeps it on the abstract design, where moving
+\(\mathsf c_{14}\) by a single factor of three takes the probability
+that the rule fires at all from \(0.077\) to \(0.760\) at \(n=500\)
+under a zero preliminary and from \(0.027\) to \(0.603\) under a
+rate-accurate one. Outside that neighbourhood the rule is degenerate,
+returning the cap in every replication of all twelve cells at
+\(\mathsf c_{14}\le10^{-3}\) and one step in every replication of all
+twelve at \(\mathsf c_{14}\ge10^{-1}\), so it stops in the interior only
+inside a window one to seven per cent of the four decades swept, and
+that window moves with \(n\) (Table S5 of the supplement). What we can
+say is that the cap is not an independent cause of the misspecified
+design's failure. Run at \(\tau_{\mathrm{DP}}=0\), where the rule never
+fires and the returned iterate \emph{is} the cap, moving \(\bar m\) from
+\(15\) to \(100\) at \(n=1{,}600\) and \(\mathsf L=4\) raises the
+misspecified design's integrated squared error from \(0.195\) to
+\(0.488\), at Monte Carlo standard errors of \(0.010\) and \(0.067\),
+while it lowers the balanced design's from \(0.091\) to \(0.036\).
+Iterating longer helps where the propensity is right and hurts where it
+is wrong.
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The one statistic both $\varphi$-step arms measure}
+\label{tab:sim-merged-stopping}
+\footnotesize
+\input{../tables/sim/sim_merged_stopping}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The probability that the discrepancy rule selects an
+iterate at or before its budget, which in Block I is one minus the probability
+that the rule returned the budget without ever meeting its threshold, and in
+Block III is the share of paths with a realised stopping index. \emph{The two
+arms do not parameterise the threshold the same way and their budgets differ by
+more than eight decades}, which is why both are printed as columns: Block I
+sweeps $\mathsf c_{14}$ against the cap \eqref{eq:cap}, of order $10^{10}$ to
+$10^{11}$, and Block III fixes $\tau_{\mathrm{DP}}=0.7$ against a cap of $100$.
+Reading a
+Block I row against a Block III row without reading those two columns is reading
+two different rules. Only the two swept values at which Block I's branch
+frequencies are non-degenerate are printed, $10^{-2}$ and $3\times10^{-2}$;
+outside them the answer is constant, at
+$\Pr(\text{cap})=1$ in all twelve cells for $\mathsf c_{14}\le10^{-3}$ and
+$\Pr(\hat m^{(1)}{=}1)=1$ in all twelve for $\mathsf c_{14}\ge10^{-1}$.
+\emph{That degeneracy is not something Table S5 of the supplement prints.} Its
+Panel A reports median stopped iterations, and a median does not establish what
+every replication did; its Panel B prints branch frequencies at
+$\mathsf c_{14}=10^{-2}$ alone. What that table does print bearing on it is
+Panel B's last column, the interval of $\mathsf c_{14}$ in which the rule stops
+in the interior; the opening pages of this section read those intervals off it
+and state the same degeneracy in the same terms. Both statements rest on the sweep behind the two
+tables, \texttt{quality\_reports/sim/sim\_thm\_rootn\_phistep.rds}, and not on
+a printed cell. Block III entries carry the count of
+replications in brackets, out of $24$ paths per cell. Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_stopping.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+One hypothesis of \cref{thm:rootn} fails on every design here, and we
+report it rather than absorb it. N1 asks that
+\(E[L(\Delta U,\Delta Z)\mid\Delta Z]\) vanish, which
+\cref{cor:centarity} types as \(p(\mathsf L-1)\) scalar conditions and
+not \(p\). Measured in population on the weight the engine solves for,
+the entrywise defect over \(\max_{j,l}\|L_{jl}\|\) runs from \(0.531\)
+to \(0.720\) across the nine design-by-cardinality cells at
+\(n_{\mathrm{solve}}=640\), against a floor of \(7.6\times10^{-14}\)
+returned by the same code with the conditional dependence switched off
+(Table S30 of the supplement). \emph{This is not a defect in
+\cref{thm:rootn}.} It sits between the theory and the implementation:
+the engine builds \(\ell\) in a class over the residual alone and
+anchors it by subtracting a constant, and on a location-scale family
+with a continuum of conditional means the zero weight is the only member
+of that class that satisfies N1. The re-anchoring of Section 4 would
+restore it at the same \(\ell\); the engine does not build it. Two
+things this does not establish. It says nothing about Section 6's data,
+where the defect is estimated on a panel whose conditional law is
+unknown, and it does not show that the theory's own \(\ell_\star\) fails
+N1 here. By \cref{prp:orthog}(iii) a live defect leaves the moment's
+\(\varrho\)-derivative non-vanishing, so \(\hat\varrho\) enters at first
+order and the sandwich omits a term that does not shrink; \emph{we
+report that as consistent with the standard-error ratio above and not as
+demonstrated by it}, the correction itself not being computed here.
+
+Three readings this section does not support. It does not establish that
+the shipped engine and the abstract construction agree, because no cell
+here shares a sample size with any of the three experiments in the
+supplement. It does not establish that the cardinality is harmless at
+the well-specified designs, because \(112\) to \(120\) replications
+cannot resolve a coverage gap below about \(\pm0.04\) and the paired
+contrasts bound the bias difference rather than the coverage one (Table
+S33 of the supplement). And it does not establish that the N1 defect is
+what the standard-error ratio measures: the two quantities are set
+beside each other rather than fitted to one another.
+
+\section{Empirical application}\label{empirical-application}
+
+Hedonic price regressions read the value of a local amenity off the
+cross-section of property values \citep[see][]{rosen1974,bishop2020},
+and regulatory designations are a standard source of exogenous variation
+in them \citep[see][]{greenstonegallagher2008}. Air quality is the
+amenity with the longest such literature. The regressor of interest is
+almost always entered linearly, and we relax that here, on a two-period
+county panel whose instrument is discrete because the regulation that
+generates it is a rule on thresholds. The section illustrates the
+estimator of Section 3 and claims nothing beyond the illustration; what
+it does not establish is set out in the last subsection rather than left
+to be discovered there.
+
+The data are the county panel \citet{chay2005} assembled to measure how
+the 1970 Clean Air Act Amendments capitalised into property values. The
+file holds 989 counties. One candidate control, per-capita expenditure
+on pollution abatement, is missing in all 989 rows and is dropped as an
+empty column rather than as item non-response, which leaves 22 usable
+controls and not 23; six more are missing the local-fiscal block, which
+leaves an analysis sample of \(n=983\) (Table S34 of the supplement).
+
+Write \(Y_{ij}\) for the log of county \(i\)'s median property value in
+\(j\in\{1970,1980\}\), \(X_{ij}\) for its mean concentration of total
+suspended particulates in \(\mu\)g/m\(^3\), \(W_i\) for its 1975
+nonattainment designation, and \(\Delta Z_i\) for an intercept together
+with \(d_Z\) differenced county characteristics, at \(d_Z=5\)
+throughout. That is the differenced model of Section 2 term by term: a
+continuous endogenous scalar entering through \(\vdagger\), a discrete
+instrument, a differenced control vector, and a county effect the
+differencing removes. Descriptive statistics are in Table S35 of the
+supplement, where just under a third of the sample is designated, at a
+mean of \(0.303\). The intercept is not decoration and A4(ii) requires
+it: read against A1b(iv), that clause forces \(\Delta Z\) to carry
+exactly one constant coordinate, which in a differenced equation is the
+period effect.
+
+The object of economic interest here is \(\vdagger\) and not
+\(\theta_\dagger\), which inverts \cref{thm:rootn}, whose \(\sqrt n\)
+statement is about \(\theta_\dagger\): the structural function is the
+hedonic price of air quality, while \(\theta_\dagger\) collects
+coefficients on demographic and fiscal controls. Which of the two roles
+carries the question is a property of the application rather than of the
+model.
+
+\subsection{The instrument}\label{the-instrument}
+
+The designation rule fires on either of two triggers: a county is
+designated if its annual geometric mean exceeds the standard, or if its
+second-highest daily reading does. We read \(W\) as the pair of triggers
+rather than as their disjunction, which gives a four-valued instrument:
+\(685\) counties trigger neither, \(114\) the bad-day rule alone, \(66\)
+the annual mean alone, and \(118\) both, the last three being the cell
+sizes \cref{tab:app-localise} prints. The four cells are ordered in
+baseline particulates and are not ordered in the decadal change, so they
+are not a ladder in the regressor; both orderings come from the same
+trigger constructor on the same sample and are printed in no table. The
+refinement discards nothing, since the binary reading is the indicator
+of the first cell's complement.
+
+The reason for reading the designation at \(\mathsf L=4\) is
+methodological and not empirical. Four cells are what the rule says, so
+the binary indicator is a coarsening of the datum rather than the datum
+itself, and under A1 the three contrasts the four cells generate are
+further restrictions on the same \(\vdagger\), by \cref{prp:localise}.
+What the extra cells do not buy should be said in the same breath: not
+identification, since a coarsening imposes fewer restrictions; not
+testability, which is present already at \(\mathsf L=2\); and not
+instrument strength, since splitting an instrument creates no variation.
+What they buy is the decomposition \cref{prp:localise} describes, in
+which a piece far from zero at the common fit is a cell where the
+four-valued reading conflicts with \(\hat\varphi\).
+
+All three cells exceed their own reference, at \(p=0.039\) for the
+bad-day cell, \(0.006\) for the annual-mean cell and \(0.003\) for the
+joint cell, against a null that redraws \(W\) from the fitted propensity
+(\cref{tab:app-localise}). The reading runs one way only, since a small
+\(p\) localises a conflict to that cell while a large one exonerates
+nothing: consistency across cells is necessary and not sufficient for A1
+by \cref{prp:localise}(iii), and the false-negative rate of the
+attribution is unpriced. The table repeats the calculation at the
+cross-fitted propensity, and which of the two \cref{prp:localise}'s
+diagnostic should use is not settled here. We report the three cells and
+draw no ordering from them.
+
+The instrument moves the regressor. Nonattainment lowers the decadal
+change in mean particulates by \(8.37\) to \(9.11\,\mu\)g/m\(^3\) across
+the four control sets, and does so at the \(1\) per cent level at every
+one of them (\cref{tab:app-firststage}, Panel A). We read that table on
+the state-clustered standard error, because designation was made at the
+level of the Air Quality Control Region and A0 assumes independent
+sampling. Clustered, \(F\) runs from \(10.6\) with no controls to
+\(13.1\) at the widest set, so the first stage clears the conventional
+threshold of ten at every control set, with little room at the
+narrowest. Linear instrumental variables give \(-5.519\times10^{-3}\)
+log points per \(\mu\)g/m\(^3\), which at the 1970 mean of
+\(66.0\,\mu\)g/m\(^3\) is an elasticity of \(-0.364\), against the
+\(-0.20\) to \(-0.35\) \citet{chay2005} report on this design; it sits
+just past the more negative end of that range and reproduces the sign
+and the order of magnitude rather than falling inside it.
+
+% 286.9pt at the stock 6pt \tabcolsep and \footnotesize, against a \textwidth of
+% 469.8pt.  Measured, not guessed; no size or \tabcolsep surgery is needed here.
+%
+% HEIGHT, 2026-08-28, AFTER THE NOTE COMPRESSION (206 -> 117 words).  Measured
+% from the rendered PDF with pdftotext -bbox, not from the log, because the log
+% is silent about a float that has not yet crossed \textheight and says nothing
+% about how much room is left:  bottom edge at y = 619.4bp on p.104, i.e.
+% 101.02pt ABOVE the bottom text margin and 173.29pt of clearance to the sheet
+% edge.  Was 667.2bp / 125.29pt before the compression, so the float gained
+% 48.0pt of room and re-broke SHORTER, not taller.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The instrument: first stage, reduced form, and the linear benchmark}
+\label{tab:app-firststage}
+\footnotesize
+\input{../tables/app_tsp_firststage}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Chay--Greenstone county panel, $T=2$, first differenced;
+$n=983$ counties in every column. Columns vary the control set, $d_Z$ counting
+the differenced controls entered: none, five core hedonic demand shifters, those
+plus five demographic variables, and all twenty-two usable. Tables S36 and S38
+of the supplement name the twenty-two and tabulate ten. $W$ is the imputed 1975
+nonattainment designation, here coarsened to binary; $\Delta X$ the 1970--1980
+change in mean total suspended particulates, $\mu$g/m$^3$; $\Delta Y$ the change
+in log median property value. Robust standard errors in parentheses,
+state-clustered in square brackets; stars use the clustered errors, which this
+section reads. Panel C instruments $\Delta Y$ on $\Delta X$ with $W$, just
+identified. $^{*}$ $p<0.10$, $^{**}$ $p<0.05$, $^{***}$ $p<0.01$. Source:
+\texttt{scripts/application/app\_tsp\_01\_diagnostics.R}; table
+\texttt{paper/tables/app\_tsp\_firststage.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+% Eight columns at \footnotesize and the stock 6pt \tabcolsep, three body rows
+% and a four-row sensitivity block.  Upright with room; no surgery.
+%
+% HEIGHT, 2026-08-28, AFTER THE NOTE COMPRESSION (307 -> 140 words).  Bottom
+% edge at y = 371.3bp on p.105, 349.96pt above the bottom text margin and
+% 422.23pt from the sheet edge; was 611.0bp / 181.64pt.  The float now sits at
+% the top of its page with most of the page below it.
+%
+% ONE CLAUSE HERE IS LOAD-BEARING AT THE FLOAT AND WAS KEPT WHEN THE REST OF THE
+% DEFENSIVE APPARATUS MOVED TO THE PROSE: that the reference distribution
+% REDRAWS $W$ FROM THE FITTED MULTINOMIAL and is not a permutation.  Without it a
+% reader of the float alone misreads which null the p-column is against -- a
+% permutation would break the $\Delta Z$-conditioning as well, so it would test a
+% different and stronger hypothesis.  Four other clauses went to Section 6.1's
+% prose, where two of them already half-existed: the false-negative rate being
+% unpriced, which of the two propensities \cref{prp:localise}'s diagnostic should
+% use, and the provenance of the two cell orderings the text reads and no table
+% prints.  \emph{Relocated, not deleted} -- see the Section 6 header block.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The localisation diagnostic, cell by cell}
+\label{tab:app-localise}
+\footnotesize
+\input{../tables/app_tsp_localise}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Chay--Greenstone county panel, $n=983$, at the headline
+control set $d_Z=5$ and $\varepsilon_\varrho=0.01$, the instrument at its four
+trigger cells. Rows are the three non-base cells; the base cell ($685$ counties,
+neither rule) carries no contrast. $\|\hat M_l\|$ is the
+$L^{2}(\Pi_u\otimes\Pi_t)$ norm of the sample analogue of \eqref{eq:Mdef} at
+cell $l$ and the common fit $(\hat\varphi,\hat\theta)$, which A1 sends to zero
+up to sampling error. \emph{The reference distribution redraws $W$ from the
+fitted multinomial $\hat\varrho(\Delta Z)$}, imposing A1 with the propensity
+held fixed; a permutation would destroy the conditioning too. ``$\#\{\ge\}$''
+counts null draws at or above the observed norm out of $B=2{,}000$,
+$p=(\#\{\ge\}+1)/(B+1)$, and $p_{\mathrm{cf}}$ uses the cross-fitted propensity
+on the same draws. No multiplicity adjustment is applied. The last block
+re-draws the $t$-grid at three further seeds, free under B1(iv). Source:
+\texttt{scripts/application/app\_tsp\_08\_localise.R} and
+\texttt{app\_tsp\_common.R}; table
+\texttt{paper/tables/app\_tsp\_localise.tex}; run object
+\texttt{quality\_reports/application/app\_tsp\_localise.rds}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+A4(i) holds in an in-sample fit and binds in the fit the estimator uses.
+The multinomial propensity, projected onto the truncation set of
+\cref{def:hatT} at \(\varepsilon_\varrho=0.01\), has in-sample minimum
+\(\min_l\hat\varrho_l=0.0115\); over the \(29{,}500\) cross-fitted
+evaluations one estimation run makes, the projection binds on \(0.997\)
+per cent of them, at a pre-projection minimum of \(4.3\times10^{-5}\),
+and at the binary coarsening on none (\cref{tab:app-theta}). Where it
+binds, A1 holds at \(\hat\varrho\) and fails at the truncated propensity
+substituted for it, so those evaluations are outside the assumption; the
+theory prices that as a bias term rather than excluding it. The implied
+covariance clears \eqref{eq:omegafloor} with room, at
+\(\lambda_{\min}(\hat\Omega)=0.0113\) against
+\(\varepsilon_\varrho/\mathsf
+L=0.0025\), so no cells need merging, which matters because merging
+strengthens A1b(iii) and gives back the restrictions the refinement was
+taken for.
+
+The designation in hand is not the designation that was made. Between
+1972 and 1978 nonattainment status was assigned at the level of the Air
+Quality Control Region, and the county-level variable in this file is an
+imputation from monitor readings. \citet{cropper2023} quantify the
+discrepancy: the estimated reduction in total suspended particulates
+attenuates from \(10.2\) and \(9.1\,\mu\)g/m\(^{3}\) across their two
+panels under the official designation to \(6.0\) and \(7.7\) under the
+county-level definition this section adopts. The imputed variable is
+admissible here under non-differential misclassification, so that the
+probability of a mislabelling does not depend on \(\Delta U\) given
+\(\Delta Z\). Under it \(W\) remains valid and is merely less relevant;
+under the alternative the estimator is inconsistent rather than
+imprecise, so no sample size repairs it. We assume the condition and do
+not test it.
+
+\subsection{The estimator on this
+panel}\label{the-estimator-on-this-panel}
+
+One property of the estimator changed between the diagnostics above and
+the estimates below, and it is a hypothesis the theory consumes rather
+than a tuning choice. The \(x\)-direction kernel is the supplement's
+boundary family at \(p_K=8\), which enforces every truncated moment
+\eqref{eq:truncmom} asks for, and with it the clause
+\(\int_{\mathcal X}\hat\nu\,dx=0\) that places the adjoint's range
+inside \(\mathcal V\). The engine it replaces satisfied neither (Table
+S47 of the supplement).
+
+\Cref{tab:app-theta} reports \(\hat\theta\) at the headline control set,
+at \(\mathsf L=4\) and at the binary coarsening, on one cross-fitting
+stream and at a common truncation level and iteration cap, so the two
+columns vary the cardinality alone. The two agree on sign and on order
+of magnitude at every coordinate, and we put the agreement no more
+strongly than that: measured in units of the four-cell column's own
+clustered standard error, no coordinate moves by as much as \(0.53\) of
+a standard error and four of the six move by less than a quarter of one.
+That is the expected direction of no effect rather than a null result:
+under A1 the surplus contrasts are further restrictions on the same
+\(\vdagger\), so they buy localisation and not a different answer, and a
+large shift would have been evidence against A1 or against the binary
+estimate. They do not buy precision either, the clustered standard error
+being larger in the four-cell column at per capita income.
+
+Holding the cap fixed across the two columns is what makes them a
+one-factor contrast, and that is not a second-order detail: a third arm
+at the \(\bar m=15\) the binary cardinality would itself have set moves
+that column further than the cardinality moves it, by \(0.1930\) at its
+largest coordinate, and the two contrasts are opposite in sign at five
+of the six coordinates, so a design that varied both at once would net
+them against each other (Table S39 of the supplement).
+
+% Three columns at \footnotesize and the stock 6pt \tabcolsep.  No \tabcolsep
+% surgery; the NOTES are set \scriptsize and the reason is measured, below.
+%
+% "FITS UPRIGHT WITH ROOM" WAS FALSE AND IS WITHDRAWN, 2026-08-20: the float
+% overflowed by 74.1pt.  THE 2026-08-20 RULING THAT WENT WITH IT -- "an ordinary
+% float overflows the margin rather than clipping, and pdftotext confirms no
+% printed text is lost" -- WAS TRUE AT 74.1pt AND FALSE AT 86.1pt, WHICH IS
+% WHERE THE OBES CUT OF 2026-08-27 PUT IT.
+%
+% WHAT HAPPENED, RECORDED BECAUSE THE MECHANISM IS THE POINT.  The cut moved
+% tab:app-theta-cap to the supplement, so two \cref renderings in these notes
+% became by-name pointers -- "\cref{tab:app-theta-cap}" (11 printed characters)
+% to "Table S39 of the supplement" (26).  Two substitutions of fifteen characters
+% each added about two \footnotesize lines, the overrun went 74.09 -> 86.09pt,
+% and 86.09 is past the 72.27pt at which a float's bottom edge leaves the sheet.
+% THE SOURCE LINE WAS SHED.  `pdftotext | grep -c app_tsp_localise_theta.tex'
+% returned 1 before the cut and 0 after, while quarto exited 0, the caption
+% census found no gap, no reference was undefined and the caption still printed
+% -- because the caption is at the HEAD of the box and only the TAIL was lost.
+%
+% REPAIR, AND IT REMOVES THE OVERRUN RATHER THAN MANAGING IT, per tab:sim-n1defect.
+% The notes go \footnotesize -> \scriptsize.  NO CLAUSE IS CUT.  Re-measured
+% after the change, from the rendered PDF and not from the log: the float raises
+% no "Float too large" at all, and BOTH canaries return 1 --
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'The slope vector at four instrument cells'          -> 1  (head)
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'app_tsp_localise_theta.tex'                         -> 1  (tail)
+% RUN BOTH AFTER ANY EDIT TO THIS BLOCK.  A one-ended check cannot see a
+% two-ended failure, and these notes grow whenever a float leaves the article.
+%
+% RE-MEASURED 2026-08-28, AFTER THE NOTE COMPRESSION (320 -> 135 words), AND THE
+% CANARIES ABOVE ARE NOT WHAT ESTABLISHED IT.  Both still return 1, but a canary
+% confirms what has already been shed and cannot say how close the next line is;
+% the certificate this block used to carry -- "38.15pt over with 34.12pt
+% clearance" for a float that landed at 77pt -- was wrong in exactly that way.
+% The number below is read off the rendered PDF with `pdftotext -bbox':
+%     bottom edge y = 616.0bp on p.107
+%     104.43pt ABOVE the bottom text margin (720bp), 176.70pt to the sheet edge
+% against 696.4bp / 95.95pt before the compression.  This was the tightest float
+% in the article and it gained 80.75pt.  The method is validated against LaTeX's
+% own arithmetic: the same script reports 12.50pt for the one float that DOES
+% warn, and the log says "Float too large for page by 12.49736pt".
+%
+% THE \scriptsize IS RETAINED.  The 2026-08-20 repair is no longer load-bearing
+% at 135 words, but restoring \footnotesize would spend most of what the
+% compression just bought and this float has already shed its Source line once.
+%
+% WHAT LEFT THESE NOTES AND WHERE IT WENT.  The "three factors and not one"
+% paragraph (~60 words) is NOT deleted: it is stated in full, with all three
+% factors and both numbers, at tab:supp-app-ladder's own notes (Table S38, "the
+% three factors that separate the two") AND at tab:app-n1's (Table S41).  A
+% reader who reaches the ladder from here meets the warning at that end.  The
+% $0.1930$ figure is in Section 6.2's prose.  WHAT WAS KEPT DESPITE THE BUDGET:
+% the five differenced controls by name, because they are INV-1's key variables;
+% and the app_tsp_boundary.tex ablation path, because that file is orphaned ON
+% PURPOSE and two comments in supplement.qmd pin their departure to the ruling
+% that it is "cited by path in tab:app-theta's notes".  Moving it would have
+% made both of those stale, which is the defect species this project keeps
+% repairing.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The slope vector at four instrument cells and at the binary coarsening}
+\label{tab:app-theta}
+\footnotesize
+\input{../tables/app_tsp_localise_theta}
+\begin{tablenotes}\scriptsize
+\item \textit{Notes:} Chay--Greenstone county panel, $n=983$, at the headline
+control set $d_Z=5$; columns are the instrument's four trigger cells and their
+binary coarsening. Both are the cross-fitted one-step estimator of
+\eqref{eq:onestep}, with state-clustered standard errors in parentheses and no
+significance stars. \emph{$\theta$ has no $\Delta$TSP coordinate}: the regressor
+enters through $\vdagger$ alone, so the rows are the intercept and five
+differenced controls, per capita income, population, the unemployment rate,
+manufacturing employment and the share with a high-school education.
+\emph{The two columns also share a cross-fitting stream}, so cardinality alone
+varies; the ladder of Table S38 of the supplement differs in all three and is
+comparable with neither column. The last four rows are what A4(i) costs, the
+projection being onto \eqref{eq:trunset}. Both run the boundary-adjusted
+$x$-kernel of the text; its ablation is
+\texttt{scripts/application/app\_tsp\_09\_boundary.R} and
+\texttt{paper/tables/app\_tsp\_boundary.tex}. Source:
+\texttt{scripts/application/app\_tsp\_08\_localise.R}; table
+\texttt{paper/tables/app\_tsp\_localise\_theta.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The standard errors in both columns are conditional on a hypothesis the
+estimator does not impose. \Cref{cor:centarity} makes N1 a condition on
+a \(p\times(\mathsf L-1)\) matrix, hence \(p(\mathsf L-1)\) scalar
+conditions rather than \(p\), and the anchor this estimator removes is a
+constant per \((j,l)\) rather than a function of \(\Delta Z\), so it
+imposes no version of N1 beyond the unconditional one. What the
+supplement measures is the smallest defect any constant anchor can
+reach, and at \(\mathsf L=4\) it is not resolvable from zero, as it is
+not at either binary arm (Table S41 of the supplement). That is not
+evidence of absence but a statement about the power of the check at
+\(n=983\), and no moment-level diagnostic could have substituted for it,
+since \(E[\widetilde W_l\hat L_{jl}\mid\Delta Z]=0\) holds automatically
+under A1 whatever the anchor is. Inference here is conditional on N1,
+and by \cref{prp:orthog}(iii) its failure would cost the propensity
+direction of the orthogonality, at the full rate \(r_n\) and undamped.
+
+\Cref{fig:app-phi} draws \(\hat\varphi\) at the headline control set.
+The curve drawn is the four-cell fit, and the binary-coarsening curve
+does not sit on top of it: at the common cap the sup gap between the two
+is \(0.0327\), or \(85\) per cent of the four-cell curve's own range of
+\(0.0383\), against a root-mean-square gap of \(0.0136\), so the two
+separate at some points of the support and not on average. Letting the
+cap move with the cardinality instead would put that sup gap at
+\(0.0081\) and license the sentence that the two cardinalities agree.
+That number measures nothing: it nets two effects that nearly cancel,
+the cap alone moving the binary curve by \(0.0380\).
+
+The curve is not monotone, and the sign the hedonic reading asks for is
+delivered on part of the support and not on the rest. It rises at \(32\)
+of its \(59\) grid steps and falls at \(27\), in four monotone
+stretches: it descends to \(-0.0174\) at \(48.7\,\mu\)g/m\(^3\), the
+28th percentile; climbs to \(+0.0150\) at \(68.5\), the 71st; falls to
+\(+0.0001\) at \(86.4\), the 89th; and rises again over the last four
+steps. Its whole range is \(0.0349\), and its largest sustained
+movement, at \(+1.64\times10^{-3}\) log points per \(\mu\)g/m\(^3\)
+between the trough and the peak, runs the wrong way for the hedonic
+reading.
+
+The linear slope of the preceding subsection delivers \(0.380\) log
+points over the \(68.8\,\mu\)g/m\(^3\) separating the 5th and the 95th
+percentiles of \(X\), and the nonparametric estimate's whole range is
+under a tenth of that. It is nowhere as steep either: its steepest
+single descending step is \(-3.28\times10^{-3}\), or \(59.5\) per cent
+of the linear slope. \emph{The two estimates therefore disagree about
+the level of the gradient and not only about its shape.} Every sentence
+of this reading is a statement about the point estimate: the constant
+slope is not a feature of \(\hat\varphi\) anywhere on the support, and
+the sign it imposes fails on the two rising stretches, which carry
+\(48.8\) per cent of the pooled distribution of \(X\) between them. We
+do not call that a negative result, because the envelope of the next
+subsection is wide enough that nothing here rules a constant slope out.
+
+% HEIGHT, 2026-08-28, AFTER THE NOTE COMPRESSION (264 -> 140 words of caption
+% plus note).  A \minipage note under a graphic sheds from the BOTTOM only, so
+% the tail canary is the Source line; run it with the caption canary, both ends:
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'The estimated hedonic price function'   -> 1   (head)
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'paper/figures/app_tsp_phi.pdf'          -> 1   (tail)
+% Measured from the PDF, not the log: bottom edge y = 545.3bp on p.109, i.e.
+% 175.35pt above the bottom text margin and 247.62pt from the sheet edge, against
+% 637.8bp / 154.77pt before.
+%
+% A STALE BACK-REFERENCE WAS REPAIRED HERE, NOT MERELY SHORTENED.  The note read
+% "which is the absence of shrinkage discussed in the text".  NO SUCH DISCUSSION
+% EXISTS: the sentence it pointed at ("the width is not the footprint of
+% shrinkage") was cut with the rest of Section 6.3 on 2026-08-27, and the pointer
+% has been dangling since.  Nothing could see it -- it names no float, no label
+% and no number, so the caption census, the xdoc resolver and \cref all pass over
+% it.  The measured fact is kept ($0.0049$ log points); only the claim that the
+% text discusses it is gone.
+%
+% THE ONE CLAUSE THAT CANNOT LEAVE THIS FLOAT is that the bands are NOT
+% confidence sets.  A reader who sees two shaded envelopes and no such sentence
+% reads coverage into them, and this figure travels in talks apart from its
+% section.  It is kept verbatim and the budget was taken elsewhere.
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{../figures/app_tsp_phi.pdf}
+\caption{The estimated hedonic price function and its variability}
+\label{fig:app-phi}
+\begin{minipage}{0.92\textwidth}\footnotesize
+\textit{Notes:} $\hat\varphi(x)-\hat\varphi(x_{0.5})$ against mean total
+suspended particulates, at $d_Z=5$, on the $983$-county Chay--Greenstone panel,
+the instrument at its four trigger cells. Levels are log points of median
+property value, normalised at the pooled median of $X$, $58.0\,\mu$g/m$^3$: the
+figure carries shape, not level. The solid line is the point estimate and the
+dashed line the median of $99$ bootstrap replications, which it tracks to within
+$0.0049$ log points. The shaded regions are the twenty-fifth-to-seventy-fifth
+and fifth-to-ninety-fifth percentiles of those replications, the outer dotted.
+\emph{They illustrate variability and are not confidence sets; no coverage is
+claimed for them and none is computed}, as in
+\citet{centorrinofeveflorens2019}. The rug marks the marginal distribution of
+$X$ in each period, thin in $1980$ above $80\,\mu$g/m$^3$ where few counties
+support the curve. Source:
+\texttt{scripts/application/app\_tsp\_02\_ladder.R} and
+\texttt{app\_tsp\_05\_phi\_band.R}; figure
+\texttt{paper/figures/app\_tsp\_phi.pdf}.
+\end{minipage}
+\end{figure}
+
+\subsection{The bootstrap}\label{the-bootstrap}
+
+Valid uniform inference on \(\hat\varphi\) does not exist in this model,
+and the obstruction is a property of the estimator rather than of this
+application. Uniform bands for ill-posed problems are built on a source
+condition written in the spectral calculus of \(T^\ast T\) and on
+completeness of the instrument, and neither is available here: the
+operator equation of Section 2 is nonlinear in \(\varphi\), so there is
+no adjoint in which to write the condition, and a \(W\) with four values
+delivers completeness no more than a two-valued one does
+\citep[see][]{severini2006,babiiflorens2025}. Pointwise sets do exist
+under nonlinear ill-posedness \citep[see][]{chen2012b}, but they are
+indexed by a sieve dimension where the regularisation index of
+\cref{def:lfstep} is a Landweber iteration count. We therefore follow
+the companion paper \citep{centorrinofeveflorens2019}, which estimates
+the same operator equation from a discrete instrument under the same
+regularisation: a point estimate, a bootstrap band drawn to show
+variability, and one sentence saying what the band is not. \emph{The
+envelope in \cref{fig:app-phi} illustrates the variability of
+\(\hat\varphi\) and is not a confidence set. No coverage is claimed for
+it and none is computed.}
+
+The \(99\) replications resample counties with replacement and re-run
+the regularisation in each, holding \(\hat\theta\) fixed, and the
+envelope they give is wide against the curve it surrounds: its median
+width over the sixty-point grid is \(1.33\) times everything the curve
+does. Three further schemes ask whether that width is an artefact of the
+resampling or a property of the estimator, since a resample of \(n\)
+counties leaves roughly \(37\) per cent of the draw as duplicates while
+halving the information: \(\mathrm{Exp}(1)\) multiplier weights, which
+have the same first two moments and the same effective sample size but
+duplicate nothing, and subsamples of \(621\) and of \(492\) distinct
+counties. \emph{That comparison is not evaluable, and we report it as
+such}: the three criteria that would have separated the two mechanisms
+are all statements about the realised stopping index, and that index
+equals the cap in every replication of every scheme, because the
+discrepancy rule of Section 3 is run at \(\tau_{\mathrm{DP}}=0\) here
+and the patience is set equal to the cap. What the schemes do show is
+agreement on the size of the band, the multiplier arm being \(8.1\) per
+cent narrower over the grid as a whole and wider at the ends of the
+support. The five schemes are set out in Table S44 of the supplement,
+the multiplier envelope in Table S45 of the supplement, and the eleven
+levels this figure draws, together with the bootstrap's convergence
+record, in Table S43 of the supplement.
+
+\subsection{What the illustration
+shows}\label{what-the-illustration-shows}
+
+The estimator runs on this panel and returns the two objects it is built
+to return: a slope vector with a clustered standard error, at either
+cardinality of the instrument, and a structural curve whose shape
+contradicts the constant slope the linear specification imposes. That is
+the whole of what the section claims.
+
+At \(n=983\) it claims nothing about the asymptotics, and there are two
+reasons for that rather than one. Evaluated at \((\mu,r)=(2,\tfrac83)\),
+the frontier-clearing configuration the Monte Carlo names, the frontier
+\eqref{eq:frontier} is met at no control set that also satisfies A4(ii):
+it fails once any control is entered, and the one rung at which it holds
+is the intercept-only rung, which A4(ii) excludes because at
+\(\alpha=\tfrac12\) the sieve-entropy condition admits no integer sieve
+dimension (Table S49 of the supplement). The second is the cardinality
+arm of the Monte Carlo, which finds the limit law's own remainder
+failing to vanish at \(\mathsf L=4\) on the paper's named design (Table
+S22 of the supplement), in a propensity direction whose price this panel
+cannot bound because the N1 defect above is not resolvable from zero.
+The object that describes this estimator at this sample size is
+therefore \cref{cor:ratefloor} and not \cref{thm:rootn}. \emph{The
+application illustrates the procedure on a design the method was built
+for; it does not demonstrate that the asymptotics bind at this sample
+size}, and we would rather say so than let the section be read as though
+they did.
+
+\section{Conclusions}\label{conclusions}
+
+In this paper, we estimate the slope vector of a first-differenced
+partially linear panel model whose nonparametric argument is a
+continuous endogenous regressor and whose only instrument takes finitely
+many values. Conditional independence between the differenced error and
+the instrument replaces the conditional mean, a Bierens family converts
+that restriction into unconditional moments, sieve Landweber--Fridman
+regularisation solves the nonlinear equation that results, and a
+cross-fitted one-step on a Neyman-orthogonal moment returns a slope
+vector and a standard error.
+
+Five results carry the paper.
+
+Identification of \(\theta_\dagger\) runs through the mean restriction
+alone and needs no source condition and no rank condition beyond
+nonsingularity of \(E[\Delta Z\Delta Z']\). A moment free of the
+structural function exists exactly when the two periods' tilted
+marginals of the endogenous regressor coincide, so the partialling-out
+route is closed here as a property of the differenced design and not of
+the estimator. Orthogonality in the structural direction holds if and
+only if the representer solves the adjoint equation, which is the range
+condition of the linear theory read at a Fréchet derivative. Under A1
+every set of instrument cells admits a common structural function, so a
+conflict between two cells refutes A1 and attributes the refutation to
+the cells that carry it, and that statement carries no identification
+hypothesis at any subset of cells. And the cross-fitted one-step is
+\(\sqrt n\)-consistent and asymptotically normal with a consistent
+sample sandwich, whenever the first-stage rate is faster than
+\(n^{-1/4}\).
+
+What the extra cells buy is that attribution and nothing else. They do
+not buy identification, a finer instrument making the identification
+hypothesis weaker rather than stronger; they do not buy testability,
+which is present already at \(\mathsf L=2\); and they do not buy
+instrument strength, since splitting an instrument creates no variation.
+
+Efficiency is not among them.
+
+The sandwich is the variance the infeasible plug-in would carry at a
+known \(\vdagger\), plus a positive semidefinite term that does not
+vanish under overlap, and no semiparametric efficiency bound is computed
+for this model. What the debiasing weight buys is the removal of a
+first-order bias and not a smaller variance.
+
+We assume two ingredients of the estimator to exist and construct
+neither. The representer estimator \(\hat\ell\) is priced by A5(iv) at a
+rate \(\epsilon_n\) with \(\delta_n\epsilon_n=o_P(n^{-1/2})\), and no
+construction attaining it is supplied. The preliminary
+\(\hat\varphi^{(0)}\) is needed at a declared deterministic envelope
+\(\hat\varepsilon_0\) of polynomial order, for which consistency will
+not do, and it has no supplier either. Three further conditions are
+primitive rather than derived: \(\mu\) and \(\mathsf R_\ast\), global
+identification of \(\vdagger\) at A1b(iii), and the sieve display of
+Lemma L-7 on the sieve branch of the first-order bias.
+
+The frontier is qualitative, and the Monte Carlo prices what that costs.
+Crossing it makes the second-order remainder vanish eventually and says
+nothing about where. At the configuration the theory names the turn
+falls at \(n^{\ast}\approx10^{58}\), the simulated standard deviation
+clears a two-standard-error bar only at \(n=181{,}019\) in DGP A and
+only at the smaller of two equally admissible constants, and nominal
+\(90\%\) intervals under-cover at \(29\) of the \(32\) cells; that
+experiment is in the supplement, and Table S1 of the supplement carries
+the standard-error units the sentence reads. What describes a panel
+anyone will run is the rate floor of Section 4 and not the \(\sqrt n\)
+statement. That reading is about the configuration and not about
+\cref{thm:rootn}: at a design whose frontier margin is \(0.1318\) in
+place of \(0.0060\), and whose propensity score is no smoother, the same
+estimator meets the pre-committed coverage criterion from \(n=354\)
+upward (Table S13 of the supplement) and clears the standard-deviation
+ratio's two-standard-error bar from \(n=8{,}000\) at the same constant
+(Table S19 of the supplement).
+
+The stopping constant is the second open item. It is computable and not
+identified, and at this configuration the criterion it thresholds falls
+by \(11\) to \(43\) per cent over the whole iteration budget, so the
+stop is settled almost entirely by a number the theory does not pin.
+Whether a Lepskii-balanced rule should replace it turns on the
+preliminary: given the discrepancy rule its own oracle constant, Lepskii
+is ahead in all three cells started from zero and behind in all three
+started from a rate-accurate one.
+
+The third is severe ill-posedness, which the theorem does not reach.
+Under exponentially decaying singular values the rate attainable from
+any source condition is logarithmic, so the frontier fails at every
+smoothness of the propensity score.
+
+We run the estimator in Section 6 on the county panel of
+\citet{chay2005}, where the object is the hedonic price of air quality
+and the instrument is a nonattainment designation read as the pair of
+triggers that produces it, at \(\mathsf L=4\). At \(n=983\) the frontier
+fails at every control set an applied literature would accept (Table S49
+of the supplement), so the object that describes the estimator there is
+the rate floor and not \cref{thm:rootn}. That section illustrates the
+procedure on a design the method was built for, and shows neither that
+the asymptotics bind at this sample size nor anything about the Clean
+Air Act. We take no position on A1 from it.
+
+Future work should focus on constructing the two missing ingredients,
+since a representer estimator with a rate and a preliminary with a
+declared envelope would discharge the only maintained hypotheses that
+name an object without building it. Recovering marginal effects from
+\(\hat\varphi\) is a second step, and the derivative parameterisation is
+not the route, since it lowers the source index below what the frontier
+requires. A semiparametric efficiency bound for a model whose nuisance
+solves an ill-posed nonlinear operator equation is a third, and a
+statement uniform in \(P\) is a fourth. The latter would need a class on
+which the \(P\)-specific constants are bounded, a uniform first-stage
+rate at a random compressed operator, and a Lindeberg condition uniform
+in \(P\).
+
+Valid inference on \(\hat\varphi\) is a fifth, and Section 6 locates it.
+Uniform bands in ill-posed models are built on a source condition
+written at an adjoint and on completeness of the instrument, and a
+nonlinear equation with a discrete instrument supplies neither
+\citep[see][]{babii2016,severini2006,babiiflorens2025}.
+\citet{chen2012b} do reach nonlinearly ill-posed conditional moment
+models, but index their sets by a deterministic sieve dimension, while
+the regularisation index of \cref{def:lfstep} is the random stopping
+time of a discrepancy rule. The mathematics stops in the same place,
+\citet{monardnicklpaternain2021} delivering Bernstein--von Mises for
+nonlinear forward maps at smooth linear functionals only. Both
+literatures give valid inference for the regular \(\sqrt n\) part and
+neither goes past it, so \cref{thm:rootn} sits on that boundary rather
+than short of it.
+
+\section{Supplementary material}\label{supplementary-material}
+
+Proofs of all results are in the online supplement. The supplement also
+carries the statements this article refers to by name and does not
+print, the interpretation of each numbered condition, and the smoothness
+budget in one table. It repeats the statements printed here, in the same
+order and under the same numbers, so that a proof and the result it
+proves can be read together.
+
+Two pointers appear in the statements above and both name a target in
+the supplement rather than numbering one. \texttt{Lemma\ S:sandwich} is
+the environment whose label is \texttt{lem:sandwich}, and
+\texttt{(S:smdiff)} is the display whose label is \texttt{eq:smdiff}.
+Each is the name the supplement gives the object, so it is findable
+there by the heading it carries.
+
+\clearpage
+\small
+\printbibliography
+
+
+\printbibliography
+
+
+
+\end{document}

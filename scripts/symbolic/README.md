@@ -114,3 +114,40 @@ When `verify.py` returns mismatch (exit 1), treat it as "manual review required,
 ## Spec Library
 
 Persistent specs from real paper claims go in `scripts/symbolic/specs/`. The `examples/` folder is for runnable demos.
+
+---
+
+## `source:` pointers — convention, fixed 2026-08-03
+
+**Cite the label or tag. Do not cite a line number.**
+
+```yaml
+# GOOD — durable
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:compact Step 3, HS bound)"
+
+# BAD — decays on the next edit
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex:263-269 (prp:compact Step 3)"
+```
+
+### Why
+
+`verify.py` reads `source:` **only to print it** (`spec.get("source", ...)`, then one `print`). It is
+provenance for a human reader, never an input to the algebra — so a stale pointer cannot corrupt a
+verification. It can only mislead the person auditing one, which is bad enough.
+
+On 2026-08-03, `check_rendering_sync.py` CHECK 7 reported **77 drift findings across 26 specs**, with
+pointers off by as much as **+1,898 lines**. The corpus is edited continuously — `proofs.tex` and
+`results.tex` moved five times that day alone — so line numbers written on Monday are wrong by
+Tuesday. Updating them is a treadmill; the next theory dispatch re-breaks every one.
+
+All 63 stale pointers were stripped. The parenthetical tag that survives is exact, and CHECK 7
+resolves it against the live `\label` at run time, so the check still means something — it just
+checks the durable half.
+
+**Same reasoning retired the `REGISTER_RANGE` upper bound the same day:** assert the property that
+holds (contiguity), not the coordinate that moves (`C1–C79`, which the register correctly outgrew).
+
+### If you want to point at a location
+
+Name the environment (`lem:bdiff`), the clause (`(P-d)`), or the step (`Step 3`), and let the reader
+grep. Those survive reflowing, renaming and re-splitting; line numbers survive nothing.

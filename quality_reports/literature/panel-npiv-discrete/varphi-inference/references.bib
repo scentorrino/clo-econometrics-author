@@ -1,0 +1,366 @@
+% =============================================================================
+% references.bib — SUB-REVIEW: uncertainty quantification for the nonparametric
+%   component varphi in the panel-NPIV-with-binary-instrument paper.
+%
+% Project: panel-npiv-discrete   |   Sub-review: varphi-inference
+% Compiled: 2026-08-03
+%
+% PROVENANCE DISCIPLINE (rule N-21). Every entry below carries one of:
+%   [COPIED-MASTER: <path>:<lines>]  verbatim from an author master .bib on disk
+%   [COPIED-REPO:   <path>]          verbatim from this project's references.bib
+%   [CREATED]                        composed here; each unverifiable field is
+%                                    either OMITTED or marked ON-DISK UNVERIFIED
+%
+% NOTHING BELOW IS COMPOSED FROM RECALL. Where a field could not be checked
+% against an object, it is omitted rather than guessed.
+%
+% MERGE NOTE. Keys here are chosen NOT to collide with the parent
+%   quality_reports/literature/panel-npiv-discrete/references.bib. Four keys
+%   already exist in the parent and are DELIBERATELY NOT REPEATED here:
+%     chen2012, chen2012b, babiiflorens2025, dunker2014, dunker2021,
+%     engl2000, hanke1995, lepskii1990, centorrinofeveflorens2019, feve2014
+%   Cite those by their parent keys. This file adds only what the parent lacks.
+% =============================================================================
+
+
+% =============================================================================
+% AREA V1 — THE TWO NAMED APPROACHES (the ones the brief asked to adjudicate)
+% =============================================================================
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/wild_hat/Paper/wild_hat.bib:149--159]
+%
+% THE PUBLISHED VERSION of "Honest Confidence Sets". The parent .bib does NOT
+% carry this entry (it carries babiiflorens2025, a DIFFERENT paper by Babii with
+% Florens). Adding it is the point of this pass.
+%
+% READ ON DISK: arXiv:1611.03015v4 (paper dated 24 Oct 2019; arXiv stamp 19 Dec
+%   2020), pp. 1-4, 6-11, 12-14. All locators asserted in the annotated
+%   bibliography come from THAT version. NUMBERING IN THE PUBLISHED ET ARTICLE
+%   MAY DIFFER AND HAS NOT BEEN CHECKED — no ET-numbered locator is asserted.
+@article{BABII:2020,
+	author = {Babii, Andrii},
+	date-added = {2025-07-17 16:32:28 -0400},
+	date-modified = {2025-07-17 16:33:08 -0400},
+	journal = {Econometric Theory},
+	number = {4},
+	pages = {658--706},
+	title = {{Honest Confidence Sets in Nonparametric IV Regression and Other Ill-posed models}},
+	volume = {36},
+	year = {2020},
+	bdsk-url-1 = {https://doi.org/10.1017/S0266466619000380}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/wild_hat/Paper/wild_hat.bib:109--121]
+%
+% DUPLICATE-BY-CONTENT of the parent's `chen2012b`. Kept here ONLY so this file
+% compiles standalone. IF MERGING INTO THE PARENT, DROP THIS AND KEEP chen2012b.
+%
+% READ ON DISK: ~/Library/CloudStorage/Dropbox/Papers/Nonparametric Instrumental
+%   Variables/Chen,Pouzo(2014).pdf — the arXiv/working-paper typescript
+%   (arXiv:1411.1144), pp. 1-4, 9-14, 15-20, 21-26. EVERY equation and
+%   assumption number asserted in the annotated bibliography is from THAT
+%   typescript, not from Econometrica 83(3). Flagged at every use.
+@article{CHEN_POUZO:2015,
+	author = {Chen, Xiaohong and Demian Pouzo},
+	date-added = {2025-07-24 23:29:08 -0400},
+	date-modified = {2025-07-31 11:57:42 -0400},
+	issn = {1468-0262},
+	journal = {Econometrica},
+	number = {3},
+	pages = {1013--1079},
+	publisher = {Blackwell Publishing Ltd},
+	title = {{Sieve Wald and QLR Inferences on Semi/Nonparametric Conditional Moment Models}},
+	volume = {83},
+	year = {2015},
+	bdsk-url-1 = {http://dx.doi.org/10.3982/ECTA10771}}
+
+
+% =============================================================================
+% AREA V2 — UNIFORM / ADAPTIVE BANDS IN *LINEAR* NPIV
+%   The state of the art on the side of the frontier this paper is NOT on.
+%   Every one of these assumes the conditional-MEAN restriction and a LINEAR
+%   operator. They are the benchmark the paper must acknowledge and decline.
+% =============================================================================
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/wild_hat/Paper/wild_hat.bib:135--147]
+%
+% THE CURRENT FRONTIER for honest + adaptive uniform bands in NPIV: a
+% bootstrapped Lepski procedure in sup-norm. This is the paper the brief's
+% "adaptive/Lepskii-type confidence sets are a natural place to look" prompt
+% lands on. LINEAR NPIV (sieve 2SLS).
+%
+% YEAR-FIELD CAVEAT, NOT CORRECTED because N-21 requires verbatim copying: the
+%   master's `year = {2024}` sits next to `volume = {92}, number = {1}`, and
+%   REStud 92(1) is the January 2025 issue. The author owns this field; it is
+%   reproduced as found rather than silently repaired.
+% ABSTRACT-LEVEL ONLY: this paper was NOT read on disk. No theorem, assumption
+%   or equation number from it is asserted anywhere in this sub-review.
+@article{CHEN_CHRISTENSEN_KANKANALA:2025,
+	abstract = {We introduce two data-driven procedures for optimal estimation and inference in nonparametric models using instrumental variables. The first is a data-driven choice of sieve dimension for a popular class of sieve two-stage least-squares estimators. When implemented with this choice, estimators of both the structural function h0 and its derivatives (such as elasticities) converge at the fastest possible (i.e. minimax) rates in sup-norm. The second is for constructing uniform confidence bands (UCBs) for h0 and its derivatives. Our UCBs guarantee coverage over a generic class of data-generating processes and contract at the minimax rate, possibly up to a logarithmic factor. As such, our UCBs are asymptotically more efficient than UCBs based on the usual approach of undersmoothing. As an application, we estimate the elasticity of the intensive margin of firm exports in a monopolistic competition model of international trade. Simulations illustrate the good performance of our procedures in empirically calibrated designs. Our results provide evidence against common parameterizations of the distribution of unobserved firm heterogeneity.},
+	author = {Chen, Xiaohong and Christensen, Timothy and Kankanala, Sid},
+	date-added = {2025-07-17 16:34:29 -0400},
+	date-modified = {2025-07-17 16:35:06 -0400},
+	journal = {The Review of Economic Studies},
+	month = {03},
+	number = {1},
+	pages = {162-196},
+	title = {{Adaptive Estimation and Uniform Confidence Bands for Nonparametric Structural Functions and Elasticities}},
+	volume = {92},
+	year = {2024},
+	bdsk-url-1 = {https://doi.org/10.1093/restud/rdae025}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/wild_hat/Paper/wild_hat.bib:50--59]
+%
+% THE MOST DANGEROUS NEAR-MISS IN THIS WHOLE FILE, and the reason it is entered
+% with a warning rather than quietly. The title says "Uniform Inference on
+% NONLINEAR Functionals" — that is nonlinear FUNCTIONALS (consumer surplus,
+% elasticities) of a structural function solving a LINEAR operator equation.
+% It is NOT inference in a nonlinear operator equation. Mis-citing this as
+% precedent for the present paper would be a referee-visible error.
+%
+% KEY IS A FOSSIL: `:2015` with `year = {2018}`. Copied verbatim per N-21.
+% ABSTRACT/TITLE-LEVEL ONLY; not read on disk. No locator asserted.
+@article{CHEN_CHRISTENSEN:2015,
+	author = {Chen, Xiaohong and {Christensen}, T.},
+	journal = {Quantitative Economics},
+	number = {1},
+	pages = {39--84},
+	title = {{Optimal Sup-norm Rates and Uniform Inference on Nonlinear Functionals of Nonparametric IV Regression}},
+	volume = {9},
+	year = {2018}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/Documents_MAC/Published Papers/
+%   Econometrics/Varying Coefficient/bib_varcoeff.bib:205--214]
+%
+% READ ON DISK (published version): ~/Library/CloudStorage/Dropbox/Papers/
+%   Nonparametric Instrumental Variables/Horowitz,Lee(2011).pdf — despite the
+%   filename this IS the published J. Econometrics 168(2) 2012 article, pp. 1-2
+%   read. Model (1.1) is Y = g(X) + U, E[U|W=w] = 0, W CONTINUOUS: linear NPIV.
+%   Their own §1 states the band "is not asymptotically exact if L < infinity" —
+%   i.e. by Babii's terminology it is a DISHONEST band, and they say so.
+@article{HOROWITZ_LEE:2012,
+	Author = {Horowitz, Joel L. and Lee, Sokbae},
+	Date-Added = {2016-03-07 15:38:15 +0000},
+	Date-Modified = {2016-12-30 10:43:54 +0000},
+	Journal = {Journal of Econometrics},
+	Number = {2},
+	Pages = {175 - 188},
+	Title = {{Uniform Confidence Bands for Functions Estimated Nonparametrically with Instrumental Variables}},
+	Volume = {168},
+	Year = {2012}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/wild_hat/Paper/wild_hat.bib:446--454]
+%
+% THE ESTIMATOR BABII'S PAPER IS BUILT ON. Babii's own §3.1 says he focuses on
+% "Tikhonov regularization, as in Darolles, Fan, Florens, and Renault (2011)".
+% Needed to make the "Babii inherits DFFR's linear kernel Tikhonov" point.
+@article{DAROLLES_FAN_FLORENS_RENAULT:2011,
+	author = {Darolles, S. and Fan, Y. and Florens, J. P. and Renault, E.},
+	journal = {Econometrica},
+	number = {5},
+	pages = {1541--1565},
+	publisher = {Blackwell Publishing Ltd},
+	title = {Nonparametric Instrumental Regression},
+	volume = {79},
+	year = {2011}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/wild_hat/Paper/wild_hat.bib:532--538]
+%
+% The canonical applied NPIV target (Engel curves) and the data set behind both
+% Chen-Pouzo's NPQIV illustration and Babii's Engel-curve application. Useful
+% as CONVENTION evidence: what an applied NPIV section is expected to show.
+@article{BLUNDELL_CHEN_KRISTENSEN:2007,
+	author = {Blundell, R. and X. Chen and D. Kristensen},
+	journal = {Econometrica},
+	pages = {1613-1669},
+	title = {Semi-Nonparametric {IV} Estimation of Shape Invariant {E}ngel Curves},
+	volume = {75},
+	year = {2007}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/wild_hat/Paper/wild_hat.bib:318--329]
+@article{HOROWITZ:2011,
+	author = {Horowitz, Joel L.},
+	journal = {Econometrica},
+	number = {2},
+	owner = {samuele},
+	pages = {347--394},
+	publisher = {Blackwell Publishing Ltd},
+	title = {Applied Nonparametric Instrumental Variables Estimation},
+	volume = {79},
+	year = {2011}}
+
+
+% =============================================================================
+% AREA V3 — INFERENCE / UQ IN GENUINELY NONLINEAR ILL-POSED PROBLEMS
+%   This is the area the brief asked whether anything exists in. It does.
+% =============================================================================
+
+% [CREATED] — absent from all .bib files on disk (surnames "Monard", "Nickl",
+%   "Paternain" grepped across ~/Library/CloudStorage/Dropbox/**/*.bib: no hit).
+%
+% READ ON DISK: the arXiv PDF (arXiv:2007.15892v2, stamped 14 Apr 2021), pp. 1-3.
+%   Eq. (1) Y_i = G(theta)(X_i) + sigma eps_i with G a NON-LINEAR forward map;
+%   eq. (2) the PDE. Their two key hypotheses (global consistency; invertibility
+%   of the LINEARISED "Fisher information" operator I*I) are read off p. 2-3.
+%
+% FIELD-BY-FIELD VERIFICATION:
+%   author, title, year  — read off the arXiv title page.
+%   journal, volume      — from the projecteuclid landing page reached via search
+%                          (Annals of Statistics 49(6)); ON-DISK UNVERIFIED.
+%   pages                — OMITTED. Not verified against any object.
+%   doi                  — from a search snippet only; ON-DISK UNVERIFIED.
+@article{monardnicklpaternain2021,
+	author = {Monard, Fran{\c c}ois and Nickl, Richard and Paternain, Gabriel P.},
+	title = {Statistical guarantees for {B}ayesian uncertainty quantification in non-linear inverse problems with {G}aussian process priors},
+	journal = {The Annals of Statistics},   % ON-DISK UNVERIFIED
+	volume = {49},                          % ON-DISK UNVERIFIED
+	number = {6},                           % ON-DISK UNVERIFIED
+	year = {2021},
+	doi = {10.1214/21-AOS2082}}             % ON-DISK UNVERIFIED
+
+% [CREATED] — the arXiv preprint is on disk but was not in any .bib.
+%
+% READ ON DISK: ~/Library/CloudStorage/Dropbox/Nonparametric_IV/Discrete
+%   Instruments/Nonparametric/Papers/Dunker(2018).pdf, pp. 1-2. arXiv stamp on
+%   the page reads "arXiv:1511.03977v1 [stat.CO] 12 Nov 2015"; the typeset date
+%   line inside reads "September 20, 2018". BOTH are recorded because they
+%   disagree and the disagreement is the author's to resolve.
+%
+% DISTINCT FROM the parent's `dunker2021` (EJS 15(2), "Adaptive estimation for
+%   some nonparametric instrumental variable models with full independence").
+%   Same author, different paper. Do not conflate.
+%
+% No journal/volume/pages: OMITTED — this object is a preprint and no published
+%   version was verified.
+@misc{dunker2015,
+	author = {Dunker, Fabian},
+	title = {Convergence of the risk for nonparametric {IV} quantile regression and nonparametric {IV} regression with full independence},
+	howpublished = {arXiv:1511.03977 [stat.CO]},
+	note = {arXiv stamp 12 November 2015; typeset date inside the document reads 20 September 2018},
+	year = {2015}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/Nonparametric_IV/Monotone NPIV/
+%   code/instrumental.bib:1031--1038]
+%
+% THE monograph for iterative regularisation of NONLINEAR ill-posed problems —
+% the book-length companion to hanke1995. A hard copy is also on disk at
+% .../Discrete Instruments/Nonparametric/Papers/[Kaltenbacher,_Barbara]_Iterative_regularization_m(b-ok.xyz).pdf
+% NOT READ for this sub-review. Cited at title level only; NO chapter or theorem
+% locator is asserted. If a locator is ever needed, open the PDF first.
+@book{kalten2008,
+	address = {Berlin, Boston},
+	author = {Barbara Kaltenbacher and Neubauer, Andreas and Scherzer, Otmar},
+	date-added = {2018-10-14 18:28:10 -0400},
+	date-modified = {2018-10-14 18:29:14 -0400},
+	publisher = {De Gruyter},
+	title = {{Iterative Regularization Methods for Nonlinear Ill-Posed Problems}},
+	year = {2008}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/Nonparametric_IV/Monotone NPIV/
+%   code/instrumental.bib:1864--1871]
+%
+% The Hohage/Munk line on STATISTICAL inverse problems: rates for general
+% regularisation under random noise. Rates, not confidence sets — which is
+% exactly the point being made about that literature.
+% Title-level only; not read for this sub-review.
+@article{bissantz2007,
+	author = {Bissantz, N. and Hohage, T. and Munk, A.},
+	journal = {SIAM Journal on Numerical Analysis},
+	number = {6},
+	pages = {2610 - 2636},
+	title = {{Convergence Rates of General Regularization Methods for Statistical Inverse Problems and Applications.}},
+	volume = {45},
+	year = {2007}}
+
+% [CREATED] — no Szab{\'o} entry exists in ANY .bib on disk (surname "Szab"
+%   grepped across ~/Library/CloudStorage/Dropbox/**/*.bib: zero hits).
+%
+% ON-DISK UNVERIFIED — the warrant is a search-result snippet plus a
+%   projecteuclid landing URL. NOTHING was read.
+% VOLUME, NUMBER AND PAGES ARE DELIBERATELY OMITTED. They are not known.
+% Cited in this sub-review ONLY for the general proposition that adaptive
+%   confidence sets require an extra signal-strength condition
+%   (self-similarity / polished tail). NO theorem number is asserted.
+@article{szabovdvvz2015,
+	author = {Szab{\'o}, Botond and van der Vaart, A. W. and van Zanten, J. H.},
+	title = {Frequentist coverage of adaptive nonparametric {B}ayesian credible sets},
+	journal = {The Annals of Statistics},   % ON-DISK UNVERIFIED
+	year = {2015}}                          % ON-DISK UNVERIFIED
+
+
+% =============================================================================
+% AREA V4 — SCOOPING WATCH (recent preprints in the neighbourhood)
+% =============================================================================
+
+% [CREATED] — not on disk anywhere.
+% ON-DISK UNVERIFIED — warrant is the arXiv abstract page, fetched 2026-08-03.
+%   Authors, title, identifier and dates are read off that page; the abstract is
+%   quoted verbatim in the annotated bibliography.
+%
+% NOT A SCOOP, and the reason is structural: the instrument is discrete but the
+%   NUMBER OF INSTRUMENT LEVELS GROWS with n (many-weak-instrument asymptotics),
+%   the operator equation is LINEAR, and the targets are LINEAR FUNCTIONALS.
+%   The present paper has a FIXED binary instrument and a nonlinear equation.
+@misc{vanderlaankallusbibaut2025,
+	author = {van der Laan, Lars and Kallus, Nathan and Bibaut, Aur{\'e}lien},
+	title = {Nonparametric Instrumental Variable Inference with Many Weak Instruments},
+	howpublished = {arXiv:2505.07729},
+	note = {Submitted 12 May 2025; v2 11 July 2025; v3 1 January 2026},
+	year = {2025}}
+
+% [CREATED] — not on disk anywhere.
+% ON-DISK UNVERIFIED — warrant is the arXiv abstract page, fetched 2026-08-03.
+%
+% SCOPE CAUTION, STATED BECAUSE IT IS NOT SETTLED. The abstract says "allowing
+%   general nonlinearities", which in the kernel-IV literature normally means a
+%   nonlinear structural function h in a LINEAR conditional-moment operator
+%   equation, not a nonlinear operator. THIS WAS NOT VERIFIED — only the
+%   abstract was read. Do not cite it as nonlinear-operator precedent without
+%   opening the paper.
+@misc{lobsinghvijaykumar2025,
+	author = {Lob, Marvin and Singh, Rahul and Vijaykumar, Suhas},
+	title = {Uniform inference for kernel instrumental variable regression},
+	howpublished = {arXiv:2511.21603},
+	note = {Submitted 26 November 2025},
+	year = {2025}}
+
+
+% =============================================================================
+% AREA V5 — TOOLS THE PARENT FILE DOES NOT YET CARRY
+% =============================================================================
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/Nonparametric_IV/Monotone NPIV/
+%   code/instrumental.bib:2048--2056]
+%
+% The survey that fixes the vocabulary ("linear inverse problems", source
+% conditions, spectral regularisation). Title-level only.
+@incollection{carrasco2007h,
+	author = {Carrasco, Marine and Florens, Jean-Pierre and Renault, Eric},
+	booktitle = {Handbook of Econometrics},
+	date-modified = {2015-05-10 23:47:30 +0000},
+	editor = {J.J. Heckman and E.E. Leamer},
+	pages = {5633-5751},
+	publisher = {Elsevier},
+	title = {Linear Inverse Problems in Structural Econometrics Estimation Based on Spectral Decomposition and Regularization},
+	year = {2007}}
+
+% [COPIED-MASTER: ~/Library/CloudStorage/Dropbox/Nonparametric_IV/Monotone NPIV/
+%   code/instrumental.bib:1489--1502]
+%
+% Strong approximation / uniform bands for series LS. The direct-problem
+% ancestor of every "uniform band via coupling" argument used downstream.
+% Title-level only; not read.
+@article{belloni2014,
+	author = {{Belloni}, A. and {Chernozhukov}, V. and {Chetverikov}, D. and {Kato}, K.},
+	booktitle = {High Dimensional Problems in Econometrics},
+	date-added = {2015-10-22 08:55:13 +0000},
+	date-modified = {2015-10-22 08:55:13 +0000},
+	journal = {Journal of Econometrics},
+	keywords = {Least squares series; Strong approximations; Uniform confidence bands},
+	month = {6},
+	number = {2},
+	pages = {345--366},
+	title = {{Some New Asymptotic Theory for Least Squares Series: Pointwise and Uniform Results}},
+	volume = {186},
+	year = {2015},
+	bdsk-url-1 = {http://www.sciencedirect.com/science/article/pii/S030440761500038X},
+	bdsk-url-2 = {http://dx.doi.org/10.1016/j.jeconom.2015.02.014}}

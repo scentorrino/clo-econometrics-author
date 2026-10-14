@@ -1,0 +1,28 @@
+claim_id: levels-tail-integral
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:levels(ii), L-5)"
+# CLAIM.  The derivative parameterisation replaces nu_g by its upper tail
+# integral, N_g(v) = int_{x >= v} nu_g(x) dx, because the adjoint of the
+# integration operator D^{-1} has kernel 1{x >= v}.  lem:levels(ii) claims
+# N_g == 0 <=> nu_g == 0, and the mechanism is that differentiating the tail
+# integral returns -nu_g:
+#     d/dv int_v^b nu_g(x) dx  =  -nu_g(v).
+# This spec checks the differentiation on a concrete polynomial surrogate
+# nu_g(x) = a0 + a1 x + a2 x^2 with upper limit b; the surrogate is adequate
+# because the claim in the proof is Lebesgue differentiation, and what a
+# symbolic check can add is that the SIGN and the LIMIT OF INTEGRATION are the
+# ones lem:levels(ii) uses.  Getting either wrong would make the equivalence
+# read as N_g == const rather than N_g == 0, which is a different condition.
+variables:
+  v:
+    domain: real
+  b:
+    domain: real
+  a0:
+    domain: real
+  a1:
+    domain: real
+  a2:
+    domain: real
+start: "(a0*b + a1*b**2/2 + a2*b**3/3) - (a0*v + a1*v**2/2 + a2*v**3/3)"
+operation: "diff(v)"
+claimed_end: "-(a0 + a1*v + a2*v**2)"

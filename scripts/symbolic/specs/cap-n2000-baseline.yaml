@@ -1,0 +1,50 @@
+claim_id: cap-n2000-baseline
+source: "quality_reports/theory/panel-npiv-discrete/results.tex ('At n = 2000 that is an inflation of the iteration budget by a factor between about 5 and about 50 --- 130 Landweber steps become between 630 and 6750'); repeated at theory_memo.md:142-143"
+# WHAT THIS CHECKS.  The ANCHOR of the numerical instantiation: the round-9 cap
+# hat-delta_n^{-2} = n^{0.64} evaluated at n = 2000, which the paper reports as
+# "130 Landweber steps".  The exact value is
+#
+#     2000^{16/25}  =  129.6162...        so   floor(2000^{16/25}) = 129 ,
+#
+# and 130 is that value rounded to the nearest integer (equivalently to two
+# significant figures).  The spec pins the FLOOR, which is canonical and needs no
+# choice of rounding rule, so the relation between the exact value and the printed
+# integer is visible rather than assumed.  0.64 = 16/25 exactly, written as a
+# rational so that no SymPy Float enters and the integer part is exact.
+#
+# WHY PIN THE FLOOR RATHER THAN ASSERT "= 130".  Asserting 2000^{16/25} = 130
+# would be false, and asserting it "rounds to 130" requires naming a rounding
+# rule, which invites a spec whose form is chosen to make it pass.  floor is
+# rule-free: 129 is a fact about the number, and the reader can see that
+# 129 < 129.6162 < 130 forces the nearest integer to be 130.  The two companion
+# specs cap-n2000-lower and cap-n2000-upper are written the same way.
+#
+# WHAT THE FLOORS GIVE TOGETHER, and it is the sentence the paper actually makes.
+#     baseline   2000^{0.64}  = 129.6162   (printed 130)
+#     lower end  2000^{0.848} = 629.9027   (printed 630)
+#     upper end  2000^{1.16}  = 6748.306   (printed 6750, to three significant figures)
+# Ratios: 629.9027/129.6162 = 4.860 = 2000^{0.208} and 6748.306/129.6162 = 52.064
+# = 2000^{0.52} -- which is the paper's "a factor between about 5 and about 50".
+#
+# THE COST OF THIS FORM, STATED SO IT CANNOT BE MISQUOTED.  verify.py evaluates
+# `start` at parse time, and SymPy's floor of a numeric power evaluates
+# immediately (via get_integer_part, which escalates precision until the integer
+# part is unambiguous -- there is no floating-point hazard).  So the printed
+# report reads "Start: 129 / Claimed end: 129 / MATCH".  THAT LOOKS VACUOUS AND IS
+# NOT: the substantive step is that SymPy computed the integer part of 2000^{16/25}
+# and got 129 rather than 128 or 130.  This is the same disclosure the spec
+# l21-threshold-binding carries, for the same reason, and anyone quoting this spec
+# should quote this paragraph with it.
+#
+# FALSIFICATION (hand-computed).  claimed_end "130" leaves residual -1; MISMATCH.
+# claimed_end "128" leaves residual +1; MISMATCH.  The value sits 0.616 above 129
+# and 0.384 below 130, so neither neighbour can be reached by rounding error.
+#
+# PREDICTED: MATCH.  If SymPy returned an unevaluated floor(...) the report would
+# read MISMATCH with a symbolic residual; that would be a HARNESS outcome and not
+# a refutation, and the arithmetic is checkable by hand from
+# ln 2000 = 7.6009024595 and 0.64 * 7.6009024595 = 4.8645775741.
+variables: {}
+start: "floor(2000**(16/25))"
+operation: none
+claimed_end: "129"

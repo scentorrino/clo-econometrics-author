@@ -1,0 +1,105 @@
+claim_id: secondord-shift-nonintegrable
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (rem:shiftclass) and proofs.tex (lem:secondord Step 1); new in round 7, REWRITTEN in the round-7 postfix pass so that the name matches the content"
+# WHY THIS SPEC EXISTS.  secondord-crossterm-tau1 checks the POSITIVE algebra of
+# lem:secondord(iii) on a smooth direction.  The clause's content is NEGATIVE:
+# nothing stated at the TRUE residual controls the direction at a SHIFTED one,
+# and in the worst case the shifted moment does not merely grow -- IT DOES NOT
+# EXIST.  That is what def:dirclass(b) is in the block to prevent, and it is what
+# this spec now certifies.
+#
+# THE CONSTRUCTION (rem:shiftclass, and F-1's variant of the round-6
+# counterexample).  Let dZ be degenerate, r = 1, dU ~ Uniform[0,1], and let
+# h in V satisfy Dh = -1 on an event A with P(A) = 1/2 and Dh = 0 off A.  Take
+#     D(u, z) = 1{u > 1} * (u - 1)^{-1}.
+# Then:
+#   (a) D(dU, dZ) = 0 almost surely, since dU <= 1 a.s.  Hence N1' holds --
+#       E[D | dZ] = 0 -- and ||D||_{L^2(P)} = 0 EXACTLY.  No integral is needed
+#       for this half; it is a support statement.
+#   (b) At t1 = 1 the argument on A is dU + 1, so D(dU + 1) = 1/dU, and
+#           E| r * D(dU - t1*Dh) |  =  (1/2) * int_0^1 u^{-1} du .
+#
+# ------------------------------------------------------------------------------
+# WHAT CHANGED IN THE POSTFIX PASS, AND WHY.  The round-7 version of this spec
+# checked the ANTIDERIVATIVE int u^{-1} du = log u and then READ the divergence
+# off it in prose.  The header was explicit about that boundary -- correctly --
+# but the boundary does not travel: what propagates upward from a batch run is
+# "62 specs, 62 MATCH", and the claim_id named a NON-INTEGRABILITY result the
+# spec did not evaluate.  A name is quoted; a header is not.  So the certified
+# content is moved TO the claim in the name.  The spec now evaluates the definite
+# integral over (0, 1) itself.
+#
+# THE ONE THING THE FINDING GOT WRONG, AND THE WITNESS.  The finding proposed
+# integrate(1/u, (u, 0, 1)) -> oo as the "strictly better mechanical form
+# available at zero cost".  The evaluation is right; the SPEC FORM IS NOT
+# AVAILABLE, and it would report MISMATCH.  scripts/symbolic/verify.py compares
+# by computing
+#       difference = end_actual - end_claimed
+# and passing it to reduce_to_zero().  With start = integrate(1/u,(u,0,1)) and
+# claimed_end = oo, that difference is oo - oo = S.NaN.  is_zero(nan) is False
+# (nan == 0 is False, and nan.equals(0) does not return True), so the harness
+# prints MISMATCH on a claim that is true.  A spec must not be written in a form
+# whose failure mode is indistinguishable from a real defect -- that is the same
+# lesson as MAJ-2, applied to the harness instead of to the header.
+#
+# THE FORM USED INSTEAD, AND WHY IT IS EQUIVALENT.  Let I := int_0^1 u^{-1} du,
+# which is a well-defined element of [0, +oo] because the integrand is positive.
+# Then
+#       1 / I = 0   <=>   I = +oo ,
+# since for any FINITE I > 0 the reciprocal is a strictly positive real, and
+# I > 0 holds because the integrand is strictly positive on a set of positive
+# measure.  So the identity checked below is EQUIVALENT to non-integrability, is
+# branch-free (u is declared positive, so no Piecewise arises), and lands on a
+# finite comparison target that the harness's subtraction can reduce to zero.
+# SymPy evaluates integrate(1/u, (u, 0, 1)) to oo at PARSE time (verify.py's
+# parse_with exposes `integrate` and `oo` in the namespace), so `operation: none`
+# is the whole of the transformation.
+#
+# WHAT THE REPORT WILL PRINT, STATED IN ADVANCE SO IT CANNOT BE MISREAD.
+# Because verify.py evaluates `start` at PARSE time, the printed report reads
+#       Start:         0
+#       Actual end:    0
+#       Claimed end:   0
+#       Result:        MATCH
+# and NOT "1/oo".  That printout looks vacuous and is not: the substantive step
+# is that SymPy reduced 1/integrate(1/u,(u,0,1)) TO 0, which it does only by
+# evaluating the integral to +oo.  There is no spec form under this harness that
+# both certifies the divergence and prints an uncollapsed left-hand side, since
+# parse-time evaluation is what produces the value being asserted.  Anyone
+# quoting this spec should quote this paragraph with it.
+#
+# WHAT A HUMAN STILL READS OFF IT, AND IT IS NOW ONE STEP, NOT TWO.  The spec
+# certifies that the u-integral in display (b) is infinite.  The remaining step
+# -- that E|r D(dU - t1 Dh)| = (1/2) * that integral, hence infinite -- is the
+# change of variables in (b) and is not machine-checked.  A spec must not be
+# quoted as certifying more than it evaluates; what it evaluates is now the
+# divergence its name asserts.
+#
+# IF A FUTURE SymPy LEAVES THE INTEGRAL UNEVALUATED, this spec reports MISMATCH.
+# Under the harness's own convention that means "manual review required", NOT
+# "the claim is false"; the manual review is the two-line argument above.
+#
+# THE CONSEQUENCE FOR THE BLOCK.  Every hypothesis of lem:secondord(iii) stated
+# at the true residual holds for this D -- N1' holds and ||D||_{L^2(P)} = 0 --
+# while Psi(1, t2, t3) has both its positive and its negative parts infinite for
+# t2 != 0 and non-degenerate Wtilde, hence is UNDEFINED.  So
+#   * clause (ii)'s "identically in tau" would be ILL-POSED, not merely false,
+#     without the scope [-tau-bar, tau-bar] that def:dirclass fixes;
+#   * clause (iii)'s "the cross-partial IS -E[r D(dU - t1 Dh)]" would name a
+#     non-existent object;
+#   * NO PRODUCT BOUND EXISTS: C * ||r||_inf * ||D||_{L^2(P)} = 0 for every C,
+#     while the left side is infinite.  The word "product" must not be attached
+#     to eq:crossshift anywhere downstream.
+# def:dirclass(b) excludes this D by requiring ||D||_{0,h} < infinity, and that
+# is the minimal condition that does so.
+#
+# RELATED, AND NOT DUPLICATED HERE: the density-ratio alternative rejected in
+# rem:shiftclass fails for a STRONGER reason than unboundedness -- the shifted
+# law charges {u > 1}, a null set of the true law, so absolute continuity fails
+# and no Radon-Nikodym derivative exists to bound.  That is a measure-theoretic
+# statement with no symbolic content and is deliberately NOT given a spec.
+variables:
+  u:
+    domain: positive
+start: "1/integrate(1/u, (u, 0, 1))"
+operation: none
+claimed_end: "0"

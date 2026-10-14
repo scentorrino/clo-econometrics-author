@@ -1,0 +1,45 @@
+claim_id: cap-scaleinv-stopping-omega2
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:scaleinv(v)): '(omega_*^{2mu} R_* / (omega_*^{-1} delta))^{2/(2mu+1)} = omega_*^{2(2mu+1)/(2mu+1)} (R_*/delta)^{2/(2mu+1)} = omega_*^{2} (R_*/delta)^{2/(2mu+1)}'; stated at results.tex; consumed at results.tex (eq:cap) and proofs.tex"
+# WHAT THIS CHECKS, AND IT IS THE ROOT OF eq:cap.  (F-f) bounds the stopping
+# index by  hat-m = O( (R_*/delta)^{2/(2mu+1)} ).  Under the rescaling of
+# lem:scaleinv the radius becomes omega_*^{2mu} R_* and the noise becomes
+# omega_*^{-1} delta, so the RATIO acquires omega_*^{2mu} / omega_*^{-1} =
+# omega_*^{2mu+1}, and the whole ratio is then raised to 2/(2mu+1).  The claim of
+# clause (v) is that the surviving power of omega_* is EXACTLY 2, free of mu:
+#
+#     2mu * (2/(2mu+1))  +  1 * (2/(2mu+1))  =  (2mu+1) * 2/(2mu+1)  =  2 .
+#
+# That "2", and nothing else, is why def:lfstep sizes the iteration cap at
+#     bar-m_n  >=  omega_n^2  hat-delta_n^{-2}                    (eq:cap)
+# and not at hat-delta_n^{-2}, which is what rounds 1-9 wrote.  results.tex
+# says the repricing "is a computation and not an assumption"; this spec is that
+# computation at its root.
+#
+# WHY THE CONTRAST WITH (iv) MATTERS.  In clause (iv) the exponent pair is
+# 1/(2mu+1) on the radius and 2mu/(2mu+1) on the noise and the powers of omega_*
+# CANCEL (spec cap-scaleinv-rate-invariance).  In clause (v) the exponent is
+# 2/(2mu+1) on BOTH, so they ADD rather than cancel, and the sum is mu-free.
+# "The exponents that cancelled in (iv) do not cancel here" (proofs.tex) is
+# exactly the difference between these two specs, and it is the whole cost of the
+# normalisation.
+#
+# WHAT THIS DOES NOT CHECK.  It does not check that the cap is FEASIBLE -- that
+# omega_n^2 hat-delta_n^{-2} is a finite computable budget -- which is the
+# numerical content of cap-window-lower / cap-window-upper / cap-n2000-*.  It
+# does not check (F-f)'s stopping-index bound itself, a quoted result.
+#
+# FALSIFICATION (hand-computed).  Replacing claimed_end by "1" leaves residual
+# (4*mu + 2)/(2*mu+1) - 1 = (2*mu+1)/(2*mu+1) = 1, nonzero, so the spec flips to
+# MISMATCH.  Replacing the noise contribution "1*(2/(2*mu+1))" by
+# "1*(1/(2*mu+1))" leaves residual -1/(2*mu+1), nonzero.  The claim is therefore
+# refutable by perturbing either the exponent or the target.
+#
+# PREDICTED: MATCH.  start parses to the uncombined Add
+# 4*mu/(2*mu + 1) + 2/(2*mu + 1); reduce_to_zero's `cancel` (or `simplify`,
+# or `together`) puts it over the common denominator and returns 0.
+variables:
+  mu:
+    domain: positive
+start: "2*mu*(2/(2*mu+1)) + 1*(2/(2*mu+1))"
+operation: none
+claimed_end: "2"

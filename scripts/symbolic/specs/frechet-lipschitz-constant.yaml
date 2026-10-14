@@ -1,0 +1,24 @@
+claim_id: frechet-lipschitz-constant
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:frechet Step 5)"
+# CLAIM (Step 5).  Cauchy-Schwarz plus eq:deltahbound applied TWICE gives
+#     |(A_{phi+h} - A_phi) h'(u,t)|
+#        <= bar-w(t) f1bar (E(Delta h)^2)^{1/2} (E(Delta h')^2)^{1/2}
+#        <= 4 cpi f1bar bar-w(t) ||h|| ||h'||,
+# and integrating against Pi with the sup over ||h'|| <= 1 gives
+#     ||A_{phi+h} - A_phi|| <= 4 cpi f1bar c_Pi ||h|| = 2 C_A ||h||.
+# Both the "4" produced by the two square roots and its identification with
+# 2*C_A (C_A = 2 cpi f1bar cPi) are checked here.
+variables:
+  cpi:
+    domain: positive
+  f1bar:
+    domain: positive
+  cPi:
+    domain: positive
+  Hn:
+    domain: positive
+  Hpn:
+    domain: positive
+start: "cPi*f1bar*sqrt(4*cpi*Hn**2)*sqrt(4*cpi*Hpn**2)"
+operation: "substitute(Hpn=1)"
+claimed_end: "2*(2*cpi*f1bar*cPi)*Hn"

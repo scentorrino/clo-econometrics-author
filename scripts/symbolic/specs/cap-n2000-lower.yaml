@@ -1,0 +1,44 @@
+claim_id: cap-n2000-lower
+source: "quality_reports/theory/panel-npiv-discrete/results.tex ('130 Landweber steps become between 630 and 6750'), against the exponent n^{0.848} of results.tex; repeated at theory_memo.md:142-143"
+# WHAT THIS CHECKS.  The lower end of the repriced cap at n = 2000.  The exponent
+# 0.848 = 106/125 is verified against the configuration by cap-window-lower; here
+# it is evaluated:
+#
+#     2000^{106/125}  =  629.9027...       so   floor(2000^{106/125}) = 629 ,
+#
+# and the paper's "630" is that value rounded to the nearest integer.  Note that
+# the exact value is BELOW 630 by 0.0973, so the printed 630 rounds a strict lower
+# bound UP -- the conservative direction for a cap, since a cap that is too large
+# only wastes iterations, whereas one that is too small voids the discrepancy
+# guarantee (def:lfstep's "whatever the cap eq:cap returns", results.tex).
+# The direction is worth recording because the block has been bitten by the other
+# convention before: assumptions.tex documents a round-2 table entry that
+# rounded a strict LOWER bound DOWN, and printed exact fractions thereafter.
+#
+# WHY 629 AND NOT 630 IS THE CLAIMED END.  See cap-n2000-baseline: floor is
+# rule-free, so the spec states a fact about the number and lets the reader see
+# that 629 < 629.9027 < 630 forces the nearest integer to be 630.  Asserting
+# "= 630" would be false and asserting "rounds to 630" would require choosing a
+# rounding rule.
+#
+# THE PARSE-TIME DISCLOSURE.  As in cap-n2000-baseline, the report will print
+# "Start: 629 / Claimed end: 629 / MATCH".  The substantive step is that SymPy
+# computed the integer part of 2000^{106/125} exactly.  Do not quote this spec
+# without that sentence.
+#
+# THE MARGIN, BECAUSE IT IS THE TIGHTEST OF THE THREE.  629.9027 sits only 0.0973
+# below 630.  A hand-check: ln 630 = 6.4457198 while 0.848 * ln 2000 = 6.4455653,
+# a deficit of 1.545e-4, so 2000^{0.848} = 630 * exp(-1.545e-4) = 629.9027.  The
+# deficit is four orders of magnitude larger than any plausible arithmetic slip in
+# that comparison, so the floor is 629 and not 630.  Recorded because a reader who
+# recomputes at low precision could land on the wrong side.
+#
+# FALSIFICATION (hand-computed).  claimed_end "630" leaves residual -1; MISMATCH.
+# claimed_end "628" leaves residual +1; MISMATCH.  Replacing the exponent by
+# 29/25 (the other endpoint) gives floor = 6748, not 629; MISMATCH.
+#
+# PREDICTED: MATCH.
+variables: {}
+start: "floor(2000**(106/125))"
+operation: none
+claimed_end: "629"

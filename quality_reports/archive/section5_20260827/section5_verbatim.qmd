@@ -1,0 +1,2235 @@
+# Monte Carlo
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% cleveref's stock English names for these two counters are lower case, so
+% \cref{tab:x} would render "table 1" against the "Theorem 12" / "Section 5"
+% shape the rest of this document uses.  Declared HERE and not in
+% preambles/preamble.tex on purpose: the preamble is shared with the theory
+% corpus build, which declares no float and would be changed for no reason.
+% \crefname is legal in the body provided it precedes the first \cref, which it
+% does: this declaration precedes the article's first float, which is
+% tab:sim-seunits below.  IT DOES NOT HOLD EVERY FLOAT.  This comment claimed
+% until 2026-08-23 that "this section holds every float in the article", and
+% Section 6 holds Tables 21--26 and Figure 5.  What the declaration needs is to
+% come before the first \cref, not to sit in the only section with floats, and
+% the false premise was doing no work for the true conclusion.
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
+```
+:::
+
+The design is the one the theory names, and naming it is also the concession. At
+$(\mu,s,a,\alpha)=(2,3,\tfrac34,0.32)$ the frontier holds, $\kappa\alpha=0.256$
+exceeding $\tfrac14$, and the turn computed in Section 4 falls at
+$n^{\ast}\approx10^{58}$. The experiment therefore runs where the theorem is true
+and where its asymptotics are known in advance not to bind. Both laws draw a
+two-valued instrument, $\mathsf L=2$. \Cref{thm:rootn} is stated at general finite
+$\mathsf L$ and is asymptotic in $n$ at fixed $\mathsf L$, with no claim of
+uniformity in the cardinality, so nothing in the limit law itself turns on it;
+how large the remainder is at a given $n$ is a different question, and the second
+and third subsections measure it rather than assume it away.
+
+One hypothesis of \cref{thm:rootn} is imposed by none of the designs below, and
+whether it holds anyway is a question about the design rather than about the
+anchor. Every design builds its debiasing weight on the zero anchor, which the
+supplement's remark on the two anchors of interest admits with no further
+assumption, and setting the anchor to zero leaves $E[L_\star\mid\Delta Z]$ at
+whatever the design makes it. On the two laws run here it makes it zero at
+$\mathsf L=2$ and not at $\mathsf L=4$, which are the two cardinalities that
+check is run at on those laws. All of the solved representer's
+coefficient energy sits on odd $q$ at the binary cardinality, where the
+antiderivative basis is odd in $u$, so $L_\star$ is odd in $u$, and $\Delta U$ is
+independent of $(\Delta Z,W)$ by construction and symmetric about zero, so the
+conditional mean vanishes by parity. Computed in population rather than
+estimated, the largest entrywise defect is $3.3\times10^{-6}$ of $\|L_\star\|$ at
+$\mathsf L=2$ against $0.191$ at $\mathsf L=4$ (\cref{tab:sim-n1defect}). The
+binary arms therefore run inside the hypothesis in the propensity direction,
+which is the direction \cref{prp:orthog}(iii) prices, and the four-cell panel of
+the cardinality arm does not. *That settles the N1 clause of \textup{(T-2)} and
+not \textup{(T-2)} entire*, whose A2 and A$2'$ clauses nothing here certifies,
+and it settles it on the two laws of these opening pages and of the
+cardinality arm; Design H of the next subsection runs the same anchor at $\mathsf L=2$ and was not
+put through the population check. What the failure costs is measured in the
+cardinality arm. The multinomial designs of the closing subsection carry that
+check at three cardinalities and fail it at all of them
+(\cref{tab:sim-multinomial-n1defect}). *That measurement is taken at the weight
+the engine solves for and not at $\ell_\star$*, which is the qualification the
+closing subsection states where it makes it, and it does not show that
+$\ell_\star$ fails N1 on those designs.
+
+What we can measure is the size of the gap and the speed at which it closes.
+
+We run two data-generating laws, DGP A and DGP B, the second harsher in its
+geometry, at a condition number of $27.7$ against $3.6$ (Table S1 of the
+supplement), and its linearisation residual larger at every $n$
+(\cref{tab:sim-limitlaw}, and drawn in \cref{fig:sim-linresid}). The limit-law arm
+goes to $n=181{,}019$ at $5{,}000$ replications in every cell; the
+$\varphi$-step arm runs $36$ cells at $n\in\{500,2{,}000,8{,}000\}$ and $300$
+replications, sweeping $\mathsf c_{14}$ over four decades. Monte Carlo error is
+fixed before any gap is read: the coverage standard error is $0.0031$ at the
+$95\%$ level and $0.0042$ at the $90\%$, the standard-deviation-ratio standard
+error lies between $0.0099$ and $0.0208$, and precision does not vary with $n$.
+Everything below is produced by `scripts/simulations/sim_thm_rootn_run_all.R`.
+
+The verdict is that the estimator matches its limit law at large $n$ only.
+
+Write $c_\delta$ for the constant in A5(ii)'s $O_P(\delta_n)$. At $c_\delta=0.25$
+the ratio of the simulated standard deviation to its asymptotic value fails a
+two-standard-error bar at every $n\le64{,}000$ in DGP A, at $16.90$, $8.30$,
+$5.83$, $4.93$, $3.09$, $3.37$ and $2.82$ standard errors, and clears it only at
+$n=181{,}019$ (\cref{tab:sim-seunits}). In DGP B the worst studentised
+quantile is still $2.92$ standard errors off there
+(\cref{fig:sim-qq}, and Table S2 of the supplement).
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{Distance from the asymptotic value, in Monte Carlo standard error units}
+\label{tab:sim-seunits}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_seunits}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Every entry is a gap between a simulated quantity and its
+asymptotic value, divided by the Monte Carlo standard error of that gap. The
+entries are therefore counts of standard errors and not levels; the levels are in
+\cref{tab:sim-limitlaw}. $\hat{\mathrm{sd}}/\mathrm{sd}_\infty$ compares the
+simulated standard deviation of $\vartheta'\sqrt n(\hat\theta-\theta_\dagger)$
+with $(\vartheta'V\vartheta)^{1/2}$, at the fixed unit direction
+$\vartheta=\tfrac12(1,1,1,1)$. The two coverage columns compare the empirical
+coverage of nominal $90\%$ and $95\%$ intervals with those levels. ``Worst
+quantile'' is the largest absolute gap over the seven studentised quantiles
+$\{0.025,0.05,0.25,0.5,0.75,0.95,0.975\}$, which Table S2 of the supplement
+prints for four of the eight sample sizes. ``Centring'' tests the mean of
+$\vartheta'\sqrt n(\hat\theta-\theta_\dagger)$ against zero. $c_\delta$ is the
+constant in the $O_P(\delta_n)$ of A5(ii), and both values satisfy the same
+hypotheses. $5{,}000$ replications in every cell. An entry inside $\pm2$ is not
+distinguishable from zero at that replication count, which is not the same thing
+as a match. Source: \texttt{scripts/simulations/sim\_thm\_rootn\_run\_all.R};
+table \texttt{paper/tables/sim/sim\_thm\_rootn\_seunits.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{../figures/sim/sim_thm_rootn_qq.pdf}
+\caption{Studentised quantiles against the standard normal}
+\label{fig:sim-qq}
+\begin{minipage}{0.92\textwidth}\footnotesize
+\textit{Notes:} Each curve plots the empirical quantiles of the studentised
+statistic
+$\vartheta'\sqrt n(\hat\theta-\theta_\dagger)/(\vartheta'\hat V\vartheta)^{1/2}$,
+at $\vartheta=\tfrac12(1,1,1,1)$, against the quantiles of the standard normal.
+The straight grey line in each panel is the $45^{\circ}$ line the limit law of
+\cref{thm:rootn} predicts, so a curve lying on it is the theorem's prediction and
+departure from it is read vertically. Columns are the two values of $c_\delta$,
+the constant in the $O_P(\delta_n)$ of A5(ii); rows are the two data-generating
+laws. The solid curve is $n=1{,}000$ and the dashed curve $n=64{,}000$. The
+largest sample of the limit-law arm, $n=181{,}019$, is not drawn, so the figure
+does not show the one cell at which the standard-deviation ratio clears its bar.
+Departure is in the tails and it is larger at $c_\delta=1$ at both sample sizes.
+$5{,}000$ replications in every cell. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_limitlaw.R}; figure
+\texttt{paper/figures/sim/sim\_thm\_rootn\_qq.pdf}.
+\end{minipage}
+\end{figure}
+```
+:::
+
+At $c_\delta=1$ nothing matches anywhere on the grid. The ratio is $1.232$ at
+$n=181{,}019$, which is $18.85$ standard errors, and $90\%$ coverage is $0.854$,
+or $9.18$ standard errors below nominal. Coverage at that level is below nominal
+in $8$ of $8$ cells of DGP A, at a sign-test $p$ of $0.0078$, with every cell
+beyond three standard errors (\cref{tab:sim-limitlaw}).
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The limit law at levels, by data-generating law and by the constant in
+A5(ii)}
+\label{tab:sim-limitlaw}
+\footnotesize
+% 476.9pt at the stock 6pt \tabcolsep against a 469.8pt \textwidth. 4pt brings
+% it to 444.9pt. Measured, not guessed.
+%
+% THAT IS A WIDTH CERTIFICATE AND THE OVERFLOW HERE IS A HEIGHT, 2026-08-22.
+% The line above is true and was never the binding dimension: at the 2026-08-24
+% build, main.log reported "Float too large for page by 9.89249pt" for this
+% float, tab:sim-limitlaw.  Width is certified at 444.9pt and height is 9.9pt
+% over.  Recorded rather than repaired, for the reason given at
+% tab:sim-merged-stopping.  The build is named because this sentence retires a
+% certificate and therefore falls under the rule stated below it.
+%
+% THE LOG LINE THIS PINNED WAS STALE, 2026-08-23, AND THE RETRACTION THEN PINNED
+% A SECOND ONE.  The certificate pinned an input line and that line had moved.
+% The sentence retiring the practice went on to quote the replacement in the
+% present tense, "the shipped main.log says 1858", and at the 2026-08-24 build
+% that replacement had moved as well.  Both numbers are dropped rather than
+% updated.  A retraction of a mutable pin is complete without the value that
+% displaced it, and quoting that value is one more instance of the practice
+% being retired, written in the one place nobody re-reads, because retraction
+% text reads as history.
+%
+% THE RULE THIS FLOAT IS THE WORKED EXAMPLE OF.  A retraction must not quote a
+% mutable observable in the present tense.  Either drop the replacement figure,
+% or bind it to a named build.  Nothing else in a comment block goes stale so
+% quietly, since a correction is read as settled and is never re-derived.
+%
+% Log-line pins are therefore not written in this document.  They move whenever
+% anything above them changes and they go stale silently, which is the same
+% argument that retired line-number pins for cross-file references here.  The
+% float is named by label and the log is read by matching it: at the 2026-08-24
+% build, main.log carried three "Float too large" warnings, 9.89249pt for this
+% table, 63.405pt for tab:sim-n1defect and 74.09329pt for tab:app-theta.  Those
+% three are properties of the typeset float rather than of the file's line
+% numbering, so an edit above them does not move them; that is why they are the
+% pin, and the build they were read at is named so that the claim stays true
+% even when they do change.
+\setlength{\tabcolsep}{4pt}
+\input{../tables/sim/sim_thm_rootn_limitlaw}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The levels of the quantities \cref{tab:sim-seunits} reports
+in standard error units. The budget column is $\sqrt n\,\delta_n^{2}$, the
+leading Step-4 product of the remainder accounting, at the panel's own
+$c_\delta$; it rises in $n$ across this grid rather than falling.
+$\hat{\mathrm{sd}}/\mathrm{sd}_\infty$ is the simulated standard deviation of
+$\vartheta'\sqrt n(\hat\theta-\theta_\dagger)$ divided by its asymptotic value,
+at $\vartheta=\tfrac12(1,1,1,1)$. Coverage is of nominal $90\%$ and $95\%$
+intervals. The Monte Carlo standard error in parentheses is evaluated at the
+\emph{empirical} rate and not at the nominal one, which is why it moves across
+cells; at the nominal rates it is $0.0042$ and $0.0031$ throughout. ``Lin.\
+resid.'' is
+$E\|\sqrt n(\hat\theta-\theta_\dagger)-J^{-1}\sqrt n\,\mathbb E_n\psi_\star\|$,
+formed per replication and then averaged, so nothing cancels across
+replications; $\|\hat V-V\|_\infty$ is the distance between the sample sandwich
+and its limit. Panels A and B are the same law at two admissible values of
+$c_\delta$, and so are Panels C and D. $5{,}000$ replications in every cell.
+Source: \texttt{scripts/simulations/sim\_thm\_rootn\_run\_all.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_limitlaw.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+```
+:::
+
+Both configurations satisfy identical hypotheses, and we have no ground on which
+to set the failing one aside.
+
+What separates them is the constant, quadratically. Dividing the $c_\delta=1$
+distortion by $16$ reproduces the observed $c_\delta=0.25$ ratio to within two
+standard errors at every $n\ge22{,}627$. The distortion at the smaller constant is
+not absent. It is the same remainder, divided by sixteen.
+
+Three statistics isolate the theorem itself, and none is in doubt. The
+linearisation residual, taken per replication so that nothing cancels across
+replications, decreases monotonically in all four core panels, from $1.015$ to
+$0.319$ in DGP A at $c_\delta=0.25$ (\cref{fig:sim-linresid}). The distance
+between the sample sandwich and its limit does the same, from $1.227$ to $0.096$.
+An ablation at exact nuisances gives $0.147$, $0.052$ and $0.019$ at
+$n=1{,}000$, $8{,}000$ and $64{,}000$, ratios of $2.83$ and $2.74$ against
+$\sqrt8=2.828$, with coverage $0.951$, $0.948$ and $0.952$
+(\cref{tab:sim-ablation}).
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{../figures/sim/sim_thm_rootn_linresid.pdf}
+\caption{The linearisation residual}
+\label{fig:sim-linresid}
+\begin{minipage}{\textwidth}\footnotesize
+\textit{Notes:} Each point is
+$E\|\sqrt n(\hat\theta-\theta_\dagger)-J^{-1}\sqrt n\,\mathbb E_n\psi_\star\|$,
+the quantity \cref{thm:rootn} sends to zero. It is formed per replication and
+then averaged, so no cancellation across replications can flatter it. Both axes
+are logarithmic, and a series falling to the right is the theorem's prediction.
+Panels are the two data-generating laws. The solid series with circles is
+$c_\delta=0.25$ and the dashed series with triangles $c_\delta=1$, where
+$c_\delta$ is the constant in the $O_P(\delta_n)$ of A5(ii). The residual
+decreases in $n$ in all four series, which is the statement the figure carries;
+the figure says nothing about the \emph{rate} at which it does so. The DGP-A
+levels are the ``Lin.\ resid.'' column of \cref{tab:sim-limitlaw}. Grid: $n$ from
+$125$ to $181{,}019$, $5{,}000$ replications in every cell. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_limitlaw.R}; figure
+\texttt{paper/figures/sim/sim\_thm\_rootn\_linresid.pdf}.
+\end{minipage}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{Exact nuisances, and the two departures from them}
+\label{tab:sim-ablation}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_ablation}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} DGP-A only. The ``all exact'' rows set every nuisance to
+its true value, which leaves the estimator's own second-order noise as the only
+gap to the oracle influence function; those are the rows the text reads. The
+$\hat\ell=\ell_\star$ rows supply the representer exactly while the remaining
+nuisances carry the error of the $c_\delta=1$ configuration, which is the most
+favourable implementation the theory permits, since no construction of
+$\hat\ell$ is proposed anywhere in this paper. The ``feasible'' rows carry all
+three errors. ``$h$ geometry'' places the injected structural error on the
+lowest available frequencies (smooth) or on the highest (rough), at the same
+$L^{2}(\pi)$ norm. The two coverage columns carry the Monte Carlo standard error
+in parentheses, evaluated at the empirical rate; ``Lin.\ resid.'' and
+$\hat{\mathrm{sd}}/\mathrm{sd}_\infty$ are the quantities defined in the notes to
+\cref{tab:sim-limitlaw}. $5{,}000$ replications in every cell. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_limitlaw.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_ablation.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+```
+:::
+
+So the gaps are the remainder and not the theorem. They track
+$\sqrt n\,\delta_n^{2}$, which on this grid rises in $n$ and does not fall below
+one until $n\approx10^{394}$ (\cref{tab:sim-crossings}; the ledger it is computed
+from is Table S4 of the supplement). What describes any
+feasible sample is the rate-floor corollary of Section 4.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{Where each Step-4 product falls below one, and where the leading one
+turns}
+\label{tab:sim-crossings}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_crossings}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The four products of the remainder accounting, extrapolated
+along the fitted log-log trend of the ledger in Table S4 of the supplement, at
+$c_\delta=1$. A product below one is a remainder the $\sqrt n$ statement can
+absorb, so the first column is the $\ln n$ at which each first falls there and
+the second is the same point in $\log_{10}n$. The last row is where
+$\sqrt n\,\delta_n^{2}$ turns from increasing to decreasing, which is the turn
+$n^{\ast}\approx10^{58}$ the section opens with. Both readings are
+extrapolations far outside the simulated grid, which ends at $n=181{,}019$: they
+describe the design's own remainder budget and are not measurements. What the
+budget column depends on is the reading of A5(ii), and Table S5 of the supplement
+prices that dependence. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_budget.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_crossings.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+```
+:::
+
+The mean-zero injection of the structural error was an idealisation, and it is
+now measured (Table S3 of the supplement). At $c_\delta=1$ and the largest $n$,
+interpolating to a fully deterministic error at the same $L^{2}(\pi)$ norm
+improves the standard-deviation ratio from $18.85$ to $6.78$ standard errors and
+worsens $95\%$ coverage from $-8.08$ to $-9.65$. The centring moves across the
+whole table and not only there: under a mean-zero draw it stays within $1.92$
+standard errors of zero in all eight cells, and under a deterministic one it
+reaches $2.04$ to $5.51$ in the four $c_\delta=1$ cells while staying within
+$1.6$ in the four at $c_\delta=0.25$. The idealisation was concealing a location
+distortion and not a scale one, and it was concealing it mostly at the larger
+constant.
+
+The $\varphi$-step arm measures the stopping rule of Section 3, and its finding
+concerns the criterion rather than the constant. Write
+$\hat r(m):=\hat{\mathcal A}_{\hat\varphi^{(0)}}v_m
++\hat T_{h_x}(\hat\varphi^{(0)},\theta)$ for the residual of the stage-one linear
+equation at Landweber pass $m$, measured in $L^{2}(\Pi)$, which is the quantity
+\cref{def:lfstep}(c) compares to its level; $\hat r(0)$ is that residual at the
+start $v_0=0$. Over the whole admissible budget the discrepancy criterion falls
+by $11$ to $43$ per cent, the ratio
+$\|\hat r(\bar m_n)\|/\|\hat r(0)\|$ running from $0.57$ to $0.89$
+(\cref{tab:sim-stopping}, Panel B). A threshold therefore sits above the criterion at
+one step, or below it at the cap, unless it lands in a window between $0.06$ and
+$0.27$ decades wide, which is $1$ to $7$ per cent of the four decades swept.
+
+The stop is then decided by $\mathsf c_{14}$ and not by the data. The cap is
+returned in every replication of all twelve cells at $\mathsf c_{14}\le10^{-3}$,
+one step is taken in every replication of all twelve at
+$\mathsf c_{14}\ge10^{-1}$, and in exactly one of the $36$ cells the interior
+branch is the largest of the three shares, at $n=8{,}000$ under the zero
+preliminary and $\mathsf c_{14}=10^{-2}$, where it takes $0.543$ of the
+replications against $0.347$ at the cap and $0.110$ at one step. The interior
+branch carries an outright majority there and nowhere else, and the majority is
+a point estimate rather than a separation: its Monte Carlo standard error is
+$0.029$, so $0.543$ clears a half by $1.5$ of them. That window moves with $n$,
+from $(0.022,0.026)$
+at $n=500$ to $(0.0089,0.016)$ at $n=8{,}000$ under the zero preliminary, so no
+fixed $\mathsf c_{14}$ is stable in $n$ (\cref{tab:sim-stopping}, Panel B;
+Figure S2 of the supplement draws the sweep).
+
+What the printed panels support is narrower than the sweep they summarise. The
+$36$ cells are the whole of it and Panel B prints six, at
+$\mathsf c_{14}=10^{-2}$; the frequencies are non-degenerate at two of the six
+swept values, $10^{-2}$ and $3\times10^{-2}$, and only the first is printed, the
+remaining four being the degenerate columns just described. Panel A reports the
+\emph{median} stopped iteration, so a cell reading $1$ or reading the cap does
+not by itself establish what every replication did; the branch frequencies that
+do are Panel B's.
+
+Why the criterion barely moves is visible beside it:
+$\omega_n/\|\hat{\mathcal A}\|$ lies between $329{,}694$ and $679{,}332$, so one
+Landweber pass is numerically invisible and the cap exceeds $\hat\delta_n^{-2}$
+by a factor of $7.32\times10^{8}$ to $2.78\times10^{9}$
+(\cref{tab:sim-stopping}, Panel C).
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% LANDSCAPE + LONGTABLE, AND NOT A sidewaystable.  CONVERTED 2026-08-23, AFTER
+% THE ROTATED FLOAT CLIPPED THREE TIMES (2026-08-19, 2026-08-20, and again
+% through 2026-08-22) and was trimmed three times.  The reason is one
+% measurement: the tabular alone is 420.32pt at \scriptsize with 3pt \tabcolsep,
+% against a \textwidth of 469.76pt.  Add the caption and it is 443.92pt.  So this
+% artifact has 25.84pt -- under three lines at \scriptsize -- for a note that INV-1
+% requires, and it can NEVER sit inside the text block at any note length.  A
+% rotated float here is not a tight fit to be managed; it is a fit that does not
+% exist, and every pass that trimmed the note was buying weeks, not a solution.
+%
+% A longtable BREAKS when it overruns.  A sidewaystable CLIPS, in silence.  That
+% is the whole of the argument, and it is why tab:supp-bdrylayer in the
+% supplement is built this way too.  The failure mode is now an extra page.
+%
+% WHY THE ROTATED VERSION FAILED SILENTLY, WHICH TOOK THREE PASSES TO LOCATE.
+% rotating.sty sets the float's \hsize to \textheight and then places the
+% rotated box in \hbox to\textwidth{\hss ...\hss}.  The \hss on BOTH sides means
+% the box overruns the text block without an overfull \hbox, without a "Float
+% too large", and exits 0.  Nothing intervenes until the PAPER runs out at
+% \paperwidth = 614.30pt.  So the wall was never \textwidth and never
+% \textheight, and every certificate written here before 2026-08-23 was measured
+% against a boundary that does not clip.  At the 2026-08-22 state the content
+% measured 637.85pt: 23.55pt past the paper, shed as ~11.8pt at EACH END.
+%
+% AND THE FAR END IS THE ONE NOBODY WAS WATCHING.  A centred box fails at both
+% ends at once, so the article shipped Table 5 WITH NO CAPTION AT ALL -- the
+% printed numbering ran 4, 6 -- while the single canary recorded here watched
+% only the note's last token.  A one-ended check cannot see a two-ended failure.
+% Both canaries are below, and the census that would have caught it in one line
+% is below them.
+%
+% THE COUNTER IS THE ONE THING THAT CAN GO BADLY WRONG HERE.  longtable's
+% \LT@array calls \refstepcounter{table} unconditionally, and \captionof has
+% already numbered this table, so without the \addtocounter{table}{-1} below the
+% number is consumed twice and Tables 6..26 all shift.  CONTRACT: the table
+% counter reads 4 immediately before \begin{landscape} and 5 immediately after
+% \end{landscape}.  Verified in an isolated probe with a sentinel float, which
+% came out Table 6.
+%
+% WHAT THE NOTE MAY AND MAY NOT CARRY.  Apparatus only: what each panel reports,
+% the column glossary, the grid, the units, the Source line.  The explanatory
+% material moved into the body of this section on 2026-08-23 -- the median-
+% versus-branch-frequency caveat, the disclosure that Panel B prints one of six
+% swept columns and that the text's 36 cells are the whole sweep, and the reason
+% the Lepskii column may sit at each row's oracle cell (that stop does not depend
+% on c14).  A further ~20 lines were VERBATIM DUPLICATES of body text that
+% already existed and were dropped rather than moved: the Panel C' leg
+% decomposition is argued in "The shipped engine, and three suites that do not
+% merge", and Panel C's own header prints the c_C c_2^4 proportionality.  See
+% the RELOCATED note at section 21.1 of
+% quality_reports/claim_source_map_panel-npiv-discrete-section5.md -- a grep of
+% this note for those clauses will now miss them, and that is not a regression.
+%
+% MEASURED AFTER THE CONVERSION, from the rendered pages and not from the log:
+%   landscape page 1   caption + the WHOLE table, no mid-table break, so no
+%                      column head is lost;  438.1pt of ink in 469.76pt of
+%                      column, 31.7pt spare
+%   landscape page 2   the note alone;  230.8pt of ink, 238.9pt spare, which is
+%                      about 25 further lines at \scriptsize
+%   table width        590.49pt against a 650.43pt landscape measure, 59.94pt
+%                      spare
+% If the note ever outgrows page 2 it takes a page 3.  It cannot be clipped.
+%
+% AMENDED 2026-08-23 BY THE PASS THAT REBOUND THE NOTE.  The "continued" header
+% added below the \addtocounter costs page 2 one \scriptsize line plus a
+% \smallskip, about 12pt of the 238.9pt spare above.  Recorded here rather than
+% left for the next reader to rediscover: this project's recurring defect is a
+% certificate that measures the artifact as it stood BEFORE its own edit.
+%
+% RUN BOTH CANARIES AFTER ANY EDIT TO THIS BLOCK.  Neither is sufficient alone,
+% and the second one COUNTS rather than tests, for a reason the rebinding
+% introduced: the caption string now prints TWICE, once on landscape page 1 as
+% the caption and once on page 2 as the continued header.  A `grep -c' against
+% flattened text answers 1 whether it found one or two, so it would pass on a
+% clipped caption that page 2 alone reprinted.  `grep -o | wc -l' does not.
+%
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'sim_thm_rootn_phistep.rds'
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -o 'discrepancy stop, its branches, and the Lepskii comparison' | wc -l
+%
+% The first must return 1 and the second exactly 2.  THE CENSUS -- the check that
+% actually caught the missing caption -- NO LONGER LIVES IN THIS COMMENT: it runs
+% on every render, out of scripts/render-paper/render.sh, and reports a gap in the
+% printed Table and Figure numbering as a finding that blocks the CLEAN verdict.
+% A check with no home is not a check; this one had none until 2026-08-23.
+\begin{landscape}
+\begingroup
+\singlespacing
+\captionof{table}{The discrepancy stop, its branches, and the Lepskii comparison}
+\label{tab:sim-stopping}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\let\tabular\longtable
+\let\endtabular\endlongtable
+\input{../tables/sim/sim_thm_rootn_stopping}
+% longtable.sty's \LT@array opens with \refstepcounter{table} UNCONDITIONALLY,
+% caption or no caption, and the \captionof above has already numbered this table
+% and claimed the label.  Without this line the number is swallowed and Tables 6
+% through 26 all shift by one, along with every \cref that points at them.  The
+% contract is: table counter reads 4 immediately before \begin{landscape} and 5
+% immediately after \end{landscape}.  Same correction as tab:supp-bdrylayer.
+\addtocounter{table}{-1}
+\endgroup
+% THE NOTE'S BINDING TO ITS TABLE, REPAIRED 2026-08-23, AND THE MECHANISM IS NOT
+% threeparttable.
+%
+% The 2026-08-23 conversion moved this note out of \begin{tablenotes} and left it
+% as a bare \textit{Notes:} paragraph after \endgroup.  INV-1's SUBSTANCE
+% survived that -- the note still carries the panels, the glossary, the grid and
+% the Source line -- but its MECHANISM did not, and the cost is paid by a reader
+% rather than by a checker: the note sets alone on landscape page 2, where it
+% used to arrive with no caption, no table and no float number anywhere above it.
+%
+% threeparttable CANNOT be that mechanism here, and this is the reason rather
+% than a preference.  \begin{threeparttable} typesets its contents into a \vbox
+% in order to set the notes to the table's measured width, and a \vbox does not
+% break across pages: putting this longtable inside one would restore exactly the
+% silent clipping the conversion was made to remove.  threeparttablex's
+% \begin{ThreePartTable} does support a longtable, but it places the notes via
+% \insertTableNotes inside the longtable's \endlastfoot -- and the longtable
+% here is an \input of a GENERATED bare tabular, which INV-13 requires to carry
+% no \caption, no notes and no foot material.  Both routes are therefore closed
+% by rules this project already holds.
+%
+% SO THE BINDING IS MADE EXPLICIT INSTEAD: the note names its float and repeats
+% its caption, in the "(continued)" form a reader of a broken table already knows.
+% \cref and not a hand-set "Table~\ref{}", which the working-paper rubric deducts
+% for and which this document uses nowhere.  The label was claimed by the
+% \captionof above, before \LT@array and before the \addtocounter, so it reads
+% Table 5 and is unaffected by the counter correction -- checked against main.aux,
+% which carries \newlabel{tab:sim-stopping}{{5}{90}...}.
+\begingroup\singlespacing\scriptsize
+\noindent\textbf{\cref{tab:sim-stopping}}, continued: \emph{The discrepancy
+stop, its branches, and the Lepskii comparison.}\par\smallskip
+\noindent\textit{Notes:} The $\varphi$-step arm, which is a separate experiment from
+the limit-law arm of \cref{tab:sim-limitlaw}. Its grid is
+$n\in\{500,2{,}000,8{,}000\}$ with two preliminaries and $\mathsf c_{14}$ swept
+over four decades, at $300$ replications in every cell. ``Prelim.'' is the
+initial condition, ``rate'' one that satisfies (P-a.2) and ``zero'' one that
+fails it. Panel A reports the median stopped iteration $\hat m^{(1)}$. Panel B
+reports the branch frequencies at $\mathsf c_{14}=10^{-2}$, its last column the
+interval of $\mathsf c_{14}$ inside which the rule stops in the interior. Panel
+C reports the cap \eqref{eq:cap}, the quantity $\hat\delta_n^{-2}$ it inflates,
+and the over-normalisation $\omega_n/\|\hat{\mathcal A}\|$ that produces it.
+Panel C$'$ decomposes the move in that cap against the configuration shipped
+through 2026-08-15, which used $h_x=n^{-0.20}$, $c_C=4.0$ and
+$\mathsf c_2=0.8727$; its $h_u$ leg is the residual between the three derived
+legs and the realised ratio, so it cannot absorb an arithmetic slip. Panel D
+compares a Lepskii-balanced stop with the discrepancy rule at the latter's
+oracle $\mathsf c_{14}$ in its fourth and sixth columns, and at the fixed
+$\mathsf c_{14}=3\times10^{-2}$ in its last two, so that the fixed-threshold
+comparison is a difference of two adjacent columns inside one row. Where the
+oracle is $3\times10^{-2}$, at $n=8{,}000$ under the zero preliminary, the two
+Lepskii columns coincide. Monte Carlo
+standard errors in parentheses. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_phistep.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_stopping.tex}; run object
+\texttt{quality\_reports/sim/sim\_thm\_rootn\_phistep.rds}.
+\par\endgroup
+\end{landscape}
+```
+:::
+
+A Lepskii-balanced stop was run alongside, and the comparison splits by
+preliminary. Given the discrepancy rule its own oracle $\mathsf c_{14}$, an
+advantage no analyst can take because that constant is not identified, Lepskii
+is ahead in all three cells started from zero and behind in all three started
+from a rate-accurate preliminary. The margins are not all read the same way. In
+the two zero-preliminary cells at $n=500$ and $n=2{,}000$ the discrepancy arm
+returns $\|\vdagger\|=0.7071$ in every replication, so the paired standard error
+of the difference is exactly the Lepskii arm's: at $n=500$ the gap is $0.0048$
+against a standard error of $0.0062$, which is $0.77$ standard errors and is not
+a win, and at $n=2{,}000$ it is $0.0335$ against $0.0032$, which is $10.6$ on the
+unrounded gap and standard error and $10.5$ on the four digits printed. In
+the remaining four cells both arms vary and their covariance is not stored, so
+we report the bound that holds whatever it is,
+$\mathrm{SE}\le\mathrm{SE}_{\mathrm{Lep}}+\mathrm{SE}_{\mathrm{DP}}$: the
+zero-preliminary gap at $n=8{,}000$ is at least $6.9$ standard errors, and the
+three rate-accurate cells go the other way by at least $6.6$, $3.6$ and $3.8$.
+At a fixed $\mathsf c_{14}=3\times10^{-2}$, read at that cell in both arms,
+Lepskii is ahead in all six by at least $1.9$ to $6.9$ on the same bound
+(\cref{tab:sim-stopping}, Panel D, columns 7 and 8, the two headed at
+$3\times10^{-2}$).
+
+The win is unflattering where it happens. The oracle constant in every
+rate-preliminary cell is $10^{-1}$ or $1$, values at which one step is taken in
+every replication, so the rule wins by returning the injected preliminary out of
+a budget of $10^{10}$ to $10^{11}$ steps. In every zero-preliminary cell the same
+prescription returns an error of exactly $\|\vdagger\|=0.7071$ and loses. The
+oracle does not separate the two preliminaries: the prescriptions coincide at
+$10^{-1}$ at $n=2{,}000$, sit at $10^{-1}$ against $1$ at $n=500$, which are both
+values at which one step is taken, and differ in kind only at $n=8{,}000$, where
+the zero preliminary prefers $3\times10^{-2}$. One constant is therefore best
+under both preliminaries at the two smaller sample sizes while returning an
+estimate under one of them and nothing under the other, and nothing in the data
+chooses it in any case.
+
+Four things this exercise does not do should be read with it. No constructed
+$\hat\ell$ is tested, because none exists to test. The realised operator is more
+ill-posed than H1 admits, its fitted decay index running from $1.63$ to $2.14$
+against the $0.75$ of the design, and the injected error occupies six Fourier
+modes that the operator damps by a factor between $2.64$ and $5.36$, so no error
+in the damped directions is exhibited. Table S6 of the supplement prints the
+index and the damping; the mode count is a constant of the injection basis, and
+the notes to that table read the damping off against the spectrum, at most a
+tenth of it in log terms. And no law violating an assumption is
+run, so a match is a non-rejection by a procedure shown able to reject only
+through the $-\hat J^{-1}$ counterfactual and the $c_\delta$ contrast (Table S7
+of the supplement).
+
+Two quantities are unavailable rather than reported. Both condition numbers sit
+at the double-precision floor and are printed as lower bounds, and at $n=2{,}000$
+the quadrature caps the Gram's rank at $780$ of $2{,}000$ (Table S6 of the
+supplement, Panel A).
+
+The index measure is implemented as a quadrature and not as counting measure, and
+the distinction is not bookkeeping: counting measure overstates the cap inflation
+by a factor of $2.93$, which is the node count divided by the volume of
+$\mathcal T$ and so is arithmetic on two constants of the configuration rather
+than a measurement. At the twelve-node grid the normalising constant is still
+$16$ per cent below and the cap $29$ per cent below their exact values, a
+convergent quadrature error we declare rather than absorb; that pair is read off
+a refinement run and appears in no table.
+
+An applied reader should take three things from these opening pages, all of them
+statements at $\mathsf L=2$. The estimator runs,
+is correctly signed, and its remainder accounting is complete for nuisance errors
+of the priced size. Its normal approximation is accurate at $n=181{,}019$ at one
+of two equally admissible constants, and at neither constant below $n=64{,}000$.
+Nominal $90\%$ intervals under-cover at $29$ of the $32$ cells, the three
+exceptions clearing nominal by less than one Monte Carlo standard error, and a
+panel of the size
+this readership has is described by the rate floor and not by the $\sqrt n$
+statement. The cardinality scoping is not decoration: the second subsection finds
+the first of the three failing at $\mathsf L=4$ on this same design.
+
+## A design with headroom at the frontier
+
+Everything above is about one design, and we chose that design because the theory
+names it. At $(\mu,s,a,r,d_Z)=(2,3,\tfrac34,\tfrac83,3)$ the frontier holds at
+$\kappa\alpha=0.2560$ against its threshold of $\tfrac14$, a margin of $0.0060$,
+and the leading Step-4 product accordingly climbs from $11.72$ to $46.74$ across
+the grid at $c_\delta=1$ (\cref{tab:sim-limitlaw}, Panel B). What the experiment
+measured was therefore the remainder, in a design where the remainder was always
+going to dominate. Whether the limit law binds anywhere a reader can reach is a
+different question, and nothing above answers it.
+
+We answer it by rerunning the same estimator at a configuration with room to
+spare. Design H is $(\mu,s,a,r,d_Z,p_K)=(5,4,\tfrac25,\tfrac{21}{8},1,8)$ at
+$p=2$, which gives $\kappa\alpha=0.3818$ against the same threshold and a
+frontier margin of $0.1318$, more than twenty times the shipped one. Neither the
+estimator nor the replication path is touched; what changes is the configuration
+and the two laws drawn from it, DGP-HA and DGP-HB. The configuration clears the
+ten conditions the shipped one clears, which is what Table S8 of the supplement
+sets side by side; both laws are validated at the same moment conditions (Table
+S9), and the operator each realises is recorded beside them (Table S10).
+
+The headroom is bought from the smoothness index $\mu$ and not from the
+propensity score. Design H runs $r=2.625$ against the shipped $2.667$, so its
+propensity is no smoother than the one already in hand, and the reason is A5(i).
+That condition sets $\hat\delta_n$ to the larger of a propensity branch and a
+parametric branch of order $n^{-1/2}\sqrt{\ln n}$, so raising $\alpha$ pushes the
+propensity branch under a floor, below which $\alpha$ stops mattering. The floor
+binds at every cell of Design H and at no cell of the shipped design, which the
+ledger records in its own branch column (Table S11 of the supplement).
+
+What the experiment turns on is the realised budget. At $c_\delta=0.25$ it runs
+from $0.635$ at $n=125$ up to $0.721$ at $n=1{,}000$ and then down to $0.397$, so
+it is below one at every cell of both laws and falling across the part of the
+grid where the samples are large. At $c_\delta=0.35$ it crosses below one at
+$n=64{,}000$ and reaches $0.778$. The shipped arm at the smaller of its two
+constants runs from $0.73$ to $2.92$ and rises throughout
+(\cref{tab:sim-limitlaw}, Panels A and C; \cref{fig:sim-h-budget} draws both
+designs). That contrast is the experiment: a remainder present but below budget,
+which is a stronger test than the exact-nuisance ablation of
+\cref{tab:sim-ablation} and one the shipped grid could not run.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{../figures/sim/sim_thm_rootn_headroom_budget.pdf}
+\caption{The remainder budget at the two designs}
+\label{fig:sim-h-budget}
+\begin{minipage}{\textwidth}\footnotesize
+\textit{Notes:} The leading Step-4 product $\sqrt n\,\delta_n^{2}$ at the two
+configurations. It is a deterministic function of the design, so no Monte Carlo
+standard error attaches to any point drawn. Both axes are logarithmic. The
+horizontal line at one separates remainders the $\sqrt n$ statement can absorb
+from those it cannot, so a series below that line at a given $n$ marks a cell in
+which A5(ii) holds at the realised size of the nuisance error. Panels are the two
+configurations: Design H, $(\mu,s,a,r,d_Z,p_K)=(5,4,\tfrac25,\tfrac{21}{8},1,8)$
+at $p=2$, and the design of the preceding pages, $(2,3,\tfrac34,\tfrac83,3,8)$ at
+$p=4$. The three series are the three values of $c_\delta$, the constant in the
+$O_P(\delta_n)$ of A5(ii), which scales the product quadratically. Design H turns
+over at $n=1{,}000$ and falls thereafter at all three constants, while the
+shipped design rises at all three across the whole range; that difference in
+direction, and not the level of either, is what the figure carries. The levels
+are Table S11 of the supplement for Design H and \cref{tab:sim-limitlaw} for the
+shipped design. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_headroom.R}; figure
+\texttt{paper/figures/sim/sim\_thm\_rootn\_headroom\_budget.pdf}.
+\end{minipage}
+\end{figure}
+```
+:::
+
+We fixed the decision rule before the run and we state it in the form it was
+written. Nominal coverage within two Monte Carlo standard errors, at cells whose
+realised budget is below one, confirms the limit law at a feasible $n$ and scopes
+the verdict above to the shipped design; coverage off nominal at those cells
+exhausts the remainder explanation and implicates the theorem, the variance
+estimator or the implementation; and no admissible law with a budget below one at
+a feasible $n$ would itself have been the finding, with the binding constraint
+named.
+
+The criterion is met at $21$ of the $23$ cells the table prints, and both of the
+misses are at the smallest sample size on the grid (\cref{tab:sim-h-verdict}). At
+$n=125$ coverage is
+$0.940$ in both laws and $2.98$ standard errors below nominal in each, the two
+laws agreeing to every digit printed. At every $n\ge354$ coverage is inside the
+bar in both laws, at a budget below one. The outcome is ordered by the sample
+size and not by the law: on the criterion fixed above, and with the remainder
+present and priced, the estimator matches its limit law from $n=354$ upward and
+at $n=125$ it does not. That threshold is a threshold on $95\%$ coverage and on
+nothing else; the standard-deviation ratio reaches the same bar at a larger
+sample size, which we give below.
+
+\emph{We read the experiment as confirming \cref{thm:rootn} at a feasible sample
+size}, and the qualification the section opened with is carried into that
+reading: Design H runs the same zero anchor and was not put through the
+population check that settles N1 on the two laws of the preceding pages, so
+whether this confirmation sits inside the N1 clause of (T-2) is not
+established. The two misses are
+recorded and not set aside, and the reason they do not
+overturn that reading is a property of the budget rather than a judgement about
+them: below one is not the same as small, and at $n=125$ the budget falls below
+one through $\sqrt n$ rather than through $\delta_n$. We give that argument, and
+the statistic that orders the misses across both designs and both constants, in
+the closing paragraphs of this subsection rather than here.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% ROTATED, AND MEASURED RATHER THAN GUESSED. The artifact's own note row is a
+% \multicolumn{9}{l}, whose natural width TeX propagates to the table: 670.7pt at
+% \footnotesize against a \textwidth of 469.8pt, and 571.7pt at \scriptsize.
+% \tabcolsep buys almost nothing here, since the widest row is that single
+% spanning cell and it touches only two column gaps: 4pt takes \footnotesize from
+% 670.7 to 666.7. Upright it therefore needs \tiny AND still lands over.  Rotated
+% at \scriptsize it is 571.7pt against a \textheight of 650.4pt, which fits with
+% room for the caption and the notes. \resizebox was rejected for the same reason
+% it was rejected at tab:sim-stopping: it would scale the table's type away from
+% the notes' type, and the notes are where INV-1 lives.
+%
+% THE OTHER DIMENSION, AND UNTIL 2026-08-23 THIS COMMENT DID NOT MEASURE IT AT
+% ALL.  Everything above is the table's WIDTH, which rotation puts along the
+% page's vertical and which \textheight bounds.  The dimension that can DELETE
+% PRINTED TEXT is the other one, and its wall is neither \textwidth nor
+% \textheight.  rotating.sty's \end@rotfloat zeroes the float box's \wd, \ht
+% and \dp and then sets \hbox to\columnwidth{\hss <rotated box>\hss}, so the
+% box's reference point lands at the centre of the text block -- 307.15pt from
+% the paper's left edge -- and the content spans page-x [307.15-\ht, 307.15+\dp].
+% THE WALL IS \paperwidth = 614.295pt, AND AN OVERRUN SHEDS AT BOTH ENDS AT
+% ONCE: \ht off the head, which carries the CAPTION, and \dp off the tail, which
+% carries the note's last line.  Neither end raises an "Overfull \hbox" or a
+% "Float too large"; the run exits 0 with a clean log.  That is how
+% tab:sim-stopping shipped with no caption and printed numbering 4, 6.
+%
+% MEASURED 2026-08-23, by \sbox-ing this float's exact content in a
+% \begin{minipage}{\textheight} under paper/preambles/preamble.tex, with
+% setspace's in-float \baselinestretch reset applied (\@xfloat applies it; a
+% bare minipage does not, and without it every reading is ~1.56x too tall):
+%       \ht 242.414pt   \dp 236.414pt   total 478.83pt
+%       against \paperwidth 614.295pt -- 135.47pt SPARE, about 11 \footnotesize
+%       lines.  Head edge 64.74pt, tail edge 543.56pt, both well inside the sheet.
+% Cross-checked against the rendered page: a 150dpi raster of _output/main.pdf
+% page 98 has 66.24bp of blank paper at the head and 70.56bp at the tail, and the
+% predicted tail edge matches the last inked column to 0.01pt.  This float is the
+% comfortable one of the four rotated floats in the two documents; it is
+% instrumented anyway, because the certificate that says so is what makes a later
+% pass's growth visible.
+%
+% RUN BOTH CANARIES AFTER ANY EDIT TO THIS BLOCK.  Two, not one: a one-ended
+% canary cannot see a two-ended failure, and the head end is the one nobody
+% watches.  Head (the caption) and tail (the note's last token):
+%
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'The headroom experiment against the criterion fixed before it ran'
+%   pdftotext paper/qmd/_output/main.pdf - | tr -s '[:space:]' ' ' \
+%     | grep -c 'sim_thm_rootn_headroom_verdict.tex'
+%
+% Both must return 1.  The census in scripts/render-paper/render.sh is the check
+% that needs no canary and no list, and it now runs on every render.
+\begin{sidewaystable}[p]
+\centering
+\begin{threeparttable}
+\caption{The headroom experiment against the criterion fixed before it ran}
+\label{tab:sim-h-verdict}
+\scriptsize
+\input{../tables/sim/sim_thm_rootn_headroom_verdict}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Design H, $(\mu,s,a,r,d_Z,p_K)=(5,4,\tfrac25,
+\tfrac{21}{8},1,8)$ at $p=2$, and its two data-generating laws DGP-HA and
+DGP-HB. Panel A lists every core cell whose realised budget is below one; the
+cells whose budget is above one are not listed here and are in Table S13 of the
+supplement. Panel B is the zero-remainder anchor, which sets every nuisance to
+its true value and is the Design H counterpart of \cref{tab:sim-ablation}.
+``Budget'' is $\sqrt n\,\delta_n^{2}$ at the cell's own $c_\delta$, the constant
+in the $O_P(\delta_n)$ of A5(ii), and is deterministic. ``Coverage'' is the
+empirical coverage of a nominal $95\%$ interval, with its Monte Carlo standard
+error in parentheses evaluated at the empirical rate; ``Gap'' is the distance
+from $0.95$ in those units, and the verdict beside it applies the
+two-standard-error bar that was fixed in advance. ``Worst $|z|$'' is the largest
+of five measures at that cell, namely the standard-deviation ratio, coverage at
+$90\%$ and at $95\%$, the worst studentised quantile and the centring; the
+verdict beside it applies the same bar to that maximum, which is a stricter test
+than the pre-committed one and is printed beside it rather than in place of it.
+The five measures are defined in the notes to \cref{tab:sim-seunits} and their
+levels are in Table S12 of the supplement. $5{,}000$ replications in every cell,
+and $51$ of $51$ cells completed. An entry inside $\pm2$ is not distinguishable
+from zero at that replication count, which is not the same thing as a match.
+Source: \texttt{scripts/simulations/sim\_thm\_rootn\_headroom.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_headroom\_verdict.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{sidewaystable}
+```
+:::
+
+The measure the shipped verdict failed on is the ratio of the simulated standard
+deviation to its asymptotic value, and it is where the two designs separate. At
+matched sample size and matched constant $c_\delta=0.25$ the
+shipped design sits $5.83$, $4.93$, $3.09$ and $3.37$ standard errors from its
+target at $n=1{,}000$ through $n=22{,}627$ (\cref{tab:sim-seunits}), while Design
+H sits at $2.12$,
+$1.74$, $0.61$ and $0.18$ (Table S13 of the supplement); over those four cells
+the budget runs from $1.27$ to
+$2.22$ and rises in the first case (\cref{tab:sim-limitlaw}, Panel A), and from
+$0.721$ to $0.556$ and falls in the
+second (Table S11). Design H clears the two-standard-error bar on that ratio in both laws at
+that constant from $n=8{,}000$ upward, at $0.61$ and $0.51$, and misses it in at
+least one law at every smaller sample size, at $6.35$ and $7.35$ as late as
+$n=354$. The sample size at which this design's limit law becomes accurate is
+therefore $n=354$ on coverage and $n=8{,}000$ on scale, and we carry both
+numbers rather than the smaller one alone. Both designs clear the bar at
+$n=181{,}019$ and both miss it at $n=125$, and the second of those needs saying.
+
+<!-- ===================================================================
+     tab:sim-h-contrast WAS HERE AND IS GONE, 2026-08-15.
+
+     It was the ONE float in the article whose body was a hand-written
+     `tabular' rather than an \input of a generated one: eight rows of the
+     standard-deviation ratio and the budget, transcribed by hand out of
+     sim_thm_rootn_seunits.tex, sim_thm_rootn_limitlaw.tex and
+     sim_thm_rootn_headroom_seunits.tex.  That transmission path is the one
+     that put a mislabelled plug-in estimate into Section 6.3, and a table
+     carrying it cannot be checked against anything except by re-reading the
+     three sources it was copied from.
+
+     WHAT REPLACED IT.  Nothing, in the sense of a like-for-like float: the
+     paragraph above now cites the three GENERATED sources directly, each at
+     the precision its own source prints, which is what the note of the deleted
+     table said it had done by hand.  The generated three-block analogue is
+     tab:sim-merged-designs, placed in the last subsection where all three
+     suites are in view; it is a wider comparison than the deleted table
+     (three blocks rather than two) at one cardinality and one sample size
+     rather than eight.
+
+     THE \csname label\endcsname WORKAROUND WENT WITH IT.  quarto's crossref
+     filter DELETES the \label of any raw-LaTeX table float whose body
+     contains \begin{tabular} and whose label is not tbl-prefixed, wherever in
+     the float the label sits.  Every float in this document is an \input of a
+     generated fragment, so the filter never sees \begin{tabular} in the
+     source and the workaround is not needed anywhere else.  If a hand-written
+     tabular is ever reintroduced, the workaround is \csname label\endcsname
+     and the reason is recorded here.
+     =================================================================== -->
+
+
+We read the two failures as a defect in the criterion and not as evidence against
+\cref{thm:rootn}. The budget $\sqrt n\,\delta_n^{2}$ is a product, and at $n=125$
+it falls below one through $\sqrt n$ and not through $\delta_n$: the realised
+$\delta_n$ there is $0.2384$ at $c_\delta=0.25$ (Table S11 of the supplement)
+against a $\|\vdagger\|$ of $0.7071$, so the nuisance error is about a third of
+the object being estimated and no premise of the theorem is close to holding. The
+statistic that does order the failures is the realised linearisation residual,
+and it orders them across both designs and both constants. It is $1.015$ at the
+shipped design's $n=125$ cell (\cref{tab:sim-limitlaw}, Panel A) and $0.611$ and
+$1.029$ at Design H's two (Table S12 of the supplement); all three have a budget
+below one and all three miss. It is $0.265$ at Design H's $n=181{,}019$ cell at
+$c_\delta=1$, whose budget is $6.350$, and that cell misses nothing.
+
+That last cell is the converse case and it carries as much of the point as the
+failures do. Its budget is more than six times the bar and the largest of its
+five measures is $1.63$ standard errors (Table S13 of the supplement). A budget
+above one does not predict a miss and a budget below one does not predict a
+match; what predicts both is the size of the remainder the estimator realises.
+
+Eight cells inside the passing range depart on the wider battery, and we flag
+them rather than absorb them: all eight carry an "outside 2 SE" whole-battery
+verdict at $n\ge354$ in \cref{tab:sim-h-verdict}, at five of them the largest of
+the five measures is the standard-deviation ratio of the preceding paragraphs,
+and at the other three it is the worst studentised quantile, at $2.58$, $3.28$
+and $2.19$. The largest of the three needs its own reading. At DGP-HA,
+$c_\delta=0.25$ and $n=64{,}000$, the largest quantile gap is $3.28$
+standard errors while $95\%$ coverage is exactly nominal at $z=0.00$, the
+standard-deviation ratio is $0.22$ and the centring is $2.49$. That gap sits at
+the median while the four tail quantiles are inside a quarter of a standard
+error, a reading taken from the run object and not from Table S14 of the
+supplement, which prints eight cells and not this one. So the two measures that
+move at that cell are location measures and the two that do not are scale
+measures, and the cells on either side of it, at $n=22{,}627$ and
+$n=181{,}019$, are clean on all five. Table S13 of the supplement reports five
+measures at each of $48$ cells, and a two-standard-error bar is expected to be
+crossed about once in twenty comparisons. We report the cells; we do not claim
+they are nothing.
+
+Two of the caveats above carry over unchanged. The realised operator is again
+more ill-posed than H1 admits, its fitted power index running to $8.252$ and
+$8.516$ against the $0.400$ of the design (Table S10 of the supplement), and no
+law violating an assumption is run here either, so a match remains a
+non-rejection. The studentised quantiles at $n=1{,}000$ and $n=181{,}019$, in
+both laws and at both of the extreme constants, are drawn in Figure S3 of the
+supplement; the largest quantile gap among those eight cells is $2.15$ standard
+errors. Table S14 prints the same statistic cell by cell at $n=22{,}627$ and
+$n=181{,}019$, where the largest is $2.29$.
+
+We separate what this settles from what it does not. It settles that the verdict
+of the preceding pages is a statement about the shipped design and not about
+\cref{thm:rootn}: at a frontier margin of $0.1318$ the pre-committed criterion is
+met from $n=354$ upward, and at the matched constant $c_\delta=0.25$
+the standard-deviation ratio clears its bar from $n=8{,}000$, while the same
+estimator, run from the same code, does not clear that ratio until $n=181{,}019$
+when the margin is $0.0060$. It does not settle that the limit law binds at every
+admissible constant. Design H clears the budget nowhere on this grid at
+$c_\delta=1$, and the parametric branch of A5(i) binds at each of its cells, so
+what puts the budget below one here is the constant and not the configuration;
+$c_\delta$ is not identified, and the two values remain as
+equally admissible as they were above. Of the three readings we offered an
+applied reader above, the second is therefore a statement about the shipped
+design, and so is the under-coverage the third opens with: at every cell of
+Panel A with $n\ge354$ Design H's nominal $90\%$ coverage is inside the same
+two-standard-error bar in both laws, and it sits above nominal at four of them:
+DGP-HA's $n=1{,}000$ at $+0.81$, and DGP-HB's $n=2{,}828$, $n=64{,}000$ and
+$n=181{,}019$ at $+0.38$, $+1.86$ and $+0.43$, with DGP-HB's $n=8{,}000$ exactly
+at nominal (Table S13 of the supplement). None of the four clears a
+two-standard-error bar. The
+first stands as written at $\mathsf L=2$, which is the cardinality both designs
+run; the next subsection is where that qualifier is earned. So does the third's
+closing clause, which turns on whether a reader's own configuration clears
+\eqref{eq:frontier} and not on the coverage record of any one design.
+
+## Cardinality on the design the theory names
+
+Everything above runs at $\mathsf L=2$, and we now vary the one thing the two
+designs held fixed. \Cref{thm:rootn} is stated at general finite $\mathsf L$, so
+a reader entitled to the four-cell instrument of Section 6 is entitled to ask
+whether the limit law is as accurate there. This arm runs the shipped design's
+own configuration, $(\mu,s,a,\alpha)=(2,3,\tfrac34,0.32)$ at $p=4$ and $d_Z=3$,
+at $\mathsf L\in\{2,4\}$ and $n\in\{1{,}000,8{,}000,64{,}000\}$, with $5{,}000$
+replications in every cell.
+
+One factor varies. The three rate constants, the injection regime, the $n$ grid,
+the replication count and the overlap floor are identical across the two panels,
+and the leading Step-4 product $\sqrt n\,\delta_n^{2}$ is $1.27$, $1.88$ and
+$2.56$ in both, so nothing the remainder accounting prices differs between them
+(\cref{tab:sim-card}). The binary panel is the estimator of the preceding pages
+and not a re-implementation of it: thirty-six objects are bit-identical against
+the pre-cardinality sources, from the configuration symbols through the
+population objects to a whole replication (\cref{tab:sim-l2identity}). That
+identity holds at the object level and at one replication and not at a cell mean:
+the cardinality arm draws its own stream, so its Panel A and Panel A of
+\cref{tab:sim-limitlaw} are distinct $5{,}000$-replication realisations of one
+design rather than the same numbers printed twice. At the three sample sizes they
+share they differ by at most $1.6$ Monte Carlo standard errors of the difference
+on every statistic that carries one, worst at the standard-deviation ratio at
+$n=1{,}000$.
+
+The two panels do not agree. At $\mathsf L=2$ the linearisation residual that
+\eqref{eq:rootn} sends to zero falls $0.657\to0.474\to0.363$ and $95\%$ coverage
+is $0.946$, $0.950$ and $0.948$. At $\mathsf L=4$ the same residual *rises*,
+$0.856\to0.909\to1.230$, and coverage decays $0.941\to0.925\to0.895$. At
+$n=64{,}000$ the worst of the five measures is $2.20$ standard errors at
+$\mathsf L=2$ and $18.91$ at $\mathsf L=4$, and the four-cell entry grows
+monotonically across the grid while the binary one falls
+(\cref{tab:sim-card-se}). The studentised quantiles carry the same shape: at
+$\mathsf L=4$ and $n=64{,}000$ the $0.95$ quantile is $2.042$ against the
+normal's $1.645$, a gap of $13.29$ standard errors, while no quantile at
+$\mathsf L=2$ departs by more than $2.20$ anywhere on the grid
+(\cref{tab:sim-card-q}; \cref{fig:sim-card-qq} draws them).
+
+*We read this as \cref{prp:orthog}(iii) confirmed rather than \cref{thm:rootn}
+refuted*, and the reason is that the two panels differ in the condition the
+proposition names and in nothing else the remainder accounting prices. By
+\cref{cor:centarity} N1 is $p(\mathsf L-1)$ scalar conditions and not $p$, which
+at the $p=4$ of this design is four conditions at $\mathsf L=2$ and twelve at
+$\mathsf L=4$. The design satisfies the four and violates the twelve. Computed in
+population rather than estimated, the largest entrywise defect
+$\max_{j,l}\|E[L_\star\mid\Delta Z]_{jl}\|$ is $8.23\times10^{-6}$ against a
+$\|L_\star\|$ of $2.4613$ at $\mathsf L=2$, and $0.7293$ against $3.8227$ at
+$\mathsf L=4$, so the ratio moves from $3.3\times10^{-6}$ to $0.191$
+(\cref{tab:sim-n1defect}).
+
+The identity at $\mathsf L=2$ is structural and not a small number. All of the
+solved representer's coefficient energy sits on odd $q$ there, where $A_q$ is odd
+in $u$, so $L_\star$ is odd in $u$; $\Delta U$ is independent of $(\Delta Z,W)$
+by construction and symmetric about zero; and the conditional mean vanishes by
+parity. The share of that energy sitting on odd $q$ is $1.000000$ at
+$\mathsf L=2$ against $0.707$ at $\mathsf L=4$, so the mechanism is measured and
+not inferred from the defect it produces, and the residual $3.3\times10^{-6}$ is
+the antiderivative grid's own parity error rather than a live entry. DGP-B
+repeats the pattern at both cardinalities, so this is a property of the
+construction and not of one law.
+
+\Cref{prp:orthog}(iii) makes N1 necessary *and sufficient* for the moment's
+$\varrho$-derivative to vanish, and the two panels exhibit both directions. Under
+N1 the first-order propensity term
+$\sqrt n\,\mathbb E_n[L_\star(\hat\varrho-\varrho)]$ is a centred average of
+quantities of size $r_n$ and decays at $n^{-\alpha}=n^{-0.320}$; when N1 fails,
+that term carries a non-vanishing mean and grows at $n^{1/2-\alpha}=n^{+0.180}$.
+Both references are read off the design rather than fitted. Measured, the term
+decays at $n^{-0.302}$ where the condition holds, which is $1.4$ Monte Carlo
+standard errors from the orthogonality reference, and grows at $n^{+0.206}$ where
+it fails, which is $2.0$ from the failure reference, at a standard error of
+$0.013$ on each exponent (Panel E of \cref{tab:sim-n1defect}). *The condition
+holds where the proposition requires the term to decay and fails where it
+requires the term to grow.* At $\mathsf L=2$ the term decays at the predicted
+rate. At $\mathsf L=4$ it grows, which is the direction N1's failure forces and
+the one a centred average cannot produce; the $+0.206$ sits two standard errors
+above the failure reference rather than on it, and we do not read it as that
+reference recovered. Under N1 failure $T_2$ carries a growing mean term beside a
+still-live centred one, whose size Panel E prices at $\Lambda\tau_n=0.1813$
+against a total of $0.8225$ at $n=8{,}000$, so a slope over a single leg is a
+weighted average of two exponents and bounds the mean term's exponent from below
+rather than measuring it.
+
+Those are not the exponents \cref{tab:sim-ablsplit-channel} implies, and the
+difference is a confound in that arm's measurement code, which we removed rather
+than absorbed. The arm forms its propensity residual against $\Delta U-\Delta h$
+and evaluates $L_\star$ at that residual, so the $T_2$ it accumulates carries the
+$\sqrt n\,\|h\|r_n$ cross-product the theorem prices separately: a contamination
+free of $\mathsf L$, carrying a non-zero conditional mean, negligible beside a
+live defect and dominant where the defect is absent. Its levels fall
+$0.337\to0.270$ at $\mathsf L=2$ and rise $0.569\to0.843$ at $\mathsf L=4$, which
+are slopes of $-0.108$ and $+0.189$ over the leg, and those are the figures that
+table prints. Re-running the $T_2$ accumulation alone with $h$ switched off, at
+$1{,}500$ replications on a separate stream whose $h$-on rows reproduce the
+shipped ones to within $2.1$ standard errors of the difference, moves
+$\mathsf L=2$ from $-0.100$ to $-0.302$ and $\mathsf L=4$ from $+0.154$ to
+$+0.206$. The binary arm sits $17$
+standard errors from the orthogonality reference with $h$ on and $1.4$ from it
+with $h$ off, so removing the confound dissolves the binary anomaly. It does not
+sharpen the four-cell one: $+0.154$ and $+0.206$ are both $0.026$ from the
+failure reference, so the estimate crosses that reference rather than closing on
+it, and it crosses to the side the preceding paragraph reads as a bound.
+
+Each exponent is still a slope over one leg, $n=1{,}000$ to $8{,}000$, and one
+leg shows no curvature. What has changed is where the legs land: both now sit on
+their own reference rather than between the two, and the discrepancy a third
+sample size was going to adjudicate has been answered instead by switching off
+the term that produced it. A third point would buy a check on curvature and we
+did not run one, for the reason the closing paragraphs of this subsection give.
+
+The ablation localises the failure to one nuisance and exonerates the other
+twice. Two arms switch on exactly one estimated nuisance each, at
+$n\in\{1{,}000,8{,}000\}$ and $5{,}000$ replications. The $\hat\varrho$ arm
+reaches $12.10$ standard errors at $\mathsf L=4$ and rises, while converging at
+$\mathsf L=2$ at $2.97$ and falling; its residual at four cells is $0.874$ and
+$0.913$, which reproduces the full arm's $0.856$ and $0.909$ to within $2.2$ and
+$0.4$ per cent, both computed on the unrounded values and not on the four digits
+printed, so switching that one nuisance on reproduces the whole failure. The
+$\hat\ell$ arm's residual decays at $-0.171$ at $\mathsf L=2$ and $-0.172$ at
+$\mathsf L=4$, the same exponent to a thousandth, which is what ``the cardinality
+is not the problem in this channel'' looks like (\cref{tab:sim-ablsplit}). A5(iv)
+is exonerated a second time by a measurement and not by an arm: the norm the
+moment consumes divided by the norm A5(iv) prices is $0.463$ at $\mathsf L=2$
+against $0.420$ at $\mathsf L=4$, so the Frobenius bound is *conservative* at the
+higher cardinality rather than slack there, and the measurement moves the wrong
+way for any account that blames it.
+
+One entry of that ablation does not fall and we flag it rather than absorb it.
+The $\hat\ell$ arm's worst of five at $\mathsf L=4$ goes only from $6.49$ to
+$5.03$, against $6.29$ to $1.75$ at $\mathsf L=2$, and at $n=8{,}000$ the
+statistic carrying it is the centring and not the scale. The residual
+\eqref{eq:rootn} names decays there at the binary arm's own exponent, so the
+locating claim stands; what does not stand is a reading of that arm as clean on
+every measure.
+
+The design remains admissible at both cardinalities and the deterioration is not
+a boundary artefact. Overlap clears its floor at four cells, at
+$\lambda_{\min}(\Omega)=0.0273$ against $\varepsilon_\varrho/\mathsf L=0.0250$;
+the Jacobian's condition number is $3.63$ against $3.62$; and the balancing
+residual A2 asks for is $3.6\times10^{-5}$ against $4.2\times10^{-7}$, which the
+remainder accounting prices at $1.9\times10^{-4}$ against a leading product of
+$2.56$ (\cref{tab:sim-card-design}). What does move with the cardinality is the
+budget (R-a) prices, $\sup|\ell_\star|$ rising from $3.04$ to $7.56$.
+
+Two limits. The four-cell grid stops at $n=64{,}000$ and the ablation at
+$n=8{,}000$, in both cases on cost: one replication at $\mathsf L=4$ and
+$n=64{,}000$ takes $2.20$ seconds, so a cell of $5{,}000$ of them is three hours
+of processor time and a little under twenty-three minutes on the eight workers
+the run distributes it over, and we would rather carry two well-separated points at
+$5{,}000$ replications than three at a thinned count. And the arm injects its nuisances at fixed rate
+constants, so it prices a remainder of a declared size and establishes nothing
+about whether any estimator attains that size.
+
+What this changes above is the first of the three readings, and only its last
+clause. The remainder accounting is complete for nuisance errors of the priced
+size at $\mathsf L=2$ and is not at $\mathsf L=4$, because the term it completes
+is the one N1 deletes at the first cardinality and leaves standing at the second.
+Section 6 runs at $\mathsf L=4$ and reports
+what the same defect measures on its own data, where at $n=983$ it is not
+resolvable from zero.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% Measured against \textwidth = 469.8pt, not guessed.  Every artifact placed in
+% this subsection fits upright at \footnotesize and the stock 6pt \tabcolsep
+% except sim_thm_rootn_ablsplit_channel, which is 475.4pt there and 443.4pt at
+% 4pt; the others are 437.6, 333.4, 369.5, 393.1, 463.1 and 419.4pt.  The
+% quantile table is 450.8pt TALL, so it takes [p] rather than [!htbp].
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The limit law at two instrument cardinalities, on the design of
+\cref{tab:sim-limitlaw}}
+\label{tab:sim-card}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_cardinality}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} DGP-A at the frontier-clearing configuration
+$(\mu,s,a,\alpha)=(2,3,\tfrac34,0.32)$, $p=4$, $d_Z=3$, which is the design of
+\cref{tab:sim-limitlaw} Panel A. \emph{The two panels differ in the instrument's
+cardinality and in nothing else the theorem prices}: $c_\delta=0.25$,
+$c_\epsilon=c_r=1$, the smooth $h$ geometry, the $n$ grid, the overlap floor
+$\varepsilon_\varrho=0.10$ and the injected-nuisance regime are common, and the
+three rate constants are those of the three injected nuisance errors, $c_\delta$
+the constant in the $O_P(\delta_n)$ of A5(ii) on $\hat\varphi-\varphi_\dagger$,
+$c_\epsilon$ the constant in the $\epsilon_n$ of A5(iv) on
+$\hat\ell-\ell_\star$, and $c_r$ the constant in the $r_n$ of A4(iii) on
+$\hat\varrho-\varrho$; each pins a size and none pins an exponent. The
+budget column, which is $\sqrt n\,\delta_n^{2}$, is therefore identical row by
+row across the two panels. What $\mathsf L$ forces is three propensity indices
+instead of one and four first-stage shifts instead of two, generated by a rule
+that returns the binary design of the preceding pages at $\mathsf L=2$;
+\cref{tab:sim-l2identity} is the check that it does. The columns are those of
+\cref{tab:sim-limitlaw} and are defined in its notes. $5{,}000$ replications in
+every cell. \emph{``Lin.\ resid.'' is the statistic \eqref{eq:rootn} sends to
+zero}, formed per replication and then averaged, so nothing cancels across
+replications; it falls in Panel A and rises in Panel B. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_cardinality.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The same six cells in Monte Carlo standard error units}
+\label{tab:sim-card-se}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_cardinality_seunits}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The five measures of \cref{tab:sim-seunits}, defined in its
+notes, at the six cells of \cref{tab:sim-card}. Every entry is a gap between a
+simulated quantity and its asymptotic value divided by the Monte Carlo standard
+error of that gap, so the entries are counts of standard errors and not levels.
+The ``worst of five'' the text quotes is the largest absolute entry in a row:
+$2.20$ at $\mathsf L=2$ and $18.91$ at $\mathsf L=4$, both at $n=64{,}000$. An
+entry inside $\pm2$ is not distinguishable from zero at $5{,}000$ replications,
+which is not the same thing as a match. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_cardinality\_seunits.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{Studentised quantiles at the two cardinalities}
+\label{tab:sim-card-q}
+% \scriptsize AND NOT \footnotesize, AND THE REASON IS VERTICAL.  Forty-two body
+% rows: 450.8pt tall at \footnotesize against a \textheight of 650.4pt, which
+% leaves the caption and a six-line note 200pt and overruns into the footer --
+% the note's last line printed under the page number.  \scriptsize is 361.4pt,
+% which leaves 289pt.  Width is not the binding constraint here (369.5pt at
+% \footnotesize, 324.8pt at \scriptsize, both inside 469.8pt), and \resizebox is
+% rejected for the reason tab:sim-stopping records.
+\scriptsize
+\input{../tables/sim/sim_thm_rootn_cardinality_quantiles}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The seven studentised quantiles
+$\{0.025,0.05,0.25,0.5,0.75,0.95,0.975\}$ of
+$\vartheta'\sqrt n(\hat\theta-\theta_\dagger)/(\vartheta'\hat V\vartheta)^{1/2}$
+at the six cells of \cref{tab:sim-card}, against the quantiles of the standard
+normal that \cref{thm:rootn} predicts, with the gap divided by its own Monte
+Carlo standard error in the last column. \emph{The departure at $\mathsf L=4$ is
+two-sided and grows in $n$}: both tails move outward and the median moves less
+than either, which is a scale distortion and not a location one. $5{,}000$
+replications in every cell. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_cardinality\_quantiles.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\textwidth]{../figures/sim/sim_thm_rootn_cardinality_qq.pdf}
+\caption{Studentised quantiles against the standard normal, by cardinality}
+\label{fig:sim-card-qq}
+\begin{minipage}{\textwidth}\footnotesize
+\textit{Notes:} The quantiles of \cref{tab:sim-card-q} drawn against the standard
+normal. The straight grey line in each panel is the $45^{\circ}$ line the limit
+law of \cref{thm:rootn} predicts, so a curve lying on it is the theorem's
+prediction and departure from it is read vertically. Panels are the two
+instrument cardinalities on one design. The solid curve is $n=1{,}000$ and the
+dashed curve $n=64{,}000$, the ends of the grid; $n=8{,}000$ is not drawn.
+\emph{In the binary panel both curves lie on the line and neither departs from it
+by more than $2.20$ standard errors anywhere; in the four-cell panel the larger
+sample lies farther from it than the smaller at all seven quantiles
+\cref{tab:sim-card-q} prints.} That difference in direction,
+and not the level of either, is what the figure carries. $5{,}000$ replications
+in every cell. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_cardinality.R}; figure
+\texttt{paper/figures/sim/sim\_thm\_rootn\_cardinality\_qq.pdf}.
+\end{minipage}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The design at each cardinality, and what the estimator inherits}
+\label{tab:sim-card-design}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_cardinality_design}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The design validity of \cref{tab:sim-card}'s two panels,
+computed from the data-generating law's closed forms rather than from the
+replications. The first block counts what the cardinality forces. The second
+reports how nearly A2's balancing equation holds, as the relative residual
+$\|\nu_{g_\star}\|/\|\nu_{\Delta Z}\|$ and as the quantity the remainder
+accounting prices it at, $\sqrt n\,\|\nu_{g_\star}\|\,c_\delta\delta_n$, which is
+to be read against the leading product $\sqrt n\,c_\delta^{2}\delta_n^{2}$ on the
+row below it. The third reports A4(i) at the realised propensity, against the
+floors the assumption sets: $\varepsilon_\varrho$ for the cell probabilities and
+$\varepsilon_\varrho/\mathsf L$ for $\lambda_{\min}(\Omega)$, both of which are
+cleared. \emph{The floor on $\lambda_{\min}(\Omega)$ falls with $\mathsf L$ by
+construction}, so clearing it at four cells is a weaker statement than clearing
+it at two. The last block reports what the estimator inherits from the design,
+including the $\sup|\ell_\star|$ that (R-a) budgets. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_cardinality\_design.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The binary panel against the pre-cardinality sources}
+\label{tab:sim-l2identity}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_l2identity}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Adding a cardinality parameter to a data-generating law can
+change the binary case without anyone noticing, so the binary case is compared
+object by object against the sources that predate the parameter. Each row is a
+layer of the construction and ``Bit-identical'' counts the comparisons returning
+exact equality, not equality to a tolerance. The replication layer compares a
+whole replication and not only its summary, so a difference anywhere inside the
+estimator would appear there. \emph{All thirty-six comparisons pass}, which is
+what licenses reading Panel A of \cref{tab:sim-card} as the estimator of the
+preceding pages rather than as a re-implementation of it. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_l2identity.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_l2identity.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{Which nuisance carries the divergence}
+\label{tab:sim-ablsplit}
+\footnotesize
+\input{../tables/sim/sim_thm_rootn_ablsplit}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The design of \cref{tab:sim-card} primitive for primitive,
+at $n\in\{1{,}000,8{,}000\}$ and $5{,}000$ replications in every cell, with
+exactly one estimated nuisance switched on per panel: Panel A supplies the true
+propensity and injects the representer error, isolating A5(iv); Panel B supplies
+the true representer and injects the propensity error, isolating A4(iii). The
+structural error $h$ is injected in both, at $c_\delta=0.25$. The panel headers
+switch the arms by setting a rate constant to zero: $c_\epsilon$ and $c_r$ are
+the constants in the $\epsilon_n$ of A5(iv) and the $r_n$ of A4(iii), defined in
+the notes to \cref{tab:sim-card}, and a zero suppresses that nuisance error
+rather than rescaling it. \emph{$\mathsf L=2$
+is the control and not a courtesy}: an arm that diverges at $\mathsf L=4$ without
+its binary counterpart says that a nuisance is expensive, not that it is
+expensive \emph{at $\mathsf L=4$}. The columns are those of \cref{tab:sim-card};
+``worst of five'' is the largest absolute entry over the five measures of
+\cref{tab:sim-card-se} at that cell. The grid stops at $n=8{,}000$ on cost, which
+makes a flat arm here weaker evidence than a diverging one; both findings the
+text draws are in the diverging direction, so the caveat binds on neither. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_ablsplit.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_ablsplit.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The instrument block, term by term, and the two norms A5(iv) separates}
+\label{tab:sim-ablsplit-channel}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{../tables/sim/sim_thm_rootn_ablsplit_channel}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The cells of \cref{tab:sim-ablsplit}, decomposed. Writing
+$\hat{\widetilde W}_l=\widetilde W_l-(\hat\varrho_l-\varrho_l)$ gives
+$\hat L\hat{\widetilde W}-L_\star\widetilde W
+ =(\hat L-L_\star)\widetilde W-L_\star(\hat\varrho-\varrho)
+ -(\hat L-L_\star)(\hat\varrho-\varrho)$, and the three terms are $T_1$, $T_2$
+and $T_3$, each reported scaled by $\sqrt n$. The arms separate them exactly, so
+an em-dash marks a term that is zero by construction in that arm and not a term
+that was not computed. \emph{$T_2$ is first order in $r_n$ and survives only
+because orthogonality in the propensity direction kills its expectation}, which
+by \cref{prp:orthog}\textup{(iii)} requires N1. Read against the two reference
+exponents, which are not fitted but read off the design: under orthogonality
+$T_2$ is a centred average and decays at $n^{-\alpha}=n^{-0.320}$; under outright
+failure it carries a non-vanishing mean and grows at
+$n^{1/2-\alpha}=n^{+0.180}$. \emph{The $T_2$ column carries a confound, and the
+text reads its exponents from another table in consequence}: this arm evaluates
+$L_\star$ at $\Delta U-\Delta h$ rather than at $\Delta U$, so the entries below
+also carry the $\sqrt n\,\|h\|r_n$ cross-product the theorem prices separately.
+The slopes they imply over the single leg $n=1{,}000\to8{,}000$, computed from
+the two unrounded cell means, are $-0.108$ at $\mathsf L=2$ and $+0.189$ at
+$\mathsf L=4$. Panel E of \cref{tab:sim-n1defect} re-runs the same accumulation
+with $h$ switched off and returns $-0.302$ and $+0.206$, and those are the
+figures the text reads against the two references. The last two numeric columns
+divide the norm the moment consumes, $\|\sum_l(\hat\ell-\ell_\star)_{\cdot l}
+\widetilde W_l\|_{L^{2}(P)}$, by the Frobenius norm A5(iv) prices; a ratio below
+one is a conservative bound. $5{,}000$ replications in every cell. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_ablsplit.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_ablsplit\_channel.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+% Measured against \textwidth = 469.8pt AND \textheight = 650.4pt, not guessed,
+% and the binding constraint here is the HEIGHT rather than the width.  Upright
+% at \footnotesize the tabular is 513.0pt wide at the stock 6pt \tabcolsep and
+% 465.0pt at 3pt, so width alone would clear at 3pt -- but this float is a
+% caption plus four panels plus the INV-1 notes, and at \footnotesize the whole
+% box runs past the text block and prints over the page number.  \scriptsize
+% takes the tabular to 423.5pt wide and 184.0pt tall at a 4pt \tabcolsep, which
+% buys back the 40pt of overflow and returns the column gap 3pt had spent.  The
+% NOTES stay at \footnotesize: they are where INV-1 lives, which is also why
+% \resizebox was rejected at tab:sim-h-verdict.
+%
+% THE PARAGRAPH ABOVE ASSERTS A FIT THIS FLOAT DOES NOT ACHIEVE, 2026-08-20.
+% The shipped configuration overflows by 63.4pt, so "buys back the 40pt of
+% overflow" is false against the current .tex.  NOT RESIZED IN THIS PASS, on the
+% author's ruling: an oversized ORDINARY float overflows the margin rather than
+% clipping, unlike a sidewaystable, and pdftotext on the rendered page confirms
+% that no printed text is lost.  The false claim is corrected here; the geometry
+% is left for a typesetting pass.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{Does the zero anchor impose N1? The defect, computed rather than
+estimated}
+\label{tab:sim-n1defect}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\input{../tables/sim/sim_thm_rootn_n1defect}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} N1 at $L_\star$ asks that the defect
+$E[L_\star\mid\Delta Z]$, written $b$ in the column headers and not to be
+confused with the anchor $b_\star$, vanish; by \cref{cor:centarity} that is
+$p(\mathsf L-1)$ scalar conditions. On
+the designs of \cref{tab:sim-card} it is a closed form rather than a quantity to
+be estimated: $\Delta U$ is independent of $(\Delta Z,W)$ and symmetric about
+zero, and $L_\star$ separates as $\sum_{r,q}c_{m,(l,r,q)}A_q(u)\eta_r(z)$ with
+$A_q$ the zero-anchored antiderivative of the $u$-basis. \emph{Panels A to C
+therefore carry no sampling error}, and they measure the defect of the shipped
+$L_\star$, on the shipped antiderivatives and clamp. Panel A reports the
+entrywise maximum over the $p(\mathsf L-1)$ pairs, because N1 is a matrix
+identity and a Frobenius aggregate can hide one live entry; the aggregate and
+$\|L_\star\|$ in both conventions are printed beside it. Panel B contracts $b$
+against the
+propensity error, which is what $\psi$ and $\hat J$ see:
+$\Gamma_{\mathrm{op}}=\sup_{\|r\|=1}\|E[br]\|$ is the sharp constant,
+$\Gamma_{\mathrm{real}}$ its root mean square over the ablation arm's own
+direction law, ``$\Gamma$ trunc.'' the same under projection onto the overlap
+set, and $\Lambda=(E\|L_\star r\|^{2})^{1/2}/\|r\|$ the centred-piece constant
+they are read against. Panel C carries the mechanism and one sampled check: the
+share of the representer's coefficient energy on odd $q$, A2's relative balancing
+residual, the defect re-estimated by sampling with its Monte Carlo standard
+error, and a binned estimate of $\|b\|/\|L_\star\|$ beside the noise floor
+$1/\sqrt{7{,}500}$ that binning carries when the truth is exactly zero.
+\emph{That binned estimate resolves nothing at $\mathsf L=2$ and is printed
+against its own floor so that it cannot be read as though it did.} \emph{The
+printed panels run A, B, C, E and there is no Panel D}: the producing script
+computes one, an independent sampled confirmation of Panels A and B by least
+squares of $L_\star$ on the propensity basis $(1,\varrho)$ at $n=2\times10^{6}$,
+and its output is the last four columns of Panel C rather than a panel of its
+own. The letters are the script's and are left as it assigns them. Panel E
+re-runs the ablation arm's first-order propensity term
+$\|T_2\|=\sqrt n\,\|\mathbb E_n[L_\star(\hat\varrho-\varrho)]\|$ on a separate
+stream at $1{,}500$ replications, with the $\varphi$-error $h$ on and off;
+$\beta$ is the slope over the leg, at a Monte Carlo standard error of $0.013$ in
+every row, and $\Lambda\tau_n$ is the size a purely centred $T_2$ would carry at
+$n=8{,}000$. The $h$-on rows reproduce \cref{tab:sim-ablsplit-channel} to within
+$2.1$ standard errors of the difference, worst at $\mathsf L=4$ and $n=1{,}000$,
+which is what makes the $h$-off rows comparable to it. Source:
+\texttt{scripts/simulations/sim\_thm\_rootn\_n1defect.R}; table
+\texttt{paper/tables/sim/sim\_thm\_rootn\_n1defect.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+```
+:::
+
+## The shipped engine, and three suites that do not merge
+
+Both experiments above run the theory's own sieve construction against population
+objects computed in closed form, and both draw their nuisances as the truth plus
+an error of controlled size rather than estimating them. Section 6 runs neither.
+A third suite closes that gap: a multinomial design estimated by the shipped
+engine, the same code Section 6 estimates with, with every nuisance fitted from
+the sample and the instrument read at $\mathsf L\in\{2,3,4\}$ off one draw.
+
+One departure of that engine from the theory it implements has since been
+repaired, and we state the repair here with what it is worth measured rather
+than asserted. The measurements of this paragraph are printed in Panels B and D
+of the supplement's boundary-layer table, Table S26. C3(ii) asks the boundary kernel for vanishing
+truncated moments at every order $0\le j\le p_K-1$, and the supplement's
+boundary family delivers
+all of them; the engine used to renormalise to unit mass at each design point,
+which realises the $j=0$ member alone, and it now runs that family at $p_K=8$,
+which is the kernel Section 6 estimates with. Both configurations were run, and
+each lands on the exponent its own construction predicts. The renormalised
+kernel converges to $1.003$, the degraded $h_x^{1}$ that enforcing the zeroth
+moment and nothing higher buys; the family converges to $7.984$, which is
+$h_x^{p_K}=h_x^{8}$, because $\vdagger$ is $C^\infty$ on this design and
+\eqref{eq:truncmom} kills the orders $j=1,\dots,7$. The guarantee the supplement
+proves is $h_x^{s-1/2}=h_x^{2.5}$, and the two exponents bracket it: the first
+fails it and the second clears it.
+
+Two things moved together, and the second is a bandwidth. The $x$-bandwidth is
+now $h_x=n^{-0.40}$, the midpoint of the window $(0.360,0.440)$, and the
+boundary layer stopped swallowing the design. Within three bandwidths of an
+endpoint sat every pooled design point at every $n$ up to $2{,}828$ before, and
+$99.41$ down to $51.93$ per cent at the four sample sizes above that; after, the
+share is $48.55$ per cent at $n=500$ and $4.22$ at $n=181{,}019$
+(Table S26 of the supplement, Panel A). The same measurement returns $884$ of the
+$1{,}966$ pooled design points of Section 6's panel, which the notes to Table S25
+of the supplement record, and that is $44.96$ per cent.
+The bias that enters one hypothesis, (P-g), read as an upper bound on $h_x$, is
+where the two changes are visible together. Its realised ratio used to
+*climb* across the grid, from $3.13$ at $n=125$ to $8.09$ at
+$n=181{,}019$, where the hypothesis asks for $O(1)$; it now falls to a plateau
+of about $9.6\times10^{-7}$, moving by $-0.0406$ in log-log terms over the last
+four sample sizes at a level spread of $13.4$ per cent. *We report a plateau and
+not a fitted rate.* A log-log line through the whole grid returns $-0.813$, and
+it is the wrong model for a curve that falls by a factor of $328$ and then
+flattens; its regression standard error is $175$ times the Monte Carlo one,
+which is the diagnostic that says so; that ratio is taken on the unrounded
+standard errors, which the panel's three digits round to $173$. Under the renormalised arm the window
+(P-g) left against C5$'$(ii) was non-empty but narrow, clearing by $0.061$ at
+the frontier-clearing $\alpha=0.32$ and by $0.006$ at $\alpha=3/8$, which the
+supplement's remark on the bandwidth-explicit condition already declares an
+illustration rather than an admissible design.
+
+The cap moves with the repair, and the move corrects two constants rather than
+adding a fresh distortion. In the old configuration $c_C$
+was carrying a compact-support half-width retired with the kernel it belonged
+to, and $\mathsf c_2$ was the interior kernel's maximum where C3(ii) asks for
+the sup of the envelope. *Correcting them is not the same as making the cap
+tight*: \eqref{eq:cap} still
+exceeds $\hat\delta_n^{-2}$ by $7.32\times10^{8}$ to $2.78\times10^{9}$ through
+the over-normalisation $\omega_n/\|\hat{\mathcal A}\|$ that Panel C prices, and
+nothing below touches that. Correcting both, at $n=500$ the cap \eqref{eq:cap} moves by a factor
+of $344{,}503$, of which the constants carry $89{,}741$, the bandwidth $3.47$
+and the kernel family exactly $1.00$. The constants leg is
+$0.1551\times34.039^{4}$ against the retired $4.0\times0.8727^{4}$; the
+bandwidth enters \eqref{eq:cap} as $h_x^{-1}$ and nothing else, so its leg is
+the ratio $0.2885/0.0833$ of the two bandwidths as the exponent moves from
+$n^{-0.20}$ to $n^{-0.40}$, taken on the unrounded bandwidths and not on the four
+digits printed, which give $3.46$. What the three derived legs leave over is the
+realised $h_u$ coupling, $1.108$ at $n=500$ and $1.054$ and $1.027$ at
+$n=2{,}000$ and $8{,}000$, and it is reported as a residual so that it cannot
+absorb an arithmetic slip. *The family contributes exactly $1.00$.* $\Theta_I$
+enters \eqref{eq:cap} through $c_C$ and $\mathsf c_2$ alone, so the boundary
+family is free in the cap and is paid for in the bias, which is where it should
+be paid. The post-repair values, at $n=500$, $2{,}000$ and $8{,}000$, are
+$\omega_n=27{,}200.1$, $37{,}777.9$ and $52{,}744.8$, and
+$\bar m_n=3.95\times10^{10}$, $1.85\times10^{11}$ and $8.76\times10^{11}$, at
+$\mathsf c_2=34.039$ and $c_C=0.1551$ (\cref{tab:sim-stopping}, Panel C$'$).
+
+*We have priced the two exponents against the $x$-smoothing bias and against
+(P-g) and nowhere else*: neither is traced through the sieve entropy bound,
+through A5(vi$'$), or through \cref{thm:rootn}'s reading of $\delta_n$ off
+A5(ii), and if either reaches any of those three the accounting just given is
+incomplete. The gap was between the theory and the implementation and never
+inside the theory, which is why C3(ii) is stated at every order and why closing
+it cost a kernel and not a hypothesis.
+
+*It also cost draws, and we price that here rather than in the notes to the
+tables that pay it.* A kernel that kills the truncated moments of every order
+$1\le j\le p_K-1$ cannot be non-negative, so $\hat\pi$ under the boundary family
+is a higher-order density estimate and can take a non-positive value at a design
+point. The adjoint divides by $\hat\pi$, so the engine refuses to build the
+operator and the replication is dropped rather than returned degraded. *What
+fails is the sample reference density and not a hypothesis.* The adjoint of
+Section 3 carries the population $\pi$, and this article states no condition on
+the estimate that stands in for it, so we name the object rather than an
+assumption tag. It is the same failure that leaves the estimator infeasible in
+the $\mu$g/m$^3$ coordinate of Section 6, where Panel C of \cref{tab:app-phi}
+prints it in those words; it is reached there through a rescaled coordinate and
+here through a small design set.
+
+The mechanism is that design set together with the cross-fitting geometry, and
+neither of the two alone. Every loss across the four arms of this suite falls
+where the operator is built on a cross-fitting fold of $160$, $320$ or $640$
+points, which is $\lceil0.4n\rceil$ at $n=400$, $800$ and $1{,}600$, and the count
+falls as the fold grows. No operator built on a whole draw has tripped the guard,
+neither at the $400$ points and more the uncross-fitted arms hand it nor at the
+$160$ of $60$ fresh balanced draws taken at the smallest fold size. *The two
+counts are on different scales and the second is not a threshold in the first*:
+what separates the arms that lose draws is that a cross-fitted operator builds
+$\hat\pi$ on a subsample while the support it is evaluated over still comes from
+the whole draw. The multinomial $\varphi$-step
+arm, which is not the $36$-cell arm of the opening pages, builds its operator on
+the whole draw and keeps all $24$ of its paths in each of its twenty-seven cells,
+which is what the bracketed denominators of \cref{tab:sim-merged-stopping}
+record; its plug-in companion, also on the whole draw, keeps all $504$ of its
+replications, a count printed in no table and read off
+\texttt{quality\_reports/sim/sim\_multinomial\_phiplugin.rds}; the arms that
+partition into $\mathsf F=5$ folds, of which the tables below are one, hand the
+operator $160$ points at $n=400$ and lose between none and eight draws per cell,
+most of them there. What is lost does not depend on the cardinality, which is
+what the three tables below record when their headers print the count as equal
+at all $\mathsf L$, and what leaves the paired contrast defined. The realised
+counts are stated with the precision statement they govern below.
+
+*The three suites do not merge into a single cardinality contrast, and we say so
+before setting them beside each other.* They differ in the design, in the
+estimator and in the nuisance regime, and their sample-size grids do not
+intersect at any point: the first two run $125$ to $181{,}019$ and the third runs
+$400$, $800$ and $1{,}600$. A table whose columns read $\mathsf L=2$ and
+$\mathsf L=4$ but whose rows come from two of them would attribute three
+differences to the cardinality. Every table in this subsection therefore obeys one
+rule, carried in the panel headers rather than in the notes so that a reader who
+reads only the body still cannot merge two blocks by accident: *one row is one
+design, one estimator and one nuisance regime, and the cardinality varies within a
+row and never across one* (\cref{tab:sim-merged-designs}).
+
+One precision statement governs the third suite at rates near nominal, and it
+does not govern the rest of it. The suite was run at $120$ replications and
+returns between $112$ and $120$ usable ones, for the reason given above. The
+count is a property of the cell and not of the cardinality: it is identical
+across $\mathsf L=2$, $3$ and $4$ in all nine cells, which is what leaves the
+paired contrast defined, and it is lowest at the misspecified design at $n=400$.
+At a coverage rate of $0.95$ the Monte Carlo standard error is about $0.02$, and
+two of them resolve to $\pm0.040$ at the fullest cell and $\pm0.041$ at the
+thinnest, so a gap smaller than that is not evidence of anything. *That is the
+smallest resolution in the suite, and it is calibrated at one point.* The
+standard error grows as coverage moves toward a half, and at the misspecified
+constant, where coverage runs from $0.277$ to $0.795$, the standard errors the
+table prints are $0.038$ to $0.046$; two of those are $\pm0.076$ to $\pm0.092$,
+about twice the figure just quoted. Every reading below is therefore priced at
+the standard error its own cell prints. The paired contrasts are the
+sharper instrument, because the three cardinalities run on the same draw and the
+same partition, so the difference carries its own standard error rather than the
+sum of two (\cref{tab:sim-merged-precision}), and the claims below rest on those.
+
+*What the dropped draws could have done is bounded and no longer merely
+disclosed.* A cell drawn at $B=120$ and used at $b$ has its coverage inside
+$[\hat p\,b/B,\ \hat p\,b/B+(B-b)/B]$ whatever the missing draws would have
+returned, and each of the three tables now carries that bound in its own header
+rather than in its notes: at most $0.024$ on the balanced design, $0.032$ on the
+skewed one and $0.063$ on the misspecified one; at $n=1{,}600$ it is at most
+$0.008$, which is under the smallest coverage standard error the three tables
+print at that sample size, $0.014$. *That comparison is against the coverage
+standard errors of Panel C and against no other column*: Panel A's bias standard
+errors at the same sample size run down to $0.0053$, and the bound does not
+govern a bias. Readings below taken at $n=400$ and $n=800$ carry the
+larger figure rather than that one.
+The selection is real and its direction is known, a draw surviving when the
+nonparametric stage behaved, so the printed rates are the optimistic reading of
+that interval.
+
+One hypothesis of \cref{thm:rootn} had been computed on no multinomial design,
+and computing it here returns a failure. N1 asks that
+$E[L(\Delta U,\Delta Z)\mid\Delta Z]$ vanish, which \cref{cor:centarity} types
+as $p(\mathsf L-1)$ scalar conditions, and it is the clause the preceding
+subsection found breaking at $\mathsf L=4$ on the design the theory names.
+Measured on the weight the engine solves for, and reported as the entrywise
+defect over $\max_{j,l}\|L_{jl}\|$, which is that subsection's own statistic to
+the digit, it runs from $0.531$ to $0.720$ across the nine
+design-by-cardinality cells at $n_{\mathrm{solve}}=640$
+(\cref{tab:sim-multinomial-n1defect}, Panel A). The weight is solved at the true
+propensity and the true residual, so what is measured is the weight class and not
+the two nuisance errors (T-3) and (T-4) price separately; on the misspecified
+design that means its own true propensity, and its row is a third design rather
+than a statement about the misspecification. Block I returns
+$3.3\times10^{-6}$ at $\mathsf L=2$ and $0.191$ at $\mathsf L=4$ against the
+same denominator. *N1 fails on all three designs at all three cardinalities*,
+and the spread across $\mathsf L$ within a design is at most $0.088$ where the
+level is $0.53$ to $0.72$.
+
+We give three certificates for that reading, because a negative result about a
+quantity whose null value is zero is worth more measured against a floor than
+asserted. The computation is closed form rather than estimated: the design draws
+$\Delta U$ conditionally on $\Delta Z=z$ as a normal whose mean and whose
+variance both move with $z$, so the inner expectation is a normal integral taken
+at machine precision and the routine reads no $z$-sample. Redrawn with that
+dependence switched off, which leaves $\Delta U$ independent of $\Delta Z$, the
+same code returns $5.4\times10^{-15}$ to $7.6\times10^{-14}$ over its $72$
+draws, and the smallest live ratio anywhere in the arm, $0.3145$, sits $12.6$
+orders of magnitude above that floor. Nor does the defect shrink: across the
+three solve folds the arm realises,
+$n_{\mathrm{solve}}\in\{160,320,640\}$, the log-log slope runs $-0.133$ to
+$+0.064$, where a sampling error would fall and a restriction on the weight
+class does not (Panel B). And an independent quadrature route agrees with the
+closed form to at most $1.7\times10^{-4}$ at every printed cell, against
+quantities of size $23$ to $60$, and to $1.4\times10^{-5}$ in relative terms at
+the worst of the $324$ live solve draws (Panel C).
+
+*This is not a defect in \cref{thm:rootn} and we do not report it as one.* It
+sits between the theory and the implementation, and it is the same species as
+the C3(ii) gap the opening of this subsection prices.
+\texttt{solve\_balance\_weight} builds $\ell$ in a function class over the
+residual alone, so $\Lambda$ carries no $z$ argument, and
+\texttt{crossfit\_once} anchors it by subtracting a constant. The conditional
+laws of $\Delta U$ given $\Delta Z$ therefore form a location-scale family with
+a continuum of means, and a bounded function of $u$ alone orthogonal to every
+one of them is zero almost everywhere, so the zero weight is the only member of
+the implemented class that satisfies N1 on this design. The supremum of the same
+ratio over centred weights that are polynomials of degree at most six in the
+residual is a property of the design and of no weight, and it reads $0.8615$ at
+the two well-specified designs and $0.9021$ at the third, collapsing to
+$8.94\times10^{-8}$ once the conditional dependence is switched off (Panel C). The re-anchoring of Section 4 would restore N1 at the same $\ell$,
+and the supplement's remark on the two anchors of interest admits it with no
+further assumption; the engine does not build it. Two things this does not
+establish. It says nothing about Section 6's data, where the defect is estimated
+on a panel whose conditional law is unknown and the population argument just
+given has no purchase, and it does not show that the theory's own $\ell_\star$
+fails N1 here.
+
+At the two well-specified designs the cardinality does very little, and the
+measurement above says why rather than leaving it unattributed: there is no
+cardinality-varying N1 mechanism on this suite to produce a cardinality-varying
+divergence, the defect being live at every cell and of about one size. The bias at
+$n=1{,}600$ is inside two of its own Monte Carlo standard errors at all nine
+cells of the balanced design and at eight of the nine skewed ones, the exception
+being the skewed constant at four cells, at $-0.0138$ $(0.0053)$. The quantity
+\cref{thm:rootn} makes constant in $n$, $\sqrt n$ times the standard deviation,
+falls across the grid at sixteen of the eighteen cells of those two designs and
+is larger at $n=1{,}600$ than at $n=400$ at two, both of them the balanced
+constant, by $19.19$ and $5.35$ per cent. *Neither of those two moves is resolved
+from flat.* Panel B now prints a Monte Carlo standard error for that quantity,
+computed from the fourth moment rather than from the Gaussian formula, the
+realised kurtosis reaching $10.8$ over the suite's $81$ cells; against it the
+larger of the two is $1.50$ standard errors and the smaller is $0.45$. The paired differences at $n=1{,}600$ are
+inside $2.4$ of their own standard errors at every coefficient and both
+cardinalities, the largest being the balanced constant at $-0.0339$ $(0.0144)$
+and the skewed $z_2$ at $-0.0152$ $(0.0076)$. The first of those is $2.35$
+standard errors and stands clear of the rest; the second is $2.00$ on the printed
+digits, which the print cannot separate from two either way; none of the
+remaining ten reaches $1.2$.
+
+Coverage at $n=1{,}600$ sits between $0.866$ and $0.975$ at all nine balanced
+cells and between $0.867$ and $0.958$ at all nine skewed ones
+(\cref{tab:sim-merged-rootn-balanced}, \cref{tab:sim-merged-rootn-skewed}).
+*That range is true and it conceals the shape of its own low end*, which is
+one-sided and does not shrink. Seven of those eighteen cells sit more than two
+Monte Carlo standard errors below nominal, and they are not scattered: three are
+the balanced constant, at $0.882$, $0.866$ and $0.866$ down the three
+cardinalities, and four are on the skewed design, its constant at two cells and
+$z_2$ at all three. On the favourable design the constant at four cells runs
+$0.863$, $0.842$ and $0.866$ across the three sample sizes, which is flat and
+$2.7$ standard errors under nominal at the largest of them; skewed $z_2$ at four
+cells moves *away* from nominal as $n$ grows, at $0.948$, $0.915$ and $0.867$.
+
+*What kind of failure that is, the interval answers and the limit law does not*,
+and the statistic that answers it was computed all along and printed in no table.
+The mean estimated standard error over the simulated standard deviation is below
+one in $77$ of the $81$ cells of this suite, below $0.85$ in $42$ and below
+$0.75$ in $18$ (\cref{tab:sim-merged-seratio}); the balanced constant sits
+between $0.705$ and $0.805$ and does not improve across a grid spanning a factor
+of four in $n$. Take the coverage a centred normal carrying that ratio would
+deliver and subtract the realised coverage: the difference is inside $\pm0.070$
+at all $54$ well-specified cells, at a root mean square of $0.024$. *The entire
+well-specified coverage shortfall is the interval's scale and not the limit
+law.* On the misspecified design the same statistic runs $-0.028$ to $+0.033$ on
+the slopes and $+0.030$ to $+0.511$ on the constant, which is the bias a centred
+approximation sets aside by construction. A live N1 defect predicts this
+shape: by \cref{prp:orthog}(iii) the moment's $\varrho$-derivative no longer
+vanishes, so $\hat\varrho$ enters at first order, and where the propensity is
+correctly specified it converges at $\sqrt n$ and leaves $\hat\theta$
+asymptotically normal while the sandwich omits a term and is wrong by a factor
+that does not shrink. *We report that as consistent with the measurement and not
+as demonstrated by it*, the variance correction itself not being computed here.
+
+The third design is the one that breaks, and it breaks in the propensity. It
+misspecifies $\hat\varrho$, which is the nuisance A4(iii) prices and the one the
+preceding subsection isolated. Its constant's bias does not fall in $n$ at four
+cells, running $-0.3040$, $-0.3242$ and $-0.3830$, and $\sqrt n$ times its
+standard deviation *rises*, $6.031$, $6.960$, $8.605$, where the theorem makes it
+constant. That last move is $3.40$ of the standard error Panel B now prints, so
+unlike the two at the balanced design it *is* resolved from flat. Coverage of the constant at $n=1{,}600$ is $0.697$ at two cells, $0.294$
+at three and $0.277$ at four, and the paired bias difference against the binary
+arm is $-0.2287$ $(0.0226)$ and $-0.2765$ $(0.0241)$, which are $10.1$ and $11.5$
+standard errors and are not a resolution artefact
+(\cref{tab:sim-merged-rootn-misspec}). The two slope coefficients are untouched
+at $n=1{,}600$, covering between $0.891$ and $0.950$ at every cardinality. The
+damage is therefore confined to the coordinate the propensity enters, and it
+grows with the number of cells at the two larger sample sizes: the $n=1{,}600$
+coverages just quoted fall down the three cardinalities, those at $n=800$ run
+$0.771$, $0.525$, $0.424$, and the bias grows in step at both. *At $n=400$ it
+does not.* Coverage there runs $0.795$, $0.661$, $0.732$ and
+the bias $-0.1813$, $-0.3266$, $-0.3040$, so four cells show less damage than
+three on both measures. Both reversals are inside the bound
+$\mathrm{SE}\le\mathrm{SE}_3+\mathrm{SE}_4$, at $0.82$ and $0.38$ of it, and
+$n=400$ under this design is the thinnest cell in the suite, at $112$ usable
+replications. The direction is the one the injected-nuisance ablation found,
+reached here through estimated nuisances and through the code Section 6 runs
+on.
+
+One competing explanation for that rising standard deviation is removed by an arm
+that already existed and had not been read. The $\varphi$-step sweep runs the
+discrepancy rule at $\tau_{\mathrm{DP}}=0$, where it never fires and the returned
+iterate *is* the cap, so a sweep over the cap is a fixed-$m$ variant: at
+$n=1{,}600$ and $\mathsf L=4$, moving $\bar m$ from $15$ to $100$ raises the
+misspecified design's integrated squared error from $0.195$ to $0.488$, at Monte
+Carlo standard errors of $0.010$ and $0.067$, while it lowers the balanced
+design's from $0.091$ to $0.036$ and the skewed design's from $0.118$ to $0.051$.
+Those six figures are read off the $(\tau_{\mathrm{DP}},\bar m)$ sweep that
+\texttt{scripts/simulations/sim\_multinomial\_phistep.R} writes to
+\texttt{quality\_reports/sim/sim\_multinomial\_phistep\_sweep.rds}, at
+$\tau_{\mathrm{DP}}=0$ and $\bar m\in\{15,100\}$; the sweep is a run object and
+not a float, which is why they carry a path here and not a cross-reference.
+*The cap is therefore not an independent cause*, iterating longer helping where
+the propensity is right and hurting where it is wrong. The same separation is not
+available on the $\theta$ side, which would need that arm re-run at a fixed
+budget, and we have not run it.
+
+The stopping rule fails in the same place and in the same direction. At the two
+well-specified designs the discrepancy rule selects an iterate inside its budget
+in most replications at every cardinality, at $1.000$, $0.917$ and $0.875$ on the
+balanced design at $n=1{,}600$ and $1.000$, $0.792$ and $0.667$ on the skewed one.
+At the misspecified design it selects one in $0.875$ of replications at two cells,
+$0.250$ at three and *none at all* at four (\cref{tab:sim-merged-stopping}). A
+rule that never fires returns the cap, which is the configuration Section 6's
+bootstrap runs under and says so.
+
+Three readings this subsection does not support. It does not establish that the
+shipped engine and the abstract construction agree, because no cell of the third
+suite shares a sample size with either of the first two, and the merged tables
+print the grids rather than interpolate between them. It does not establish
+that the cardinality is harmless at the well-specified designs, because $112$ to
+$120$ replications cannot resolve a coverage gap below about $\pm0.04$ and the
+paired contrasts bound the *bias* difference rather than the coverage one. And it
+does not establish that the N1 defect is what the standard-error ratio measures:
+the correction that \cref{prp:orthog}(iii) implies is not computed, and the two
+quantities are set beside each other rather than fitted to one another.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% Measured against \textwidth = 469.8pt.  At \footnotesize and the stock 6pt
+% \tabcolsep: designs 456.6pt, balanced 400.5pt, skewed 392.5pt, misspec
+% 422.0pt, precision 446.2pt, seratio 453.9pt.  Those six fit upright.
+% tab:sim-multinomial-n1defect is 454.6pt at \footnotesize, which also fits, and
+% is nonetheless set at \scriptsize with \tabcolsep 4pt, where it is 373.2pt.
+% That is bought for the HEIGHT, below, and the width had nothing to do with it.
+%
+% THE HEIGHT CERTIFICATE WAS WRONG BEFORE THIS PASS AND IS RE-MEASURED HERE,
+% 2026-08-26.  It read "The three rootn tables are 354.7pt tall and take [p]".
+% This pass added a \multicolumn{6}{l} header row to each of the three -- the
+% realised-B line -- so the number had to be re-taken; but the audit that
+% prompted it assumed the reading was one row stale, and it was not.  Under the
+% SAME protocol that produces the five widths above (\sbox of the \input'ed
+% bare tabular at \footnotesize, with setspace's in-float \baselinestretch reset
+% applied, as at tab:sim-h-verdict), the three rootn tabulars are
+%       \ht 231.05pt  \dp 226.05pt  TOTAL 457.1pt, identical across the three,
+% their row structure being identical.  354.7pt is 102pt below that and 90pt
+% below the pre-header table, which is eight and a half rows, not one.  Its provenance is
+% not recoverable from the shipped artifact and is not reconstructed here; the
+% number is replaced rather than adjusted.  THE PROTOCOL IS VALIDATED, NOT
+% ASSERTED: it reproduces all five printed widths to the 0.1pt they are stated
+% at, and the float reading below predicts a line of this build's own log to
+% 1e-5pt.
+%
+% WHAT THE ADDED ROWS COST, AND A SECOND ONE LANDED IN THIS PASS.  The
+% 2026-08-26 pass added the realised-B line and measured +12.000pt exactly, one
+% \footnotesize row (445.105pt -> 457.105pt).  This pass adds a second spanning
+% row to each of the three, the dropped-draw bound, at the same +12.000pt:
+% 457.105pt -> 469.105pt, \ht 237.053pt \dp 232.053pt, the increment splitting
+% 6/6 because the tabular is centred on its own baseline.  Width +0.000pt at
+% both steps (400.549pt throughout), the block header still being the widest
+% row, so the width certificate above has now survived two edits without moving.
+%
+% AND THE HEIGHT IS THE REASON FOR [p], SO IT IS MEASURED AT THE FLOAT AND NOT
+% AT THE TABULAR.  Caption + tabular + notes, \sbox'ed in a
+% \begin{minipage}{\textwidth} under the same reset, after this pass's row:
+%       balanced 662.93pt   skewed 566.93pt   misspec 614.93pt
+%       against \textheight = 650.43pt.
+% The skewed and misspec floats clear it; the balanced one is 12.50pt OVER, and
+% the build says so in its own words.  Predicted 662.92736 - 650.43001 =
+% 12.49735pt; main.log reads "Float too large for page by 12.49736pt".  It read
+% 0.49736pt before the row was added, so the prediction has now tracked the log
+% to 1e-5pt across a 12pt change, which is the strongest test the protocol has
+% had.
+%
+% NOT RESIZED, on the same standing ruling recorded below, and now with a
+% quantity attached: 12.50pt of overrun leaves 59.77pt of clearance to the paper
+% edge by the arithmetic two blocks down, so nothing is at risk.  Shaving the
+% note to buy it would put the certificate back in the position it was found in
+% at the 2026-08-26 pass, a number tuned to a state nobody re-measures.
+%
+% THE TWO FLOATS ADDED IN THIS PASS, AND ONE OF THEM SHED PRINTED TEXT BEFORE IT
+% WAS CAUGHT.  tab:sim-merged-seratio is 453.9pt wide and its float box is
+% 566.67pt, which is 83.76pt INSIDE \textheight; it takes [p] for company rather
+% than from necessity, and it raises no question.
+%
+% tab:sim-multinomial-n1defect did, and the way it failed is why this comment
+% now records a second wall.  As first drafted, at \scriptsize with \tabcolsep
+% 4pt and a two-line caption, the float box was 823.77pt and main.log reported
+% "Float too large for page by 173.34042pt".  The protocol above predicted
+% 823.770 - 650.430 = 173.340pt, so the measurement was right and the DESIGN was
+% wrong.  THE WALL THAT DELETES TEXT IS NOT \textheight.  Body text starts at
+% 1in + \topmargin + \headheight + \headsep = 72.27 - 37 + 12 + 25 = 72.27pt
+% from the paper top, and \paperheight is 794.97pt, so the float's bottom EDGE
+% clears the sheet at an overrun of 72.27pt.  That is an edge and not a
+% guillotine: the last few points of a box are descender space, which is why
+% tab:app-theta prints its last line at 74.09pt, 1.82pt past the edge, and it is
+% not a margin to design against.  At 173.34pt there is no such reprieve, and
+% there was none: pdftotext on the
+% rendered page returned the caption and the first half of the notes and NOTHING
+% from "this script's numerical floor" onward, the Source line included.  The
+% build exited 0, the caption census found no gap, and no check in render.sh saw
+% it -- the caption survives because it is at the HEAD of the box, which is
+% exactly the half a one-ended canary watches.  That is the sidewaystable
+% failure of tab:sim-stopping reached through an ordinary float, and it bounds
+% the standing ruling recorded below rather than withdrawing it: an oversized
+% ordinary float overruns the margin rather than clipping, ONLY INSIDE 72.27pt.
+%
+% REPAIRED BY THREE MOVES, MEASURED ONE AT A TIME.  The notes were cut, the body
+% prose already carrying what came out: 823.77 -> 715.77pt, which is nine
+% \footnotesize lines to the point.  The caption was brought to one line:
+% -> 702.17pt, one \small baselineskip at 13.60pt.  \arraystretch went to 0.95:
+% -> 688.58pt.  The shipped float is therefore 38.15pt over \textheight with
+% 34.12pt of clearance to the paper edge.  It is left over rather than shrunk to
+% fit, on the ruling below; the clearance is stated beside the overrun from here
+% on, because the overrun is not the number that decides whether text survives.
+% Cutting the notes ALONE would have left 6.93pt of it, which reads as a fit and
+% is not one.
+%
+% ONE READING OF THE STOPPING CERTIFICATE IS CLARIFIED AND NOT CORRECTED.  "The
+% shipped table sets 491.6pt" below is the POST-SHRINK width the overfull is
+% measured against, not the natural one: \sbox of the bare tabular under the
+% protocol above gives 494.89pt, and of the whole threeparttable 495.47pt.  The
+% notes list can shrink and the log reports what is left, so 469.755 + 21.79979
+% = 491.55pt is where the figure comes from.  Both numbers are right about
+% different quantities, and the certificate is about the log's.
+%
+% THE STOPPING TABLE DOES NOT FIT, AND THE CERTIFICATE THAT SAID IT DID WAS
+% INVERTED, 2026-08-22.  This comment read "stopping 467.1pt ... the last has
+% 2.6pt to spare".  At the 2026-08-24 build, main.log reported Overfull \hbox
+% (21.79979pt too wide) for tab:sim-merged-stopping: the shipped table sets
+% 491.6pt, not 467.1pt, and the 2.6pt of slack is 21.8pt of overflow.  A
+% certificate measured once and never re-measured is worse than none, because it
+% reports a fit it never rechecked -- the same failure the float-count and
+% provenance sentences in that pass were caught in.
+%
+% AND ITS OWN LINE PIN WAS STALE WITHIN ONE PASS, 2026-08-23; THEN THE SENTENCE
+% SAYING SO PINNED A THIRD, AND THAT ONE WENT STALE TOO.  The 2026-08-22
+% correction cited a main.tex line range.  The 2026-08-23 retraction of it
+% quoted the replacement range in the present tense, and by the 2026-08-24 build
+% the replacement had moved as well.  Neither range is restated here.  A
+% certificate that repairs a wrong number by pinning a line that then moves has
+% only changed which part of it rots first, and a retraction that quotes the
+% line it displaced has done the same thing one layer up, in the text least
+% likely to be re-derived.  The rule is stated in full at tab:sim-limitlaw: a
+% retraction must not quote a mutable observable in the present tense; drop it,
+% or bind it to a named build.  No main.tex line ranges are pinned in this
+% document any more; the float is named by label and the log matched to it by
+% the overflow, which is a property of the typeset float and not of the file.
+%
+% NOT RESIZED, on the author's standing ruling recorded at tab:sim-n1defect and
+% tab:app-theta: an oversized ORDINARY float overflows the margin rather than
+% clipping, unlike a sidewaystable, and pdftotext on the rendered page confirms
+% no printed text is lost.  Geometry is left for a typesetting pass; only the
+% certificate is corrected here.
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The three simulation suites at the cardinality all three share}
+\label{tab:sim-merged-designs}
+\footnotesize
+\input{../tables/sim/sim_merged_designs}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Coverage of a nominal $95\%$ interval with its Monte Carlo
+standard error in parentheses, at the largest sample size each suite reaches.
+\emph{One row is one design, one estimator and one nuisance regime}; the
+cardinality varies across the columns of a row and never across rows. Block I is
+the configuration of \cref{tab:sim-limitlaw} and Block II that of
+\cref{tab:sim-h-verdict}, both run against population objects computed in closed
+form inside the data-generating law, with nuisances injected at controlled rates.
+Block III is a multinomial design estimated by the shipped engine, with every
+nuisance fitted from the sample. \emph{Blocks I and II are binary for different
+reasons}: the headroom design has no cardinality parameter at all, while the
+named design does have one and is binary here only because the arms this table
+reads are the binary ones, which is what \cref{tab:sim-card} runs at four cells.
+Their $\mathsf L=3$ and $\mathsf L=4$ cells are printed as em-dashes rather than
+left blank. \emph{The $B$ column is not decoration}: at the $119$ and $120$ it
+prints for Block III a coverage rate resolves to about $\pm0.04$ and at
+$B=5{,}000$ to about $\pm0.006$, so the blocks are not comparable digit for
+digit. Block III was run at $120$ replications everywhere and returns fewer in
+the cells where the boundary family drove $\hat\pi$ non-positive and the operator
+could not be built; the column prints the count used and not the count
+requested. The sample-size grids do not intersect
+at any point. This table is generated and not transcribed. Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_designs.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{N1 at the weight the engine solves for, on three multinomial designs}
+\label{tab:sim-multinomial-n1defect}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.95}
+\input{../tables/sim/sim_multinomial_n1defect}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The defect $b=E[L\mid\Delta Z]$ that N1 asks to vanish, $L$
+being the anchored antiderivative the estimator builds; by \cref{cor:centarity}
+that is $p(\mathsf L-1)$ scalar conditions. \emph{It is a closed form here and not
+an estimate}, and what carries sampling error is the weight, which
+\texttt{solve\_balance\_weight} solves on $n_{\mathrm{solve}}=\lceil0.4n\rceil$
+points at each design's own true propensity and true residual; every standard
+error printed is therefore over the $12$ solve draws, and Panel A's $640$ is the
+$n=1{,}600$ of \cref{tab:sim-merged-rootn-balanced}. Panel A takes the entrywise
+maximum over the $p(\mathsf L-1)$ pairs, a Frobenius aggregate being able to hide
+one live entry, and closes with Block I's figure from \cref{tab:sim-n1defect} at
+the two cardinalities that arm runs. Panel B repeats the ratio over the three
+folds and names the coefficient attaining the maximum at the median draw;
+\emph{its bracket is the share of draws at which the constant attains it}, not
+the share for the coefficient named. Panel C carries the three certificates the
+text reads: the control, which switches the conditional dependence off and
+returns this script's numerical floor, run at the largest fold and at the two
+well-specified designs only; $R_{\max}$, the supremum of the same ratio over
+centred weights polynomial of degree at most six in the residual, which is a
+property of the design and of no weight; and the largest gap between the closed
+form and an independent quadrature route over a cell's draws, beside the largest
+scale compared. Source:
+\texttt{scripts/simulations/sim\_multinomial\_n1defect.R}; table
+\texttt{paper/tables/sim/sim\_multinomial\_n1defect.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{The shipped engine at three cardinalities: the balanced design}
+\label{tab:sim-merged-rootn-balanced}
+\footnotesize
+\input{../tables/sim/sim_merged_rootn_balanced}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Block III of \cref{tab:sim-merged-designs}: a multinomial
+design run through the shipped engine with every nuisance estimated from the
+sample, at $\mathsf L\in\{2,3,4\}$ off one draw. \emph{The realised replication
+count is in this table's own header row and is not repeated here}, so that the
+two cannot drift apart; the shortfall against the $120$ drawn is the draws on
+which the boundary family drove $\hat\pi$ non-positive, so that the adjoint could
+not be formed.
+Rows are the three coefficients of $\theta_\dagger$, whose true values are
+$(0,\,1.0,\,-0.5)$. Panel A is the bias with its Monte Carlo standard error;
+Panel B is $\sqrt n$ times the simulated standard deviation, which
+\cref{thm:rootn} makes constant in $n$, so a column flat down the three sample
+sizes is the theorem's prediction; Panel C is coverage of a nominal $95\%$
+interval with its Monte Carlo standard error. \emph{At those counts a
+coverage rate resolves to about $\pm0.04$}, so a gap smaller than that is not
+evidence; \cref{tab:sim-merged-precision} carries the paired contrast, which is
+the sharper comparison. No population variance exists for this block, so no
+standard-deviation ratio against an asymptotic value is reported for it. Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_rootn\_balanced.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{The shipped engine at three cardinalities: the skewed design}
+\label{tab:sim-merged-rootn-skewed}
+\footnotesize
+\input{../tables/sim/sim_merged_rootn_skewed}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} As \cref{tab:sim-merged-rootn-balanced}, at the skewed
+design, which moves the distribution of the differenced controls and leaves the
+propensity correctly specified. Panels, resolution and the absence of a
+standard-deviation ratio are as there. \emph{The replication count is not}, and
+it is read off this table's own header row rather than repeated here. Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_rootn\_skewed.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{The shipped engine at three cardinalities: a misspecified propensity}
+\label{tab:sim-merged-rootn-misspec}
+\footnotesize
+\input{../tables/sim/sim_merged_rootn_misspec}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} As \cref{tab:sim-merged-rootn-balanced}, at the design that
+misspecifies $\hat\varrho$ and therefore violates (T-4). \emph{This is the arm
+that is supposed to fail}, and it is included so that a match at the other two
+designs is a non-rejection by a procedure shown able to reject. What the table
+adds beyond the failure is where it lands and how it moves: the damage is
+confined to the constant, the coordinate the propensity enters, and it grows with
+the number of cells at $n=800$ and $n=1{,}600$ but not at $n=400$, where four
+cells sit above three on both bias and coverage by less than
+$\mathrm{SE}_3+\mathrm{SE}_4$; the two slope coefficients cover between $0.873$
+and $0.950$ at every cell. Panels and resolution are as in
+\cref{tab:sim-merged-rootn-balanced}, and the realised replication count is in
+this table's own header row; its $n=400$ cell is the thinnest in the suite.
+Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_rootn\_misspec.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[p]
+\centering
+\begin{threeparttable}
+\caption{The interval's scale, and the coverage shortfall it accounts for}
+\label{tab:sim-merged-seratio}
+\footnotesize
+\input{../tables/sim/sim_merged_seratio}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Block III of \cref{tab:sim-merged-designs}, on the cells of
+\cref{tab:sim-merged-rootn-balanced} and its two companions and at their
+replication counts, which those tables carry in their own header rows. The left
+block is the mean estimated standard error over the simulated standard deviation,
+so a value below one is an interval narrower than the sampling distribution it is
+meant to cover. The right block subtracts the realised coverage of those tables'
+Panel C from the coverage a centred normal carrying that ratio would deliver,
+$2\Phi(1.96\,\mathrm{ratio})-1$: a value near zero says the shortfall is the
+interval's scale, and a value away from zero says it is something a centred
+normal does not carry, which on this suite is the bias in the coordinate the
+propensity enters. \emph{The right block is a decomposition and not a second
+measurement}, being a function of the left block and of a coverage already
+printed, and it adds no replication. No population variance exists for this
+block, so the denominator is the simulated standard deviation and never an
+asymptotic one. Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_seratio.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The paired cardinality contrast, on the same draws}
+\label{tab:sim-merged-precision}
+\footnotesize
+\input{../tables/sim/sim_merged_precision}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} Block III only, because pairing across blocks is not
+defined: the three suites draw different laws and share no sample size.
+\emph{Every comparison here is within a replication}, the three cardinalities
+being read off one draw and one cross-fitting partition, so the standard error in
+parentheses is that of the difference and not the sum of two independent ones.
+The first two numeric columns are the simulated standard deviation at
+$\mathsf L=3$ and at $\mathsf L=4$ divided by the binary one at the same cell,
+so a value below one is a tighter sampling distribution at the higher
+cardinality; the last two are the paired bias difference against the binary arm.
+No asymptotic variance is available for this block, so the ratio is against the
+binary arm and never against a population value. Between $112$ and $120$
+replications per cell, and identical across the three cardinalities within a
+cell, which is what leaves the pairing defined; the counts are given design by
+design in the header rows of \cref{tab:sim-merged-rootn-balanced},
+\cref{tab:sim-merged-rootn-skewed} and \cref{tab:sim-merged-rootn-misspec}.
+Source: \texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_precision.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\begin{threeparttable}
+\caption{The one statistic both $\varphi$-step arms measure}
+\label{tab:sim-merged-stopping}
+\footnotesize
+\input{../tables/sim/sim_merged_stopping}
+\begin{tablenotes}\footnotesize
+\item \textit{Notes:} The probability that the discrepancy rule selects an
+iterate at or before its budget, which in Block I is one minus the probability
+that the rule returned the budget without ever meeting its threshold, and in
+Block III is the share of paths with a realised stopping index. \emph{The two
+arms do not parameterise the threshold the same way and their budgets differ by
+more than eight decades}, which is why both are printed as columns: Block I
+sweeps $\mathsf c_{14}$ against the cap \eqref{eq:cap}, of order $10^{10}$ to
+$10^{11}$, and Block III fixes $\tau_{\mathrm{DP}}=0.7$ against a cap of $100$.
+Reading a
+Block I row against a Block III row without reading those two columns is reading
+two different rules. Only the two swept values at which Block I's branch
+frequencies are non-degenerate are printed, $10^{-2}$ and $3\times10^{-2}$;
+outside them the answer is constant, at
+$\Pr(\text{cap})=1$ in all twelve cells for $\mathsf c_{14}\le10^{-3}$ and
+$\Pr(\hat m^{(1)}{=}1)=1$ in all twelve for $\mathsf c_{14}\ge10^{-1}$.
+\emph{That degeneracy is not something \cref{tab:sim-stopping} prints.} Its
+Panel A reports median stopped iterations, and a median does not establish what
+every replication did; its Panel B prints branch frequencies at
+$\mathsf c_{14}=10^{-2}$ alone. What that table does print bearing on it is
+Panel B's last column, the interval of $\mathsf c_{14}$ in which the rule stops
+in the interior; the opening pages of this section read those intervals off it
+and state the same degeneracy in the same terms. Both statements rest on the sweep behind the two
+tables, \texttt{quality\_reports/sim/sim\_thm\_rootn\_phistep.rds}, and not on
+a printed cell. Block III entries carry the count of
+replications in brackets, out of $24$ paths per cell. Source:
+\texttt{scripts/simulations/sim\_merged\_cardinality.R}; table
+\texttt{paper/tables/sim/sim\_merged\_stopping.tex}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+```
+:::
+
+<!-- ===================================================================
+     SECTION 6.  WHAT IT IS FOR, AND WHAT IT IS NOT.
+
+     RULED BY THE AUTHOR ON 2026-08-11: this section is an ILLUSTRATION OF THE
+     ESTIMATOR and not an empirical contribution.  It has four beats and
+     nothing else --
+
+       1  the instrument, read at sans-L = 4, with the reason it is read that
+          way; the first stage; A4(i) at four cells
+       2  the estimator on this panel: theta-hat at L = 4 and at the binary
+          coarsening on one cross-fitting stream, then phi-hat
+       3  the bootstrap, and what the envelope does and does not license
+       4  a short close
+
+     WHAT CAME OUT, AND WHY IT IS NOT COMING BACK BY ACCIDENT.  The three-probe
+     misclassification battery, the cell-by-cell localisation subsection, the
+     coordinate-invariance subsection and the control-set ladder were removed
+     under that ruling.  The cut text is preserved verbatim, with a heading and
+     a reason per passage, in
+     quality_reports/archive/2026-08-11_section6-streamline-cut.md.
+
+     LOCALISATION, REINSTATED 2026-08-15 AS ONE PARAGRAPH AND ONE TABLE, NOT AS
+     A SUBSECTION.  The 2026-08-11 withdrawal was correct against the run it
+     described: at that vintage the two cells it ranked were separated by two
+     null draws out of two thousand against a Monte Carlo standard error of
+     0.0011, so there was no ordering to read.  RE-SOURCED 2026-08-20 against a
+     regenerated app_tsp_localise.tex: the exceedance counts are 78, 12, 6 at
+     B = 2000 (MC SE 0.0044, 0.0018, 0.0013), so cells 2 and 3 are separated by
+     six draws and not by eleven.  The paragraph therefore reports the three
+     cells and STILL DRAWS NO ORDERING FROM THEM, because the false-negative
+     rate of the attribution is unpriced and prp:localise(iii) makes consistency
+     necessary and not sufficient.  NO CELL IS AT THE FLOOR ANY LONGER.  The
+     p < 0.001 print, and the one-exceedance argument behind it, described the
+     superseded run: cell 3 now has six exceedances and prints 0.003.  A floor
+     claim is not a rounding detail, since it asserts the data are at the
+     resolution limit of B, so it was removed rather than renumbered.
+
+     FLOATS IN THE ARTICLE, six tables and one figure:
+       tab:app-firststage   the instrument moves the regressor, and what the
+                            linear specification says about the same contrast
+       tab:app-localise     the per-cell localisation diagnostic of prp:localise
+       tab:app-theta        theta-hat at L = 4 against the binary coarsening,
+                            ONE FACTOR: common stream, common eps, common m-bar
+       tab:app-theta-cap    the same two columns plus the binary arm at m-bar =
+                            15, which is what separates the cap from L
+       tab:app-n1           the N1 defect, minimal over constant anchors
+       tab:app-phi          phi-hat at eleven percentiles, the bootstrap
+                            envelope, and the bootstrap's convergence record
+       fig:app-phi          the same curve drawn
+
+     ONE FLOAT LEFT THE ARTICLE AND IS STILL ORPHANED, NOT DELETED.
+     paper/tables/app_tsp_misclass.tex is on disk and is \input by no document.
+     Whether the supplement should take it is an open author decision, and one
+     stale pointer now depends on the answer: tab:supp-app-overlap's notes said
+     "probe 2 of Table 9 of the article", which was this table's number before
+     the 2026-08-11 streamline and is now tab:sim-card-q.  That clause was
+     removed on 2026-08-20 rather than repointed, because there is nothing to
+     point at; restoring the float would restore the cross-reading.
+
+     THE SECOND ORPHAN WAS PLACED, 2026-08-20.  app_tsp_feasibility.tex is
+     Table S27 of the supplement.  The open decision was forced by the article,
+     which leans on that table twice and named it nowhere -- Section 6.4's
+     "met at no control set that also satisfies A4(ii)" and Section 7's "the
+     frontier fails at every control set an applied literature would accept"
+     both read off it.  Both sentences now cite it by name.  Placing it also
+     repaired tab:supp-app-diag's "the frontier quantities of Table 11 of the
+     article", which the 2026-08-15 pointer audit had left alone as
+     unrecoverable: Panel D of app_tsp_estimator_diag.tex repeats exactly this
+     table's delta_n and sqrt(n) delta_n^2 rows, so the target was this file.
+
+     THE THIRD WAS PLACED, 2026-08-15.  app_tsp_phi_mult.tex is Table S23 of
+     the supplement.  Its per-percentile envelope is the one this text compares
+     the resample's with at the ends of the support, and the comparison is now
+     checkable: the notes to tab:app-phi and the sentence that reads the three
+     tail widths both point at the number, and NEITHER CITES A PATH.  A citation
+     by path was the stopgap while the table was unprinted; it is not a
+     substitute for a float and it is gone.  The FIGURE, app_tsp_phi_mult.pdf,
+     was deliberately left orphaned -- it is fig:app-phi with one envelope
+     swapped, and at print width the two differ by about a millimetre of band
+     edge, which is a comparison no reader can make across two documents.
+
+     app_tsp_boundary.tex is also \input by no document, deliberately: the
+     boundary adjustment is two sentences of prose and its ablation is cited by
+     path in tab:app-theta's notes rather than given a float of its own.
+
+     THE SUPPLEMENT carries Tables S1--S27 and Figures S1--S5, and this text
+     names them by number where it uses them.  A RANGE AND NOT A ROLL, since
+     2026-08-23.  The roll that stood here ran "sample construction,
+     descriptives, balance, overlap, the d_Z ladder, the estimator diagnostics,
+     the fifteen tuning arms, the five resampling schemes, the multiplier arm's
+     own percentiles and the operator norm" -- S15 through S24, stopping there
+     and omitting the boundary moments (S25), the boundary layer (S26) and the
+     feasibility table (S27).  It was the exact mirror of the supplement-side
+     count repaired in the same pass, in the other file, which is what a roll
+     does: it goes stale one float at a time and each addition has to remember
+     to update it.  A range goes stale only when the last float moves.  NO PAGE
+     NUMBERS ARE PRINTED HERE, for the reason that retired the roll twice
+     before.  The rendered documents are authoritative.
+     =================================================================== -->

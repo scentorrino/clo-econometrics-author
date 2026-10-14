@@ -1,0 +1,47 @@
+claim_id: sharpquad-polarisation
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:sharpquad, Step 2)"
+# WHAT THIS CHECKS.  The polarisation identity that carries Step 2, the step
+# proving that the NUMERICAL RADIUS of a bounded self-adjoint operator equals its
+# NORM.  For symmetric S and any x, y,
+#     <S(x+y), x+y> - <S(x-y), x-y>  =  4 <Sx, y>.
+# Given that identity, the parallelogram law finishes the argument in one line:
+# 4|<Sx,y>| <= m (||x+y||^2 + ||x-y||^2) = 4m for unit x, y, so ||S|| <= m.
+#
+# WHY IT IS WORTH A SPEC.  Step 2 is the ONLY place eq:sharpconst's equality --
+# as opposed to an inequality -- comes from, and the identity is FALSE for
+# non-symmetric S: the antisymmetric part contributes 2<Ax,y> - 2<Ay,x> to the
+# right-hand side, which is 4<Ax,y> only because <Ay,x> = -<Ax,y>.  So the
+# symmetry hypothesis is load-bearing and the spec is written with S SYMMETRIC by
+# construction (s12 appears in both off-diagonal positions).  A reader who
+# suspects the identity has been imported from the complex case -- where it
+# carries an extra factor of i in two of four terms -- can check here that the
+# REAL form is what is used.  proofs.tex flags the real field explicitly at two
+# sites for the same reason.
+#
+# THE MODEL.  S = [[s11, s12], [s12, s22]] on R^2, with x = (x1, x2),
+# y = (y1, y2).  The bilinear form u' S v is written out entry by entry, three
+# times, so nothing depends on matrix machinery.  Two dimensions suffice here,
+# unlike in sharpquad-antisym-form-vanishes: the symmetric 2 x 2 matrices already
+# form a THREE-parameter family, so no coincidence of low dimension is available.
+#
+# PREDICTED: MATCH.  Polynomial identity in seven real symbols; `expand` decides.
+variables:
+  s11:
+    domain: real
+  s12:
+    domain: real
+  s22:
+    domain: real
+  x1:
+    domain: real
+  x2:
+    domain: real
+  y1:
+    domain: real
+  y2:
+    domain: real
+start: "(s11*(x1+y1)**2 + 2*s12*(x1+y1)*(x2+y2) + s22*(x2+y2)**2)
+        - (s11*(x1-y1)**2 + 2*s12*(x1-y1)*(x2-y2) + s22*(x2-y2)**2)
+        - 4*(s11*x1*y1 + s12*(x1*y2 + x2*y1) + s22*x2*y2)"
+operation: expand
+claimed_end: "0"

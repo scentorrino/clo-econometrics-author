@@ -1,0 +1,1874 @@
+% ############################################################################
+% ##  RETIRED 2026-08-14. NOT COMPILED BY ANYTHING. DO NOT EDIT. DO NOT DELETE.
+% ##
+% ##  THE THIRD RETIRED MIRROR.  results.tex and assumptions.tex were retired on
+% ##  2026-08-03 with a banner of this form; this file is in exactly the same
+% ##  position and until now carried only the weaker 2026-08-02 SUPERSEDED note
+% ##  below, which was written while the architecture it describes was still
+% ##  half-live.  Verified 2026-08-14: NO document \input's this file.  Neither
+% ##  paper/qmd/main.qmd nor supplement.qmd references it; scripts/build-theory/
+% ##  driver.tex \input's the eight-file split and not this; scripts/build-theory/
+% ##  build.sh neither copies nor requires it.  Every mention of the name in the
+% ##  repository is a comment, a plan, or a critic report NAMING it as retired.
+% ##
+% ##  THE 2026-08-02 NOTE BELOW IS STALE IN ONE LOAD-BEARING RESPECT, AND IT IS
+% ##  CORRECTED HERE RATHER THAN REWRITTEN, SO THE RECORD STAYS LEGIBLE.  Its
+% ##  "LABEL HYGIENE" paragraph states that "results.tex SURVIVES UNDIVIDED and
+% ##  is still the source of record: it is what scripts/build-theory/build.sh
+% ##  compiles".  THAT HAS BEEN FALSE SINCE 2026-08-03: build.sh compiles the
+% ##  SPLIT, results.tex is itself retired, and build.sh:46 records it as such.
+% ##  A reader who follows that sentence is sent from one dead file to another.
+% ##
+% ##  WHY THIS MATTERS MORE THAN "an old copy lying around" -- THE DUPLICATE
+% ##  LABELS ARE THE HAZARD, AND THIS FILE HOLDS THE ONES THAT CARRY NUMBERS.
+% ##  It declares eq:normconst (:588) and eq:cap (:601), both of which are owned
+% ##  by results_s3_estimation.tex (:77, :97) in the compiled corpus.  eq:cap is
+% ##  the ONE display in this project whose numerical content moves with the
+% ##  reference measure -- see lem:scaleinv(vi)--(vii) and the standing-convention
+% ##  paragraph in results_supp.tex -- so a stale second copy of it is the exact
+% ##  shape of the two prior divergence incidents: a gate or a reader inspecting
+% ##  the wrong artifact and reporting safety, or danger, it never checked.
+% ##  It also still declares cor:a1cprim (:352), WITHDRAWN 2026-08-05 for having
+% ##  an empty hypothesis set, and still prints the pre-generalisation scalar
+% ##  contrast (:1117) and the moment with the contrast on the left (:1120).
+% ##
+% ##  NOT UPDATED BY THE 2026-08-14 B1(i) PASS, DELIBERATELY.  That pass removed
+% ##  the inert "rescaled so that c_Phi = 1" normalisation from B1(i)
+% ##  (assumptions_main.tex), added lem:scaleinv(vii) and amended the standing
+% ##  convention (results_supp.tex), and retyped three notation_glossary.md rows.
+% ##  This file was NOT touched.  It has no c_Phi text to touch -- B1 lives in the
+% ##  assumption files -- but its eq:cap and eq:normconst are now formally behind
+% ##  the corpus's reading of them.  Behind, not ahead: nothing here is unique
+% ##  work that would be lost.
+% ##
+% ##  KEPT RATHER THAN DELETED on the results.tex / assumptions.tex /
+% ##  paper/sections/theorems/_SUPERSEDED.md precedent: nothing in this
+% ##  repository is committed, and a deletion would be unrecoverable.
+% ############################################################################
+%
+% SUPERSEDED 2026-08-02.  This file is the FIRST two-way split and is
+% referenced by NO .qmd: the article and supplement now input the three-way
+% split results_s2_identification.tex / results_s3_estimation.tex /
+% results_s4_asymptotics.tex.  Kept only so the split's history is legible.
+% Its 8 bare \ref{ass:...} calls were corrected in the same pass as the
+% corpus's 82, so build.sh's lint stays green rather than carrying a
+% permanent exclusion for a dead file.
+%
+% ============================================================================
+%  RESULTS -- MAIN TEXT.  project `panel-npiv-discrete`
+%
+%  WHAT THIS FILE HOLDS.  The 23 statements a reader of the article must SEE:
+%  the model and the spaces, the operator equation and its linearisation, the
+%  identification results, the estimator in all three of its pieces, and the
+%  four asymptotic statements.  Nothing else.
+%
+%  results_main.tex + results_supp.tex ARE the old results.tex.  The split is a
+%  PARTITION: all 85 theorem-like environments survive, every \label is declared
+%  exactly once across the two files, and no statement was rewritten, retitled or
+%  renumbered.  Each environment carries the comment block that preceded it.
+%
+%  results_supp.tex holds the other 62 environments, the original file header,
+%  and the change log.  It is \input by paper/qmd/supplement.qmd ahead of
+%  proofs.tex; this file is \input by paper/qmd/main.qmd.
+%
+%  LABEL HYGIENE -- READ THIS BEFORE ADDING AN \input ANYWHERE.
+%  results.tex SURVIVES UNDIVIDED and is still the source of record: it is what
+%  scripts/build-theory/build.sh compiles, what scripts/render-sync/
+%  check_rendering_sync.py reads, and what ~100 files under scripts/symbolic/
+%  specs/ cite BY LINE NUMBER.  It was therefore not edited.  The consequence is
+%  that every \label in this file is declared TWICE on disk, here and in
+%  results.tex.  THIS FILE AND results.tex MUST NEVER BE \input INTO THE SAME
+%  DOCUMENT, and neither must results_supp.tex and results.tex.  That is the same
+%  rule results.tex's own header states for paper/sections/theorems/*.tex.
+%
+%  CROSS-FILE REFERENCES.  A statement kept here may \cref a statement that moved
+%  to the supplement, and vice versa.  Those calls do not resolve, because the
+%  article and the supplement are separate documents.  The MANUSCRIPT PROSE never
+%  does this -- every \cref and \eqref in main.qmd points at a label defined in
+%  this file or in assumptions.tex.  The residue is internal to the statements,
+%  which are preserved verbatim by instruction.
+% ============================================================================
+
+
+
+% ===========================================================================
+%  PART A.  SETUP
+% ===========================================================================
+
+\begin{definition}[Model and differencing]\label{def:model}
+The structural model is
+\begin{equation}\label{eq:levels}
+Y_{ij} \;=\; \vdagger(X_{ij}) \;+\; Z_{ij}'\theta_\dagger \;+\; \eta_i \;+\; U_{ij},
+\qquad j\in\{1,2\},
+\end{equation}
+with $X_{ij}\in\mathcal X\subset\IR$ scalar and continuously distributed, $Z_{ij}\in\IR^{p}$,
+$W_i\in\{0,1\}$, and $\eta_i$ an individual effect that may depend on $(X,Z,W)$. Differencing across
+the two periods,
+\begin{equation}\label{eq:diffs}
+% \Delta\vdagger_i was a DOUBLE SUBSCRIPT error: \vdagger expands to
+% \varphi_{\dagger}, which already carries one.  Written out here; the reading is
+% fixed by the convention on the next line.  See preamble.tex at \vdagger.
+\Delta Y_i \;=\; \Delta\varphi_{\dagger i} \;+\; \Delta Z_i'\theta_\dagger \;+\; \Delta U_i,
+\qquad \Delta\varphi_i:=\varphi(X_{i2})-\varphi(X_{i1}),
+\end{equation}
+and, for a trial pair $(\varphi,\theta)$, the residual at trial values is
+\begin{equation}\label{eq:trialres}
+\Delta U_i(\theta,\varphi)\;:=\;\Delta Y_i-\Delta\varphi_i-\Delta Z_i'\theta ,
+\qquad \Delta U_i \;=\; \Delta U_i(\theta_\dagger,\vdagger).
+\end{equation}
+The subscript $i$ is suppressed whenever a statement concerns the population distribution $P$.
+\end{definition}
+
+\begin{definition}[Spaces, and the domain of the operator]\label{def:spaces}
+Let $\pi$ be the reference density on $\mathcal X$ of Assumption~C1, and set
+\[
+\mathcal V\;:=\;\Big\{\varphi\in L^{2}(\mathcal X,\pi):\ \textstyle\int_{\mathcal X}\varphi\,d\pi=0\Big\},
+\qquad
+L^{2}(\Pi)\;:=\;L^{2}\big(\IR\times\mathcal T,\ \Pi\big),
+\]
+with $\Pi$ as in Assumption~B1(iv). Inner products are
+$\langle h,h'\rangle_{L^2(\pi)}=\int hh'\,\pi\,dx$ and
+$\langle\Xi,\Xi'\rangle_{L^2(\Pi)}=\int\Xi\Xi'\,d\Pi$ --- \emph{the bound variables are $h,h'$ on the
+domain side and $\Xi,\Xi'$ on the range side, being this project's letters for a direction in
+$L^{2}(\pi)$ and a generic element of a range-type space respectively}. The period-difference
+% ARCHAEOLOGY (moved out of compiled text, shortening pass 2026-08-01).
+% A round-11 draft wrote the two pairings as <a,b>, with a the RESERVED degree of
+% ill-posedness and b the weight anchor b_star -- glossary C72's species, in the
+% one display that defines the pairing.
+operator is
+$\Delta:\mathcal V\to L^{2}(P)$, $\Delta h=h(X_2)-h(X_1)$. For an integrable random variable $g$ write
+\begin{equation}\label{eq:nudef}
+\nu_g(x)\;:=\;E[g\mid X_2=x]\,f_{X_2}(x)\;-\;E[g\mid X_1=x]\,f_{X_1}(x),
+\qquad
+\nu\;:=\;\nu_{\Delta Z}\in\IR^{p} ,
+\end{equation}
+the latter understood coordinatewise.
+
+\emph{Every operator in this paper has domain $\mathcal V$, with one declared exception named below.} The
+orthogonal decomposition $L^{2}(\pi)=\mathcal V\oplus\{\text{constants}\}$ holds because
+$\langle c,h\rangle_{L^2(\pi)}=c\int h\,d\pi$, and $\Delta$ annihilates constants, so nothing is lost by
+the restriction while a zero singular value is avoided. In particular the singular system
+$(\sigma_j;e_j,\tilde e_j)_{j\ge1}$ of \cref{prp:compact}, the completeness condition A1c, the source
+condition A2 and the Hilbert-scale link H1 all refer to
+$\mathcal A_{\mathrm{cond}}:\mathcal V\to L^{2}(\Pi)$ and to that same singular system.
+
+\emph{The exception is the second-order form operator $\mathcal B$ of \eqref{eq:Bpi}, which is read on
+all of $L^{2}(\pi)$}, because $\mathcal V$ is \emph{not} invariant under multiplication by a non-constant
+function and $\mathcal B$ contains such a multiplication. The quadratic form of
+\cref{lem:secondord}(i) is evaluated only at $h\in\mathcal V$, so the form's own sharp constant is
+governed by the compression $P_{\mathcal V}\mathcal B_{\mathrm{sym}}P_{\mathcal V}|_{\mathcal V}$, where
+$P_{\mathcal V}$ is the $L^{2}(\pi)$-orthogonal projection onto $\mathcal V$; \cref{lem:solset}(iii)
+records the relation between the two. \emph{No other object in the paper leaves $\mathcal V$.}
+\end{definition}
+
+% ---------------------------------------------------------------------------
+%  THE OPERATOR EQUATION.  This is the object missing from the source draft at
+%  `:120--122', where the sentence ends "Then we have that" and the display
+%  never appears.  Everything in draft Section 2 after that point -- the
+%  Frechet derivative at `:124--126', the completeness condition at
+%  `:127--130', the adjoint at `:172--177' -- is a derivative of this
+%  definition and cannot be read without it.
+% ---------------------------------------------------------------------------
+
+\begin{definition}[The operator equation]\label{def:operator}
+Let $\Delta Y_\theta:=\Delta Y-\Delta Z'\theta$, so that $\Delta U(\theta,\varphi)=\Delta Y_\theta-\Delta\varphi$.
+For $(\varphi,\theta)\in\mathcal V\times\IR^{p}$ define the \emph{Bierens moment family}
+\begin{equation}\label{eq:Mdef}
+\mathcal M(u,t;\varphi,\theta)
+\;:=\;E\Big[\widetilde W\;\un\big\{\Delta Y_\theta-\Delta\varphi\le u\big\}\;w\big(t'\Phi(\Delta Z)\big)\Big],
+\qquad (u,t)\in\IR\times\mathcal T,
+\end{equation}
+with $\widetilde W=W-\varrho(\Delta Z)$, and let
+\begin{equation}\label{eq:Tdef}
+T:\ \mathcal V\times\IR^{p}\longrightarrow L^{2}(\Pi),
+\qquad
+T(\varphi,\theta)\;:=\;\big[(u,t)\mapsto\mathcal M(u,t;\varphi,\theta)\big].
+\end{equation}
+The \emph{operator equation of the model} is
+\begin{equation}\label{eq:opeq}
+T(\varphi,\theta)\;=\;0 \quad\text{in }L^{2}(\Pi).
+\end{equation}
+We abbreviate $\mathcal M(u,t):=\mathcal M(u,t;\vdagger,\theta_\dagger)$ and
+$T(\varphi):=T(\varphi,\theta_\dagger)$ when no ambiguity arises.
+\end{definition}
+
+\begin{definition}[Admissible sets]\label{def:admissible}
+Restrictions (A) and (B) of plan \S2.1 are
+\[
+\text{(A)}\quad E\big[\widetilde W\,\varsigma(\Delta U)\;\big|\;\Delta Z\big]=0\ \ \text{a.s. for every bounded measurable }\varsigma,
+\qquad
+\text{(B)}\quad E\big[\Delta Z\,\Delta U\big]=0 .
+\]
+Define
+\[
+\mathcal I\;:=\;\Big\{(\varphi,\theta)\in\mathcal V\times\IR^{p}:\ \Delta Y-\Delta\varphi-\Delta Z'\theta\ \upmodels\ W\ \big|\ \Delta Z\Big\},
+\qquad
+\mathcal V_{CI}\;:=\;\big\{\varphi\in\mathcal V:\ (\varphi,0)\in\mathcal I\big\}.
+\]
+Conditional independence $\xi\upmodels W\mid\Delta Z$ is understood in the factorisation sense,
+$P(\xi\in B,\,W=j\mid\Delta Z)=P(\xi\in B\mid\Delta Z)\,P(W=j\mid\Delta Z)$ a.s.\ for all Borel $B$ and
+$j\in\{0,1\}$. This is equivalent to the conditional-expectation form when both $W$-cells are non-null
+given $\Delta Z$, and it is the form that behaves correctly when $W$ is conditionally degenerate --- in
+which case it holds automatically, a fact used in the proof of \cref{lem:bierens}.
+\end{definition}
+
+\begin{proposition}[Fr\'echet derivative in $\varphi$, with a Lipschitz derivative map]\label{prp:frechet}
+$T$ is Fr\'echet differentiable in $\varphi$ with a quadratic remainder, and the derivative map is
+Lipschitz.
+Suppose B1(i), (ii) and (iv.c), C1 and C2$'$(i) hold. Then, for every $\theta\in\IR^{p}$ and every
+$\varphi\in\mathcal V$, the linear operator $\mathcal A_\varphi:\mathcal V\to L^{2}(\Pi)$ defined by
+\begin{equation}\label{eq:Adef}
+\mathcal A_\varphi h(u,t)
+\;=\;E\Big[\widetilde W\,w\big(t'\Phi(\Delta Z)\big)\,
+f_{\Delta Y_\theta-\Delta\varphi\mid X_1,X_2,\Delta Z,W}(u)\;\big\{h(X_2)-h(X_1)\big\}\Big]
+\end{equation}
+is bounded, with $\|\mathcal A_\varphi\|\le2\,\bar c_\pi^{1/2}\|\bar f_0\|_\infty c_\Pi$, and:
+\begin{enumerate}
+\item[(i)] \emph{Fr\'echet differentiability with a quadratic remainder:} for all $h\in\mathcal V$,
+\begin{equation}\label{eq:frechetbound}
+\big\|T(\varphi+h,\theta)-T(\varphi,\theta)-\mathcal A_\varphi h\big\|_{L^{2}(\Pi)}
+\;\le\;C_{\!\mathcal A}\,\|h\|_{L^{2}(\pi)}^{2},
+\qquad C_{\!\mathcal A}:=2\,\bar c_\pi\,\|\bar f_1\|_\infty\,c_\Pi ;
+\end{equation}
+\item[(ii)] \emph{Lipschitz derivative map:} for all $h\in\mathcal V$,
+\begin{equation}\label{eq:lipschitz}
+\big\|\mathcal A_{\varphi+h}-\mathcal A_\varphi\big\|\;\le\;2\,C_{\!\mathcal A}\,\|h\|_{L^{2}(\pi)} .
+\end{equation}
+\end{enumerate}
+At the truth we write $\mathcal A_{\mathrm{cond}}:=\mathcal A_{\vdagger}$ with $\theta=\theta_\dagger$,
+in which case the conditional density in \eqref{eq:Adef} is $f_{\Delta U\mid X_1,X_2,\Delta Z,W}$.
+\end{proposition}
+
+\begin{proposition}[Compactness]\label{prp:compact}
+$\mathcal A_{\mathrm{cond}}$ is Hilbert--Schmidt, hence compact.
+Suppose B1(i), (ii) and (iv.c), C1 and C2$'$(i) hold. Then $\mathcal A_{\mathrm{cond}}$ is the integral
+operator on $\mathcal V$ with kernel
+\begin{equation}\label{eq:kernel}
+\mathsf k(u,t;x)\;=\;\frac{\nu_{g_{u,t}}(x)}{\pi(x)},
+\qquad
+g_{u,t}\;:=\;\widetilde W\,w\big(t'\Phi(\Delta Z)\big)\,f_{\Delta U\mid X_1,X_2,\Delta Z,W}(u),
+\end{equation}
+and $\|\mathcal A_{\mathrm{cond}}\|_{\mathrm{HS}}\le 2\,\bar c_\pi\,\|\bar f_0\|_\infty\,c_\Pi<\infty$.
+Moreover $\mathsf k(u,t;\cdot)\in\mathcal V$ for every $(u,t)$, so $\mathcal A^\ast_{\mathrm{cond}}$ maps
+$L^{2}(\Pi)$ into $\mathcal V$; and $\mathcal A_{\mathrm{cond}}$ admits a singular system
+$(\sigma_j;e_j,\tilde e_j)_{j\in\mathcal J}$, $\mathcal J\subseteq\IN$, with $\{e_j\}_{j\in\mathcal J}$
+an orthonormal basis of $(\ker\mathcal A_{\mathrm{cond}})^{\perp}\cap\mathcal V$ and, when $\mathcal J$ is
+infinite, $\sigma_j\downarrow0$.
+\end{proposition}
+
+% prp:compact's own hypotheses do NOT include A1b(iv): compactness, the kernel
+% and the singular system need nothing about Delta Z's moments.  The nu-versus-
+% nu/pi comparison does need E||Delta Z|| < infinity, so it is lifted out of the
+% proof into rem:nupi, where the assumption can be cited.  Round 2 ran the
+% comparison inside prp:compact's proof without listing it.
+%
+% THE RANK CLAUSE IS NEW.  Both counterexample-hunter DGPs produce a RANK-ONE
+% A_cond satisfying every hypothesis above, so finite rank is a live case, not
+% a pathology.  Nothing here breaks -- but the singular system then spans
+% (ker A_cond)^perp, NOT V, and H1's sigma_j asymp j^{-a} is false, which is why
+% H1 now assumes infinite rank explicitly.
+
+% prp:compact closes the gap the round-3 strategist-critic recorded at m-23:
+% compactness of A_cond is a PREMISE of prp:sharpquad(ii) and of every Picard,
+% source-condition and Landweber statement in the project, and it appeared
+% nowhere.  It is proved here rather than assumed.
+%
+% ROUND 2: the clause "k(u,t;.) in V" is new and is not decoration.  It is the
+% internal check that A2 is stated on the right object.  Every element of
+% R(A*_cond) is an integral of kernel slices; every slice lies in V; hence
+% R(A*_cond) is contained in V, which is exactly {zeta : int zeta pi dx = 0}.
+% And nu_g/pi lies in V for every g (int (nu_g/pi) d pi = int nu_g dx = 0),
+% while nu_g does not.  See the note under A2 in assumptions.tex.
+%
+% NOTE THE REASON, which changed in the cleanup pass.  The containment
+% R(A*) subset V follows from the CONSTRUCTION of the adjoint, not from
+% R(A*) subset (ker A)^perp together with Delta 1 = 0: once def:spaces fixes
+% the domain at V, the constants are not in the domain at all and that
+% orthogonality argument is unavailable.  The conclusion is unchanged.
+
+% ===========================================================================
+%  PART B.  STEP 1 -- SHIFT INVARIANCE
+% ===========================================================================
+
+\begin{lemma}[L1: shift invariance]\label{lem:shiftinv}
+Restriction (A) is invariant to the value of $\theta$, so it does not identify $\theta_\dagger$.
+The set $\mathcal I$ of \cref{def:admissible} satisfies, with no assumption beyond that definition,
+\begin{equation}\label{eq:shiftinv}
+\mathcal I\;=\;\mathcal V_{CI}\times\IR^{p};
+\end{equation}
+and if in addition A1 holds, then $\vdagger\in\mathcal V_{CI}$, so $(\vdagger,\theta)\in\mathcal I$ for
+every $\theta\in\IR^{p}$.
+\end{lemma}
+
+% A4(i) IS NOT A HYPOTHESIS HERE, and its removal is a cleanup-pass correction.
+% \eqref{eq:binaryquant} holds for ANY version of the conditional distribution
+% functions, including on the degenerate region D := {z : varrho(z)(1-varrho(z))
+% = 0} where one of the two W-cells is null and F_j(.|z) is an arbitrary
+% version: on D the prefactor varrho(1-varrho) is zero, so both sides vanish
+% whatever version is used.  The extension step needs only the POINTWISE
+% positivity varrho(z)(1-varrho(z)) > 0, which the proof states in exactly that
+% form, and it draws no conclusion on D -- where none is needed, since W is
+% conditionally degenerate there and lem:bierens handles it separately.
+
+\begin{lemma}[Bierens equivalence for the panel restriction]\label{lem:bierens}
+The $\Delta Z$-conditional restriction (A) is equivalent to the vanishing of the unconditional family
+$\{\mathcal M(u,t)\}$, so no conditional distribution given $\Delta Z$ ever has to be estimated.
+Suppose B1(i)--(iv) hold. Then the following are equivalent:
+\begin{enumerate}
+\item[(a)] $\Delta U\upmodels W\mid\Delta Z$;
+\item[(b)] $E[\widetilde W\,\varsigma(\Delta U)\mid\Delta Z]=0$ a.s.\ for every bounded measurable $\varsigma$, that is, restriction \textup{(A)};
+\item[(c)] $\mathcal M(u,t)=0$ for every $(u,t)\in\IR\times\mathcal T$;
+\item[(d)] $T(\vdagger,\theta_\dagger)=0$ in $L^{2}(\Pi)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{corollary}[to \cref{lem:shiftinv} and \cref{lem:bierens}]\label{cor:opsol}
+The operator equation has the same solution set in $\varphi$ at every $\theta$, and that set is
+$\mathcal V_{CI}$.
+Suppose B1(i)--(iv) hold. Then for every $\theta\in\IR^{p}$,
+\[
+\big\{\varphi\in\mathcal V:\ T(\varphi,\theta)=0\ \text{in }L^{2}(\Pi)\big\}\;=\;\mathcal V_{CI},
+\]
+and under A1b(iii) this set equals $\{\vdagger\}$.
+\end{corollary}
+
+\begin{proposition}[R2: when a weight yields a $\varphi$-free moment]\label{prp:nophifree}
+A moment is free of the structural function exactly when the two periods' $g$-tilted marginals of the
+endogenous regressor coincide.
+Suppose C1(ii) holds and let $g$ be a random variable satisfying
+\begin{equation}\label{eq:gproviso}
+E|g|<\infty,
+\qquad
+E\big|g\,h(X_j)\big|<\infty\ \ (j=1,2)\ \text{for every }h\in\mathcal V,
+\qquad
+E\big|g\,\Delta U(\theta,0)\big|<\infty .
+\end{equation}
+Then the map $\varphi\mapsto E\big[g\,\Delta U(\theta,\varphi)\big]$ is constant on $\mathcal V$, for one
+and hence every $\theta\in\IR^{p}$, if and only if
+\begin{equation}\label{eq:tilted}
+E[g\mid X_2=x]\,f_{X_2}(x)\;=\;E[g\mid X_1=x]\,f_{X_1}(x)
+\qquad\text{for almost every }x\in\mathcal X,
+\end{equation}
+that is, if and only if $\nu_g\equiv0$.
+
+% ARCHAEOLOGY.  A1b(i) was listed as a hypothesis here through round 7 and is struck.
+\emph{A1b(i) is \textbf{not} a hypothesis.} The proof's third step upgrades
+``$\nu_g/\pi\perp\mathcal V$'' to ``$\nu_g\equiv0$'' using $L^{2}(\pi)=\mathcal V\oplus\{\text{constants}\}$
+--- which is \cref{def:spaces} --- together with $\int_{\mathcal X}\nu_g\,dx=0$ from
+\cref{lem:nusigma}(iv). $\vdagger$ occurs nowhere in the statement or the proof, and the map is
+quantified over generic $\varphi,\varphi_0\in\mathcal V$.
+\end{proposition}
+
+\begin{corollary}[to \cref{prp:nophifree}: the debiasing weight must vary with the residual]\label{cor:udep}
+If the debiasing weight does not depend on the residual, the debiased moment is not merely
+first-order insensitive to the structural function but exactly free of it.
+Suppose A1, A1b(i), A1b(iv) and C1(ii) hold, let $L$ be differentiable in $u$ \emph{at every} $(u,z)$
+with $\partial_uL(u,z)=c(z)$ for some $c$ such that $g:=\Delta Z+\widetilde W\,c(\Delta Z)$ satisfies
+\eqref{eq:gproviso} coordinatewise, and suppose $L$ satisfies N1. Then
+$L(u,z)=c(z)\,u$, the moment function is $\psi=g\,\Delta U(\theta,\varphi)$ with $g$ measurable with
+respect to $\sigma(W,\Delta Z)$, and the following are equivalent:
+\begin{enumerate}
+\item[(a)] $E[\psi]$ is first-order insensitive to $\varphi$ at $\vdagger$, i.e.\
+$\nu_{\Delta Z+\widetilde Wc}\equiv0$;
+\item[(b)] $\varphi\mapsto E[\psi]$ is constant on $\mathcal V$;
+\item[(c)] $\nu_{\widetilde Wc}=-\nu$ \emph{for the $c$ of the hypothesis}; equivalently, membership
+$-\nu\in\mathcal N_0:=\{\nu_{\widetilde W\,\tilde c(\Delta Z)}:\tilde c\in\mathcal C_0\}$ is realised
+\emph{at that} $c$, where $\mathcal C_0$ is the set of $\tilde c$ for which
+$\Delta Z+\widetilde W\tilde c(\Delta Z)$ satisfies \eqref{eq:gproviso} coordinatewise.
+\end{enumerate}
+Moreover $\varphi\mapsto E[\psi]$ is affine on $\mathcal V$, so every term of order two or higher in its
+expansion vanishes identically \emph{whether or not \textup{(a)--(c)} hold}; what \textup{(a)--(c)} add is
+that the first-order term vanishes as well. Contrapositively, if $-\nu\notin\mathcal N_0$, then every
+$\ell_\star$ satisfying $\nu_{\Delta Z+\widetilde W\ell_\star}\equiv0$ has
+$\partial_u\ell_\star\not\equiv0$.
+\end{corollary}
+
+\begin{proposition}[Characterisation of the kernel of the linearisation]\label{prp:kerchar}
+A direction is annihilated by the linearised operator exactly when the instrument fails to move its
+period difference, given the residual and the controls.
+Suppose B1(i)--(iv), C1 and C2$'$(i) hold, and let $h\in\mathcal V$. Then
+\begin{enumerate}
+\item[(i)] the following are equivalent:
+\emph{(a)} $\mathcal A_{\mathrm{cond}}h=0$ in $L^{2}(\Pi)$;
+\emph{(b)} $E\big[\widetilde W\,\{h(X_2)-h(X_1)\}\,\big|\,\Delta U,\Delta Z\big]=0$ almost surely;
+\item[(ii)] if in addition A1 and A4(i) hold, \emph{(b)} is equivalent to
+\emph{(c)} $E\big[h(X_2)-h(X_1)\mid\Delta U,\Delta Z,W=1\big]
+=E\big[h(X_2)-h(X_1)\mid\Delta U,\Delta Z,W=0\big]$ almost surely.
+\end{enumerate}
+\end{proposition}
+
+\begin{corollary}[to \cref{prp:kerchar}(i): a primitive for A1c]\label{cor:a1cprim}
+Instrument completeness given the residual, together with measure separability, delivers first-order
+local identification.
+Suppose B1(i)--(iv), C1, C2$'$(i), A1b(ii) and A1d hold. Then A1c holds, that is,
+$\ker\mathcal A_{\mathrm{cond}}=\{0\}$. \emph{A1b(i) is \textbf{not} a hypothesis}: the ``constant,
+hence zero'' step of \cref{lem:nusigma}\textup{(ii)} is \cref{def:spaces} and not that clause, and the
+conclusion is about a generic $h\in\ker\mathcal A_{\mathrm{cond}}\subseteq\mathcal V$.
+% ARCHAEOLOGY.  A1b(i) was listed here through round 7, inherited from
+% lem:nusigma(ii), and is struck.
+\end{corollary}
+
+% ===========================================================================
+%  PART F.  STEP 5 -- THE SELECTION, ORTHOGONALITY, AND THE BALANCING BOUND
+%
+%    def:weight    representers, weights, and THE ANCHOR (round-7: closes the
+%                  CRITICAL that L_star was used everywhere and defined nowhere)
+%    def:dirclass  admissible perturbation directions, with the SHIFT-UNIFORM
+%                  seminorms that make m(tau) exist off tau_1 = 0
+%    lem:solset   (L-16)  structure of the solution set and the selection
+%    lem:secondord (L-6)  the second-order expansion in three nuisances
+%    prp:orthog           orthogonality in varphi, in L, and in varrho
+%    lem:balance   (L-7)  the balancing bound on the first-order bias
+%
+%  TYPING.  Per F-15 every statement below is COORDINATEWISE in the p
+%  coordinates of theta: L, ell, ell_star and the directions D are R^p-valued,
+%  and A*_cond acts on each coordinate separately.  eq:JSig's J is the one
+%  object whose FORM is NOT coordinatewise; see the round-7 note in
+%  assumptions.tex.  DISPATCH 13: the tag on that sentence was "A3", which is
+%  now retired (ass:rank), and the distinction between FORM and VALUE is now
+%  the operative one -- lem:momzero(iv) makes the non-coordinatewise summand
+%  ZERO, so J itself IS coordinatewise and symmetric, while J-hat (eq:Jhat) is
+%  neither.  The typing warning therefore transfers from J to J-hat and is not
+%  withdrawn.
+%
+%  SYMBOLS INTRODUCED OR MOVED IN ROUND 7, all recorded in the glossary:
+%    Psi(tau)  replaces m(tau).  C7 retired the shorthand m := M/pi BECAUSE it
+%              collided with the LF iteration counter m, and round 6 introduced a
+%              second collision on the same letter.  Psi is the expectation of
+%              psi, which is the mnemonic; the pair is documented in Sec.1.6.
+%    sans-r    replaces r as the varrho-direction.  Italic r is the propensity
+%              smoothness index and the two CO-OCCUR in one display of
+%              lem:secondord(iv)'s proof, where r_n = n^{-r/(2r+d_Z)}.
+%    tau       is Part F's perturbation parameter; A7's discrepancy constant has
+%              moved to tau_DP.
+%    vartheta  is the R^p coordinate-contraction direction, replacing the
+%              round-6 binding use of varsigma, which is a RESERVED LOCAL bound
+%              variable and could not be made binding.
+%    D         RETAINED, and C2's retirement of plain D is LIFTED -- see the
+%              glossary Sec.8.6.  Three fonts, three types: calligraphic D the
+%              differentiation operator, bold D the sieve design matrix, italic D
+%              the direction in L.  This is the rule Sec.8.2 already applies to
+%              B_sym versus bold B.
+% ===========================================================================
+
+\begin{definition}[Representers, weights, and the anchor]\label{def:weight}
+Let $\ell^\Pi\in L^{2}(\Pi)$ and $\ell:=\mathcal W\ell^\Pi$ with $\mathcal W$ as in
+\eqref{eq:Wdef}, applied coordinatewise.
+\begin{enumerate}
+\item[(a)] $\ell^\Pi$ is an \emph{admissible representer} if it satisfies \textbf{A2b}. \emph{That tag,
+and not A$2'$(i), is what this clause names}: A$2'$(i) is a \emph{maintained assertion} about
+$\ell^\Pi_\star$; A2b is a \emph{property} a candidate representer may or may not have, and it is the
+property every result quantifying over representers imposes. Under B1(i), (ii), (iv.a),
+\cref{cor:elldiff} --- itself stated at a generic admissible representer --- applies to $\ell$: it is
+bounded and continuously differentiable in $u$, uniformly in $z$, with budgets
+$\Lambda^{(0)},\Lambda^{(1)}$.
+\item[(b)] For a Borel $b:\IR^{p}\to\IR^{p}$, the \emph{weight generated by $\ell$ and anchored at $b$}
+is
+\begin{equation}\label{eq:weightdef}
+L^{\,b}_{\ell}(u,z)\;:=\;\int_{0}^{u}\ell(v,z)\,dv\;+\;b(z),
+\qquad (u,z)\in\IR\times\IR^{p},
+\end{equation}
+the integral being well defined because $\ell(\cdot,z)$ is continuous and bounded. It is the unique
+function that is differentiable in $u$ at \emph{every} point with $\partial_uL^{\,b}_\ell=\ell$ and
+$L^{\,b}_{\ell}(0,\cdot)=b$. The weight is \emph{admissible} if $E\|b(\Delta Z)\|^{2}<\infty$.
+\item[(c)] $\ell^\Pi$ is an \emph{admissible selection} if it is an admissible representer and solves
+$\mathcal A^\ast_{\mathrm{cond}}\ell^\Pi=-\nu/\pi$.
+\end{enumerate}
+Under A2 and A2$'$(i), $\ell^\Pi_\star$ is an admissible selection --- A2 gives that it solves the
+adjoint equation, A2$'$(i) that it satisfies A2b --- with $\ell_\star=\mathcal W\ell^\Pi_\star$, and
+$L_\star:=L^{\,b_\star}_{\ell_\star}$ is the admissible weight fixed by A2$'$(iii). Write
+$\zeta_\star:=(\vdagger,L_\star,\varrho)$ for the nuisance triple at the truth.
+\end{definition}
+
+\begin{proposition}[Neyman orthogonality]\label{prp:orthog}
+The debiased moment is orthogonal in all three nuisances: in the structural function exactly when the
+debiasing weight solves the adjoint equation, and in the weight and the propensity exactly, for every
+admissible direction.
+Suppose A1b(i), A1b(iv), B1(i), (ii), (iv), C1(ii) and C2$'$(i) hold. \emph{A1 is \textbf{not} in the
+global list}: it is consumed by part (ii) alone --- where it is
+assumed and cited --- while parts (i) and (iii) use it nowhere. The split follows the precedent already
+in this file at \cref{lem:shiftinv}, and its practical point is the same: \cref{lem:balance}, which
+inherits ``the hypotheses of \cref{prp:orthog}(i)'', would otherwise inherit A1 as surplus and consume
+it in no step.
+\emph{N1 is not assumed in any part}: (i) and (ii) do not use it and (iii) characterises it. Then
+\begin{enumerate}
+\item[(i)] \emph{Structural function --- stated at an arbitrary admissible representer, and A2 is not
+assumed.} Let $\ell^\Pi$ be an admissible representer in the sense of A2b,
+$\ell:=\mathcal W\ell^\Pi$, and $L$ an admissible
+weight generated by $\ell$ in the sense of \cref{def:weight}. For $h\in\mathcal V$ define
+\begin{equation}\label{eq:PsiL}
+\Psi_L(\tau_1)\;:=\;E\big[\psi\big(\theta_\dagger,(\vdagger+\tau_1h,\,L,\,\varrho)\big)\big]
+\;=\;E\Big[\Delta Z\,(\Delta U-\tau_1\Delta h)+\widetilde W\,L\big(\Delta U-\tau_1\Delta h,\Delta Z\big)\Big],
+\qquad\tau_1\in\IR,
+\end{equation}
+which is finite for \emph{every} $\tau_1\in\IR$: the second term because
+$\|L(u,z)\|\le\|b(z)\|+\|\ell\|_\infty|u|$ by \eqref{eq:weightdef}, with $|\widetilde W|\le1$ by (P1),
+$E\|b(\Delta Z)\|^{2}<\infty$ by admissibility, $\|\ell\|_\infty<\infty$ by \cref{cor:elldiff} under A2b
+--- \emph{the tag is A2b and not A$2'$(i), because $\ell^\Pi$ here is a generic admissible representer
+and not $\ell^\Pi_\star$} --- and
+$E|\Delta U|,E|\Delta h|<\infty$ by A1b(iv) and \cref{lem:nusigma}(i); the first because
+$E\|\Delta Z\Delta U\|<\infty$ and
+$E\|\Delta Z\Delta h\|\le\|\Delta Z\|_{L^{2}(P)}\|\Delta h\|_{L^{2}(P)}<\infty$ by A1b(iv), the
+Cauchy--Schwarz inequality and \cref{lem:nusigma}(i). \emph{This defines $\Psi_L$ here
+and does not import it}: no radius $\bar\tau$, no direction pair $(D,\mathsf r)$ and no clause of
+A2$'$ enters \eqref{eq:PsiL}, which is what makes the hypothesis reduction of this clause readable off
+its own statement. At $L=L_\star$, $\Psi_{L_\star}(\tau_1)=\Psi(\tau_1,0,0)$ in the notation of
+\cref{lem:secondord}, so the two agree wherever both are defined. Then for every $h\in\mathcal V$,
+$\partial_{\tau_1}\Psi_L(0)=-\big\langle\nu_{\Delta Z+\widetilde W\ell}/\pi,\,h\big\rangle_{L^{2}(\pi)}$,
+and this vanishes for every $h\in\mathcal V$ if and only if
+\begin{equation}\label{eq:orthphi}
+\nu_{\Delta Z+\widetilde W\ell}\equiv0
+\qquad\Longleftrightarrow\qquad
+\mathcal A^\ast_{\mathrm{cond}}\ell^\Pi=-\nu/\pi .
+\end{equation}
+\emph{In particular, under A2$'$ the left-hand condition holds at $\ell=\ell_\star$}, and
+$\partial_{\tau_1}\Psi(0)=0$ for every $h\in\mathcal V$.
+\item[(ii)] \emph{Debiasing weight, exactly.} Assume in addition A1, A2, A2$'$(i) and A2$'$(iii).
+\emph{This is the one part that consumes A1}, through the conditional independence that makes
+$E[\widetilde W\,D\mid\Delta Z]=E[\widetilde W\mid\Delta Z]\,E[D\mid\Delta Z]=0$. For every $D$ with
+$E[\|D\|\mid\Delta Z]<\infty$ almost surely and $E\|\widetilde WD\|<\infty$, and every $\tau_2\in\IR$,
+$E[\psi(\theta_\dagger,(\vdagger,L_\star+\tau_2D,\varrho))]=E[\psi(\theta_\dagger,\zeta_\star)]$.
+\item[(iii)] \emph{Propensity: exact orthogonality is equivalent to N1.} Assume in addition A2,
+A2$'$(i), A2$'$(iii) and A4(i), and
+\emph{do not assume} N1 --- nor A1, which this part does not use. Then, for every bounded $\mathsf r$
+with $\varrho+\tau_3\mathsf r$ taking values
+in $[0,1]$ for all small $\tau_3$, and every such $\tau_3$,
+\[
+E\big[\psi(\theta_\dagger,(\vdagger,L_\star,\varrho+\tau_3\mathsf r))\big]=E\big[\psi(\theta_\dagger,\zeta_\star)\big]
+\qquad\Longleftrightarrow\qquad
+E\big[L_\star(\Delta U,\Delta Z)\mid\Delta Z\big]=0\ \text{a.s.},
+\]
+the right-hand condition being exactly N1 --- \emph{and both sides are well defined, because A2$'$(iii)
+with \cref{cor:elldiff} and A1b(iv) give $E[\|L_\star\|\mid\Delta Z]<\infty$ almost surely.}
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[The second-order remainder on the ball: the sharp constant, and the exact $\delta^{2}$ order under O-16(a)]\label{prp:sharpquad}
+The supremum of the second-order remainder over a ball of radius $\delta$ in the structural direction is
+exactly $\tfrac12\delta^{2}$ times the norm of the compressed symmetrised form, and it is bounded below by
+$\tfrac12\delta^{2}\|\vartheta'\sigma_q/\pi\|_\infty$. \emph{So, provided the form does not degenerate ---
+which is a hypothesis and is stated as one} --- no bound of the form $o(\delta^{2})$, and in particular no
+bound in the weak norm $\|\mathcal A_{\mathrm{cond}}\cdot\|_{L^{2}(\Pi)}$, holds uniformly on that ball.
+Suppose the hypotheses of \cref{lem:solset} hold --- \emph{cited by clause and not as a block}: clause
+\textup{(iv)} in addition requires \textbf{C2$'$(i)}, which it consumes transitively through
+\cref{lem:formstruct}\textup{(ii)} and \cref{prp:compact}, for the compactness of
+$\mathcal A_{\mathrm{cond}}$ that delivers $\|\mathcal A_{\mathrm{cond}}h_k\|\to0$; \emph{clauses
+\textup{(i)}--\textup{(iii)} need it not}, and Step 5 of the proof runs the implication
+O-16\textup{(b)}$\Rightarrow$O-16\textup{(a)} through \eqref{eq:complower} and the numerical radius
+precisely so that they need not. Fix $\vartheta\in\IR^{p}$ with $\|\vartheta\|=1$,
+and let the \emph{second-order remainder in the structural direction} at $h\in\mathcal V$ be
+\begin{equation}\label{eq:quadrem}
+\tfrac12\,\vartheta'\partial^{2}_{\tau_1\tau_1}\Psi(0)
+\;=\;\tfrac12\,E\big[\widetilde W\,\vartheta'\partial_u\ell_\star\,(\Delta h)^{2}\big]
+\;=\;\tfrac12\,\big\langle\mathcal Bh,h\big\rangle_{L^{2}(\pi)} ,
+\end{equation}
+which is \cref{lem:secondord}\textup{(i)} contracted in $\vartheta$ and transferred to $L^{2}(\pi)$ by
+\cref{lem:solset}\textup{(iii)}. \emph{\Cref{lem:secondord} is read at the admissible direction pair
+$(D,\mathsf r)=(0,0)$}, which is admissible at every $(h,\bar\tau)$ by \cref{def:dirclass} and is
+differentiable there, so that $\Psi(\cdot,0,0)=\Psi_{L_\star}$ by \eqref{eq:PsiL} and \eqref{eq:quadrem} is
+half the second $\tau_1$-derivative of the moment along the \emph{structural direction alone}; no
+condition on a direction in $L$ or in $\varrho$ is inherited. \emph{The remainder carries no symbol of
+its own}; italic $Q$ names the regular conditional distributions of \textup{(P6b)}.
+Then, for every $\delta>0$:
+\begin{enumerate}
+\item[(i)] \emph{The sharp constant, with no hypothesis on $q$ beyond \cref{lem:solset}'s.}
+\begin{equation}\label{eq:sharpconst}
+\sup_{h\in\mathcal V,\ \|h\|_{L^{2}(\pi)}\le\delta}\ \tfrac12\,\big|\big\langle\mathcal Bh,h\big\rangle_{L^{2}(\pi)}\big|
+\;=\;\tfrac12\,\delta^{2}\,\big\|P_{\mathcal V}\mathcal B_{\mathrm{sym}}P_{\mathcal V}|_{\mathcal V}\big\| ,
+\end{equation}
+a supremum that need not be attained.
+\item[(ii)] \emph{Bracketing.} The constant in \eqref{eq:sharpconst} obeys
+\begin{equation}\label{eq:bracket}
+\big\|\vartheta'\sigma_q/\pi\big\|_\infty
+\;\le\;\big\|P_{\mathcal V}\mathcal B_{\mathrm{sym}}P_{\mathcal V}|_{\mathcal V}\big\|
+\;\le\;\big\|\mathcal B_{\mathrm{sym}}\big\|\;\le\;\big\|\mathcal B\big\| ,
+\end{equation}
+where the first inequality holds under O-16\textup{(b)} and the outer two hold always. \emph{The
+left-hand member is a lower bound and is not the sharp constant; the right-hand members are upper bounds
+and are not the sharp constant either.}
+\item[(iii)] \emph{Positivity, and it is a hypothesis.} Under
+\textbf{O-16\textup{(a)}} --- there exists $h\in\mathcal V$ with $\vartheta'E[q\,(\Delta h)^{2}]\ne0$ ---
+the constant in \eqref{eq:sharpconst} is strictly positive, so
+$\sup_{\|h\|\le\delta}\tfrac12|\langle\mathcal Bh,h\rangle|\asymp\delta^{2}$ with a constant free of
+$\delta$, and no bound of the form $o(\delta^{2})$ as $\delta\downarrow0$ holds uniformly over
+$\{h\in\mathcal V:\|h\|_{L^{2}(\pi)}\le\delta\}$. Under \textbf{O-16\textup{(b)}} ---
+$\vartheta'\sigma_q\not\equiv0$ --- the constant is at least $\|\vartheta'\sigma_q/\pi\|_\infty>0$, and
+O-16\textup{(b)} implies O-16\textup{(a)}.
+\item[(iv)] \emph{No weak-norm bound.} Under O-16\textup{(b)} there is no finite $\lambda$ with
+\begin{equation}\label{eq:noweak}
+\tfrac12\big|\big\langle\mathcal Bh,h\big\rangle_{L^{2}(\pi)}\big|
+\;\le\;\lambda\,\big\|\mathcal A_{\mathrm{cond}}h\big\|^{2}_{L^{2}(\Pi)}
+\qquad\text{for all }h\in\mathcal V ;
+\end{equation}
+nor with $\|\mathcal A_{\mathrm{cond}}h\|^{2}$ replaced by
+$\|h\|_{L^{2}(\pi)}\,\|\mathcal A^\ast_{\mathrm{cond}}\mathcal A_{\mathrm{cond}}h\|_{L^{2}(\pi)}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{definition}[The estimator: iterated linearisation with sieve Landweber--Fridman]\label{def:lfstep}
+Let $\hat\varphi^{(0)}$ be a preliminary estimator which is a \emph{measurable random element of
+$\mathcal V$ with respect to the sample it is computed on} --- written $\sigma(\mathcal I_\ast)$ below, with
+$\mathcal I_\ast$ fixed in the verification paragraph, and \emph{this is a requirement on the preliminary and
+is stated \textbf{here}, where the preliminary is declared, rather than only inside the verification that
+consumes it}; (P-a.1) of \cref{prp:phirate} carries the same requirement, and it is of the kind read off
+a formula, which is why it costs nothing to impose --- \textbf{and which lies in $\mathcal S_n$}, the
+sieve fixed at the foot of this paragraph; and let $\hat\varepsilon_0\to0$ be a \emph{known}
+deterministic sequence with
+$P\big(\|\hat\varphi^{(0)}-\vdagger\|_{L^{2}(\pi)}\le\hat\varepsilon_0\big)\to1$ and
+$P\big(\|\hat\varphi^{(0)}-\vdagger\|_{H^{s}}\le\mathsf R\big)\to1$ --- the second being a statement about
+a finite quantity only because $\hat\varphi^{(0)}\in\mathcal S_n$ and \eqref{eq:sieveinhs} places
+$\mathcal S_n$ in $H^{s}$, while $\vdagger\in H^{s}$ by H1's source set.
+\emph{The sieve-membership clause is \textbf{imposed here}}, and (P-a.1) of \cref{prp:phirate}, this
+opening's companion, carries it in terms. \emph{The clause is not idle}: every iterate after the zeroth
+lies in $\mathcal S_n$
+% ARCHAEOLOGY.  Through dispatch 20 this opening required measurability into V only
+% and then imposed the H^s probability on the strength of a membership stated
+% nowhere in it; the fourth bullet below establishes measurability of
+% ||hat-varphi^{(j)} - varphi_dagger||_{H^s} expressly "at the configuration
+% lem:pathcont states, where hat-varphi^{(0)} in S_n", a CONDITIONAL discharge of
+% an UNCONDITIONAL requirement.  No result's hypothesis set changed.
+by construction, so without it the preliminary is the one element of the path that need not, and the
+$H^{s}$ display above is then a statement about a quantity no clause makes finite; \emph{envelopes, not $O_P$
+statements, and \cref{rem:paenvelope} is why}: the constants $\mathsf c_{14},\mathsf c_{15}$ below are
+printed before the data are seen, and an $O_P$ hypothesis supplies no number for them to dominate; let
+$\mathcal S_n:=\operatorname{span}(b_1,\dots,b_{L_x})\cap\mathcal V$ with $b_1,\dots,b_{L_x}$
+the B-spline basis of A8. \emph{Normalise the scale.} Let
+\begin{equation}\label{eq:normconst}
+\omega_n\;:=\;2\,(2c_C)^{1/2}\,\mathsf c_2^{2}\,c_\Pi\,\|1/\pi\|_\infty^{1/2}\,h_u^{-1}h_x^{-1/2}
+\end{equation}
+be the bound of \cref{prp:hatAprop}(i), which is \emph{deterministic} and holds \emph{surely} at every
+$\varphi\in\mathcal V$, and run the iteration below on $\omega_n^{-1}\hat{\mathcal A}_\varphi$ and
+$\omega_n^{-1}\hat T_{h_x}$, so that $\|\omega_n^{-1}\hat{\mathcal A}_\varphi\vert_{\mathcal S_n}\|\le1$
+surely. \emph{The letter is $\omega$ because \cref{lem:scaleinv}(i) shows the normalisation \textbf{is} a
+Landweber relaxation parameter, which is what $\omega$ names in the regularisation literature.}
+% ARCHAEOLOGY.  The letter is not varsigma, which is a Sec.1.6 local bound variable
+% and one subscript from the binding varsigma_0 of (P-a.2).  Glossary C67.
+By \cref{lem:scaleinv}(i)--(ii) this is a choice of relaxation parameter and changes neither the
+iterates nor the stopping index; by (iii)--(iv) it leaves the rate \eqref{eq:phirate} unchanged; by (v)
+it inflates the stopping index by $\omega_n^{2}$, and the iteration cap is sized accordingly,
+\begin{equation}\label{eq:cap}
+\bar m_n\;\ge\;\omega_n^{2}\,\hat\delta_n^{-2} .
+\end{equation}
+% ARCHAEOLOGY.  Through round 9 the normalisation was asserted to "cost nothing"
+% and the cap was delta-hat_n^{-2}; eq:cap is what it actually costs, and it is a
+% computation and not an assumption.
+
+\emph{The stopping levels are computed before the data are touched.} Fix $\mathsf c_{14},\mathsf c_{15}<\infty$
+and $\kappa:=2\mu/(2\mu+1)$, and define the deterministic \emph{stagewise noise schedule}
+\begin{equation}\label{eq:lfsched}
+\hat\delta^{\mathrm{eff}}_{n,k}\;:=\;\mathsf c_{14}\Big(\hat\delta_n\ln n\;+\;h_u^{-2}\,\hat\varepsilon_{k-1}^{2}\Big),
+\qquad
+\hat\varepsilon_{k}\;:=\;\mathsf c_{15}\big(\hat\delta^{\mathrm{eff}}_{n,k}\big)^{\kappa},
+\qquad k\ge1 .
+\end{equation}
+\emph{Every quantity in \eqref{eq:lfsched} is \textbf{computable} by the analyst, from four inputs and
+two constants, and the two constants are not free}: $\hat\delta_n$ and $h_u$ are already inputs to the
+procedure, $\kappa$ is a function of $\mu$, and $\hat\varepsilon_0$ is the declared rate of the
+preliminary --- those are the four; $\mathsf c_{14}$ and $\mathsf c_{15}$ are the two, and they must be
+\emph{chosen}, because they are not identified by the data. \emph{What they must satisfy is this.}
+% ARCHAEOLOGY.  A round-9 draft said instead that every quantity in eq:lfsched was
+% "known".
+\Cref{prp:phirate} Step~2
+(L3) needs $\mathsf c_{14}\ge\mathsf c_{16}$, with $\mathsf c_{16}$ the constant of \eqref{eq:effnoise};
+Step~3 needs $\mathsf c_{15}\ge\mathsf c_{17}$, with $\mathsf c_{17}=2c_\mu\mathsf R_\ast^{1/(2\mu+1)}$
+the constant of \eqref{eq:linlf}. Neither $\mathsf c_{16}$ nor $\mathsf c_{17}$ is known to the analyst:
+the first is built from the kernel constants and the design, the second from (F-f)'s $c_\mu$ and the
+\emph{spectral pre-image} radius $\mathsf R_\ast$ of (P-a.3).
+\emph{The radius here is $\mathsf R_\ast$ and \textbf{not} $\mathsf R$, and the two must not be the same
+symbol --- this is the same species of defect as $\mathsf c_{14}$ versus $\mathsf c_{16}$ and it sits on
+the same inequality.} $\mathsf R$ is an \emph{$H^{s}$ ball radius}: it is what \cref{def:srcball}
+measures, what A5(vi$'$) and (P-a.1) bound, and what (P-c), (P-g) and \eqref{eq:entropy} price, so it
+carries units of Sobolev norm and enters \emph{approximation} statements. $\mathsf R_\ast$ is a
+\emph{spectral pre-image norm} in $L^{2}(\pi)$: it is (P-a.3)'s bound on $\varsigma^{(k)}$, it enters
+only through (F-f), and it is what $\mathsf c_{15}$ must dominate. \emph{They are not comparable in
+either direction without the interpolation step \cref{rem:pasrc}\textup{(1)} shows is unavailable.}
+\emph{The two directions of error are not symmetric.} Chosen too large, the level is
+conservative: the rule stops earlier, the rate in \eqref{eq:phirate} is unchanged in order and the
+constant degrades. \emph{Chosen too small, the implemented level sits below the true data error
+at some stage, (L3) fails, and with it (F-f): the discrepancy guarantee is void and the estimator is
+whatever the cap \eqref{eq:cap} returns.} \emph{This is the one place where the procedure carries a tuning constant the
+% ARCHAEOLOGY.  Through round 11 one symbol carried both R and R_star, on the two
+% sides of an inequality this definition has to establish; glossary C69.  The
+% too-small failure mode is the one the fixed level tau_DP delta-hat_n ln n of
+% round 9 produced, displaced from the schedule's SHAPE to its SCALE.
+theory does not pin, and it is said here rather than left to be discovered}; probe CP-13's
+sensitivity arm is what measures how much it matters. For $k=1,\dots,\bar k$:
+\begin{enumerate}
+\item[(a)] form the linear equation in $v\in\mathcal S_n$,
+$\ \hat{\mathcal A}_{\hat\varphi^{(k-1)}}v=-\hat T_{h_x}\big(\hat\varphi^{(k-1)},\theta\big)$;
+\item[(b)] run Landweber--Fridman on it from $v_0=0$, at the relaxation \eqref{eq:normconst},
+$v_{m+1}=v_m-\omega_n^{-2}\,\hat{\mathcal A}^\ast_{\hat\varphi^{(k-1)}}\big[\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m
++\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\big]$, projected onto $\mathcal S_n$ --- which by
+\cref{lem:scaleinv}(i) \emph{is} the unrelaxed iteration for the normalised pair;
+\item[(c)] stop at
+\[
+\hat m^{(k)}\;:=\;\min\Big\{m\le\bar m_n:\ \big\|\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m
++\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\big\|_{L^{2}(\Pi)}\;\le\;
+\tau_{\mathrm{DP}}\,\hat\delta^{\mathrm{eff}}_{n,k}\Big\},
+\]
+the discrepancy principle \emph{at the stage-$k$ level} \eqref{eq:lfsched}, \emph{with the convention
+that $\hat m^{(k)}:=\bar m_n$ when the set is empty};
+\item[(d)] set $\hat\varphi^{(k)}:=\hat\varphi^{(k-1)}+v_{\hat m^{(k)}}$.
+\end{enumerate}
+Put $\hat\varphi:=\hat\varphi^{(\bar k)}$.
+
+\emph{The output is a measurable random element, and that is \textbf{verified} here rather than required
+elsewhere.} \Cref{def:crossfit}\textup{(c$'$.1)} needs each $\hat\varphi^{(-k)}$ to be a
+$\sigma(\mathcal I_{-k})$-measurable random element of $\mathcal V$, and clause \textup{(b)} of that
+definition names \emph{this} estimator as the object --- so the property cannot be imposed there as a
+construction requirement. \emph{One cannot require a property of an object one has already built}, which is
+\cref{rem:obligations}'s test read on an estimator rather than on an assumption. \emph{And the discharge
+available for the other nuisances is not available here}: A4(iii) and \cref{def:crossfit}\textup{(a)} settle
+$\hat\varrho$ ``by inspection of the formula'', which every kernel and every series construction passes;
+inspection of the formula settles nothing for a Landweber--Fridman iterate stopped by a discrepancy rule,
+\emph{because the stopping index of \textup{(c)} is random}. The verification is three steps, each
+elementary and each consuming a feature of the construction a reader could take for bookkeeping, followed by
+a fourth reading that this paragraph's own consumers force.
+Write $\mathcal I_\ast$ for the fold the iteration is run on --- $\mathcal I_{-k}$ under
+\cref{def:crossfit}\textup{(b)}, $\mathcal I_m$ under \cref{def:hatTexp} --- and read every ``measurable''
+below at $\sigma(\mathcal I_\ast)$.
+% ARCHAEOLOGY.  The letter was cal J through dispatch 21; the change is dispatch
+% 22's.  cal J is the SINGULAR-SYSTEM INDEX SET of prp:compact's statement,
+% cal J subset N, so one calligraphic letter carried an observation index here
+% (i in cal J) and a singular-value index there (j in cal J), both in STATEMENTS,
+% neither inside a proof.  The starred cal I is not a new letter: cal I is already
+% this project's letter for a fold (cal I_a, cal I_m, cal I_k, cal I_{-k}), this
+% object IS one of those two folds, and the star is the corpus's mark for the
+% designated member of a family (cal T_star, cal G_star, Xi_star, sans-R_star,
+% omega_star).  Glossary C81.
+\emph{One index warning, because both readings occur in this paragraph}: the
+superscript in $\hat\varphi^{(-k)}$ and $\mathcal I_{-k}$ just above is \cref{def:crossfit}'s \emph{fold}
+index; every $k$ from here to the end of the verification is this definition's \emph{stage} index, and the
+two are one glyph apart.
+\begin{enumerate}
+\item[--] \emph{The iterates.} Suppose $\hat\varphi^{(k-1)}$ is a $\sigma(\mathcal I_\ast)$-measurable random
+element of $\mathcal V$. The finitely many numbers $\Delta_{h_x}\hat\varphi^{(k-1)}_i$, $i\in\mathcal I_\ast$, are
+then random variables, being values of the \emph{bounded linear} functionals \eqref{eq:smdiff} at a measurable
+random element --- \emph{and the step from a random function to a random number is the
+\textbf{Carath\'eodory} criterion and not the evaluation of a fixed functional, because the functional
+\eqref{eq:smdiff} is itself \textbf{random}}, its kernel carrying $X_{i1},X_{i2}$ and $s_{0,i1},s_{0,i2}$.
+``Value of a bounded linear functional at a measurable random element'' gives measurability only for a
+\emph{fixed} functional; what is available, and what is needed, is the superposition argument: the map
+$F_i(\omega,\varphi):=\Delta_{h_x}\varphi_i(\omega)$ is $\sigma(\mathcal I_\ast)$-measurable in $\omega$ at each
+fixed $\varphi$, because $X_{i1},X_{i2}$ are random variables, $s_0$ is Borel by \cref{lem:intker}(iv) and
+$C_{h_x}$ is jointly Borel, so the $dx$-integral in \eqref{eq:smdiff} is measurable in $\omega$ by Tonelli
+\emph{applied to positive and negative parts} --- \emph{and the qualification is not decoration here}: the
+integrand of \eqref{eq:smdiff} is a difference of two boundary-corrected kernels of order $p_K$, which
+\eqref{eq:truncmom} makes \emph{sign-changing} by construction, against a $\varphi$ that integrates to zero
+against $\pi$, so Tonelli in its nonnegative form does not apply to it as written. The split is legitimate
+because the integrand is absolutely integrable at every sample point: $|C_{h_x}|\le\mathsf c_2$ by C3(ii)
+and \textup{(P9)}, $\mathcal X$ is a bounded interval by A0, and
+$\int_{\mathcal X}|\varphi|\,dx\le|\mathcal X|^{1/2}\|1/\pi\|^{1/2}_\infty\|\varphi\|_{L^{2}(\pi)}<\infty$
+by C1(ii) and the Cauchy--Schwarz inequality, so each of the four one-signed integrals is finite and their
+signed combination is well defined and measurable. \emph{This is the treatment the same paragraph gives the
+$\Pi$-pairing below}; it is also
+A2c\textup{(m.2)}'s and \cref{def:crossfit}\textup{(c$'$.1)}'s, one Part away on the other
+side of the pairing. The integral is, moreover,
+$\|\cdot\|_{L^{2}(\pi)}$-continuous in $\varphi$ at each fixed $\omega$, which is exactly the boundedness of
+\eqref{eq:smdiff} that \cref{def:hatTexp} records and which holds at every sample point. Since $\mathcal V$
+is a subspace of $L^{2}(\mathcal X,\pi)$ with $\mathcal X$ compact, it is separable, so the Carath\'eodory
+criterion makes $F_i$ jointly $\sigma(\mathcal I_\ast)\otimes\mathfrak B(\mathcal V)$-measurable, and $F_i$ then
+composes with the measurable map $\omega\mapsto\big(\omega,\hat\varphi^{(k-1)}(\omega)\big)$. \emph{The
+device is the corpus's own and is one Part away}: it is what \cref{def:crossfit}\textup{(c$'$.1)} names for
+\eqref{eq:prodmeas}, what the opening of the proof of \cref{prp:frechet} runs for $G_\varphi$ and its
+$u$-derivatives, and what C2$'$(i) runs for the envelopes $\bar f_k$;
+% ARCHAEOLOGY.  Through dispatch 19 this link was stated as an evaluation, which is
+% the one reading the randomness of eq:smdiff forecloses.
+and $\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)$, $\hat{\mathcal A}_{\hat\varphi^{(k-1)}}$ and
+$\hat{\mathcal A}^\ast_{\hat\varphi^{(k-1)}}$ depend on $\hat\varphi^{(k-1)}$ through those numbers
+\emph{alone}, by \eqref{eq:hatTx}, \eqref{eq:hatg} and \eqref{eq:hatAcon}, the adjoint being determined by the
+operator and the two inner products of \cref{def:spaces}. Restricted to $\mathcal S_n$, which
+is a \emph{fixed} finite-dimensional space, the iteration \textup{(b)} is therefore an affine recursion on
+a Euclidean space of that dimension whose coefficients are random variables, started at the constant
+$v_0=0$; so each
+$v_m$, $m=0,1,\dots,\bar m_n$, is a $\sigma(\mathcal I_\ast)$-measurable random element of $\mathcal S_n$, being a
+finite composition of measurable maps. \emph{That the coefficients are random variables is
+\textbf{Tonelli} and not composition, and the distinction is the same one the previous link turns on.}
+\emph{The coordinates are those of a basis of $\mathcal S_n$ and \textbf{not} of $\{b_1,\dots,b_{L_x}\}$},
+and two facts force the distinction:
+$\mathcal S_n=\operatorname{span}(b_1,\dots,b_{L_x})\cap\mathcal V$, and the linear functional
+$\zeta\mapsto\int_{\mathcal X}\zeta\,d\pi$ is \emph{not} identically zero on
+$\operatorname{span}(b_1,\dots,b_{L_x})$: A8's $b_j$ are B-splines, hence \emph{nonnegative} and not
+identically zero, and $\pi$ is bounded below away from zero by C1(ii) --- so
+$\int b_j\,d\pi>0$ for every $j$, no $b_j$ lies in $\mathcal V$, $\{b_j\}$ spans a strictly larger space, and
+$\dim\mathcal S_n=L_x-1$. \emph{Both consequences matter}: the coordinate map written in the $b_j$ is not a
+coordinate map on $\mathcal S_n$, and $\hat{\mathcal A}_{\hat\varphi^{(k-1)}}b_j$ evaluates the operator off
+the domain \cref{def:spaces} declares for it. \emph{Neither touches the conclusion}, and that is why the
+repair is a rewording: fix once any basis of $\mathcal S_n$ --- every element of it lies in $\mathcal V$, so
+the operator is applied only where it is defined, and every element is a finite linear combination of
+$b_1,\dots,b_{L_x}$ --- and read the recursion in its coordinates. Its matrix is that of
+$\hat{\mathcal A}^\ast_{\hat\varphi^{(k-1)}}\hat{\mathcal A}_{\hat\varphi^{(k-1)}}\vert_{\mathcal S_n}$,
+whose entries are the $L^{2}(\Pi)$ pairings of the images under
+$\hat{\mathcal A}_{\hat\varphi^{(k-1)}}$ of two basis elements, and its constant vector carries the
+$L^{2}(\Pi)$ pairings of those images with $\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)$
+--- each an \emph{integral over $(u,t)$ against $\Pi$ of a random integrand}, \eqref{eq:hatAadj} writing the
+adjoint as exactly such an integral. \emph{A finite composition of measurable maps does not reach an
+integral}; what does is joint measurability in $(\omega,u,t)$ followed by Tonelli's theorem. The joint
+measurability is again Carath\'eodory: by \eqref{eq:hatAcon} and \eqref{eq:hatg}, at a fixed element $\zeta$
+of $\mathcal V$ the maps
+$(u,t)\mapsto\hat{\mathcal A}_{\hat\varphi^{(k-1)}}\zeta(u,t)$ and
+$(u,t)\mapsto\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)(u,t)$ are continuous at every sample point --- $C_{h_u}$
+and $\mathsf C_{h_u}$ being continuous in $u$ by \cref{lem:intker} and $t\mapsto w(t'\Phi(\Delta Z_i))$
+continuous --- while each is $\sigma(\mathcal I_\ast)$-measurable in $\omega$ at fixed $(u,t)$ by the paragraph
+above, so both are $\sigma(\mathcal I_\ast)\otimes\mathfrak B(\IR\times\mathcal T)$-measurable; each factor lies
+in $L^{2}(\Pi)$ --- by \cref{prp:hatAprop}(i) for the operator and by $\mathsf c_3c_\Pi<\infty$ for
+$\hat T_{h_x}$ --- so the products are $\Pi$-integrable by the Cauchy--Schwarz inequality, and Tonelli
+applied to positive and negative parts then makes each pairing a $\sigma(\mathcal I_\ast)$-measurable function
+of $\omega$. \emph{This is the inheritance
+\cref{def:crossfit}\textup{(c$'$.1)} performs for $\omega\mapsto\|\hat\ell^{(-k)}-\ell_\star\|_{L^{2}(P)}$,
+read on $\Pi$ instead of $P$.}
+\item[--] \emph{The stopping index.} $\tau_{\mathrm{DP}}$ and $\hat\delta^{\mathrm{eff}}_{n,k}$ are
+deterministic by \eqref{eq:lfsched}, and $\|\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m+\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\|_{L^{2}(\Pi)}$
+is a random variable for each $m$ --- \emph{by the previous step \textbf{and Tonelli}, the two being
+needed and neither sufficing alone}, since an $L^{2}(\Pi)$ norm is a $\Pi$-integral of a random function
+and not a value of one: the previous step makes
+$(\omega,u,t)\mapsto\big(\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m+\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\big)(u,t)$
+jointly measurable, $v_m$ being $\sigma(\mathcal I_\ast)$-measurable with values in the fixed
+finite-dimensional $\mathcal S_n$, and Tonelli then makes $\omega\mapsto\int(\cdot)^{2}\,d\Pi$ measurable, the square root
+being continuous. So, for each $m\le\bar m_n$, the event that \emph{that}
+norm is at most $\tau_{\mathrm{DP}}\hat\delta^{\mathrm{eff}}_{n,k}$ is measurable --- \emph{it carries no
+letter}, every short candidate being claimed --- and $\{\hat m^{(k)}=m\}$ is that event intersected with the
+complements of the same events at the indices $m'<m$: a \emph{finite} intersection of measurable sets.
+\emph{Two further features of \textup{(c)} --- not the two the paragraph after this one names, which are
+about the \emph{level} --- are what this step consumes}: the cap
+$\bar m_n$ of \eqref{eq:cap} is \emph{deterministic}, so the family is \textbf{finite} and no limit is taken;
+and the emptiness convention makes $\hat m^{(k)}$ \textbf{total}, so no sample point is left without a value
+and $\{\hat m^{(k)}=\bar m_n\}$ absorbs the residual event. \emph{A random cap or a partial index would break
+the argument at this line and nowhere else.}
+\item[--] \emph{The output.} $v_{\hat m^{(k)}}=\sum_{m\le\bar m_n}\un\{\hat m^{(k)}=m\}\,v_m$ is a
+\emph{finite} sum of indicators of measurable events against measurable random elements, hence a
+$\sigma(\mathcal I_\ast)$-measurable random element of $\mathcal S_n$; and $\hat\varphi^{(k)}$ of \textup{(d)} is
+one of $\mathcal V$, $\mathcal V$ being a linear space and $\mathcal S_n\subset\mathcal V$
+(\cref{def:spaces}). Induction on $k\le\bar k$, from a $\sigma(\mathcal I_\ast)$-measurable
+$\hat\varphi^{(0)}$ --- \emph{which is a requirement on the preliminary, and \textbf{is} of the kind read off a
+formula; it is \textbf{stated} in this definition's opening and in (P-a.1) of \cref{prp:phirate}, and is
+cited rather than imposed here} --- gives the claim for $\hat\varphi=\hat\varphi^{(\bar k)}$.
+\item[--] \emph{The $H^{s}$ norm of the same object, which the paragraph owes because \cref{lem:pathcont} and
+A5(vi$'$) are $H^{s}$ statements.} Both take probabilities of
+$\max_{j\le\bar k}\|\hat\varphi^{(j)}-\vdagger\|_{H^{s}}\le\mathsf R$, so
+$\omega\mapsto\|\hat\varphi^{(j)}-\vdagger\|_{H^{s}}$ must be a random variable as well, and measurability
+into the $L^{2}(\pi)$ container does not by itself give it. \emph{It follows from the three steps above at the
+configuration \cref{lem:pathcont} states}, where $\hat\varphi^{(0)}\in\mathcal S_n$ and hence the whole path
+lies in $\mathcal S_n$: since $\mathcal S_n\subset H^{s}$ by \eqref{eq:sieveinhs}, $\|\cdot\|_{H^{s}}$ is a
+norm on a \emph{fixed} finite-dimensional space, hence a continuous --- and so measurable --- function of the
+coordinates, which the steps above make random variables. \emph{The membership is A8's business and it is now
+\textbf{stated} there rather than flagged here}: nothing in this definition places the B-spline basis in
+$H^{s}$, and \eqref{eq:sieveinhs} is A8's basis clause read as the containment it delivers.
+\emph{\eqref{eq:jackson} is \textbf{not} the right pointer, and the error would be one of direction
+rather than of precision}: \eqref{eq:jackson} states how well splines \emph{approximate}
+$H^{s}$ functions, and what is needed is that splines \emph{lie in} $H^{s}$. \emph{Approximation power does
+% ARCHAEOLOGY.  Through dispatch 19 this bullet pointed at eq:jackson.
+not give membership, and the two conditions are genuinely different inequalities on the same degree} --- a
+basis of degree $d$ approximates $H^{s}$ at the rate \eqref{eq:jackson} states as soon as $s\le d+1$, while
+$\mathcal S_n\subset H^{s}$ requires $d>s-\tfrac12$; on the window $s-1\le d\le s-\tfrac12$ the first holds
+and the second fails, and the witness $s=1.7$, $d=1$ sits in it. A8's basis clause is the
+right home, as this bullet's own first sentence already said, and it is stated there in \emph{degree}, the
+one reading of ``order'' on which the spline conventions agree.
+\end{enumerate}
+\emph{This is a discharged verification and \textbf{not} a fifth entry in \cref{rem:obligations}'s inventory,
+and the distinction is that remark's own.} That inventory carries obligations whose \emph{discharge site is a
+later step} --- something a stated result's truth depends on and no present result establishes. Here the
+discharge is performed in the same definition that constructs the object, so nothing is owed forward and there
+is no consumer to name; the precedents are A4(iii)'s joint-measurability half and
+\cref{def:crossfit}\textup{(c$'$.1)}'s Tonelli inheritance, neither of which is inventoried either, for the
+same reason. \emph{Three stated results consume this paragraph}, each a probability statement about
+$\hat\varphi$ and none of them well posed without it: \eqref{eq:phirate}; \cref{lem:pathcont}'s bound on
+$\max_{j\le\bar k}$ with probability tending to one; and (P-a.3)'s event, which is defined through the realised
+operator at $\hat\varphi^{(k-1)}$.
+
+\emph{Two features of (c) are load-bearing and one of them is a correction.} \emph{First, the level is
+stage-dependent, and it must be.} The data error of the stage-$k$ equation (a) is not $\hat\delta_n$
+but $\hat\delta_n\ln n$ \emph{plus} the linearisation remainder $h_u^{-2}\varepsilon_{k-1}^{2}$, where
+$\varepsilon_{k-1}=\|\vdagger-\hat\varphi^{(k-1)}\|_{L^{2}(\pi)}$ --- see \eqref{eq:stagedecomp}. A
+fixed level $\tau_{\mathrm{DP}}\hat\delta_n\ln n$ sits
+\emph{below} the true data error in exactly the regime the recursion must pass through, namely
+$h_u^{-2}\varepsilon_{k-1}^{2}\ge\hat\delta_n\ln n$; there the classical discrepancy guarantee does not
+apply and the rule either over-fits the noise or fails to stop before $\bar m_n$.
+\emph{Second, the level is deterministic and supplied from outside, and the reason has two parts of
+very different status. The first is this paper's own and is sharp; the second is classical and cited,
+and is weaker than it looks.}
+% ARCHAEOLOGY.  Rounds through 9 implemented the fixed level tau_DP delta-hat_n ln n,
+% a mismatch between the estimator and its analysis; it is repaired at the estimator
+% rather than in the proof.  A round-9 draft over-read Bakushinskii's veto twice.
+
+\emph{(2a) The realised residual cannot supply the level, and the reason is what ill-posedness is.} The
+natural data-driven repair is to replace $h_u^{-2}\hat\varepsilon_{k-1}^{2}$ by
+$h_u^{-2}\hat r_{k-1}^{2}$ with $\hat r_{k-1}$ the residual realised at stage $k-1$. \emph{It cannot
+work.} The quantity the level must dominate is $h_u^{-2}\varepsilon_{k-1}^{2}$ with
+$\varepsilon_{k-1}=\|\vdagger-\hat\varphi^{(k-1)}\|_{L^{2}(\pi)}$, and a residual bounds $\varepsilon$
+from below only through a lower bound on $\|\hat{\mathcal A}_{\varphi_\circ}v\|$ in terms of $\|v\|$.
+\emph{That $\|\hat{\mathcal A}v_\dagger\|\ll\|v_\dagger\|$ is available is not an accident of this
+construction; it is the definition of ill-posedness.} So $\hat r_{k-1}$ can be arbitrarily smaller than
+$\varepsilon_{k-1}$, and a threshold built from it sits below the data error for exactly the reason the
+fixed threshold did. \emph{This observation is the paper's own and it is the sharp part of the
+argument.}
+
+\emph{(2b) The general statement is Bakushinskii's veto, it is cited, and it is weaker than it looks in
+a statistical setting.} That \emph{no} rule depending on the data alone --- and not on the noise level
+--- can make a regularisation method convergent for a genuinely ill-posed problem is
+\citet{bakushinskii1984}; see \citet[\S3.3]{engl2000}. \emph{Two scope statements, because the veto is
+routinely over-read.} It is a \emph{worst-case, deterministic}
+statement: convergence is required uniformly over the admissible data, and the counterexample it turns
+on is a worst case. \emph{In the statistical setting this paper inhabits it does not rule out
+data-driven selection}: Lepskii-type balancing over the regularisation index is purely data-driven and
+attains the optimal rate up to a logarithmic factor, and it is a device this project already runs
+elsewhere. \emph{So the schedule is preferred here, not forced here}, and the reasons are three and
+local. The number of stages $\bar k$ is finite and $\bar k_a$ is deterministic, so there is no
+adaptation problem across stages to solve. A deterministic level is what makes the rule
+\cref{def:lfstep}(c) implements and the rule \cref{prp:phirate} Step~2 analyses coincide \emph{by
+construction}. And a Lepskii stop over $m$ would
+need a variance proxy at each candidate index that the operator-noise model of this paper does not
+supply without a further bound. \emph{A balancing stop is therefore a live alternative rather than a
+foreclosed one, it is registered as the third arm of probe CP-13, and if it matches, the requirement
+that (P-a.2) deliver a \emph{rate} --- open item Q-1 --- softens materially.}
+
+\emph{The price actually paid, which is separate from both.} The schedule requires a \emph{rate}
+$\hat\varepsilon_0$ for the preliminary and not mere consistency. \emph{That price is not new, only
+newly visible}: the claim that $\bar k$ is finite and does not grow with $n$ already required
+$\hat\varepsilon_0$ to be polynomially small. Hypothesis (P-a.2) of \cref{prp:phirate} carries it.
+
+\emph{Every Landweber iteration in this construction is applied to a \textbf{linear} equation}; the
+nonlinearity is carried by the outer index $k$ and by nothing else. That is the entire difference from
+the route \cref{rem:lfnonlinear} declines, and it is what makes a cone condition unnecessary.
+\end{definition}
+
+\begin{proposition}[\texttt{prp:phirate}: the rate for the $\varphi$-step]\label{prp:phirate}
+Suppose A0, A1, A1b(iii)--(iv), A4, A5(vi$'$), B1(i)--(v), C1(ii), C2$'$, C3 and C5$'$(i) hold.
+\emph{Three of those are narrowed from the blocks ``B1'', ``C1'' and ``C5$'$'' that stood here, and
+each narrowing removes a clause this proposition cannot have}: B1(vi) is \textbf{retired} and is not available
+as a hypothesis of any result, so a block citation of B1 charged this proposition with it; C1(i) is
+consumed at exactly one site in the corpus, Step~2 of \cref{lem:aerr}, the route this proposition's Step~0
+\textbf{declines}, while C1(ii) is consumed here transitively through \cref{prp:hatAprop} and
+\cref{lem:nusigma}; and C5$'$(ii) is a \emph{lower} bound on $h_x$ while this proposition's own (P-g) is an
+\emph{upper} bound on $h_x$, so a block citation of C5$'$ put a floor and a ceiling in one hypothesis set ---
+\emph{and, at the inherited strengthening of C5$'$(ii), a floor above the ceiling}. \emph{The two do not meet
+at every admissible parameter, and the failure is not a corner}: at $(\mu,s,a,r,d_Z)=(2,1.2,0.3,\tfrac83,3)$,
+which clears \eqref{eq:frontier} at $\kappa\alpha=0.256$ and clears \eqref{eq:lxwindow} at $s>1$, the
+strengthened floor is $h_x\gg n^{-0.44}$ and (P-g) is $h_x=O(n^{-0.4571})$. The threshold is
+\eqref{eq:hxwindow} and the emptiness band is non-empty at every $\alpha\in(\tfrac14,\approx0.348)$, which
+\eqref{eq:frontier} does not exclude. \emph{\textbf{What follows from that is vacuity, not falsity}}: on the
+block-cited reading this proposition's hypotheses were unsatisfiable there and it held on an empty
+hypothesis set, and no conclusion of this corpus is false at that configuration. The narrowing removes the
+conflict from the hypothesis set; C5$'$(ii)'s own restatement removes it from the maintained block.
+Suppose H1 holds, for
+the two things this proposition uses it for and \textbf{not} for a third --- \emph{it fixes the Sobolev
+scale $H^{s}$ that \cref{def:srcball}, A5(vi$'$), (P-c) and (P-g) are written in, and it supplies A2's
+Picard form}, but \emph{the identity $\mu=s/(2a)$ is \textbf{not} assumed and is \textbf{not} used};
+$\mu$ is primitive, at (P-a.3), and \cref{rem:pasrc}\textup{(4)} says exactly what pinning it to
+$s/(2a)$ would cost. Suppose A8 holds \emph{in the two clauses this proposition consumes and not in the
+third} --- its \emph{basis} clause, that $b_1,\dots,b_{L_x}$ is a B-spline basis of degree exceeding
+$s-\tfrac12$ on a quasi-uniform mesh over $\mathcal X$, which is what delivers \eqref{eq:sieveinhs} and
+with it the well-posedness of (P-a.1) below, and its \emph{upper end} $L_x\ll n^{1/2}$, but \textbf{not}
+its lower end $L_x\gg n^{1/(2s)}$, which is the balancing route's and which A8's own comment already
+records as unused on the rate route; suppose in addition $p_K\ge s-\tfrac12$, which \cref{lem:unifop}
+Step~4 consumes and which, $p_K=8$ being \emph{fixed} by C3 and by C5$'$(i), is a hard cap
+$s\le\tfrac{17}2$ and not a free condition. \emph{It is \textbf{not} free at every $s$ the budget table
+admits}: $p_K$ is not a parameter the analyst may raise against $s$, so the clause caps $s$, while
+% ARCHAEOLOGY.  Through dispatch 20 this line read "which at p_K = 8 is free at
+% every s the budget table admits", which is FALSE.
+\eqref{eq:lxwindow} below is a \emph{floor} on $s$ that diverges as $\alpha\uparrow\tfrac12$. \emph{The two
+are incompatible at every $\alpha\ge\tfrac{68}{145}\approx0.4690$, at every $s$ and every $a$}: the floor
+$9\alpha/\big(8(1-2\alpha)\big)$ reaches $\tfrac{17}2$ there. \emph{Witness, and it is admissible}: $r=8$,
+$d_Z=1$, so $\alpha=\tfrac8{17}$; with $\mu=2$ the frontier \eqref{eq:frontier} clears at
+$\kappa\alpha=\tfrac{8}{17}\cdot\tfrac45\approx0.3765>\tfrac14$; \eqref{eq:lxwindow} demands $s>9$ and the
+cap allows $s\le\tfrac{17}2$; \emph{no $s$ exists}. \emph{The disposition follows A4(ii)'s at
+$d_Z=0$ and is the same one}: on $[\tfrac{68}{145},\tfrac12)$ this proposition's hypotheses are
+unsatisfiable, so it is \textbf{vacuous rather than false} there, and \cref{thm:rootn}'s group (T-5) is
+unsatisfiable with it. A4(ii)'s $d_Z\ge1$ repair delivers only $\alpha<\tfrac12$ and does not
+reach this range, which is entirely admissible; the cap is recorded as a row of the smoothness-budget table
+and no further restriction on $\alpha$ is imposed here. And suppose
+\begin{enumerate}
+\item[(P-a)] \emph{(preliminary, and the \textbf{spectral} source condition at the compression)} Three
+clauses, all three \emph{envelopes holding with probability tending to one} rather than $O_P$
+statements, and the distinction is load-bearing --- see \cref{rem:paenvelope}.
+\begin{enumerate}
+\item[(P-a.1)] \emph{(preliminary, $H^{s}$ --- and $\sigma(\mathcal I_\ast)$-measurable)}
+$\hat\varphi^{(0)}$ is a $\sigma(\mathcal I_\ast)$-measurable random element of $\mathcal V$, in the sense and
+with the fold $\mathcal I_\ast$ of \cref{def:lfstep}; $\hat\varphi^{(0)}\in\mathcal S_n$; and
+$P\big(\|\vdagger-\hat\varphi^{(0)}\|_{H^{s}}\le\mathsf R\big)\to1$, with $\mathsf R$ the
+\emph{same} deterministic radius as in \cref{def:srcball}, A5(vi$'$), (P-c) and (P-g).
+\emph{The measurability half is a requirement on the preliminary and is stated \textbf{here} because
+some hypothesis list must carry it}: \cref{def:lfstep}'s third bullet inducts on $k$ \emph{from} it, so
+the verification that the estimator is a random element consumes it.
+% ARCHAEOLOGY.  Through dispatch 19 the measurability half was stated only inside
+% that verification -- a hypothesis a proof reads that no hypothesis list stated.
+\emph{The two remaining halves are jointly satisfiable only under \eqref{eq:sieveinhs}, and that is not
+a technicality}: $\hat\varphi^{(0)}\in\mathcal S_n$ forces $\|\vdagger-\hat\varphi^{(0)}\|_{H^{s}}$ to be
+read at a sieve element, so unless $\mathcal S_n\subset H^{s}$ the norm is $+\infty$ surely and the two
+halves of this one clause are \emph{jointly unsatisfiable} --- the probability statement would then hold
+on the empty event. A8's basis clause supplies \eqref{eq:sieveinhs}, and H1 supplies $\vdagger\in H^{s}$.
+\item[(P-a.2)] \emph{(preliminary, rate)} $P\big(\|\vdagger-\hat\varphi^{(0)}\|_{L^{2}(\pi)}\le\hat\varepsilon_0\big)\to1$
+for a known deterministic $\hat\varepsilon_0=O(n^{-\varsigma_0})$ whose exponent clears the repelling
+fixed point of the stagewise recursion,
+\[
+\varsigma_0\;>\;\frac{\kappa\,\alpha}{4\,(2\kappa-1)},
+\qquad \kappa=\frac{2\mu}{2\mu+1},\quad\alpha=\frac{r}{2r+d_Z}
+\]
+--- a requirement strictly weaker than the conclusion \eqref{eq:phirate} precisely when
+$\mu>\tfrac56$, which is (P-f) \emph{and is the same inequality rather than a second one that agrees
+with it}, as Step 4(a.1) of the proof shows.
+\item[(P-a.3)] \emph{(source condition, stated \textbf{spectrally} and \textbf{at the compression})}
+There are $\mu>0$ and a finite $\mathsf R_\ast$, neither depending on $n$, such that with
+\begin{equation}\label{eq:compress}
+\hat{\mathcal P}^{\,\mathcal S}_{\varphi}\;:=\;P_{\mathcal S_n}\,\hat{\mathcal A}^{\ast}_{\varphi}\hat{\mathcal A}_{\varphi}\big\vert_{\mathcal S_n}
+\;:\;\mathcal S_n\to\mathcal S_n
+\end{equation}
+the \emph{compression} of $\hat{\mathcal A}^{\ast}_{\varphi}\hat{\mathcal A}_{\varphi}$ to
+$\mathcal S_n$,
+\[
+P\Big(\ \bar v^{(k)}_\dagger=\big(\hat{\mathcal P}^{\,\mathcal S}_{\hat\varphi^{(k-1)}}\big)^{\mu}\varsigma^{(k)}
+\ \text{ with }\ \big\|\varsigma^{(k)}\big\|_{L^{2}(\pi)}\le\mathsf R_\ast
+\ \text{ for every }k\le\bar k\ \Big)\;\longrightarrow\;1 ,
+\]
+where $\bar v^{(k)}_\dagger:=P_{\mathcal S_n}\big(\vdagger-\hat\varphi^{(k-1)}\big)$.
+\end{enumerate}
+\emph{(P-a.3) is \textbf{not} the pair --- a Hilbert-scale source
+condition on $\bar v^{(k)}_\dagger$ together with the link condition of \cref{lem:srctransfer}(iii) on
+$\mathcal S_n$ --- and does not follow from it}: the pair delivers (P-a.3) only through operator
+interpolation at exponent $2\mu$,
+which \cref{lem:srctransfer}(ii.a) refutes at \emph{every} $2\mu>1$ while \eqref{eq:muhalf} forces
+$2\mu>\tfrac53$, so the pair never implies what (F-f) consumes. \Cref{rem:pasrc} carries the full
+disposition. \emph{And the operator is named as the
+compression, which is what \eqref{eq:compress} is for}: the operator (F-f) is applied to in Step~2 of
+the proof is $\mathcal L^{\ast}\mathcal L$ with
+$\mathcal L=\omega_n^{-1}\hat{\mathcal A}_{\hat\varphi^{(k-1)}}\vert_{\mathcal S_n}$, and that
+\emph{is} $\omega_n^{-2}\hat{\mathcal P}^{\,\mathcal S}_{\hat\varphi^{(k-1)}}$ and not the restriction
+of $\hat{\mathcal A}^{\ast}\hat{\mathcal A}$ to $\mathcal S_n$ --- two operators whose ranges are nested
+in neither direction;
+% ARCHAEOLOGY.  Rounds 1--11 assumed the Hilbert-scale pair; the replacement is a
+% repair and not a strengthening, and is the most consequential amendment of that
+% round.  Through round 11 the hypothesis named the restriction of A*A to S_n and
+% the proof used the compression.
+\item[(P-b)] \emph{\textup{[}struck\textup{]}} --- an operator-estimation budget
+$\gamma_n=O(\hat\delta_n^{1/(2\mu+1)})$ belonging
+to the perturbation-of-$\mathcal A$ route, which Step~0 of the proof does not take; the label is kept
+empty rather than renumbered so that an existing citation of (P-b) lands here;
+\item[(P-c)] \emph{(sieve approximation, and it pays for the projection step)}
+$\mathsf R\,L_x^{-s}=O\big(h_u\,\hat\delta_n\big)$. \emph{The factor $h_u$ is not decoration}: the
+source and link conditions are imposed on $\mathcal S_n$, so the proof works with the sieve projection
+$P_{\mathcal S_n}(\vdagger-\hat\varphi^{(k-1)})$ and must carry the residual through
+$\hat{\mathcal A}$, whose norm on the complement is bounded only by $O(h_u^{-1})$. \emph{(P-c) is a
+\textbf{lower} end for $L_x$, and it is this proposition's own; it \textbf{replaces} A8's lower end
+rather than restating it}, being read at $h_u\hat\delta_n$ and not at $n^{-1/2}$;
+\item[(P-d)] \emph{(uniformity)} \eqref{eq:entropysieve}, an \emph{upper} end for $L_x$, so that
+\cref{lem:unifop} clause (b) is available. \emph{(P-c) and (P-d) are the two ends of one window and
+they must be read together}: with $\hat\delta_n=n^{-\alpha}$ and $h_u\asymp\hat\delta_n^{1/8}$ they are
+$L_x\gg n^{9\alpha/(8s)}$ and $L_x=o\big(n^{1-2\alpha}/\ln n\big)$, so the window is non-empty if and
+only if
+\begin{equation}\label{eq:lxwindow}
+s\;>\;\frac{9\alpha}{8\,(1-2\alpha)} ,
+\end{equation}
+which is $s>\tfrac{27}{16}=1.6875$ at $\alpha=\tfrac38$ and $s>1$ at $\alpha=0.32$. \emph{This is a
+genuine joint line in the smoothness budget and it is now recorded there.} \emph{Had A8's lower end
+been carried as well}, the window would instead require $s>\big(2(1-2\alpha)\big)^{-1}$, which is
+$s>2$ at $\alpha=\tfrac38$; that is strictly the stronger line at every $\alpha<\tfrac49$, and it is
+why A8 is cited above by clause. A configuration on which \emph{both} routes are to be available at
+once must clear the stronger one;
+\item[(P-e)] \emph{(stopping)} A7 in the amended form \eqref{eq:a7amend}, with
+$\tau_{\mathrm{DP}}>2$;
+\item[(P-f)] \emph{(the linearisation remainder is absorbed)}
+$\delta_n^{2}=O\big(h_u^{2}\,\hat\delta_n\ln n\big)$, the one bandwidth-explicit condition of Part H;
+\cref{rem:h6bandwidth} unpacks it, shows that at the unamended bandwidth $h_u\asymp n^{-1/16}$ it reads
+$\tfrac{2\mu-1}{2\mu+1}\cdot\tfrac{r}{2r+d_Z}>\tfrac18$, and shows that at C5$'$(i) as amended ---
+$h_u\asymp\hat\delta_n^{1/p_K}$, the largest bandwidth whose bias is $O(\hat\delta_n)$ --- it reads
+$\mu>\tfrac56$, \emph{strictly, with the strictness forced by the logarithms};
+\item[(P-g)] \emph{($x$-smoothing bias)} $\mathsf R\,h_x^{s-1/2}=O(\hat\delta_n)$, an \emph{upper}
+bound on $h_x$, which C5$'$ does not carry;
+\end{enumerate}
+and suppose finally
+\begin{equation}\label{eq:muhalf}
+\mu\;>\;\tfrac56 .
+\end{equation}
+Then there is a finite $\bar k$, not depending on $n$ and computable from $(\mu,\varsigma_0,\alpha)$,
+such that the estimator of \cref{def:lfstep} satisfies
+\begin{equation}\label{eq:phirate}
+\big\|\hat\varphi-\vdagger\big\|_{L^{2}(\pi)}\;=\;O_P(\delta_n),
+\qquad
+\delta_n\;:=\;\big(\hat\delta_n\ln n\big)^{2\mu/(2\mu+1)} ,
+\end{equation}
+and $\delta_n=o_P(n^{-1/4})$ whenever \eqref{eq:frontier} holds. \emph{Hence A5(i)--(iii) are
+discharged, not assumed. A5(vi$'$) is \textbf{consumed} --- it is a hypothesis of this proposition, at
+\cref{lem:pathcont}(c) --- and A5(vi) follows from it at $k=\bar k$}; A5(iv) and A5(v) concern other
+objects and are untouched.
+
+\emph{Where the threshold comes from, and it is two conditions and not one.} The stagewise recursion of
+Step~4 of the proof is \eqref{eq:fixedpoint},
+$\hat\varepsilon_k=\mathsf c_{15}\big(\mathsf c_{14}(\hat\delta_n\ln n+h_u^{-2}\hat\varepsilon_{k-1}^{2})\big)^{2\mu/(2\mu+1)}$,
+a recursion in the \emph{deterministic schedule} of \eqref{eq:lfsched} and not in the unobservable
+error.
+% ARCHAEOLOGY.  The symbol delta_n^{(k)} that a round-9 draft used for the
+% unobservable error is withdrawn; glossary C58.
+\emph{Contraction} needs $2\kappa>1$ with $\kappa=2\mu/(2\mu+1)$, i.e.\ $\mu>\tfrac12$; \emph{the fixed
+point being \eqref{eq:phirate}} needs (P-f), which at the amended bandwidth is $\mu>\tfrac56$. The
+second implies the first, so \eqref{eq:muhalf} is stated at $\tfrac56$ and the $\mu>\tfrac12$ line of
+the budget table is now slack. \emph{The coincidence worth naming is at $\tfrac12$, not at $\tfrac56$}:
+$\mu>\tfrac12$ is also exactly what A5(iii) proves necessary for \eqref{eq:frontier} to be satisfiable
+at any $r$, and it is exactly the index above which the inherited nonlinear route's rate theorem is
+unavailable (\cref{rem:lfnonlinear}(3)). The two arise independently --- one from the propensity
+frontier, one from the linearisation recursion --- and they coincide. \emph{What
+\eqref{eq:muhalf} charges beyond that is $(\tfrac12,\tfrac56]$, and that is a real line in the
+budget}, listed with the others in the assumption block's table.
+\emph{And what happens at $\tfrac56$ is \textbf{not} a second coincidence.} Step 4(a.1) of the proof
+exhibits a requirement on the preliminary,
+\eqref{eq:prelimrate}, and shows it is weaker than the rate delivered exactly when $\mu>\tfrac56$. That
+is (P-f) again --- \emph{the same inequality}, written in the same primitives, up to the strictly
+positive factor $\kappa/(2\kappa-1)$. \emph{The
+statement worth printing, and it is not a restatement of (P-f) either}: (P-f) is exactly the
+% ARCHAEOLOGY.  A round-9 draft called the agreement at 5/6 a coincidence and said
+% the two conditions were not restatements of one another; that sentence is struck.
+condition under which the newly exposed preliminary-rate requirement is \emph{not self-defeating}, so
+that \eqref{eq:prelimrate} adds a genuine new demand on $\hat\varphi^{(0)}$ --- open item Q-1 --- without
+making the procedure ask its input to be as good as its output.
+
+\emph{And the load-bearing hypothesis is (P-a.3), which should be read in the same breath as
+\eqref{eq:muhalf}.} (P-a.3) is a \emph{random spectral source condition} on a \emph{finite-rank,
+sieve-compressed} operator at a \emph{data-dependent} base point, assumed to hold with probability
+tending to one, with no sufficient condition supplied anywhere in this file; it is what makes the
+conditional-on-sample route legitimate, and it is what carries the source index above $\tfrac12$.
+\emph{Any statement that ``the linearised route reaches the same place under the same threshold'' is
+true only with (P-a.3) priced in the same sentence} --- see \cref{rem:lfnonlinear},
+\cref{rem:pasrc} and open item Q-4.
+\end{proposition}
+
+% ============================================================================
+%  END OF PART H.
+% ============================================================================
+
+% ############################################################################
+% ##  PART I -- memo Sec.10 STEP 7.  thm:rootn, at plan Sec.2.6's scope, with
+% ##  cor:ratefloor (T2') as the floor.  Dispatch 10.
+% ##
+% ##  WHAT THIS PART SUPPLIES THAT NO EARLIER PART DID.
+% ##   (1) THE MOMENT FUNCTION HAS A DEFINING DISPLAY.  psi is cited in Parts F
+% ##       and G (lem:secondord, prp:orthog, prp:sharpquad) and was declared only
+% ##       in notation_glossary.md.  def:moment fixes it in the .tex, together
+% ##       with J and Sigma, which the memo's target statement names and which no
+% ##       file displayed.
+% ##   (2) THE ESTIMATOR.  def:crossfit and def:onestep.  def:lfstep defines the
+% ##       varphi-step; nothing defined the theta-step.
+% ##   (3) THE PRELIMINARY FOR theta.  lem:prelimtheta.  This is the object the
+% ##       round-3 strategist-critic's m-23 named, and eq:prelimrate is NOT it --
+% ##       see rem:rootnhyp(4).
+% ##
+% ##  ORDER OF WORK: def:moment, def:crossfit, def:onestep; lem:momzero;
+% ##  lem:prelimtheta (L-14 with a rate); lem:biasexp (L-6 and L-7 instantiated
+% ##  at the estimated nuisances); lem:epterm (L-8); lem:sandwich (L-11);
+% ##  thm:rootn; cor:ratefloor (T2'); prp:medianpart (L-10); three remarks.
+% ############################################################################
+
+% ===========================================================================
+%  I.1  THE MOMENT FUNCTION, THE JACOBIAN, THE VARIANCE
+% ===========================================================================
+
+\begin{definition}[The debiased moment function, and the two matrices]\label{def:moment}
+For a nuisance triple $\zeta=(\varphi,L,\varrho)$ with $\varphi\in\mathcal V$, $L:\IR\times\IR^{p}\to\IR^{p}$
+Borel and $\varrho:\IR^{p}\to[0,1]$ Borel, write $\widetilde W(\varrho):=W-\varrho(\Delta Z)$ and define the
+$\IR^{p}$-valued \emph{debiased moment function}
+\begin{equation}\label{eq:psidef}
+\psi(\theta,\zeta)\;:=\;\Delta Z\,\Delta U(\theta,\varphi)\;+\;\widetilde W(\varrho)\,
+L\big(\Delta U(\theta,\varphi),\,\Delta Z\big),
+\end{equation}
+with $\Delta U(\theta,\varphi)$ as in \eqref{eq:trialres}. Write $\widetilde W:=\widetilde W(\varrho)$ at the
+true propensity, $\zeta_\star:=(\vdagger,L_\star,\varrho)$ as in \cref{def:weight}, and
+\begin{equation}\label{eq:psistar}
+\psi_\star\;:=\;\psi(\theta_\dagger,\zeta_\star)\;=\;\Delta Z\,\Delta U+\widetilde W\,L_\star(\Delta U,\Delta Z).
+\end{equation}
+Define
+\begin{equation}\label{eq:JSig}
+J\;:=\;E\big[\Delta Z\,\Delta Z'\big]\;+\;E\big[\widetilde W\,\ell_\star(\Delta U,\Delta Z)\,\Delta Z'\big],
+\qquad
+\Sigma\;:=\;E\big[\psi_\star\psi_\star'\big] .
+\end{equation}
+\emph{The second summand carries $\ell_\star=\partial_uL_\star$ and not $L_\star$}, because $\theta$ enters
+$\psi$ only through $\Delta U(\theta,\varphi)$ and differentiating $L_\star$ in that argument returns its
+$u$-derivative. \emph{And under A1 that summand is the zero matrix, so $J=E[\Delta Z\Delta Z']$ exactly}
+--- \cref{lem:momzero}\textup{(iv)}, whose whole content is
+$E[\widetilde W\mid\Delta U,\Delta Z]=0$ applied to the $\sigma(\Delta U,\Delta Z)$-measurable factor
+$\ell_\star(\Delta U,\Delta Z)\Delta Z'$. \eqref{eq:JSig} is nevertheless left in the two-summand form,
+because $J$ is \emph{defined} as the $\theta$-derivative of \eqref{eq:psidef} --- which has two summands
+whatever their values --- and because that is the form the estimator \eqref{eq:Jhat} takes, where the
+second summand does \textbf{not} vanish.
+
+\emph{$J$ must \textbf{not} be described as ``a different matrix'' from $E[\Delta Z\Delta Z']$}: wherever
+\eqref{eq:JSig} is well formed the two are the same matrix, by \cref{lem:nusigma}\textup{(v)} at
+$\Xi(u,z)=\ell_\star(u,z)\,z'$. \emph{What \textbf{is} true, and is why identification of
+$\theta_\dagger$ must not be routed through \eqref{eq:JSig}, is the conditionality}: $\ell_\star$ exists
+only under A2, so \eqref{eq:JSig} is a well-formed object only under A2, while identification of
+$\theta_\dagger$ is A1b(iv)'s and holds whether or not A2 does.
+% ARCHAEOLOGY.  A sentence asserting the opposite stood here through dispatch 12:
+% "J is the matrix of A3 and it is not E[Delta Z Delta Z']".  The claim entered as
+% a round-2 CORRECTION -- round 1 had routed identification of theta_dagger through
+% A3, and the repair (M-3) routed it through A1b(iv) instead, on the ground that A3
+% is "nonsingularity of a different matrix" and is itself conditional on A2.  The
+% conditionality half of that ground is right and survives; the "different matrix"
+% half is false, and it was asserted and never computed.  Its negation was already
+% proved in this same file at lem:nusigma(v).
+
+\emph{The typing note is about the \emph{form} and not the value.} $\ell_\star$ is $\IR^{p}$-valued and
+$\Delta Z'$ is $1\times p$, so
+$E[\widetilde W\ell_\star\Delta Z']$ is $p\times p$ and its \emph{form} is neither coordinatewise in the
+$p$ coordinates of $\theta$ nor symmetric --- the typing note recorded at the head of Part~F, and what
+makes the sum with $E[\Delta Z\Delta Z']$ well formed rather than a type error. Its \emph{value} is zero,
+so $J$ itself is symmetric and positive semidefinite. \emph{The warning is therefore not idle; it
+transfers to $\hat J$}, whose second summand in \eqref{eq:Jhat} is a sample average at
+$\widehat{\widetilde W}^{(-k)}$ and $\hat\ell^{(-k)}$, does not vanish, and leaves $\hat J$
+non-symmetric --- which is why \eqref{eq:Sighat} writes $\hat J^{-1}\hat\Sigma\hat J^{-1\prime}$ with the
+transpose and not $\hat J^{-1}\hat\Sigma\hat J^{-1}$.
+\end{definition}
+
+% ===========================================================================
+%  I.2  THE ESTIMATOR
+% ===========================================================================
+
+\begin{definition}[Cross-fitting, and the fixed anchor of the $\varphi$-step]\label{def:crossfit}
+Fix $\mathsf F\ge2$, not depending on $n$, and a partition of $\{1,\dots,n\}$ into folds
+$\mathcal I_1,\dots,\mathcal I_{\mathsf F}$ with $n_k:=|\mathcal I_k|$ and
+$\lfloor n/\mathsf F\rfloor\le n_k\le\lceil n/\mathsf F\rceil$, chosen independently of the data. Write
+$\mathcal I_{-k}:=\{1,\dots,n\}\setminus\mathcal I_k$, $O_i$ for the $i$-th observation vector of A0, and
+\[
+\IE_n[\varsigma]:=\frac1n\sum_{i=1}^{n}\varsigma(O_i),
+\qquad
+\IE_{n,k}[\varsigma]:=\frac1{n_k}\sum_{i\in\mathcal I_k}\varsigma(O_i) .
+\]
+\emph{At $\mathsf F=2$ this is Part~H's split, with $(\mathcal I_k,\mathcal I_{-k})=(\mathcal I_m,\mathcal I_a)$.}
+
+\emph{Convention \textup{(P8)}, re-declared for Part~I --- and the parts of \textup{(P8)} do not have the
+same standing.} \textup{(P8)}'s \emph{transfer rule} and
+its two companions --- the $O_P$ companion and the $o_P$ companion --- are \cref{lem:pconv}(i)--(iii),
+stated at a \emph{generic} $\sigma$-field, written $\mathcal G$ there and instantiated here, and they apply
+with no extension.
+% ARCHAEOLOGY.  Through dispatch 16 this clause read that the generic sigma-field
+% was "unnamed there", which was true of the comment block those statements then
+% lived in and is not true of the compiled lemma.
+\textup{(P8)}'s \emph{conditioning convention} --- ``every expectation and every $O_P$ is
+conditional on the auxiliary fold'' --- was stated \textbf{for Part~H}, at $\sigma(\mathcal I_a)$, and is
+therefore \textbf{re-declared} here rather than inherited: throughout Part~I it is read at
+$\sigma(\mathcal I_{-k})$, with $\mathcal I_k$ in place of $\mathcal I_m$. \emph{The licence is the same
+either way, since the convention is a reading of a proof and not a hypothesis; the sentence is not, and this
+definition is where the re-declaration lives.} \emph{That $\sigma$-field is written out at every site and is
+given no symbol}: the
+three natural candidates are all claimed --- $\mathcal G$ is \cref{lem:density}'s closed span,
+$\mathcal E$ is the best-approximation error of \eqref{eq:jackson}, and $\mathcal F$ is the Fourier
+transform of \eqref{eq:usobolev} --- and \cref{lem:balance} and \textup{(P8)} already write
+$\sigma(\mathcal I_a)$ out, so the convention is inherited rather than invented.
+Every conditional expectation and every conditional $O_P$ below is at that
+$\sigma$-field, and A0 supplies the independence of $\mathcal I_k$ from $\mathcal I_{-k}$, which with
+clause \textup{(c$'$)} below is what \textup{(P8)}'s \emph{freezing lemma} consumes.
+\emph{Which clause of \textup{(P8)} each site uses is named at the site, and the answer for Part~I is
+\textbf{never the transfer rule}.}
+% ARCHAEOLOGY.  Through dispatch 13 this paragraph said otherwise.
+Each conditional bound below is produced by conditional Markov or conditional Chebyshev, hence holds at
+\emph{every} threshold with a $\sigma(\mathcal I_{-k})$-measurable numerator, and is converted by the
+\emph{$O_P$ companion} when the numerator is unconditionally $O_P(1)$ after division by the stated rate
+(\cref{lem:prelimtheta} Step~4, \cref{lem:sandwich} Step~2) and by the \emph{$o_P$ companion} when it is
+unconditionally $o_P(1)$ (\cref{lem:epterm} Step~6, \cref{lem:sandwich} Step~8). \emph{The transfer rule
+needs the conditional probability to vanish at a \textbf{single} moving threshold, which neither
+inequality delivers}; that is the observation \textup{(P8)} already recorded for the $o_P$ case, now
+applied to the $O_P$ case. What supplies the tightness of the numerators is A4(iii), A5(ii), (iv) and
+hypothesis (R-a) of \cref{thm:rootn}.
+
+For each $k$ the nuisances are computed on $\mathcal I_{-k}$:
+\begin{enumerate}
+\item[(a)] \emph{Propensity.} $\hat\varrho^{(-k)}$ satisfies A4(iii) with $n$ replaced by $n_{-k}$ and is
+truncated to $[\varepsilon_\varrho,1-\varepsilon_\varrho]$ as in \cref{def:hatT}, so that
+$\widehat{\widetilde W}^{(-k)}:=W-\hat\varrho^{(-k)}(\Delta Z)$ satisfies
+$\varepsilon_\varrho\le|\widehat{\widetilde W}^{(-k)}|\le1$ surely and
+$\mathsf r_k:=\hat\varrho^{(-k)}-\varrho$ satisfies $\|\mathsf r_k\|_\infty\le1-2\varepsilon_\varrho<1$.
+\item[(b)] \emph{Structural function.} $\hat\varphi^{(-k)}$ is the estimator of \cref{def:lfstep}, run on
+$\mathcal I_{-k}$ \textbf{at a fixed anchor $\theta_\circ\in\IR^{p}$ chosen before the data are seen}, and
+$h_k:=\hat\varphi^{(-k)}-\vdagger$. \emph{The anchor is what removes the circularity, and it is licensed and
+not free.} By \cref{cor:opsol} and \cref{lem:shiftinv} the population solution set of \eqref{eq:opeq} in
+$\varphi$ is $\mathcal V_{CI}$ at \emph{every} $\theta$, so under A1b(iii) the $\varphi$-step targets
+$\vdagger$ at $\theta_\circ$ as well as at $\theta_\dagger$; \emph{what is not $\theta$-free is the
+conditioning of the inverse problem}, so \cref{prp:phirate}'s hypotheses (P-a)--(P-g), \eqref{eq:muhalf} and
+A7 in the form \eqref{eq:a7amend} are read \emph{at $\theta_\circ$}, and $a$, $\mu$, $\mathsf R_\ast$ and
+$\hat\delta_n$ are $\theta_\circ$-specific. This is \cref{rem:R1}\textup{(iv)}, used and not extended.
+\item[(c)] \emph{Debiasing weight.} $\hat L^{(-k)}$ is an admissible weight in the sense of
+\cref{def:weight}(b), $\hat L^{(-k)}=L^{\,\hat b^{(-k)}}_{\hat\ell^{(-k)}}$, generated by an estimator
+$\hat\ell^{(-k)}$ of $\ell_\star$ that is Borel, bounded, and continuous in $u$ at every $(u,z)$;
+$D_k:=\hat L^{(-k)}-L_\star$. \emph{Those three properties of $\hat\ell^{(-k)}$ are the minimum
+\cref{def:weight}(b) needs to be well posed} --- they are what make $\int_0^u\hat\ell^{(-k)}(v,z)dv$ exist
+and make $\partial_u\hat L^{(-k)}=\hat\ell^{(-k)}$ hold at every point --- \emph{and they are stated here
+rather than inherited}, so that this definition is well posed on its own terms; hypothesis (R-a) of
+\cref{thm:rootn} strengthens continuity to continuous differentiability, which \emph{one} clause of this
+definition uses and only one --- \textup{(c$'$.2)} needs it to make the inner supremum of the second
+envelope, $\sup_u\|\partial_u\hat\ell^{(-k)}(u,z)\|$, attained on a countable dense set and hence
+measurable. \emph{So the sup-norm convention \eqref{eq:supnormconv} is \textbf{not} unconditional.}
+% ARCHAEOLOGY.  Through dispatch 14 this sentence read "which no clause of this
+% definition uses", from which a reader would conclude that it is unconditional.
+\item[(c$'$)] \emph{Measurability of the five estimated nuisances, and the reading of their sup-norms.}
+\emph{Clause \textup{(c)} above states a per-realisation ``Borel'' and nothing more; without the present
+clause the hypotheses of (R-a) and the displays \eqref{eq:foldrates} are not well-posed probability
+statements, because they are statements about the distribution of a supremum and of an integral of a random
+function.} \emph{This clause re-declares nothing}:
+\cref{lem:balance}'s sample-splitting convention --- the Part~F original --- states
+$\sigma(\mathcal I_a)$-measurability of $\hat\ell$ as a \emph{random element} of
+$L^{2}(P_{\Delta U,\Delta Z})$ together with a fixed \emph{jointly measurable representative}, which is
+strictly weaker than \eqref{eq:prodmeas} below and is all that site needs, it evaluating $\hat\ell$ at an
+\emph{undistorted} $(\Delta U,\Delta Z)$ draw.
+% ARCHAEOLOGY.  Through dispatch 15 lem:balance's convention stated MEMBERSHIP and
+% a measurability whose target was unspecified, and this sentence in turn described
+% it as "a membership statement and not a measurability declaration".  Both were
+% repaired in dispatch 16 at lem:balance.
+\emph{And the right container is not the same for all five}, which is the substance of
+\textup{(c$'$.1)}. Two clauses follow; neither is available from clause \textup{(c)} alone, and
+\textup{(c$'$.1)} is a requirement on the estimators and not a consequence of anything above it ---
+\emph{with \textbf{one} exception, marked at the clause itself, and it is the object clause \textup{(b)} has
+already fully constructed}. For $\hat\varphi^{(-k)}$ the property is \textbf{verified} rather than required,
+at the measurability paragraph of \cref{def:lfstep}; \emph{and the exception is forced, not stylistic}, since
+one cannot require a property of an object one has already built --- \cref{rem:obligations}'s test, read on an
+estimator.
+% ARCHAEOLOGY.  Through dispatch 18 this sentence quantified over all five without
+% the carve-out, so the clause simultaneously pinned hat-varphi^{(-k)} to a
+% construction and demanded of it a property that construction was never shown to
+% have.
+\begin{enumerate}
+\item[(c$'$.1)] \emph{Measurability --- and it is two different statements, because three of the five are
+only ever integrated and two are evaluated pointwise at arguments their container does not control.}
+
+\emph{The three integrated nuisances, as random elements of $L^{2}$ at a fixed representative.} Each of
+$\hat\varrho^{(-k)}$, $\hat b^{(-k)}$ and $\hat\varphi^{(-k)}$ is a
+\textbf{$\sigma(\mathcal I_{-k})$-measurable random element} of, respectively, $L^{2}(P_{\Delta Z})$,
+$L^{2}(P_{\Delta Z})$ and $\mathcal V$ --- \emph{a measurable map from the sample space into the space, and
+not a family of functions indexed by the sample point}. A random element of an $L^{2}$ space over a
+separable metric space admits a jointly measurable representative --- measurable with respect to the
+product of the sample $\sigma$-algebra with $\mathfrak B(\IR^{p})$ for the first two and with
+$\mathfrak B(\mathcal X)$ for the third --- \emph{fix one for each, once, as A2c does for
+$\ell^\Pi_\star$}.
+\emph{For the third of the three this is a \textbf{discharged verification} and not a requirement, and the
+difference is not cosmetic.} Clause \textup{(b)} pins $\hat\varphi^{(-k)}$ to \cref{def:lfstep}, whose
+stopping index is \emph{random}, so the ground that settles the other two --- A4(iii)'s ``by inspection of the
+formula'', one Part earlier --- is unavailable: no formula is inspected when an index is chosen by a
+discrepancy rule. \emph{What supplies it instead is the measurability paragraph of \cref{def:lfstep}}, which
+builds the property from the deterministic cap \eqref{eq:cap}, the emptiness convention of
+\cref{def:lfstep}\textup{(c)}, and the finiteness of the resulting family: the stopping index is a hitting
+index of finitely many measurable events, the iterates are finite compositions of measurable maps, and the
+stopped iterate is a finite indicator-weighted sum of them. \emph{The superscripts are not written out here},
+because \cref{def:lfstep}'s index is a \emph{stage} index and this clause's is a \emph{fold} index, and the
+two are one glyph apart. \emph{The other two remain requirements, as printed}, and $\hat b^{(-k)}$'s is read
+off its formula on the $\hat\varrho$ model.
+\emph{The sample $\sigma$-algebra is written out and given no symbol}, because
+calligraphic $\mathcal F$ is A2c's Fourier transform and $\mathcal F_{XZW}$ never appears
+without its subscript; the same convention applies to $\sigma(\mathcal I_{-k})$
+itself.
+% ARCHAEOLOGY.  Glossary Sec.1.6, C15, and the C78 write-it-out precedent.
+\emph{For these three the choice of representative is immaterial, and that is the test a container has to
+pass --- but the test is passed on \textbf{two different grounds}.} For $\hat\varrho^{(-k)}$ and $\hat b^{(-k)}$ the evaluation is at
+$\Delta Z_i$, whose law \emph{is} the one the container is built on, so identity of laws does it. \emph{For
+$\hat\varphi^{(-k)}$ it is not}: its container is $\mathcal V\subset L^{2}(\mathcal X,\pi)$, whose null
+sets are the $\pi$-null ones, while its evaluations are at $X_{i1}$ and $X_{i2}$, whose laws are $f_{X_1}$
+and $f_{X_2}$. \emph{What transfers the null sets there is \textbf{domination}, and it has a tag}: C1(ii)
+gives $\bar c_\pi=\max_{j\in\{1,2\}}\|f_{X_j}/\pi\|_\infty<\infty$, so every $\pi$-null set is
+$P_{X_j}$-null for $j\in\{1,2\}$; \emph{``the law its container is built on'' is the wrong ground for the
+third object}. Either way any two representatives
+% ARCHAEOLOGY.  The domination ground was uncited through dispatch 15.
+agree at all of the finitely many evaluation points outside a $P$-null set, the union of the finitely many
+exceptional sets being $P$-null.
+
+\emph{For $\hat\varrho^{(-k)}$ the choice is moreover \textbf{pinned}, and that is what clause
+\textup{(a)}'s \emph{sure} bound rests on.} A4(iii), read at the fold by
+clause \textup{(a)}, requires product measurability of $\hat\varrho$'s \emph{own pointwise function} ---
+the \eqref{eq:prodmeas} shape, one Part earlier --- so for that object no equivalence class is formed and
+no representative is chosen at all; \cref{def:hatT}'s truncation is then a pointwise operation on the very
+function clause \textup{(a)} names, and
+$\varepsilon_\varrho\le|\widehat{\widetilde W}^{(-k)}|\le1$ holds \emph{surely}, as clause \textup{(a)}
+says. The $L^{2}$ container is retained
+for $\hat\varrho^{(-k)}$ only because A4(iii)'s \emph{rate} is an $L^{2}$ statement; it is not what any
+pointwise bound rests on.
+% ARCHAEOLOGY.  Through dispatch 15, clause (a) asserted a SURE property of an
+% object this clause had placed in an L^2 container, with nothing tying the chosen
+% representative to the truncation -- this file's own test, applied to the wrong
+% object.  Every consumer of clause (a) would have survived a weakening to "almost
+% surely", so it was a wording defect and not a broken bound; it was repaired at
+% A4(iii) in dispatch 16 because the assumption had to be repaired anyway.
+
+\emph{The two weight objects, for which the $L^{2}$ container is not merely unnecessary but wrong.} What is
+required of $\hat\ell^{(-k)}$, in addition to clause \textup{(c)}, is that its \emph{own} pointwise
+function --- the one \textup{(c)} already defines, at every realisation and every $(u,z)$ --- be product
+measurable:
+\begin{equation}\label{eq:prodmeas}
+(\omega,u,z)\;\longmapsto\;\hat\ell^{(-k)}(\omega)(u,z)
+\quad\text{is}\quad
+\sigma(\mathcal I_{-k})\otimes\mathfrak B\big(\IR\times\IR^{p}\big)\text{-measurable} ,
+\end{equation}
+and $\hat L^{(-k)}=L^{\,\hat b^{(-k)}}_{\hat\ell^{(-k)}}$ then \emph{inherits} the same property from
+\eqref{eq:weightdef}, together with the representative fixed above for $\hat b^{(-k)}$ --- \emph{so
+\eqref{eq:prodmeas} is imposed on one object and not on two}. \emph{The inheritance is the
+\textbf{measurability half} of Fubini--Tonelli and it is taken on positive and negative parts,
+coordinatewise}: \eqref{eq:weightdef}'s integrand is $\IR^{p}$-valued and
+% ARCHAEOLOGY.  A dispatch-15 draft elided this to "by Tonelli's theorem applied to
+% int_0^u hat-ell^{(-k)}(v,z) dv".
+of arbitrary sign, and $\int_0^u=-\int_u^0$ when $u<0$. For each coordinate $j\le p$ and each sign part the
+two maps
+\[
+(\omega,u,z)\;\longmapsto\;\int_\IR\un\{0\le v\le u\}\,\big(\hat\ell^{(-k)}_j\big)^{\pm}(\omega)(v,z)\,dv,
+\qquad
+(\omega,u,z)\;\longmapsto\;\int_\IR\un\{u\le v\le0\}\,\big(\hat\ell^{(-k)}_j\big)^{\pm}(\omega)(v,z)\,dv
+\]
+are product measurable by Tonelli's theorem, their integrands being non-negative and
+$\sigma(\mathcal I_{-k})\otimes\mathfrak B(\IR\times\IR\times\IR^{p})$-measurable by \eqref{eq:prodmeas};
+all four are \emph{finite} at every point because clause \textup{(c)} makes $\hat\ell^{(-k)}$ bounded at
+each realisation, so their signed combination is well defined and product measurable. \emph{This is the
+device A2c\textup{(m.2)} already owns}, one Part earlier and on the other side of the
+pairing, where the same positive-and-negative-part split carries Tonelli across a signed
+$u$-integral. \emph{Under (R-a) the derivative inherits it too, and \textup{(c$'$.2)} needs that for its
+second envelope}: $\partial_u\hat\ell^{(-k)}$ exists at every point under (R-a) and is the pointwise limit
+of the difference quotients of $\hat\ell^{(-k)}$ in $u$ taken along the reciprocals of the positive
+integers --- \emph{the increment is written out and carries no letter}, on the same ground as
+\eqref{eq:supnormconv}'s countable dense set; each such quotient is product measurable by
+\eqref{eq:prodmeas}, and a pointwise limit of countably many product-measurable functions is product
+measurable. \emph{A representative of an $L^{2}$ class supplies nothing of the kind}, having no derivative
+in general.
+\emph{No equivalence class is formed and no representative is chosen, so there is nothing
+for a choice of representative to disturb, and clause \textup{(c)}'s continuity in $u$ is untouched.}
+\emph{Why the $L^{2}$ reading fails here and not three lines above}: these two are evaluated at a
+% ARCHAEOLOGY.  A draft of this clause declared the two weight objects random
+% elements of L^2(P_{Delta U, Delta Z}) and asserted that "the continuity clause of
+% (c) is preserved by the choice", which is false for an arbitrary representative,
+% point evaluation not being continuous on L^2.
+\emph{shifted} first argument --- at $(\Delta U-\lambda\Delta h_k,\Delta Z)$ in \cref{lem:biasexp} Steps~1
+and~4--5, at $(\Delta U_i(\theta,\hat\varphi^{(-k)}),\Delta Z_i)$ in \eqref{eq:Jhat} and
+\cref{lem:sandwich} Steps~2 and~9 --- whose law \textup{(c$'$.2)} below argues, and needs, \emph{not} to be
+dominated by $P_{\Delta U,\Delta Z}$; on an undominated set two representatives of one class disagree, so
+$\hat J$ of \eqref{eq:Jhat}, $\Psi^{(1)}_k$ of \cref{lem:biasexp}, and hence $\hat\theta$ of
+\eqref{eq:onestep} and $\hat\Sigma$ of \eqref{eq:Sighat}, would depend on which was chosen and
+\emph{the estimator would not be a function of the object the clause declares}.
+
+\emph{What is retained from the $L^{2}$ reading}, because several results use it, is membership:
+$\hat\ell^{(-k)}\in L^{2}(P_{\Delta U,\Delta Z})$ almost surely --- \cref{lem:balance} Step~0's third
+point, and what makes the third display of \eqref{eq:foldrates} finite --- and, for $\hat L^{(-k)}$, the
+same membership, which is \emph{derived and not required}: by \eqref{eq:weightdef},
+$\|\hat L^{(-k)}(u,z)\|\le\|\hat b^{(-k)}(z)\|+\|\hat\ell^{(-k)}\|_\infty|u|$, so
+$E\|\hat L^{(-k)}(\Delta U,\Delta Z)\|^{2}\le
+2E\|\hat b^{(-k)}(\Delta Z)\|^{2}+2\|\hat\ell^{(-k)}\|^{2}_\infty E[\Delta U^{2}]<\infty$ almost surely
+under \cref{def:weight}(b)'s admissibility, (R-a) and A1b(iv). \emph{Both statements are about the
+function and neither is a container declaration.} \emph{The third display of \eqref{eq:foldrates} is a
+statement with a truth value}: by \eqref{eq:prodmeas} and Tonelli's theorem,
+$\omega\mapsto\|\hat\ell^{(-k)}-\ell_\star\|_{L^{2}(P)}$ is $\sigma(\mathcal I_{-k})$-measurable, and
+likewise every conditional expectation and every $O_P$ statement below about these objects is well posed.
+\emph{Equation \eqref{eq:prodmeas} is also what \textup{(P8)}'s freezing lemma consumes for the
+$\hat\ell^{(-k)}$ \emph{ingredient} of its composite, at six of its seven Part~I sites}, that lemma being
+stated at a composite of the form $(\omega,e)\mapsto f\big(\hat\ell^{(-k)}(\omega),e\big)$. \emph{The
+seventh is \cref{lem:prelimtheta} Steps~4 and~4$'$, where $\hat\ell^{(-k)}$ does not appear at all and the
+frozen object is $h_k$}: what supplies the composite there is the jointly measurable representative fixed
+above for $\hat\varphi^{(-k)}$, so both halves of this clause are load-bearing and neither covers the
+other. \emph{The composite is \textbf{not} product measurable ``precisely when'' \eqref{eq:prodmeas}
+holds, in either direction.} Not sufficient: the composite is product
+measurable only once $f$ is itself jointly Borel in its two arguments, and at the sites where the
+evaluation point is built from $\hat\varphi^{(-k)}$ only together with that object's own clause. Not
+necessary: $f\equiv0$ is product measurable whatever $\hat\ell^{(-k)}$ is. \emph{What is true is the
+direction the proofs use}, and it is the one this clause is for: \eqref{eq:prodmeas} is what this
+% ARCHAEOLOGY.  A dispatch-15 draft wrote the "precisely when".
+definition \emph{supplies}, and it is what the per-realisation ``Borel'' of clause \textup{(c)} does not. \emph{The file owns the device by which \eqref{eq:prodmeas} is verified, and it
+is recorded rather than imposed}: \cref{lem:biasexp} Step~1 obtains joint measurability in
+$(\lambda,\omega)$ from ``continuous in $\lambda$, measurable in $\omega$'' by the Carath\'eodory
+criterion, and the same criterion gives \eqref{eq:prodmeas} whenever, for each fixed $u$, the map
+$(\omega,z)\mapsto\hat\ell^{(-k)}(\omega)(u,z)$ is
+$\sigma(\mathcal I_{-k})\otimes\mathfrak B(\IR^{p})$-measurable, since \textup{(c)} already makes
+$u\mapsto\hat\ell^{(-k)}(u,z)$ continuous at every $(\omega,z)$. \emph{That is a sufficient condition and
+not the requirement}; the requirement is \eqref{eq:prodmeas}, which is what the proofs use.
+\item[(c$'$.2)] \emph{The sup-norms are essential suprema in $z$ and genuine suprema in $u$.} For the two
+envelopes (R-a) prices,
+\begin{equation}\label{eq:supnormconv}
+\big\|\hat\ell^{(-k)}\big\|_\infty
+\;:=\;\operatorname{ess\,sup}_{z}\ \Big\{\ \sup_{u\in\IR}\ \big\|\hat\ell^{(-k)}(u,z)\big\|\ \Big\} ,
+\qquad\text{the essential supremum taken under }P_{\Delta Z},
+\end{equation}
+and likewise for $\|\partial_u\hat\ell^{(-k)}\|_\infty$. \emph{Both halves of that reading are needed and
+neither can be interchanged with the other.} The inner supremum is over an uncountable index but is
+attained on a countable dense set, because \textup{(c)} makes $u\mapsto\hat\ell^{(-k)}(u,z)$ continuous at
+every $z$ and (R-a) makes $u\mapsto\partial_u\hat\ell^{(-k)}(u,z)$ continuous as well, so
+$(\omega,z)\mapsto\sup_u\|\cdot\|$ is jointly measurable by \textup{(c$'$.1)}.
+
+\emph{The \textbf{outer} essential supremum is measurable as well, and this does \textbf{not} follow from
+joint measurability without an argument --- it is not a countable supremum.} \emph{The argument is the
+tool of the previous
+paragraph, once more.} At each fixed real level, the map
+% ARCHAEOLOGY.  A dispatch-15 draft of this clause carried the outer essential
+% supremum on the word "likewise".
+$\omega\mapsto P_{\Delta Z}\big\{z:\sup_u\|\hat\ell^{(-k)}(\omega)(u,z)\|>\text{that level}\big\}$ is
+$\sigma(\mathcal I_{-k})$-measurable by Tonelli's theorem applied to the non-negative jointly measurable
+indicator; the levels at which that probability vanishes are exactly the levels \emph{at or above} the
+essential supremum, since it vanishes at the essential supremum itself --- the exceptional set there being
+the union of the countably many exceptional sets one reciprocal-of-an-integer above it --- and at no
+smaller level, by the definition of the essential supremum as an infimum; and therefore, for every real
+level, the event that the essential supremum does not exceed it is the intersection, over the
+\emph{countably many rational levels strictly above it}, of the events that the probability vanishes ---
+a countable intersection of measurable sets, the \emph{strict} inequality being what makes those
+exceptional sets exhaust the one at the level itself.
+Hence $\omega\mapsto\|\hat\ell^{(-k)}\|_\infty$, and likewise
+$\omega\mapsto\|\partial_u\hat\ell^{(-k)}\|_\infty$, is $\sigma(\mathcal I_{-k})$-measurable as a map into
+$[0,+\infty]$. \emph{The levels are written out and carry no letter}, on the same ground as the countable
+dense set above (C12/C24/C78). \emph{This is load-bearing and not hygiene}: (R-a) prices both envelopes as
+$O_P(1)$, which is a statement about the distribution of these two maps, and \textup{(P8)}'s $O_P$
+companion requires its \emph{bounding numerator} to be measurable with respect to the conditioning
+$\sigma$-field --- and at \cref{lem:sandwich} Step~2 that numerator is
+$\|\hat\ell^{(-k)}\|^{2}_\infty E\|\Delta Z\|^{2}$, whose only random factor is the envelope. \emph{No
+symbol of the companion's is imported into compiled text}; the numerator is named by what it is.
+
+\emph{A genuine supremum over $z$, by contrast, would not be a measurable function of $\omega$}, since no
+clause makes $z\mapsto\hat\ell^{(-k)}(u,z)$ continuous. \emph{And the essential supremum must be taken in $z$ and not
+in $(u,z)$}, because every consumer of \eqref{eq:supnormconv} evaluates the envelope at a
+\emph{shifted} first argument --- at $(\Delta U-\lambda\Delta h_k,\Delta Z)$ in \cref{lem:biasexp} Steps~1
+and~4--5, at $(\Delta U_i(\theta,\hat\varphi^{(-k)}),\Delta Z_i)$ in \cref{lem:sandwich} Steps~2 and~9 ---
+whose law need not be dominated by $P_{\Delta U,\Delta Z}$, while its \emph{second} argument is in every
+case a draw of $\Delta Z$. \emph{The exceptional set is therefore $P$-null where the envelope is used}:
+for each $i$, $\sup_u\|\hat\ell^{(-k)}(u,\Delta Z_i)\|\le\|\hat\ell^{(-k)}\|_\infty$ almost surely, and
+the union over the finitely many $i\le n$ of the exceptional sets is still $P$-null, so the bound holds
+simultaneously at all $n$ observations almost surely. \emph{For the deterministic $\ell_\star$ no
+convention is needed and none is imposed}: A$2'$(i)'s closing clause defines $\ell_\star$ pointwise and
+\cref{cor:elldiff} bounds it at \emph{every} $(u,z)$, so $\|\ell_\star\|_\infty$ is a genuine supremum and
+the two readings agree.
+\end{enumerate}
+\item[(d)] \emph{The fold reading of the maintained nuisance-rate clauses, declared once.} A4(iii) is read
+at each fold in (a); the \textbf{four} clauses of A5 that price an \emph{estimated} nuisance are read the
+same way, and every citation of them in Part~I is a citation of the corresponding display here:
+\begin{equation}\label{eq:foldrates}
+\max_{k\le\mathsf F}\big\|h_k\big\|_{L^{2}(\pi)}=O_P(\delta_n),
+\qquad
+\max_{k\le\mathsf F}\big\|h_k\big\|_{H^{s}}=O_P(1),
+\qquad
+\max_{k\le\mathsf F}\big\|\hat\ell^{(-k)}-\ell_\star\big\|_{L^{2}(P)}=O_P(\epsilon_n),
+\end{equation}
+being A5(ii)'s first half, A5(vi), and A5(iv)'s first half respectively --- \emph{the third in force precisely
+when (R-e.1) of \cref{thm:rootn} is the branch taken, since under (R-e.2) no rate for $\hat\ell^{(-k)}$ is
+assumed at all}. \emph{The second display is finite at every realisation only under
+\eqref{eq:sieveinhs}, and it is cited here for the same reason A5(vi) carries it}: $h_k$ is
+$\hat\varphi^{(-k)}-\vdagger$ with $\hat\varphi^{(-k)}$ an iterate of \cref{def:lfstep} and hence ---
+\textbf{once $\hat\varphi^{(0)}$ is in $\mathcal S_n$} --- an
+element of $\mathcal S_n$, so A8's basis clause is what places it in $H^{s}$ and H1 is what places
+$\vdagger$ there; without the first the display is an $O_P(1)$ statement about a quantity equal to
+$+\infty$ surely, which is a condition on the \emph{empty} event and not a rate.
+\emph{The premise in bold is stated here because this is a \textbf{definition} and inherits no hypothesis
+list, and because without it the sentence is false as written}: \cref{def:lfstep}\textup{(d)} sets
+$\hat\varphi^{(k)}=\hat\varphi^{(k-1)}+v_{\hat m^{(k)}}$ with $v_m\in\mathcal S_n$, so the path lies in
+$\mathcal S_n$ if and only if its \emph{starting point} does --- which is why A5(vi$'$), (P-a.1) and
+\cref{def:lfstep}'s own opening all say ``once $\hat\varphi^{(0)}$ does''.
+\emph{Every result that reads \eqref{eq:foldrates} supplies the premise},
+(P-a.1) being in group (T-5) of \cref{thm:rootn}.
+% ARCHAEOLOGY.  Through dispatch 20 this clause stated the display without the
+% bold premise.
+\emph{The indexing is not cosmetic
+and it is not free either.} A5(ii), (iv) and (vi) are stated at a \textbf{single} estimated nuisance, so a
+result that cites them bare while averaging over $\mathsf F$ fold complements is short by exactly the
+maximum. For the first two the cost is nil: \cref{thm:rootn} Step~0 \emph{derives} them from (T-5) with
+$\mathsf F$ fixed and $n_{-k}\asymp n$. \emph{For the third it is a strengthening of A5(iv) in form},
+of the same order for fixed $\mathsf F$ but a strengthening nonetheless, and it is therefore carried
+explicitly by hypothesis (R-e.1) of \cref{thm:rootn} rather than read into A5(iv). \emph{(R-e.2) and (R-a)
+already write $\max_{k}$.}
+\emph{The fourth clause is A5(vi$'$).} It prices the \emph{stagewise} Sobolev stability of the
+$\varphi$-step,
+% ARCHAEOLOGY.  (R-e.1) was left bare by a round-10 draft; this enumeration read
+% "the three clauses" through dispatch 13.
+$P(\max_{j\le\bar k}\|\hat\varphi^{(j)}-\vdagger\|_{H^{s}}\le\mathsf R)\to1$ --- where $\bar k$ is a
+\emph{stage} index and not a fold index, the two being one glyph apart --- and it is a clause about an
+\textbf{estimated} nuisance, so it is read at each fold complement exactly as the other three are: for each
+$k\le\mathsf F$, A5(vi$'$)'s display is required of the $\varphi$-step run on $\mathcal I_{-k}$.
+\emph{This costs nothing and is nonetheless not without consequence.} It costs nothing because $\mathsf F$
+is fixed, so the fold reading is the intersection of $\mathsf F$ events each of probability tending to one;
+it is not without consequence because the radius $\mathsf R$ must then serve all $\mathsf F$ fold
+complements \emph{at one value}, $\mathsf R$ being a constant of \cref{def:srcball} and not a fold-indexed
+object --- and $\mathsf R$ also appears in (P-c), (P-g), \eqref{eq:entropy} and, through
+$\mathsf R_\ast$, in the schedule constants, so a fold-indexed radius is not available. (T-5) already reads
+A5(vi$'$) at each fold \emph{operationally}, through ``\eqref{eq:phirate} holds on each
+$\mathcal I_{-k}$''; what was missing is that this enumeration --- which declares itself the place where
+the reading lives --- did not list it.
+\end{enumerate}
+Put $\hat\zeta^{(-k)}:=(\hat\varphi^{(-k)},\hat L^{(-k)},\hat\varrho^{(-k)})$ and, for $\theta\in\IR^{p}$,
+\begin{equation}\label{eq:barpsi}
+\bar\psi_n(\theta)\;:=\;\frac1n\sum_{k=1}^{\mathsf F}\sum_{i\in\mathcal I_k}\psi\big(\theta,\hat\zeta^{(-k)}\big)(O_i),
+\qquad
+\hat\psi^{(-k)}:=\psi\big(\theta_\dagger,\hat\zeta^{(-k)}\big).
+\end{equation}
+\emph{Since $\mathsf F$ is fixed, $n_k/n\to\mathsf F^{-1}$ and $n_k\asymp n$}; the constant $\mathsf F$ is
+carried explicitly in every bound rather than absorbed, because \cref{prp:medianpart} quantifies over
+partitions and a suppressed $\mathsf F$ would hide the one place a partition enters an order.
+\end{definition}
+
+\begin{definition}[The preliminary and the one-step estimator]\label{def:onestep}
+With the notation of \cref{def:crossfit} define
+\begin{equation}\label{eq:prelimtheta}
+\hat\theta^{(0)}\;:=\;\Big(\IE_n\big[\Delta Z\Delta Z'\big]\Big)^{-1}
+\frac1n\sum_{k=1}^{\mathsf F}\sum_{i\in\mathcal I_k}\Delta Z_i\big(\Delta Y_i-\Delta\hat\varphi^{(-k)}_i\big),
+\end{equation}
+on the event that $\IE_n[\Delta Z\Delta Z']$ is nonsingular, and $\hat\theta^{(0)}:=0$ otherwise. Define
+the \emph{cross-fitted Jacobian}, for $\theta\in\IR^{p}$,
+\begin{equation}\label{eq:Jhat}
+\hat J(\theta)\;:=\;\frac1n\sum_{k=1}^{\mathsf F}\sum_{i\in\mathcal I_k}
+\Big[\Delta Z_i\Delta Z_i'+\widehat{\widetilde W}^{(-k)}_i\,
+\hat\ell^{(-k)}\big(\Delta U_i(\theta,\hat\varphi^{(-k)}),\Delta Z_i\big)\,\Delta Z_i'\Big],
+\end{equation}
+so that $\partial_\theta\bar\psi_n(\theta)=-\hat J(\theta)$ identically, and put
+$\hat J:=\hat J(\hat\theta^{(0)})$. \emph{That identity uses \textbf{one} derivative and no more}:
+$\partial_u\hat L^{(-k)}=\hat\ell^{(-k)}$, which \cref{def:weight}(b) supplies at every point under the three
+properties \cref{def:crossfit}(c) requires of $\hat\ell^{(-k)}$, together with $\theta\mapsto\Delta U_i(\theta,\cdot)$
+being affine by \eqref{eq:trialres} and the sum being finite. \emph{No second derivative is claimed here.}
+$\partial_u^{2}\hat L^{(-k)}=\partial_u\hat\ell^{(-k)}$ is used only at \cref{thm:rootn} Step~1, for Taylor's
+theorem in $\theta$, and it is hypothesised \emph{there}, at (R-a) --- \emph{a definition should not carry a
+differentiability claim that a theorem assumes}. The \emph{one-step estimator} is
+\begin{equation}\label{eq:onestep}
+\hat\theta\;:=\;\hat\theta^{(0)}\;+\;\hat J^{-1}\,\bar\psi_n\big(\hat\theta^{(0)}\big)
+\end{equation}
+on the event $\{\hat J\ \text{nonsingular}\}$, and $\hat\theta:=\hat\theta^{(0)}$ otherwise. The variance
+estimator is
+\begin{equation}\label{eq:Sighat}
+\hat\Sigma\;:=\;\frac1n\sum_{k=1}^{\mathsf F}\sum_{i\in\mathcal I_k}
+\psi\big(\hat\theta,\hat\zeta^{(-k)}\big)(O_i)\;\psi\big(\hat\theta,\hat\zeta^{(-k)}\big)(O_i)' ,
+\qquad
+\hat V\;:=\;\hat J^{-1}\hat\Sigma\,\hat J^{-1\prime} ,
+\end{equation}
+the last \textbf{on the event $\{\hat J\ \text{nonsingular}\}$, with $\hat V:=0$ otherwise}.
+\emph{The fallback is not optional.} $\hat\theta^{(0)}$ is given a value off $\{\IE_n[\Delta Z\Delta Z']\
+\text{nonsingular}\}$ and $\hat\theta$ is given one off $\{\hat J\ \text{nonsingular}\}$;
+$\hat V$ inverts the \emph{same} $\hat J$ and needs one too. That matters because
+\cref{thm:rootn}'s \textbf{second} conclusion, $\hat V\xrightarrow{p}J^{-1}\Sigma J^{-1\prime}$, and the
+studentised statement that follows it are statements about $\hat V$ at every $n$, and a convergence in
+probability is not well posed for a quantity that is undefined on an event of positive probability.
+\emph{The choice of value is immaterial and the zero matrix is chosen because it is the one value that
+needs no further object}: by \cref{lem:sandwich}\textup{(i)}, $P(\hat J\ \text{nonsingular})\to1$, so the
+event on which the fallback is active has probability tending to zero and no conclusion of
+\cref{lem:sandwich}\textup{(ii)} or of \cref{thm:rootn} changes. \emph{In a finite sample the fallback is
+not innocuous and should not be reported as a variance estimate}: $\hat V=0$ makes the studentised
+statistic undefined, which is the honest report on that event and is the reason the value is stated rather
+than left to the reader.
+
+\emph{One step and not a root, and the ground is the \textbf{sample} criterion and not the population
+one.} The realised map
+$\theta\mapsto\bar\psi_n(\theta)$ is \emph{not} affine: by \eqref{eq:psidef} $\theta$ enters
+$\hat L^{(-k)}$ through its first argument, and $\widehat{\widetilde W}^{(-k)}$ is not conditionally
+centred, so $\bar\psi_n(\theta)=0$ need not have a unique root at any $n$. \emph{The ground is
+\textbf{not} that no global rank condition is available}: by \cref{lem:momzero}\textup{(iv)} and
+\eqref{eq:psiaffine} the
+population moment $\theta\mapsto E[\psi(\theta,\zeta_\star)]$ is affine with gradient $-E[\Delta Z\Delta Z']$,
+so a global rank condition \emph{is} available, it is A1b(iv), and $\theta_\dagger$ is its unique root on
+all of $\IR^{p}$ --- which says nothing about the sample criterion at estimated nuisances.
+% ARCHAEOLOGY.  Through dispatch 12 this paragraph gave the population half of the
+% ground as "A3 is a LOCAL rank condition ... and no global rank condition is
+% available".
+\emph{What the block supplies is a preliminary with a
+rate} (\cref{lem:prelimtheta}), and a one-step from a preliminary with a rate is exactly the construction
+that converts a rank condition on the population Jacobian into a limit distribution without solving
+anything; the cross-fitted form is that of
+\citet{chernozhukov2018dml}, and the two classical anchors for the one-step itself --- Newey \& McFadden
+(1994, Handbook ch.~36) \S3.4 and van der Vaart (1998) Ch.~5 --- are \emph{not cited here because their keys
+are absent from this project's bibliography}; they are flagged for the librarian in
+\texttt{theory\_memo.md} rather than written in, on the precedent \cref{rem:lfnonlinear}(c) sets for
+Dunker (2021). \emph{The Jacobian is
+evaluated at $\hat\theta^{(0)}$ and not at $\hat\theta$}, which is what makes \eqref{eq:onestep} a closed-form
+estimator and what makes the algebra of \cref{thm:rootn} Step~1 exact rather than asymptotic.
+\end{definition}
+
+% ===========================================================================
+%  I.4  THE THEOREM
+% ===========================================================================
+
+\begin{theorem}[\texttt{thm:rootn}: asymptotic normality of the cross-fitted one-step estimator]\label{thm:rootn}
+The one-step estimator is $\sqrt n$-consistent and asymptotically normal with the sandwich variance, under
+mild ill-posedness and a propensity smooth enough to put the structural rate strictly inside $n^{-1/4}$.
+\emph{The hypothesis groups are tagged \textup{(T-1)}--\textup{(T-5)} and the additional hypotheses
+\textup{(R-a)}--\textup{(R-e)}, on the model of \cref{prp:phirate}'s \textup{(P-a)}--\textup{(P-g)}.}
+% ARCHAEOLOGY.  A draft of this theorem tagged the groups (H1)--(H5).  H1 is the
+% Hilbert-scale link, it is cited INSIDE group (T-5), and a group label reading
+% "H1" next to an assumption tag reading "H1" is the collision this file has
+% repaired four times elsewhere.
+Suppose
+\begin{enumerate}
+\item[(T-1)] \emph{(sampling, model, identification)} A0; A1; A1b(i), A1b(iii), A1b(iv);
+\item[(T-2)] \emph{(the representer and the weight)} A2; A$2'$(i.a), A$2'$(i.b), A$2'$(iii); N1 at
+$L_\star$. \emph{A3 is \textbf{not} in this group}, being proved from
+(T-1) and the rest of (T-2) at \cref{lem:momzero}\textup{(iv)}; the rank condition the theorem needs is
+A1b(iv), which is in (T-1);
+% ARCHAEOLOGY.  A3 stood in this group through dispatch 12.
+\item[(T-3)] \emph{(index set, densities, propensity)} B1(i), (ii), (iv); C1(ii); C2$'$(i); A4(i),
+A4(ii), A4(iii);
+\item[(T-4)] \emph{(rates --- and the group is \textbf{not} homogeneous in status, which is why it is
+annotated)} A5(i) and A5(ii) in the form \eqref{eq:deltalog} below, \emph{both of which (T-5)
+\textbf{delivers} rather than requires} --- A5(i) through \cref{lem:opnoise} and A5(ii)'s first half through
+\eqref{eq:phirate}, per Step~0 of the proof --- listed here because Steps~2 and~4 cite them by name and
+because \eqref{eq:deltalog} fixes the object the symbol denotes; A5(iii), \emph{which no result in this file
+delivers and which is therefore assumed}, being a restriction on the primitives $(\mu,r,d_Z)$ that
+\cref{prp:phirate} presupposes rather than establishes --- that proposition returns \eqref{eq:phirate}
+\emph{whenever} \eqref{eq:frontier} holds and says nothing when it fails; and A5(vi) with $s>\tfrac12$, read
+at each fold as in \cref{def:crossfit}(d), of which (T-5)'s A5(vi$'$) delivers the $H^{s}$ bound at the
+\emph{final linearisation stage} $\bar k$ of \cref{def:lfstep} --- \emph{a stage index, not a fold index},
+the two being one glyph apart in this very clause --- while $s>\tfrac12$ is a restriction on the primitive
+$s$;
+\item[(T-5)] \emph{(the $\varphi$-step)} the hypotheses of \cref{prp:phirate}, read at the anchor
+$\theta_\circ$ of \cref{def:crossfit}(b) --- H1; A5(vi$'$); A8's basis and upper-end clauses;
+$p_K\ge s-\tfrac12$; (P-a.1)--(P-a.3), (P-c)--(P-g); and \eqref{eq:muhalf}, $\mu>\tfrac56$ strictly ---
+so that \eqref{eq:phirate} holds on each $\mathcal I_{-k}$;
+\end{enumerate}
+and suppose in addition
+\begin{enumerate}
+\item[(R-a)] \emph{(the weight is built as an anchored antiderivative, with a bounded derivative)} for each
+$k$, $\hat L^{(-k)}=L^{\,\hat b^{(-k)}}_{\hat\ell^{(-k)}}$ in the sense of \cref{def:weight}(b), with
+$\hat\ell^{(-k)}$ continuously differentiable in $u$ at every point and bounded,
+\[
+\max_{k\le\mathsf F}\Big\{\big\|\hat\ell^{(-k)}\big\|_\infty+\big\|\partial_u\hat\ell^{(-k)}\big\|_\infty\Big\}=O_P(1),
+\qquad
+\max_{k\le\mathsf F}E\big\|\hat b^{(-k)}(\Delta Z)\big\|^{4}=O_P(1),
+\]
+and $\max_{k\le\mathsf F}\|\hat L^{(-k)}-L_\star\|_{L^{2}(P)}=o_P(1)$.
+\emph{\textbf{The \emph{sure} boundedness of $\partial_u\hat\ell^{(-k)}$ is \emph{not} required}}: no
+first-step construction the block contemplates delivers a sure bound on an estimated object, what a
+series or kernel estimator of $\ell_\star$ supplies being a bound that is finite with probability tending
+to one --- exactly the $O_P(1)$ display above. The two sites that read finiteness of the derivative
+envelope, \cref{lem:biasexp} Step~4 and \cref{lem:sandwich} Step~5, carry it on the \textbf{right} of an
+inequality and are read on the event where it is finite, which is where every $O_P$ conclusion in those
+two lemmas is read in any case. \emph{Boundedness of
+$\hat\ell^{(-k)}$ itself is retained and is not part of this}: it is what \cref{def:crossfit}\textup{(c)}
+already requires, for \cref{def:weight}(b) to be well posed. \emph{And \cref{def:crossfit}\textup{(c$'$.2)}'s $[0,+\infty]$ typing is unchanged by
+this}: that typing is the \emph{definition}'s, fixing the range of the map $\omega\mapsto\|\cdot\|_\infty$
+% ARCHAEOLOGY.  Dispatch 19 added a sure-boundedness conjunct on the ground that
+% the two proof steps read finiteness straight off this hypothesis, and the same
+% paragraph then recorded that "nothing was broken by the omission".  Both cannot
+% be true of a minimal clause; the conjunct went and the O_P(1) display stayed, and
+% the two proof sentences were re-grounded on the display rather than deleted.  A
+% third site, thm:rootn Step 1, reads the clause only for the C^2 property of
+% hat-L^{(-k)} and for the O_P rate, and is untouched either way.
+before any hypothesis is imposed, and it must stay extended-valued because \cref{def:crossfit} is adopted by
+results that do not list (R-a); \emph{tightness} of that extended-valued map --- and hence finiteness of it
+with probability tending to one, but \textbf{not} at every sample point --- is what this clause adds to it,
+at the results that do;
+\item[(R-b)] \emph{(fourth moments, and exactly two of them)} $E\|\Delta Z\|^{4}<\infty$ and
+$E[\Delta U^{4}]<\infty$. \emph{A fourth moment of $b_\star$ is \textbf{not} needed}: $b_\star$ enters
+Part~I at two lines only, both at \emph{second} moment through
+A$2'$(iii) (\cref{lem:momzero} Step~1), and nothing in Part~I needs a fourth moment of $\psi_\star$ ---
+\cref{lem:sandwich} Step~8 applies conditional Markov to squares, its Step~10 needs only
+$\IE_n\|\psi_\star\|^{2}=O_P(1)$, and the central limit theorem used is Lindeberg--L\'evy. The
+\emph{fourth}-moment need is on $\hat b^{(-k)}$, and (R-a) supplies it;
+% ARCHAEOLOGY.  A round-10 draft carried a third clause, E||b_star||^4 < infinity.
+\item[(R-c)] \emph{(the $\varrho\times L$ cross term)} \textbf{either} \textup{(c.1)} $D_k=\hat L^{(-k)}-L_\star$
+satisfies N1$'$ for every $k$, \textbf{or} \textup{(c.2)}
+$\max_k\|D_k\|_{L^{2}(P)}=O_P(\epsilon^{L}_n)$ with $r_n\,\epsilon^{L}_n=o(n^{-1/2})$;
+\item[(R-d)] \textbf{\sout{SKIPPED.}} There is \textbf{no} hypothesis (R-d): the list runs (R-a), (R-b),
+(R-c), (R-e). The
+letter is \emph{reserved and not reused}, on the \textup{(P-b)} precedent, so that a citation to
+``(R-d)'' lands on this line and not on the wrong hypothesis;
+\item[(R-e)] \emph{(the first-order bias)} \textbf{either} \textup{(e.1)} A5(iv) read at each fold, i.e.\ the
+third display of \eqref{eq:foldrates} together with $\delta_n\epsilon_n=o_P(n^{-1/2})$ --- \emph{the fold
+index is part of the hypothesis and not a reading of it}, for the reason \cref{def:crossfit}(d) gives, and it
+is what \cref{thm:rootn} Step~4(a) and \cref{lem:sandwich} Step~3 consume --- \textbf{or}
+\textup{(e.2)} the hypotheses of \cref{lem:balance}\textup{(iii)} --- the sieve solve sets term
+\textup{(II)} of \eqref{eq:balance3} to zero, A8 holds with a B-spline basis of degree exceeding
+$s-\tfrac12$, A5(vi) holds and \eqref{eq:nuhat} holds --- together with
+$\max_k\|\hat\ell^{(-k)}-\ell_\star\|_{L^{2}(P)}=o_P(1)$, \textbf{and} with
+\begin{equation}\label{eq:re2window}
+s\;>\;\frac{1}{2\,(1-2\alpha)} .
+\end{equation}
+\emph{\eqref{eq:re2window} is stated on this branch because this
+branch is the one place both of its ingredients arrive at once.} \Cref{lem:balance}\textup{(iii)} carries A8 \emph{in full}, so (e.2) imports A8's lower
+end $L_x\gg n^{1/(2s)}$; (T-5) simultaneously imports (P-d), $L_x=o\big(n^{1-2\alpha}/\ln n\big)$; and
+\eqref{eq:frontier} forces $\alpha>\tfrac14$, so (P-d) binds and the joint window for $L_x$ is non-empty if
+and only if \eqref{eq:re2window}. \emph{The arithmetic is printed at (P-d) already} --- ``had A8's lower end
+been carried as well, the window would instead require $s>(2(1-2\alpha))^{-1}$'' --- and
+\cref{rem:h6bandwidth}\textup{(5)} records that the reference design clears it. \emph{(T-4)'s only
+$s$-floor is $s>\tfrac12$, which does not reach it.}
+\emph{Witness, chosen so that nothing else is empty there}: $(\mu,s,a,\alpha)=(2,1.3,0.325,0.32)$ clears
+\eqref{eq:frontier} at $\kappa\alpha=0.256$, clears \eqref{eq:lxwindow} at $s>1$ and clears
+\eqref{eq:hxwindow} at $s>1.2273$, while A8's lower end asks $L_x\gg n^{0.3846}$ and (P-d) allows
+$L_x=o(n^{0.36}/\ln n)$: \emph{empty}, the threshold \eqref{eq:re2window} being $s>1.3889$.
+\emph{So without \eqref{eq:re2window} the branch is vacuous below that threshold and the theorem is
+\textbf{not}}: (e.1) is unaffected and carries the conclusion there. \emph{An either/or that advertises a
+choice which does not exist at part of the parameter set is a defect of the enumeration, not of the
+theorem}, and \eqref{eq:re2window} is what makes the choice real wherever it is offered.
+\end{enumerate}
+Then, with $\hat\theta$ of \eqref{eq:onestep} and $J,\Sigma$ of \eqref{eq:JSig},
+\begin{equation}\label{eq:rootn}
+\begin{split}
+\sqrt n\,\big(\hat\theta-\theta_\dagger\big)
+&\;=\;J^{-1}\,\frac1{\sqrt n}\sum_{i=1}^{n}\psi_\star(O_i)\;+\;o_P(1)\\[2pt]
+&\;\xrightarrow{\;d\;}\;\text{the centred Gaussian law on }\IR^{p}\text{ with covariance matrix }
+J^{-1}\Sigma J^{-1\prime} ,
+\end{split}
+\end{equation}
+and $\hat V\xrightarrow{p}J^{-1}\Sigma J^{-1\prime}$, so that for \textbf{every} $\vartheta\in\IR^{p}$ with
+$\|\vartheta\|=1$,
+\[
+\sqrt n\,\vartheta'\big(\hat\theta-\theta_\dagger\big)\big/\big(\vartheta'\hat V\vartheta\big)^{1/2}
+\;\xrightarrow{\;d\;}\;\text{the standard Gaussian law on }\IR .
+\]
+\emph{The quantifier is ``every'' and not ``every $\vartheta$ with
+$\vartheta'J^{-1}\Sigma J^{-1\prime}\vartheta>0$''.} By
+\cref{lem:momzero}\textup{(v)} and \eqref{eq:sigmapd}, $\Sigma\succ0$ under A1b(iv) and C2$'$(i) --- both
+already in (T-1) and (T-3) --- so $J^{-1}\Sigma J^{-1\prime}\succ0$ and the positivity guard is
+\emph{implied by the theorem's own hypotheses}. \emph{A proviso that a theorem's hypotheses entail should
+be stated as a consequence and not as a condition the user checks.} \emph{What the guard is \textbf{not} replaced by is a
+% ARCHAEOLOGY.  Through dispatch 13 the quantifier read "every vartheta with
+% vartheta' J^{-1} Sigma J^{-1'} vartheta > 0"; the change is a strengthening of
+% the statement at no cost in hypotheses, and the entailment was found by probing
+% this very display.
+uniform lower bound}: $\lambda_{\min}(\Sigma)>0$ at the fixed $P$ of the theorem and may be arbitrarily
+small at nearby laws, which is \cref{rem:rootnscope}\textup{(6)}. \emph{The denominator $\vartheta'\hat V\vartheta$
+can still be zero or negative in a finite sample} --- $\hat V$ is a sample sandwich and is set to $0$ off
+$\{\hat J\ \text{nonsingular}\}$ by \eqref{eq:Sighat} --- so the display is read, as such displays always
+are, on the event of probability tending to one where the denominator is strictly positive.
+\emph{The contraction direction is $\vartheta$, which is this file's binding letter for exactly this
+object}: $\vartheta'\psi$ is the moment for $\vartheta'\theta_\dagger$. It is \textbf{not} $\varkappa$,
+which is a local bound variable in \eqref{eq:jackson}, nor $\mathsf r$, which is the
+$\varrho$-direction.
+% ARCHAEOLOGY.  Glossary C25.
+\emph{Both limit laws above are written out and carry no symbol}: italic $N$ is a count, a null set or a
+covering number everywhere else in this corpus, and calligraphic $\mathcal N$ is
+unavailable, being \cref{lem:density}'s closed subspace and A2c's null Borel set.
+% ARCHAEOLOGY (dispatch-23 change to how this theorem is PRINTED and to nothing it
+% says).  Through dispatch 22 the two displays read N(0, J^{-1} Sigma J^{-1'}) and
+% N(0,1) -- a law with two arguments on the letter lem:pfreeze's clause reserves.
+% Step 5 of the proof already said "the limit law is written out and carries no
+% symbol" while this statement printed the symbol twice.  The census behind glossary
+% C84 named its own pattern as "N(", which does not match "N\big(", so the two
+% displays here and the third at prp:medianpart were invisible to it: the proof was
+% repaired and the three STATEMENTS were not.  Glossary C90 prints the per-file
+% counts.
+\end{theorem}
+
+\begin{corollary}[T2$'$: the rate floor, without \eqref{eq:frontier}]\label{cor:ratefloor}
+The same decomposition delivers a rate whether or not the frontier holds; \emph{on the sieve branch, and
+only there, every exponent in that rate is a function of the primitives}.
+Suppose (T-1)--(T-3), (T-5), (R-a), (R-b) hold, together with A5(i), A5(vi) with $s>\tfrac12$,
+$\delta_n\to0$, $\epsilon_n\to0$, $r_n\to0$, and (R-c.2), (R-e.1) with the two products left
+\emph{unrestricted}. Then
+\begin{equation}\label{eq:ratefloor}
+\big\|\hat\theta-\theta_\dagger\big\|
+\;=\;O_P\Big(n^{-1/2}\;+\;\delta_n\epsilon_n\;+\;\delta_n^{2}\;+\;r_n\delta_n\;+\;r_n\epsilon^{L}_n\Big).
+\end{equation}
+Under (R-e.2) in place of (R-e.1) the term $\delta_n\epsilon_n$ is replaced by
+$O_P(n^{-1/2}\delta_n)+O_P(\mathsf R\,L_x^{-s})$, and no rate for $\hat\ell$ enters
+\eqref{eq:ratefloor} at all.
+
+\emph{How much of \eqref{eq:ratefloor} is in primitives, stated by branch, because the answer differs by
+branch.}
+% ARCHAEOLOGY.  A round-10 draft of this corollary claimed the stronger of the two
+% answers on the weaker branch.
+\begin{enumerate}
+\item[(a)] \emph{Always in primitives.} $\delta_n=(\hat\delta_n\ln n)^{2\mu/(2\mu+1)}$ with
+$\hat\delta_n=n^{-r/(2r+d_Z)}$ and $r_n=n^{-r/(2r+d_Z)}$, so the terms $n^{-1/2}$, $\delta_n^{2}$ and
+$r_n\delta_n$ have exponents that are functions of $(\mu,r,d_Z)$ alone --- through \cref{prp:phirate} and
+A4(iii).
+\item[(b)] \emph{Never in primitives on the branch stated above.} $\epsilon_n$ is priced by A5(iv) and
+$\epsilon^{L}_n$ by (R-c.2), and \emph{neither has a supplier anywhere in the maintained block}: $\hat\ell$
+is constructed nowhere (\cref{rem:rootnscope}\textup{(3)}) and $\epsilon^{L}_n$ is priced by nothing at all.
+So on the hypotheses as listed --- (R-e.1) with (R-c.2) --- the terms $\delta_n\epsilon_n$ and
+$r_n\epsilon^{L}_n$ carry two exponents that are \textbf{assumed and not derived}, and the claim ``the rate
+is in primitives'' is false for them. \emph{Note also that $s$ enters no exponent on this branch}, A8 being
+consumed only through (R-e.2).
+\item[(c)] \emph{Entirely in primitives on one branch, and that branch is what \S19.1's sieve decision
+buys.} Under (R-e.2) \textbf{and} (R-c.1) --- the sieve solve for the first-order bias, N1$'$ at each
+$D_k$ for the $\varrho\times L$ term --- the two unsupplied symbols both disappear, and
+\[
+\big\|\hat\theta-\theta_\dagger\big\|
+=O_P\Big(n^{-1/2}+n^{-1/2}\delta_n+\mathsf R\,L_x^{-s}+\delta_n^{2}+r_n\delta_n\Big),
+\]
+every exponent of which is a function of $(\mu,r,d_Z,s)$ through \cref{prp:phirate}, A4(iii), A8's window
+and the spline direct theorem. \emph{That is the sense in which this is a result and not bookkeeping, and it
+holds on that branch only.}
+\end{enumerate}
+\emph{No further index enters.} A2c's $\mu''$ supplies a finite \emph{constant} through
+\cref{lem:reprsmooth} and \cref{cor:elldiff} and appears in no exponent, and the project's second
+smoothness index is $\mu''$ and no other.
+% ARCHAEOLOGY.  A round-10 draft of the sentence above listed a symbol "mu-prime",
+% defined nowhere in this project and with no glossary row; it was deleted rather
+% than defined.
+Finally, \eqref{eq:rootn} is the special case of \eqref{eq:ratefloor} in which every term after the first is
+$o(n^{-1/2})$.
+\end{corollary}

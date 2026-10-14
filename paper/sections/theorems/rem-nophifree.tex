@@ -1,0 +1,239 @@
+% ############################################################################
+% ##  SUPERSEDED 2026-08-03 -- NOT COMPILED BY ANY DOCUMENT. DO NOT EDIT.
+% ##
+% ##  This file is a per-theorem rendering from an ABANDONED architecture in
+% ##  which paper/main.tex would \input one file per result.  paper/main.tex
+% ##  DOES NOT EXIST.  The manuscript is paper/qmd/{main,supplement}.qmd, and
+% ##  both \input the theory corpus directly.  Verified 2026-08-03: neither
+% ##  .qmd references sections/theorems.
+% ##
+% ##  The text below is ROUND-2 vintage against a corpus now at dispatch 25.
+% ##  66-78% of its substantive lines no longer match the corpus -- that is old
+% ##  text the corpus has since revised, NOT unique work.  Every \label here is
+% ##  also declared in the live corpus.
+% ##
+% ##  SOURCE OF RECORD:
+% ##    statements  quality_reports/theory/panel-npiv-discrete/results.tex
+% ##    assumptions quality_reports/theory/panel-npiv-discrete/assumptions.tex
+% ##    proofs      quality_reports/theory/panel-npiv-discrete/proofs.tex
+% ##
+% ##  Kept rather than deleted because nothing in this repo is committed.
+% ##  Full rationale: paper/sections/theorems/_SUPERSEDED.md
+% ############################################################################
+
+% ============================================================================
+%  prp:nophifree / rem:nophifree / cor:udep -- the impossibility result, its
+%  interpretation, and the corollary that forces the debiasing weight to vary
+%  with the residual.
+%  Project: panel-npiv-discrete.  Target of plan Sec.2.7; memo Sec.10 Step 3.
+%
+%  Source of record: quality_reports/theory/panel-npiv-discrete/{results,proofs}.tex
+%  Assumptions cited by tag; see .../assumptions.tex.
+%  Requires \IR, \un, \upmodels, \vdagger from preamble.tex.
+%
+%  DEPENDENCIES that must appear EARLIER in the compiled document:
+%    def:model     -- eq:trialres, the residual at trial values;
+%    def:spaces    -- V, nu_g (eq:nudef), L^2(pi) = V (+) constants;
+%    lem:nusigma   -- clauses (iii) and (iv), from lem-adjoint.tex.
+%  Conventions (P1), (P5) are stated once in proofs.tex.
+%  Assumption tags used: prp:nophifree -- C1(ii) ONLY;
+%                        cor:udep      -- A1, A1b(i), A1b(iv), N1, C1(ii).
+%  ROUND-8: A1b(i) STRUCK from prp:nophifree, statement and proof.  Step 3
+%  upgrades "orthogonal to V" to "zero" using def:spaces (the decomposition
+%  L^2(pi) = V (+) constants) together with int nu_g = 0 from lem:nusigma(iv);
+%  varphi_dagger occurs nowhere in the proposition.  A1b(i) is KEPT on cor:udep,
+%  whose clause (a) is "first-order insensitive AT varphi_dagger" -- a genuine
+%  well-posedness use of the base point.
+%
+%  ENVIRONMENT NOTE.  The formal statement is a PROPOSITION with a proof;
+%  rem:nophifree is the remark that follows it, per house style.  Plan Sec.2.7
+%  registers this target under the label rem:nophifree, which is retained.
+%
+%  THIS FILE IS AN ALTERNATIVE RENDERING of prp:nophifree, cor:udep and
+%  rem:nophifree, carrying the SAME \label keys as
+%  quality_reports/theory/panel-npiv-discrete/results.tex.  The two must never
+%  be \input into the same document.
+% ============================================================================
+
+\begin{proposition}\label{prp:nophifree}
+A moment is free of the structural function exactly when the two periods' $g$-tilted marginals of the
+endogenous regressor coincide.
+Suppose Assumption C1(ii) holds and let $g$ be a random variable satisfying
+\begin{equation}\label{eq:gproviso}
+E|g|<\infty,
+\qquad
+E\big|g\,h(X_j)\big|<\infty\ \ (j=1,2)\ \text{for every }h\in\mathcal V,
+\qquad
+E\big|g\,\Delta U(\theta,0)\big|<\infty .
+\end{equation}
+Then the map $\varphi\mapsto E[g\,\Delta U(\theta,\varphi)]$ is constant on $\mathcal V$, for one and
+hence every $\theta\in\IR^{p}$, if and only if
+\begin{equation}\label{eq:tilted}
+E[g\mid X_2=x]\,f_{X_2}(x)\;=\;E[g\mid X_1=x]\,f_{X_1}(x)
+\qquad\text{for almost every }x\in\mathcal X,
+\end{equation}
+that is, if and only if $\nu_g\equiv0$.
+\end{proposition}
+
+\begin{proof}
+The proof differences out the constant, identifies the increment with a linear functional, and uses the
+decomposition $L^{2}(\pi)=\mathcal V\oplus\{\text{constants}\}$ together with
+$\int_{\mathcal X}\nu_g\,dx=0$ from \cref{lem:nusigma}(iv) to upgrade ``orthogonal to $\mathcal V$'' to
+``zero''. \emph{It works on increments
+rather than on the three separate terms of $\Delta U(\theta,\varphi)$, because $\Delta Y$ and $\Delta Z$
+are not functions of $X_1$ or $X_2$ and so \eqref{eq:gproviso} does not make $E[g\Delta Y]$ or
+$E[g\Delta Z']$ separately finite.}
+
+\emph{Step 0: $\nu_g$ is well defined and $\nu_g/\pi\in L^{2}(\pi)$.}
+$E|g|<\infty$ makes the conditional expectations in \eqref{eq:nudef} well defined and gives
+$\int|\nu_g|dx\le2E|g|<\infty$, so $\Xi:=\nu_g/\pi\in L^{1}(\pi)$ by C1(ii). For $h\in\mathcal V$,
+Jensen's inequality and \eqref{eq:gproviso} give $\int|\nu_gh|dx\le\sum_jE|g\,h(X_j)|<\infty$; since
+$\Xi\in L^{1}(\pi)$ and any $h\in L^{2}(\pi)$ is $h_0+\int h\,d\pi$ with $h_0\in\mathcal V$, in fact
+$\Xi h\in L^{1}(\pi)$ for every $h\in L^{2}(\pi)$. \emph{This forces $\Xi\in L^{2}(\pi)$}: the
+functionals $T_n(h):=\int\Xi\un\{|\Xi|\le n\}h\,d\pi$ are bounded with
+$\|T_n\|=\|\Xi\un\{|\Xi|\le n\}\|_{L^{2}(\pi)}$ and converge pointwise on $L^{2}(\pi)$ by dominated
+convergence with dominating function $|\Xi h|$, so Banach--Steinhaus bounds $\sup_n\|T_n\|$ and monotone
+convergence gives $\|\Xi\|_{L^{2}(\pi)}<\infty$. \emph{Without this, ``$\nu_g/\pi\in\mathcal V^{\perp}$''
+in Step~2 is not well formed.} Note $h\equiv1\notin\mathcal V$, which is why $E|g|<\infty$ is a separate
+clause of \eqref{eq:gproviso} rather than a consequence of the second.
+
+\emph{Step 1: the increment.}
+For $\varphi,\varphi_0\in\mathcal V$, $\Delta U(\theta,\varphi)-\Delta U(\theta,\varphi_0)=-\Delta(\varphi-\varphi_0)$
+by \eqref{eq:trialres}, and both products with $g$ are integrable by the third clause of
+\eqref{eq:gproviso}, so
+\begin{equation}\label{eq:incrfree}
+E\big[g\,\Delta U(\theta,\varphi)\big]-E\big[g\,\Delta U(\theta,\varphi_0)\big]
+\;=\;-\,E\big[g\,\Delta(\varphi-\varphi_0)\big]
+\;=\;-\int_{\mathcal X}\nu_g\,(\varphi-\varphi_0)\,dx
+\end{equation}
+by \cref{lem:nusigma}(iii). No term is evaluated on its own and $\theta$ cancels.
+
+\emph{Step 2: constancy is orthogonality.}
+$\mathcal V$ is linear, so $\varphi-\varphi_0$ ranges over all of $\mathcal V$; the map is constant if
+and only if $\langle\Xi,h\rangle_{L^{2}(\pi)}=0$ for every $h\in\mathcal V$, i.e.\
+$\Xi\in\mathcal V^{\perp}$, meaningful by Step~0.
+
+\emph{Step 3: the constant is zero.}
+By \cref{def:spaces}, $\Xi=\mathsf c$ for some $\mathsf c\in\IR$. By \cref{lem:nusigma}(iv) with
+$h\equiv1$ --- legitimate because $E|g|<\infty$ --- $\int_{\mathcal X}\nu_g\,dx=0$, and
+$\int\Xi\pi\,dx=\int\nu_g\,dx$, so $\mathsf c=0$. Hence $\nu_g\equiv0$ since $\pi>0$ by C1(ii), which is
+\eqref{eq:tilted}. The converse is immediate from \eqref{eq:incrfree}.
+\end{proof}
+
+\begin{corollary}[to \cref{prp:nophifree}]\label{cor:udep}
+If the debiasing weight does not depend on the residual, the debiased moment is not merely first-order
+insensitive to the structural function but exactly free of it.
+Suppose Assumptions A1, A1b(i), A1b(iv) and C1(ii) hold, let $L$ be differentiable in $u$ at \emph{every}
+$(u,z)$ with
+$\partial_uL(u,z)=c(z)$ for some $c$ such that $g:=\Delta Z+\widetilde W\,c(\Delta Z)$ satisfies
+\eqref{eq:gproviso} coordinatewise, and suppose $L$ satisfies N1. Then $L(u,z)=c(z)u$, the moment
+function is
+$\psi=g\,\Delta U(\theta,\varphi)$ with $g$ measurable with respect to $\sigma(W,\Delta Z)$, and the
+following are equivalent: \emph{(a)} $\nu_{\Delta Z+\widetilde Wc}\equiv0$; \emph{(b)}
+$\varphi\mapsto E[\psi]$ is constant on $\mathcal V$; \emph{(c)} $\nu_{\widetilde Wc}=-\nu$ \emph{for the
+$c$ of the hypothesis} --- equivalently, membership
+$-\nu\in\mathcal N_0:=\{\nu_{\widetilde W\tilde c(\Delta Z)}:\tilde c\in\mathcal C_0\}$ is realised
+\emph{at that} $c$, where $\mathcal C_0$ is the set of $\tilde c$ for which
+$\Delta Z+\widetilde W\tilde c(\Delta Z)$ satisfies \eqref{eq:gproviso} coordinatewise. Moreover
+$\varphi\mapsto E[\psi]$ is affine on $\mathcal V$, so every term of order two or higher in its expansion
+vanishes identically \emph{whether or not} \textup{(a)--(c)} hold. Contrapositively, if
+$-\nu\notin\mathcal N_0$, then every $\ell_\star$ satisfying
+$\nu_{\Delta Z+\widetilde W\ell_\star}\equiv0$ has $\partial_u\ell_\star\not\equiv0$.
+\end{corollary}
+
+\begin{proof}
+The proof has three steps: the normalisation pins the constant of integration; the moment collapses to a
+residual-free weight; and \cref{prp:nophifree} converts first-order insensitivity into exact constancy.
+
+\emph{Step 1: N1 forces $L(u,z)=c(z)u$.}
+Fix $z$ and set $\Lambda_z(u):=L(u,z)-c(z)u$, which is differentiable at every point with
+$\Lambda_z'\equiv0$; by the \emph{mean value theorem} $\Lambda_z$ is constant, so $L(u,z)=c(z)u+b(z)$.
+\emph{The mean value theorem is the right theorem and the fundamental theorem of calculus, cited
+through round 6, is the wrong one:} under an a.e.\ reading of the derivative hypothesis the conclusion is
+false without absolute continuity, the Cantor function being the witness, which is why the hypothesis is
+stated pointwise.
+Evaluating at the truth and conditioning on $\Delta Z$,
+$E[L(\Delta U,\Delta Z)\mid\Delta Z]=c(\Delta Z)E[\Delta U\mid\Delta Z]+b(\Delta Z)=b(\Delta Z)$, the
+first term vanishing by the second clause of A1. N1 sets the left-hand side to zero, so $b\equiv0$.
+
+\emph{Step 2: the weight is $\sigma(W,\Delta Z)$-measurable.}
+Substituting $L(u,z)=c(z)u$ into
+$\psi=\Delta Z\Delta U(\theta,\varphi)+\widetilde WL(\Delta U(\theta,\varphi),\Delta Z)$ gives
+$\psi=g\,\Delta U(\theta,\varphi)$ with $g=\Delta Z+\widetilde Wc(\Delta Z)$, a function of
+$(W,\Delta Z)$ alone since $\widetilde W=W-\varrho(\Delta Z)$. That $g$ satisfies \eqref{eq:gproviso} is
+the hypothesis; $|\widetilde W|\le1$ by (P1) and A1b(iv) cover the $\Delta Z$ term, but the clauses
+involving $c$ must be assumed.
+
+\emph{Step 3: the equivalences, with (c) read at the given $c$.}
+By \eqref{eq:incrfree} applied to this $g$, the increment of $\varphi\mapsto E[\psi]$ between any
+$\varphi,\varphi_0\in\mathcal V$ is $-\int\nu_g(\varphi-\varphi_0)dx$, so (a) is the vanishing of every
+increment and (a)$\Leftrightarrow$(b) is \cref{prp:nophifree} applied to this $g$. For
+(a)$\Leftrightarrow$(c), linearity of $g\mapsto\nu_g$ gives $\nu_g=\nu+\nu_{\widetilde Wc}$, so
+$\nu_g\equiv0$ holds if and only if $\nu_{\widetilde Wc}=-\nu$ \emph{at the $c$ fixed in the
+hypothesis}, which is what (c) asserts.
+
+\emph{A quantifier that must not be relaxed.} Clause (c) is \emph{not} $-\nu\in\mathcal N_0$ read
+existentially: $\mathcal N_0$ is indexed by all admissible $\tilde c$, so that membership asserts only
+that \emph{some} $\tilde c$ realises the equality, whereas (a) and (b) concern the \emph{given} $c$ and
+the $L$ built from it. The implication (a)$\Rightarrow$($-\nu\in\mathcal N_0$) holds and is all the
+contrapositive uses; the reverse fails, since a different $\tilde c$ may realise membership while the
+given $c$ does not, in which case the sentence about the second-order term does not apply to this $L$.
+
+If (b) holds then $E[\psi]$ is constant in $\varphi$, so every term of order two or higher in its
+expansion vanishes. Contrapositively, suppose $-\nu\notin\mathcal N_0$ and let $\ell_\star$ satisfy
+$\nu_{\Delta Z+\widetilde W\ell_\star}\equiv0$. If $\partial_u\ell_\star\equiv0$ then
+$\ell_\star(u,z)=\tilde c(z)$ for some admissible $\tilde c$, the hypothesis on $\ell_\star$ is (a) at
+that $\tilde c$, so $\nu_{\widetilde W\tilde c}=-\nu$ and $-\nu\in\mathcal N_0$ --- a contradiction.
+Hence $\partial_u\ell_\star\not\equiv0$.
+\end{proof}
+
+\begin{remark}\label{rem:nophifree}
+\Cref{prp:nophifree} is the paper's negative result, and three readings of \eqref{eq:tilted} are worth
+separating.
+
+\emph{(i) The condition, in words.} Write $\tilde f^{\,g}_j(x):=E[g\mid X_j=x]f_{X_j}(x)$ for the
+$g$-tilted density of the endogenous regressor in period $j$, a signed density of total mass $E[g]$.
+Condition \eqref{eq:tilted} says $\tilde f^{\,g}_1=\tilde f^{\,g}_2$: \emph{the two periods' $g$-tilted
+marginals coincide.} At $g\equiv1$ this is marginal stationarity of $X$, so even the unweighted moment
+$E[\Delta U]$ is free of $\varphi$ only when the regressor's marginal law does not move between the
+periods. At $g=\Delta Z_j$ it is $\nu\equiv0$, the design in which the debiasing weight degenerates to
+zero and the moment reduces to the differenced least-squares one. The failure of \eqref{eq:tilted} is
+therefore not a pathology to be assumed away: it is what makes the panel design informative, and a design
+in which it holds for the weights of interest is one in which there is nothing to debias.
+
+\emph{(ii) The same condition, reached independently in the linear case.} In the first-differenced panel
+with a conditional-mean restriction, \citet{feve2014} observe that the operator
+$\varphi\mapsto E[\varphi(X_2)-\varphi(X_1)\mid W]$ annihilates \emph{every} $\varphi$ when
+$(X_1,X_2,W)$ has the same law as $(X_2,X_1,W)$ --- exchangeability of the two periods given the
+instrument, which in particular equates the laws of $(X_1,W)$ and $(X_2,W)$. That is \eqref{eq:tilted}
+imposed simultaneously for every bounded $g=g(W)$, since
+$\nu_{g(W)}(x)=\sum_{j\in\{0,1\}}g(j)\{f_{X_2,W}(x,j)-f_{X_1,W}(x,j)\}$; and their Proposition~2.1 gives
+the adjoint of that operator as an integral against the same difference of joint densities over the same
+reference density, as recorded at \cref{rem:adjointreconcile}(iv). \emph{The difference structure is not
+a device of this paper: it is inherited from first differencing and is shared with the linear
+conditional-mean design.} What \cref{prp:nophifree} adds is the one-weight-at-a-time equivalence ---
+their condition is the simultaneous one, and is correspondingly stronger --- and the enlargement of $g$
+from functions of $W$ to functions of $(W,\Delta Z)$, which is the class the debiasing construction
+searches.
+
+\emph{(iii) What is new here.} The difference from \citet{feve2014} is not simply that their operator is
+linear. It is that $\mathcal A_{\mathrm{cond}}$ is a \emph{Fr\'echet derivative of a nonlinear map}
+rather than a fixed linear conditional-expectation operator, and three consequences follow that have no
+counterpart there: the operator depends on the point of linearisation, with the Lipschitz modulus of
+\cref{prp:frechet}(ii); the sample operator is noisy \emph{as an operator}, which is why A6 and A7 are
+stated for $\hat T$ rather than for $T$; and the moment carries a second-order term in $\varphi$, which
+is \cref{cor:udep}'s subject and which a linear operator equation does not produce.
+
+\emph{(iv) Why the negative result creates the rate requirement.} \Cref{cor:udep} closes the chain. If
+the debiasing weight ignored the residual, the moment would reduce to a $\sigma(W,\Delta Z)$-measurable
+weight times the residual, and orthogonality would then force \eqref{eq:tilted}; in any design where
+\eqref{eq:tilted} fails for such weights, the selected $\ell_\star$ must vary with the residual. That is
+what puts $\partial_u\ell_\star$ into the second-order term and is why a quadratic remainder in $\varphi$
+is unavoidable within this moment class rather than an artefact of the expansion. \emph{Two caveats
+belong with the claim.} \Cref{cor:udep} shows $\partial_u\ell_\star\not\equiv0$, which is
+\emph{necessary} for the second-order form to be nonzero but not sufficient: the conditional expectation
+$q(x_1,x_2)=E[\widetilde W\partial_u\ell_\star\mid X_1=x_1,X_2=x_2]$ could still vanish by
+cancellation, and excluding that is a separate hypothesis rather than a consequence. And
+\cref{prp:nophifree} is an equivalence, not an impossibility theorem: whether \eqref{eq:tilted} fails is
+a property of the application and should be reported rather than asserted.
+\end{remark}

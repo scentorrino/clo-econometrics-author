@@ -1,0 +1,35 @@
+\begin{tabular}{lrrrr}
+\toprule
+& $d_Z = 0$ & $d_Z = 5$ & $d_Z = 10$ & $d_Z = 22$ \\
+\midrule
+\multicolumn{5}{l}{\textit{Panel A: Landweber--Fridman step, over $K\times B$ fold solves}} \\
+\midrule
+Fold solves & 50 & 50 & 50 & 50 \\
+Median stopping index $\hat m$ & 1 & 239 & 106 & 62 \\
+Range of $\hat m$ & [1, 375] & [1, 2000] & [1, 2000] & [1, 2000] \\
+Solves stopping at $\hat m = 1$ & 28 & 1 & 2 & 6 \\
+Solves reaching the cap $\bar m = 2000$ & 0 & 10 & 8 & 9 \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Panel B: moment and Jacobian}} \\
+\midrule
+Relative balancing residual & 1.0e-03 & 9.2e-04 & 1.2e-03 & 1.4e-03 \\
+Median $\kappa(\hat J)$ & 1 & 3642 & 4293 & 24893 \\
+Max $\kappa(\hat J)$ & 1 & 3925 & 4925 & 30739 \\
+$\sigma_{\min}(\hat J)\,/\,\sigma_{\min}(E_n[\Delta Z\Delta Z'])$ & 1.027 & 1.004 & 1.007 & 0.961 \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Panel C: scale of the fitted components, and stability across the $B$ partitions}} \\
+\midrule
+Median $\mathrm{sd}(\Delta\hat\varphi) /\,\mathrm{sd}(\Delta Y)$ & 1.20 & 3.08 & 1.52 & 0.37 \\
+Median $\mathrm{sd}(\Delta\hat U) /\,\mathrm{sd}(\Delta Y)$ & 1.59 & 3.18 & 1.70 & 0.79 \\
+Max $\mathrm{sd}(\Delta\hat\varphi) /\,\mathrm{sd}(\Delta Y)$ & 1593.3 & 7.8 & 5.7 & 4.0 \\
+$\mathrm{sd}$ / $1.4826\times$MAD of $\hat\theta_b$ & 1295.68 & 1.62 & 2.03 & 1.40 \\
+Partitions $>10$ robust scales from the median & 2 & 1 & 0 & 0 \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Panel D: variance decomposition and rate budget}} \\
+\midrule
+Sampling share of SE (median) & 0.003 & 0.910 & 0.861 & 0.965 \\
+Cross-fitting share of SE (median) & 1.000 & 0.415 & 0.508 & 0.261 \\
+$\delta_n$ at $(\mu,r)=(2,8/3)$ & 0.644 & 1.129 & 1.796 & 2.736 \\
+$\sqrt n\,\delta_n^2$ & 13.0 & 40.0 & 101.1 & 234.6 \\
+\bottomrule
+\end{tabular}

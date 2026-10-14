@@ -1,0 +1,16 @@
+claim_id: phirate-fixedpoint-mu-half
+source: "quality_reports/theory/panel-npiv-discrete/proofs_partH.tex, proof of prp:phirate Step 4(a) ('2*kappa > 1 if and only if 4*mu > 2*mu + 1, i.e. if and only if mu > 1/2'), and results_partH.tex eq:muhalf"
+# CLAIM.  The stagewise recursion delta^{(k)} <= c (delta-hat + c' (delta^{(k-1)})^2)^kappa
+# with kappa = 2 mu / (2 mu + 1) contracts superlinearly iff 2 kappa > 1.  This
+# spec mechanises the equivalence
+#     2 kappa - 1 = (2 mu - 1) / (2 mu + 1),
+# whose SIGN is the sign of 2 mu - 1.  Hence 2 kappa > 1 <=> mu > 1/2, which is
+# eq:muhalf.  It also mechanises the SAME threshold at which the inherited
+# nonlinear-Landweber rate saturates (rem:lfnonlinear item (3)), so the identity
+# below is the arithmetic core of the F-6 / O10 resolution.
+variables:
+  mu:
+    domain: positive
+start: "2*(2*mu/(2*mu+1)) - 1"
+operation: none
+claimed_end: "(2*mu-1)/(2*mu+1)"

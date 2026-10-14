@@ -1,0 +1,44 @@
+claim_id: adjoint-BW-factorisation
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (cor:rangegap Step 2); requested by the theorist-critic"
+# CLAIM.  cor:rangegap Step 2 asserts the factorisation A*_cond = B o W.  In the
+# two-point finite model of adjoint-transpose-pairing:
+#   W maps a range-space vector (l1, l2) to an observable-space vector via the
+#     weights w_ab (a = observable point, b = range point), each scaled by the
+#     Pi-mass P_b of its range point;
+#   B maps an observable-space vector to the domain via the difference kernel
+#     nu_{ca} (c = domain point, a = observable point).
+# The composition B(W l) must equal the direct action of A* with kernel
+#   k*_{cb} = sum_a nu_{ca} w_ab P_b.
+# This is an associativity-of-sums identity; writing it out is the whole content
+# of "the factorisation", and it is the step that lets density of R(W) transfer
+# to the range inclusion without characterising R(W).
+# SCALAR FORM.  Written as explicit sums over a 2 x 2 x 2 model rather than with
+# matrix objects, so that no MatrixExpr appears.
+variables:
+  nu11:
+    domain: real
+  nu12:
+    domain: real
+  nu21:
+    domain: real
+  nu22:
+    domain: real
+  w11:
+    domain: real
+  w12:
+    domain: real
+  w21:
+    domain: real
+  w22:
+    domain: real
+  P1:
+    domain: positive
+  P2:
+    domain: positive
+  l1:
+    domain: real
+  l2:
+    domain: real
+start: "nu11*(w11*l1*P1 + w12*l2*P2) + nu12*(w21*l1*P1 + w22*l2*P2)"
+operation: expand
+claimed_end: "l1*P1*(nu11*w11 + nu12*w21) + l2*P2*(nu11*w12 + nu12*w22)"

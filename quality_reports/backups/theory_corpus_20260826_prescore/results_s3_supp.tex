@@ -1,0 +1,649 @@
+% ============================================================================
+%  RESULTS -- ONLINE SUPPLEMENT, SECTION 3: THE ESTIMATOR.
+%  project `panel-npiv-discrete`
+%
+%  WHAT THIS FILE HOLDS.  Everything def:lfstep and def:crossfit carried that is
+%  not the construction: the measurability verifications, the container
+%  arguments, the re-declarations of conventions stated elsewhere, and the
+%  discussion of what each clause rules out.  Copied verbatim from
+%  results_s3_estimation.tex; nothing here was rewritten.  Only splice-point
+%  punctuation and a lead-in clause were added where a moved fragment began or
+%  ended mid-sentence, and each such fragment is headed by what it discusses.
+%
+%  IT IS READ AFTER results_s3_estimation.tex AND NOT INSTEAD OF IT.  The
+%  paragraphs below cite the clauses they discuss, so the supplement inputs the
+%  statements first.  Together the two files are the undivided Section 3 block.
+%
+%  NO \label IS DECLARED HERE.  Every labelled display of the two definitions --
+%  eq:normconst, eq:cap, eq:lfsched, eq:prodmeas, eq:supnormconv, eq:foldrates --
+%  stayed in the article, so no \eqref anywhere was orphaned and no equation
+%  number moved.  This file contributes nothing to any counter.
+%
+%%  DO NOT \input THIS FILE ALONGSIDE results.tex.  results.tex survives
+%%  undivided and remains the source of record.
+% ============================================================================
+
+\section*{Discussion of the estimator}
+
+\noindent This section carries the material the article does not print about the two definitions that
+construct the estimator: for the $\varphi$-step of \cref{def:lfstep} and the cross-fitting scheme of
+\cref{def:crossfit}, the measurability verifications, the grounds on which each nuisance's container is
+chosen, the re-declarations of conventions stated elsewhere, and the record of what each clause does and
+does not rule out. The constructions themselves are printed above, verbatim and unchanged. Headings below
+name what the text under them discusses.
+
+
+% ------------------------------------------------------------------------
+\subsection*{The $\varphi$-step (\cref{def:lfstep})}
+
+% ------------------------------------------------------------------------
+\paragraph{The measurability requirement on the preliminary, and where it is stated}
+
+The opening of \cref{def:lfstep} declares the preliminary a measurable random element of $\mathcal V$
+at $\sigma(\mathcal I_\ast)$, with $\mathcal I_\ast$ the fold fixed there: \emph{this is a requirement on the preliminary and
+is stated \textbf{here}, where the preliminary is declared, rather than only inside the verification that
+consumes it}; (P-a.1) of \cref{prp:phirate} carries the same requirement, and it is of the kind read off
+a formula, which is why it costs nothing to impose.
+
+% ------------------------------------------------------------------------
+\paragraph{The sieve-membership clause, and why the $H^{s}$ bound is an envelope}
+
+\emph{The sieve-membership clause is \textbf{imposed here}}, and (P-a.1) of \cref{prp:phirate}, this
+opening's companion, carries it in terms. \emph{The clause is not idle}: every iterate after the zeroth
+lies in $\mathcal S_n$
+% ARCHAEOLOGY.  Through dispatch 20 this opening required measurability into V only
+% and then imposed the H^s probability on the strength of a membership stated
+% nowhere in it; the fourth bullet below establishes measurability of
+% ||hat-varphi^{(j)} - varphi_dagger||_{H^s} expressly "at the configuration
+% lem:pathcont states, where hat-varphi^{(0)} in S_n", a CONDITIONAL discharge of
+% an UNCONDITIONAL requirement.  No result's hypothesis set changed.
+by construction, so without it the preliminary is the one element of the path that need not, and the
+$H^{s}$ display above is then a statement about a quantity no clause makes finite; \emph{envelopes, not $O_P$
+statements, and \suppref{Remark}{paenvelope} is why}: the constants $\mathsf c_{14},\mathsf c_{15}$ below are
+printed before the data are seen, and an $O_P$ hypothesis supplies no number for them to dominate.
+
+% ------------------------------------------------------------------------
+\paragraph{The letter $\omega$}
+
+The letter is $\omega$ because \suppref{Lemma}{scaleinv}(i) shows the normalisation \textbf{is} a
+Landweber relaxation parameter, which is what $\omega$ names in the regularisation literature.
+% ARCHAEOLOGY.  The letter is not varsigma, which is a Sec.1.6 local bound variable
+% and one subscript from the binding varsigma_0 of (P-a.2).  Glossary C67.
+
+% ------------------------------------------------------------------------
+\paragraph{What in the schedule is computable, and from what}
+
+\emph{Every quantity in \eqref{eq:lfsched} is \textbf{computable} by the analyst, from four inputs and
+two constants, and the two constants are not free}: $\hat\delta_n$ and $h_u$ are already inputs to the
+procedure, $\kappa$ is a function of $\mu$, and $\hat\varepsilon_0$ is the declared rate of the
+preliminary, those are the four; $\mathsf c_{14}$ and $\mathsf c_{15}$ are the two.
+
+% ------------------------------------------------------------------------
+\paragraph{$\mathsf R$ against $\mathsf R_\ast$, and the two directions of a mis-set level}
+
+The radius here is $\mathsf R_\ast$ and \textbf{not} $\mathsf R$, and the two must not be the same
+symbol, this is the same species of defect as $\mathsf c_{14}$ versus $\mathsf c_{16}$ and it sits on
+the same inequality. $\mathsf R$ is an \emph{$H^{s}$ ball radius}: it is what \suppref{Definition}{srcball}
+measures, what A5(vi$'$) and (P-a.1) bound, and what (P-c), (P-g) and \suppeq{entropy} price, so it
+carries units of Sobolev norm and enters \emph{approximation} statements. $\mathsf R_\ast$ is a
+\emph{spectral pre-image norm} in $L^{2}(\pi)$: it is (P-a.3)'s bound on $\varsigma^{(k)}$, it enters
+only through (F-f), and it is what $\mathsf c_{15}$ must dominate. They are not comparable in
+either direction without the interpolation step \suppref{Remark}{pasrc}\textup{(1)} shows is unavailable.
+The two directions of error are not symmetric. Chosen too large, the level is
+conservative: the rule stops earlier, the rate in \eqref{eq:phirate} is unchanged in order and the
+constant degrades. Chosen too small, the implemented level sits below the true data error
+at some stage, (L3) fails, and with it (F-f): the discrepancy guarantee is void and the estimator is
+whatever the cap \eqref{eq:cap} returns. \emph{This is the one place where the procedure carries a tuning constant the
+% ARCHAEOLOGY.  Through round 11 one symbol carried both R and R_star, on the two
+% sides of an inequality this definition has to establish; glossary C69.  The
+% too-small failure mode is the one the fixed level tau_DP delta-hat_n ln n of
+% round 9 produced, displaced from the schedule's SHAPE to its SCALE.
+theory does not pin, and it is said here rather than left to be discovered}.
+
+% ------------------------------------------------------------------------
+\paragraph{The output is a measurable random element: why inspection of the formula will not settle it}
+
+\emph{And the discharge
+available for the other nuisances is not available here}: A4(iii) and \cref{def:crossfit}\textup{(a)} settle
+$\hat\varrho$ ``by inspection of the formula'', which every kernel and every series construction passes;
+inspection of the formula settles nothing for a Landweber--Fridman iterate stopped by a discrepancy rule,
+\emph{because the stopping index of \textup{(c)} is random}.
+
+% ------------------------------------------------------------------------
+\paragraph{The verification, in four steps}
+
+\emph{One index warning, because both readings occur in this paragraph}: the
+superscript in $\hat\varphi^{(-k)}$ and $\mathcal I_{-k}$ just above is \cref{def:crossfit}'s \emph{fold}
+index; every $k$ from here to the end of the verification is this definition's \emph{stage} index, and the
+two are one glyph apart.
+\begin{enumerate}
+\item[--] \emph{The iterates.} Suppose $\hat\varphi^{(k-1)}$ is a $\sigma(\mathcal I_\ast)$-measurable random
+element of $\mathcal V$. The finitely many numbers $\Delta_{h_x}\hat\varphi^{(k-1)}_i$, $i\in\mathcal I_\ast$, are
+then random variables, being values of the \emph{bounded linear} functionals \suppeq{smdiff} at a measurable
+random element, \emph{and the step from a random function to a random number is the
+\textbf{Carath\'eodory} criterion and not the evaluation of a fixed functional, because the functional
+\suppeq{smdiff} is itself \textbf{random}}, its kernel carrying $X_{i1},X_{i2}$ and $I_{i1},I_{i2}$, which lie in $\mathfrak I$ at every $n$ by C5$'$(ii) --- \emph{the per-$n$ form of that clause and not its limit}, since measurability is asserted at each $n$.
+``Value of a bounded linear functional at a measurable random element'' gives measurability only for a
+\emph{fixed} functional; what is available, and what is needed, is the superposition argument: the map
+$F_i(\omega,\varphi):=\Delta_{h_x}\varphi_i(\omega)$ is $\sigma(\mathcal I_\ast)$-measurable in $\omega$ at each
+fixed $\varphi$, because $X_{i1},X_{i2}$ are random variables and
+$(x,x^\ast)\mapsto C_{h_x}\big(x-x^\ast,I(x^\ast)\big)=\Theta_{I(x^\ast)}\big((x-x^\ast)/h_x\big)$ is
+\emph{jointly continuous on $\mathcal X\times\mathcal X$}, hence jointly Borel there.
+\emph{The route is \textbf{not} continuity of $I\mapsto\Theta_I(\varsigma)$, and that map is
+\textbf{not} continuous}: \suppref{Lemma}{bdryfam}'s proof of \textup{(d)} records that it jumps at
+each $I$ whose endpoint crosses $\varsigma$, and \suppeq{ivalx} moves both endpoints of $I(x^\ast)$
+affinely with $x^\ast$, so this is exactly the configuration that clause names. \emph{Nor is it
+\textup{(f)} read as a statement about $\Theta$}: \textup{(f)} carries the \textbf{coefficient} map
+$I\mapsto\mathsf G(I)^{-1}e_0$ and nothing more. \emph{What removes the jump is that the two arguments
+move together, and the collapse is exact rather than approximate}: at $\varsigma=(x-x^\ast)/h_x$ and
+$I=I(x^\ast)$ of \suppeq{ivalx}, $\varsigma\in I(x^\ast)$ holds if and only if
+$\underline x\le x\le\bar x$, because $h_x>0$, so the indicator of \suppeq{gramfam} is
+$\un\{x\in\mathcal X\}$ --- \emph{free of $x^\ast$}, and identically $1$ on the domain of integration
+of \suppeq{smdiff}. On that domain the kernel is
+$\big(\sum_{k}(\mathsf G(I(x^\ast))^{-1}e_0)_k\,\varsigma^{k}\big)e^{-\varsigma^{2}/2}$ with no
+indicator left in it, and this is jointly continuous in $(x,x^\ast)$: $x^\ast\mapsto I(x^\ast)$ is
+continuous into $\mathfrak I$ for the topology \suppeq{ifraktop}, both endpoints being affine in
+$x^\ast$ and $\tanh$ continuous; $I\mapsto\mathsf G(I)^{-1}e_0$ is continuous by
+\suppref{Lemma}{bdryfam}\textup{(f)}; and polynomial evaluation is jointly continuous in coefficient
+vector and argument. So the $dx$-integral in \suppeq{smdiff} is measurable in $\omega$ by Tonelli
+\emph{applied to positive and negative parts}, \emph{and the qualification is not decoration here}: the
+integrand of \suppeq{smdiff} is a difference of two boundary-corrected kernels of order $p_K$, which
+\eqref{eq:truncmom} makes \emph{sign-changing} by construction, against a $\varphi$ that integrates to zero
+against $\pi$, so Tonelli in its nonnegative form does not apply to it as written. The split is legitimate
+because the integrand is absolutely integrable at every sample point: $|C_{h_x}|\le\mathsf c_2$ by C3(ii)
+and \textup{(P9)}, $\mathcal X$ is a bounded interval by A0, and
+$\int_{\mathcal X}|\varphi|\,dx\le|\mathcal X|^{1/2}\|1/\pi\|^{1/2}_\infty\|\varphi\|_{L^{2}(\pi)}<\infty$
+by C1(ii) and the Cauchy--Schwarz inequality, so each of the four one-signed integrals is finite and their
+signed combination is well defined and measurable. \emph{This is the treatment the same paragraph gives the
+$\Pi$-pairing below}; it is also
+A2c\textup{(m.2)}'s and \cref{def:crossfit}\textup{(c$'$.1)}'s, on the other
+side of the pairing. The integral is, moreover,
+$\|\cdot\|_{L^{2}(\pi)}$-continuous in $\varphi$ at each fixed $\omega$, which is exactly the boundedness of
+\suppeq{smdiff} that \suppref{Definition}{hatTexp} records and which holds at every sample point. Since $\mathcal V$
+is a subspace of $L^{2}(\mathcal X,\pi)$ with $\mathcal X$ compact, it is separable, so the Carath\'eodory
+criterion makes $F_i$ jointly $\sigma(\mathcal I_\ast)\otimes\mathfrak B(\mathcal V)$-measurable, and $F_i$ then
+composes with the measurable map $\omega\mapsto\big(\omega,\hat\varphi^{(k-1)}(\omega)\big)$. \emph{The
+device is this paper's own and is used at three further sites}: it is what \cref{def:crossfit}\textup{(c$'$.1)} names for
+\eqref{eq:prodmeas}, what the opening of the proof of \cref{prp:frechet} runs for $G_\varphi$ and its
+$u$-derivatives, and what C2$'$(i) runs for the envelopes $\bar f_k$;
+% ARCHAEOLOGY.  Through dispatch 19 this link was stated as an evaluation, which is
+% the one reading the randomness of eq:smdiff forecloses.
+and $\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)$, $\hat{\mathcal A}_{\hat\varphi^{(k-1)}}$ and
+$\hat{\mathcal A}^\ast_{\hat\varphi^{(k-1)}}$ depend on $\hat\varphi^{(k-1)}$ through those numbers
+\emph{alone}, by \suppeq{hatTx}, \suppeq{hatg} and \suppeq{hatAcon}, the adjoint being determined by the
+operator and the two inner products of \cref{def:spaces}. Restricted to $\mathcal S_n$, which
+is a \emph{fixed} finite-dimensional space, the iteration \textup{(b)} is therefore an affine recursion on
+a Euclidean space of that dimension whose coefficients are random variables, started at the constant
+$v_0=0$; so each
+$v_m$, $m=0,1,\dots,\bar m_n$, is a $\sigma(\mathcal I_\ast)$-measurable random element of $\mathcal S_n$, being a
+finite composition of measurable maps. That the coefficients are random variables is
+\textbf{Tonelli} and not composition, and the distinction is the same one the previous link turns on.
+\emph{The coordinates are those of a basis of $\mathcal S_n$ and \textbf{not} of $\{b_1,\dots,b_{L_x}\}$},
+and two facts force the distinction:
+$\mathcal S_n=\operatorname{span}(b_1,\dots,b_{L_x})\cap\mathcal V$, and the linear functional
+$\zeta\mapsto\int_{\mathcal X}\zeta\,d\pi$ is \emph{not} identically zero on
+$\operatorname{span}(b_1,\dots,b_{L_x})$: A8's $b_j$ are B-splines, hence \emph{nonnegative} and not
+identically zero, and $\pi$ is bounded below away from zero by C1(ii), so
+$\int b_j\,d\pi>0$ for every $j$, no $b_j$ lies in $\mathcal V$, $\{b_j\}$ spans a strictly larger space, and
+$\dim\mathcal S_n=L_x-1$. \emph{Both consequences matter}: the coordinate map written in the $b_j$ is not a
+coordinate map on $\mathcal S_n$, and $\hat{\mathcal A}_{\hat\varphi^{(k-1)}}b_j$ evaluates the operator off
+the domain \cref{def:spaces} declares for it. \emph{Neither touches the conclusion}, and that is why the
+repair is a rewording: fix once any basis of $\mathcal S_n$, every element of it lies in $\mathcal V$, so
+the operator is applied only where it is defined, and every element is a finite linear combination of
+$b_1,\dots,b_{L_x}$, and read the recursion in its coordinates. Its matrix is that of
+$\hat{\mathcal A}^\ast_{\hat\varphi^{(k-1)}}\hat{\mathcal A}_{\hat\varphi^{(k-1)}}\vert_{\mathcal S_n}$,
+whose entries are the $L^{2}(\Pi)$ pairings of the images under
+$\hat{\mathcal A}_{\hat\varphi^{(k-1)}}$ of two basis elements, and its constant vector carries the
+$L^{2}(\Pi)$ pairings of those images with $\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)$
+, each an \emph{integral over $(u,t,l)$ against $\Pi$ of a random integrand}, \suppeq{hatAadj} writing the
+adjoint as exactly such an integral. \emph{A finite composition of measurable maps does not reach an
+integral}; what does is joint measurability in $(\omega,u,t,l)$ followed by Tonelli's theorem. The joint
+measurability is again Carath\'eodory, \emph{run at each contrast index separately}: by \suppeq{hatAcon}
+and \suppeq{hatg}, at a fixed element $\zeta$ of $\mathcal V$ and a fixed
+$l\in\{1,\dots,\mathsf L-1\}$ the maps
+$(u,t)\mapsto\hat{\mathcal A}_{\hat\varphi^{(k-1)}}\zeta(u,t,l)$ and
+$(u,t)\mapsto\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)(u,t,l)$ are continuous at every sample point, $C_{h_u}$
+and $\mathsf C_{h_u}$ being continuous in $u$ by \suppref{Lemma}{intker} and $t\mapsto w(t'\Phi(\Delta Z_i))$
+continuous, while each is $\sigma(\mathcal I_\ast)$-measurable in $\omega$ at fixed $(u,t)$ by the paragraph
+above, so both are $\sigma(\mathcal I_\ast)\otimes\mathfrak B(\IR\times\mathcal T)$-measurable at that $l$.
+\emph{Measurability in $(\omega,u,t,l)$ then costs nothing, and the reason is that the third factor of
+$\Pi$ carries a \textbf{finite} set}: $\{1,\dots,\mathsf L-1\}$ with its power set, so each map is the
+finite disjoint union over $l$ of the pieces just shown measurable, and no further argument is needed.
+Each factor lies
+in $L^{2}(\Pi)$, by \suppref{Proposition}{hatAprop}(i) for the operator and, for $\hat T_{h_x}$, by
+$\mathsf c_3c_\Pi<\infty$, a bound that reads the \emph{per-cell} $|\widehat{\widetilde W}_{i,l}|\le1$ of
+\suppref{Remark}{hatTread}\textup{(2)} at each $l$ against a $\Pi_{\mathsf w}$ that B1(iv.d) makes a
+\emph{probability} measure, and so does not move with $\mathsf L$, so the products are $\Pi$-integrable
+by the Cauchy--Schwarz inequality, and Tonelli
+applied to positive and negative parts then makes each pairing a $\sigma(\mathcal I_\ast)$-measurable function
+of $\omega$. This is the inheritance
+\cref{def:crossfit}\textup{(c$'$.1)} performs for $\omega\mapsto\|\hat\ell^{(-k)}-\ell_\star\|_{L^{2}(P)}$,
+read on $\Pi$ instead of $P$. At $\mathsf L=2$ the third factor of $\Pi$ is the one-point set
+$\{1\}$ and $\Pi_{\mathsf w}$ the point mass at it, so every display in this bullet is the one earlier
+rounds printed.
+\item[--] \emph{The stopping index.} $\tau_{\mathrm{DP}}$ and $\hat\delta^{\mathrm{eff}}_{n,k}$ are
+deterministic by \eqref{eq:lfsched}, and $\|\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m+\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\|_{L^{2}(\Pi)}$
+is a random variable for each $m$, \emph{by the previous step \textbf{and Tonelli}, the two being
+needed and neither sufficing alone}, since an $L^{2}(\Pi)$ norm is a $\Pi$-integral of a random function
+and not a value of one: the previous step makes
+$(\omega,u,t,l)\mapsto\big(\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v_m+\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)\big)(u,t,l)$
+jointly measurable, $v_m$ being $\sigma(\mathcal I_\ast)$-measurable with values in the fixed
+finite-dimensional $\mathcal S_n$, and Tonelli then makes $\omega\mapsto\int(\cdot)^{2}\,d\Pi$ measurable, the square root
+being continuous. So, for each $m\le\bar m_n$, the event that \emph{that}
+norm is at most $\tau_{\mathrm{DP}}\hat\delta^{\mathrm{eff}}_{n,k}$ is measurable, \emph{it carries no
+letter}, every short candidate being claimed, and $\{\hat m^{(k)}=m\}$ is that event intersected with the
+complements of the same events at the indices $m'<m$: a \emph{finite} intersection of measurable sets.
+\emph{Two further features of \textup{(c)}, not the two the paragraph after this one names, which are
+about the \emph{level}, are what this step consumes}: the cap
+$\bar m_n$ of \eqref{eq:cap} is \emph{deterministic}, so the family is \textbf{finite} and no limit is taken;
+and the emptiness convention makes $\hat m^{(k)}$ \textbf{total}, so no sample point is left without a value
+and $\{\hat m^{(k)}=\bar m_n\}$ absorbs the residual event. A random cap or a partial index would break
+the argument here, and \textbf{not} only here: the next bullet's finite sum of indicators needs the
+same two features, and so does (L4) of \cref{prp:phirate}'s Step~2, which compares the stopping index
+to $\bar m_n$ and then applies the emptiness convention on the complement. \emph{No claim of
+exhaustiveness is made, and that is deliberate}: the draft this sentence replaces read ``and nowhere
+else'' and was short by its own next bullet.
+\item[--] \emph{The output.} $v_{\hat m^{(k)}}=\sum_{m\le\bar m_n}\un\{\hat m^{(k)}=m\}\,v_m$ is a
+\emph{finite} sum of indicators of measurable events against measurable random elements, hence a
+$\sigma(\mathcal I_\ast)$-measurable random element of $\mathcal S_n$; and $\hat\varphi^{(k)}$ of \textup{(d)} is
+one of $\mathcal V$, $\mathcal V$ being a linear space and $\mathcal S_n\subset\mathcal V$
+(\cref{def:spaces}). Induction on $k\le\bar k$, from a $\sigma(\mathcal I_\ast)$-measurable
+$\hat\varphi^{(0)}$, \emph{which is a requirement on the preliminary, and \textbf{is} of the kind read off a
+formula; it is \textbf{stated} in this definition's opening and in (P-a.1) of \cref{prp:phirate}, and is
+cited rather than imposed here}, gives the claim for $\hat\varphi=\hat\varphi^{(\bar k)}$.
+\item[--] The $H^{s}$ norm of the same object, which the paragraph owes because \suppref{Lemma}{pathcont} and
+A5(vi$'$) are $H^{s}$ statements. Both take probabilities of
+$\max_{j\le\bar k}\|\hat\varphi^{(j)}-\vdagger\|_{H^{s}}\le\mathsf R$, so
+$\omega\mapsto\|\hat\varphi^{(j)}-\vdagger\|_{H^{s}}$ must be a random variable as well, and measurability
+into the $L^{2}(\pi)$ container does not by itself give it. \emph{It follows from the three steps above at the
+configuration \suppref{Lemma}{pathcont} states}, where $\hat\varphi^{(0)}\in\mathcal S_n$ and hence the whole path
+lies in $\mathcal S_n$: since $\mathcal S_n\subset H^{s}$ by \eqref{eq:sieveinhs}, $\|\cdot\|_{H^{s}}$ is a
+norm on a \emph{fixed} finite-dimensional space, hence a continuous, and so measurable, function of the
+coordinates, which the steps above make random variables. \emph{The membership is A8's business and it is now
+\textbf{stated} there rather than flagged here}: nothing in this definition places the B-spline basis in
+$H^{s}$, and \eqref{eq:sieveinhs} is A8's basis clause read as the containment it delivers.
+\emph{\suppeq{jackson} is \textbf{not} the right pointer, and the error would be one of direction
+rather than of precision}: \suppeq{jackson} states how well splines \emph{approximate}
+$H^{s}$ functions, and what is needed is that splines \emph{lie in} $H^{s}$. \emph{Approximation power does
+% ARCHAEOLOGY.  Through dispatch 19 this bullet pointed at eq:jackson.
+not give membership, and the two conditions are genuinely different inequalities on the same degree}, a
+basis of degree $d$ approximates $H^{s}$ at the rate \suppeq{jackson} states as soon as $s\le d+1$, while
+$\mathcal S_n\subset H^{s}$ requires $d>s-\tfrac12$; on the window $s-1\le d\le s-\tfrac12$ the first holds
+and the second fails, and the witness $s=1.7$, $d=1$ sits in it. A8's basis clause is the
+right home, as this bullet's own first sentence already said, and it is stated there in \emph{degree}, the
+one reading of ``order'' on which the spline conventions agree.
+\end{enumerate}
+This is a discharged verification and \textbf{not} a fifth entry in \suppref{Remark}{obligations}'s inventory,
+and the distinction is that remark's own. That inventory carries obligations whose \emph{discharge site is a
+later step}, something a stated result's truth depends on and no present result establishes. Here the
+discharge is performed in the same definition that constructs the object, so nothing is owed forward.
+\emph{That is not the same as having no consumer, and the draft this sentence replaces said it
+was}: \cref{def:crossfit}\textup{(c$'$.1)} consumes exactly this measurability when it fixes the
+jointly measurable representative of $\hat\varphi^{(-k)}$, which is what supplies the composite at
+\suppref{Lemma}{prelimtheta} Steps~4 and~4$'$ --- the second precedent named just below is therefore
+also a consumer. The precedents are A4(iii)'s joint-measurability half and
+\cref{def:crossfit}\textup{(c$'$.1)}'s Tonelli inheritance, neither of which is inventoried either, for the
+same reason.
+
+% ------------------------------------------------------------------------
+\paragraph{The two load-bearing features of the stopping rule, and the status of Bakushinskii's veto}
+
+Two features of (c) are load-bearing and one of them is a correction. First, the level is
+stage-dependent, and it must be. The data error of the stage-$k$ equation (a) is not $\hat\delta_n$
+but $\hat\delta_n\ln n$ \emph{plus} the linearisation remainder $h_u^{-2}\varepsilon_{k-1}^{2}$, where
+$\varepsilon_{k-1}=\|\vdagger-\hat\varphi^{(k-1)}\|_{L^{2}(\pi)}$, see \suppeq{stagedecomp}. A
+fixed level $\tau_{\mathrm{DP}}\hat\delta_n\ln n$ sits
+\emph{below} the true data error in exactly the regime the recursion must pass through, namely
+$h_u^{-2}\varepsilon_{k-1}^{2}\ge\hat\delta_n\ln n$; there the classical discrepancy guarantee does not
+apply and the rule either over-fits the noise or fails to stop before $\bar m_n$.
+Second, the level is deterministic and supplied from outside, and the reason has two parts of
+very different status. The first is this paper's own and is sharp; the second is classical and cited,
+and is weaker than it looks.
+% ARCHAEOLOGY.  Rounds through 9 implemented the fixed level tau_DP delta-hat_n ln n,
+% a mismatch between the estimator and its analysis; it is repaired at the estimator
+% rather than in the proof.  A round-9 draft over-read Bakushinskii's veto twice.
+
+(2a) The realised residual cannot supply the level, and the reason is what ill-posedness is. The
+natural data-driven repair is to replace $h_u^{-2}\hat\varepsilon_{k-1}^{2}$ by
+$h_u^{-2}\hat r_{k-1}^{2}$ with $\hat r_{k-1}$ the residual realised at stage $k-1$. \emph{It cannot
+work.} The quantity the level must dominate is $h_u^{-2}\varepsilon_{k-1}^{2}$ with
+$\varepsilon_{k-1}=\|\vdagger-\hat\varphi^{(k-1)}\|_{L^{2}(\pi)}$, and a residual bounds $\varepsilon$
+from below only through a lower bound on $\|\hat{\mathcal A}_{\varphi_\circ}v\|$ in terms of $\|v\|$.
+That $\|\hat{\mathcal A}v_\dagger\|\ll\|v_\dagger\|$ is available is not an accident of this
+construction; it is the definition of ill-posedness. So $\hat r_{k-1}$ can be arbitrarily smaller than
+$\varepsilon_{k-1}$, and a threshold built from it sits below the data error for exactly the reason the
+fixed threshold did. This observation is the paper's own and it is the sharp part of the
+argument.
+
+(2b) The general statement is Bakushinskii's veto, it is cited, and it is weaker than it looks in
+a statistical setting. That \emph{no} rule depending on the data alone, and not on the noise level
+, can make a regularisation method convergent for a genuinely ill-posed problem is
+\citet{bakushinskii1984}; see \citet[\S3.3]{engl2000}. Two scope statements, because the veto is
+routinely over-read. It is a \emph{worst-case, deterministic}
+statement: convergence is required uniformly over the admissible data, and the counterexample it turns
+on is a worst case. \emph{In the statistical setting this paper inhabits it does not rule out
+data-driven selection}: Lepskii-type balancing over the regularisation index is purely data-driven and
+attains the optimal rate up to a logarithmic factor \citep{lepskii1990}, and Section~5 runs such a
+stop alongside the schedule. \emph{So the schedule is preferred here, not forced here}, and the reasons are three and
+local. The number of stages $\bar k$ is finite and $\bar k_a$ is deterministic, so there is no
+adaptation problem across stages to solve. A deterministic level is what makes the rule
+\cref{def:lfstep}(c) implements and the rule \cref{prp:phirate} Step~2 analyses coincide \emph{by
+construction}. And a Lepskii stop over $m$ would
+need a variance proxy at each candidate index that the operator-noise model of this paper does not
+supply without a further bound. A balancing stop is therefore a live alternative rather than a
+foreclosed one, and were it to work here the requirement that (P-a.2) deliver a \emph{rate} would
+soften materially.
+
+
+% ------------------------------------------------------------------------
+\subsection*{The $\theta$-step (\cref{def:crossfit})}
+
+% ------------------------------------------------------------------------
+\paragraph{Convention \textup{(P8)}: the transfer rule and its two companions}
+
+\textup{(P8)}'s \emph{transfer rule} and
+its two companions, the $O_P$ companion and the $o_P$ companion, are \suppref{Lemma}{pconv}(i)--(iii),
+stated at a \emph{generic} $\sigma$-field, written $\mathcal G$ there and instantiated here, and they apply
+with no extension.
+% ARCHAEOLOGY.  Through dispatch 16 this clause read that the generic sigma-field
+% was "unnamed there", which was true of the comment block those statements then
+% lived in and is not true of the compiled lemma.
+
+% ------------------------------------------------------------------------
+\paragraph{The conditioning $\sigma$-field is written out and given no symbol}
+
+The licence is the same
+either way, since the convention is a reading of a proof and not a hypothesis; the sentence is not, and this
+definition is where the re-declaration lives. \emph{That $\sigma$-field is written out at every site and is
+given no symbol}: the
+three natural candidates are all claimed, $\mathcal G$ is \suppref{Lemma}{density}'s closed span,
+$\mathcal E$ is the best-approximation error of \suppeq{jackson}, and $\mathcal F$ is the Fourier
+transform of \eqref{eq:usobolev}, and \suppref{Lemma}{balance} and \textup{(P8)} already write
+$\sigma(\mathcal I_a)$ out, so the convention is inherited rather than invented.
+
+% ------------------------------------------------------------------------
+\paragraph{How each conditional bound of the $\theta$-step is produced, and which companion converts it}
+
+Each conditional bound below is produced by conditional Markov or conditional Chebyshev, hence holds at
+\emph{every} threshold with a $\sigma(\mathcal I_{-k})$-measurable numerator, and is converted by the
+\emph{$O_P$ companion} when the numerator is unconditionally $O_P(1)$ after division by the stated rate
+(\suppref{Lemma}{prelimtheta} Step~4, \suppref{Lemma}{sandwich} Step~2) and by the \emph{$o_P$ companion} when it is
+unconditionally $o_P(1)$ (\suppref{Lemma}{epterm} Step~6, \suppref{Lemma}{sandwich} Step~8). \emph{The transfer rule
+needs the conditional probability to vanish at a \textbf{single} moving threshold, which neither
+inequality delivers}; that is the observation \textup{(P8)} already recorded for the $o_P$ case, now
+applied to the $O_P$ case. What supplies the tightness of the numerators is A4(iii), A5(ii), (iv) and
+hypothesis (R-a) of \cref{thm:rootn}.
+
+% ------------------------------------------------------------------------
+\paragraph{What clause \textup{(c)}'s three properties buy}
+
+The three properties clause \textup{(c)} requires of $\hat\ell^{(-k)}$ are the minimum
+\cref{def:weight}(b) needs to be well posed, they are what make $\int_0^u\hat\ell^{(-k)}(v,z)dv$ exist
+and make $\partial_u\hat L^{(-k)}=\hat\ell^{(-k)}$ hold at every point, \emph{and they are stated here
+rather than inherited}, so that this definition is well posed on its own terms.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$)} re-declares nothing: what \suppref{Lemma}{balance} already states}
+
+\emph{This clause re-declares nothing}:
+\suppref{Lemma}{balance}'s sample-splitting convention states
+$\sigma(\mathcal I_a)$-measurability of $\hat\ell$ as a \emph{random element} of
+$L^{2}(P_{\Delta U,\Delta Z})$ together with a fixed \emph{jointly measurable representative}, which is
+strictly weaker than \eqref{eq:prodmeas} below and is all that site needs, it evaluating $\hat\ell$ at an
+\emph{undistorted} $(\Delta U,\Delta Z)$ draw.
+% ARCHAEOLOGY.  Through dispatch 15 lem:balance's convention stated MEMBERSHIP and
+% a measurability whose target was unspecified, and this sentence in turn described
+% it as "a membership statement and not a measurability declaration".  Both were
+% repaired in dispatch 16 at lem:balance.
+
+% ------------------------------------------------------------------------
+\paragraph{Why the carve-out for $\hat\varphi^{(-k)}$ is forced}
+
+For $\hat\varphi^{(-k)}$ the property of clause \textup{(c$'$.1)} is verified rather than required; \emph{and the exception is forced, not stylistic}, since
+one cannot require a property of an object one has already built, \suppref{Remark}{obligations}'s test, read on an
+estimator.
+% ARCHAEOLOGY.  Through dispatch 18 this sentence quantified over all five without
+% the carve-out, so the clause simultaneously pinned hat-varphi^{(-k)} to a
+% construction and demanded of it a property that construction was never shown to
+% have.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.1)}: what supplies $\hat\varphi^{(-k)}$'s measurability, and the choice of representative}
+
+Clause \textup{(c$'$.1)} records that the ground which settles the other two, A4(iii)'s ``by inspection
+of the formula'', is unavailable for $\hat\varphi^{(-k)}$: no formula is inspected when an index is
+chosen by a
+discrepancy rule. \emph{What supplies it instead is the measurability paragraph of \cref{def:lfstep}}, which
+builds the property from the deterministic cap \eqref{eq:cap}, the emptiness convention of
+\cref{def:lfstep}\textup{(c)}, and the finiteness of the resulting family: the stopping index is a hitting
+index of finitely many measurable events, the iterates are finite compositions of measurable maps, and the
+stopped iterate is a finite indicator-weighted sum of them. \emph{The superscripts are not written out here},
+because \cref{def:lfstep}'s index is a \emph{stage} index and this clause's is a \emph{fold} index, and the
+two are one glyph apart. \emph{The other two remain requirements, as printed}, and $\hat b^{(-k)}$'s is read
+off its formula on the $\hat\varrho$ model.
+\emph{The sample $\sigma$-algebra is written out and given no symbol}, because
+calligraphic $\mathcal F$ is A2c's Fourier transform and $\mathcal F_{XZW}$ never appears
+without its subscript; the same convention applies to $\sigma(\mathcal I_{-k})$
+itself.
+% ARCHAEOLOGY.  Glossary Sec.1.6, C15, and the C78 write-it-out precedent.
+For these three the choice of representative is immaterial, and that is the test a container has to
+pass, but the test is passed on \textbf{two different grounds}. For $\hat\varrho^{(-k)}$ and $\hat b^{(-k)}$ the evaluation is at
+$\Delta Z_i$, whose law \emph{is} the one the container is built on, so identity of laws does it. \emph{For
+$\hat\varphi^{(-k)}$ it is not}: its container is $\mathcal V\subset L^{2}(\mathcal X,\pi)$, whose null
+sets are the $\pi$-null ones, while its evaluations are at $X_{i1}$ and $X_{i2}$, whose laws are $f_{X_1}$
+and $f_{X_2}$. \emph{What transfers the null sets there is \textbf{domination}, and it has a tag}: C1(ii)
+gives $\bar c_\pi=\max_{j\in\{1,2\}}\|f_{X_j}/\pi\|_\infty<\infty$, so every $\pi$-null set is
+$P_{X_j}$-null for $j\in\{1,2\}$; \emph{``the law its container is built on'' is the wrong ground for the
+third object}. Either way any two representatives
+% ARCHAEOLOGY.  The domination ground was uncited through dispatch 15.
+agree at all of the finitely many evaluation points outside a $P$-null set, the union of the finitely many
+exceptional sets being $P$-null.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.1)}: the inheritance is Tonelli on positive and negative parts}
+
+\emph{The inheritance is the
+\textbf{measurability half} of Fubini--Tonelli and it is taken on positive and negative parts,
+entrywise}: \eqref{eq:weightdef}'s integrand is $\IR^{p\times(\mathsf L-1)}$-valued and
+% ARCHAEOLOGY.  A dispatch-15 draft elided this to "by Tonelli's theorem applied to
+% int_0^u hat-ell^{(-k)}(v,z) dv".
+of arbitrary sign, and $\int_0^u=-\int_u^0$ when $u<0$. For each entry $(j,l)$ with $j\le p$ and
+$l\le\mathsf L-1$, and each sign part, the
+two maps
+\[
+(\omega,u,z)\;\longmapsto\;\int_\IR\un\{0\le v\le u\}\,\big(\hat\ell^{(-k)}_{jl}\big)^{\pm}(\omega)(v,z)\,dv,
+\qquad
+(\omega,u,z)\;\longmapsto\;\int_\IR\un\{u\le v\le0\}\,\big(\hat\ell^{(-k)}_{jl}\big)^{\pm}(\omega)(v,z)\,dv
+\]
+are product measurable by Tonelli's theorem, their integrands being non-negative and
+$\sigma(\mathcal I_{-k})\otimes\mathfrak B(\IR\times\IR\times\IR^{p})$-measurable by \eqref{eq:prodmeas};
+all four are \emph{finite} at every point because clause \textup{(c)} makes $\hat\ell^{(-k)}$ bounded at
+each realisation, so their signed combination is well defined and product measurable. \emph{This is the
+device A2c\textup{(m.2)} already owns}, on the other side of the
+pairing, where the same positive-and-negative-part split carries Tonelli across a signed
+$u$-integral.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.1)}: why the derivative inherits product measurability under (R-a)}
+
+\emph{Under (R-a) the derivative inherits it too, and \textup{(c$'$.2)} needs that for its second
+envelope}: $\partial_u\hat\ell^{(-k)}$ exists at every point under (R-a) and is the pointwise limit
+of the difference quotients of $\hat\ell^{(-k)}$ in $u$ taken along the reciprocals of the positive
+integers, \emph{the increment is written out and carries no letter}, on the same ground as
+\eqref{eq:supnormconv}'s countable dense set; each such quotient is product measurable by
+\eqref{eq:prodmeas}, and a pointwise limit of countably many product-measurable functions is product
+measurable. \emph{A representative of an $L^{2}$ class supplies nothing of the kind}, having no derivative
+in general.
+No equivalence class is formed and no representative is chosen, so there is nothing
+for a choice of representative to disturb, and clause \textup{(c)}'s continuity in $u$ is untouched.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.1)}: why the $L^{2}$ reading fails for the two weight objects}
+
+\emph{Why the $L^{2}$ reading fails here and not three lines above}: these two are evaluated at a
+% ARCHAEOLOGY.  A draft of this clause declared the two weight objects random
+% elements of L^2(P_{Delta U, Delta Z}) and asserted that "the continuity clause of
+% (c) is preserved by the choice", which is false for an arbitrary representative,
+% point evaluation not being continuous on L^2.
+\emph{shifted} first argument, at $(\Delta U-\lambda\Delta h_k,\Delta Z)$ in \suppref{Lemma}{biasexp} Steps~1
+and~4--5, at $(\Delta U_i(\theta,\hat\varphi^{(-k)}),\Delta Z_i)$ in \eqref{eq:Jhat} and
+\suppref{Lemma}{sandwich} Steps~2 and~9, whose law \textup{(c$'$.2)} below argues, and needs, \emph{not} to be
+dominated by $P_{\Delta U,\Delta Z}$; on an undominated set two representatives of one class disagree, so
+$\hat J$ of \eqref{eq:Jhat}, $\Psi^{(1)}_k$ of \suppref{Lemma}{biasexp}, and hence $\hat\theta$ of
+\eqref{eq:onestep} and $\hat\Sigma$ of \eqref{eq:Sighat}, would depend on which was chosen and
+\emph{the estimator would not be a function of the object the clause declares}.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.1)}: the derivation of $\hat L^{(-k)}$'s membership}
+
+The membership of $\hat L^{(-k)}$ in $L^{2}(P_{\Delta U,\Delta Z})$ is derived and not required: by \eqref{eq:weightdef},
+$\|\hat L^{(-k)}(u,z)\|\le\|\hat b^{(-k)}(z)\|+\|\hat\ell^{(-k)}\|_\infty|u|$, so
+$E\|\hat L^{(-k)}(\Delta U,\Delta Z)\|^{2}\le
+2E\|\hat b^{(-k)}(\Delta Z)\|^{2}+2\|\hat\ell^{(-k)}\|^{2}_\infty E[\Delta U^{2}]<\infty$ almost surely
+under \cref{def:weight}(b)'s admissibility, (R-a) and A1b(iv). Both statements are about the
+function and neither is a container declaration.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.1)}: the seven \textbf{Part-I} sites of the freezing lemma, and the direction the proofs use}
+
+\emph{Equation \eqref{eq:prodmeas} is what \textup{(P8)}'s freezing lemma consumes for the
+$\hat\ell^{(-k)}$ \emph{ingredient} of its composite, at six of its seven \textbf{Part-I} sites}, that lemma being
+stated at a composite of the form $(\omega,e)\mapsto f\big(\hat\ell^{(-k)}(\omega),e\big)$. \emph{The
+seventh is \suppref{Lemma}{prelimtheta} Steps~4 and~4$'$, where $\hat\ell^{(-k)}$ does not appear at all and the
+frozen object is $h_k$}: what supplies the composite there is the jointly measurable representative fixed
+above for $\hat\varphi^{(-k)}$, so both halves of this clause are load-bearing and neither covers the
+other. \emph{Seven is the \textbf{Part-I} count and not the count of the lemma's sites, which is
+nine}, and the qualifier is load-bearing because the other two are supplied by something else:
+\suppref{Lemma}{opnoise} Step~4 sits in Part~H, is stated before \cref{def:crossfit} exists and does
+not adopt it, and takes its composite from A4(iii); \suppref{Lemma}{balance} Steps~0 and~2 sit in
+Part~F and take theirs from that lemma's own sample-splitting convention, which is deliberately
+weaker than \eqref{eq:prodmeas}. The catalogue is \suppref{Remark}{pfreezesites}, which carries all
+nine; this paragraph points into it and maintains no count of its own. The composite is \textbf{not} product measurable ``precisely when'' \eqref{eq:prodmeas}
+holds, in either direction. Not sufficient: the composite is product
+measurable only once $f$ is itself jointly Borel in its two arguments, and at the sites where the
+evaluation point is built from $\hat\varphi^{(-k)}$ only together with that object's own clause. Not
+necessary: $f\equiv0$ is product measurable whatever $\hat\ell^{(-k)}$ is. \emph{What is true is the
+direction the proofs use}, and it is the one this clause is for: \eqref{eq:prodmeas} is what this
+% ARCHAEOLOGY.  A dispatch-15 draft wrote the "precisely when".
+definition \emph{supplies}, and it is what the per-realisation ``Borel'' of clause \textup{(c)} does not. \emph{The file owns the device by which \eqref{eq:prodmeas} is verified, and it
+is recorded rather than imposed}: \suppref{Lemma}{biasexp} Step~1 obtains joint measurability in
+$(\lambda,\omega)$ from ``continuous in $\lambda$, measurable in $\omega$'' by the Carath\'eodory
+criterion, and the same criterion gives \eqref{eq:prodmeas} whenever, for each fixed $u$, the map
+$(\omega,z)\mapsto\hat\ell^{(-k)}(\omega)(u,z)$ is
+$\sigma(\mathcal I_{-k})\otimes\mathfrak B(\IR^{p})$-measurable, since \textup{(c)} already makes
+$u\mapsto\hat\ell^{(-k)}(u,z)$ continuous at every $(\omega,z)$. \emph{That is a sufficient condition and
+not the requirement}; the requirement is \eqref{eq:prodmeas}, which is what the proofs use.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.2)}: measurability of the outer essential supremum}
+
+The \textbf{outer} essential supremum is measurable as well, and this does \textbf{not} follow from
+joint measurability without an argument, it is not a countable supremum. The argument is the
+tool of the previous
+paragraph, once more. At each fixed real level, the map
+% ARCHAEOLOGY.  A dispatch-15 draft of this clause carried the outer essential
+% supremum on the word "likewise".
+$\omega\mapsto P_{\Delta Z}\big\{z:\sup_u\|\hat\ell^{(-k)}(\omega)(u,z)\|>\text{that level}\big\}$ is
+$\sigma(\mathcal I_{-k})$-measurable by Tonelli's theorem applied to the non-negative jointly measurable
+indicator; the levels at which that probability vanishes are exactly the levels \emph{at or above} the
+essential supremum, since it vanishes at the essential supremum itself, the exceptional set there being
+the union of the countably many exceptional sets one reciprocal-of-an-integer above it, and at no
+smaller level, by the definition of the essential supremum as an infimum; and therefore, for every real
+level, the event that the essential supremum does not exceed it is the intersection, over the
+\emph{countably many rational levels strictly above it}, of the events that the probability vanishes, 
+a countable intersection of measurable sets, the \emph{strict} inequality being what makes those
+exceptional sets exhaust the one at the level itself.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.2)}: why the envelope's measurability is load-bearing}
+
+\emph{The levels are written out and carry no letter}, on the same ground as the countable
+dense set above. \emph{This is load-bearing and not hygiene}: (R-a) prices both envelopes as
+$O_P(1)$, which is a statement about the distribution of these two maps, and \textup{(P8)}'s $O_P$
+companion requires its \emph{bounding numerator} to be measurable with respect to the conditioning
+$\sigma$-field, and at \suppref{Lemma}{sandwich} Step~2 that numerator is
+$\|\hat\ell^{(-k)}\|^{2}_\infty E\|\Delta Z\|^{2}$, whose only random factor is the envelope. \emph{No
+symbol of the companion's is imported into compiled text}; the numerator is named by what it is.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.2)}: a genuine supremum over $z$ would not be measurable}
+
+\emph{A genuine supremum over $z$, by contrast, would not be a measurable function of $\omega$}, since no
+clause makes $z\mapsto\hat\ell^{(-k)}(u,z)$ continuous.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(c$'$.2)}: where the exceptional set falls, and why $\ell_\star$ needs no convention}
+
+\emph{The exceptional set is therefore $P$-null where the envelope is used}:
+for each $i$, $\sup_u\|\hat\ell^{(-k)}(u,\Delta Z_i)\|\le\|\hat\ell^{(-k)}\|_\infty$ almost surely, and
+the union over the finitely many $i\le n$ of the exceptional sets is still $P$-null, so the bound holds
+simultaneously at all $n$ observations almost surely. \emph{For the deterministic $\ell_\star$ no
+convention is needed and none is imposed}: A$2'$(i)'s closing clause defines $\ell_\star$ pointwise and
+\suppref{Corollary}{elldiff} bounds it at \emph{every} $(u,z)$, so $\|\ell_\star\|_\infty$ is a genuine supremum and
+the two readings agree.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(d)}: what the second display would say without the sieve premise}
+
+The second display of \eqref{eq:foldrates} is finite at every realisation only under
+\eqref{eq:sieveinhs}: without the first the display is an $O_P(1)$ statement about a quantity equal to
+$+\infty$ surely, which is a condition on the \emph{empty} event and not a rate.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(d)}: what the fold reading of A5(vi$'$) costs}
+
+This costs nothing and is nonetheless not without consequence. It costs nothing because $\mathsf F$
+is fixed, so the fold reading is the intersection of $\mathsf F$ events each of probability tending to one;
+it is not without consequence because the radius $\mathsf R$ must then serve all $\mathsf F$ fold
+complements \emph{at one value}, $\mathsf R$ being a constant of \suppref{Definition}{srcball} and not a fold-indexed
+object, and $\mathsf R$ also appears in (P-c), (P-g), \suppeq{entropy} and elsewhere, so a
+fold-indexed radius is not available. \emph{Those three are named as instances and this paragraph
+maintains no list}: \suppref{Definition}{srcball} carries the enumeration and this points at it. The
+schedule constants carry $\mathsf R_\ast$, which that definition rules a \textbf{different} radius,
+not comparable to $\mathsf R$ in either direction. (T-5) already reads
+A5(vi$'$) at each fold \emph{operationally}, through ``\eqref{eq:phirate} holds on each
+$\mathcal I_{-k}$''; what was missing is that this enumeration, which declares itself the place where
+the reading lives, did not list it.
+
+
+% ------------------------------------------------------------------------
+\paragraph{The parts of \textup{(P8)} do not have the same standing}
+
+% SPLICE ARTIFACT REPAIRED 2026-08-09.  The body printed its own heading twice,
+% the second time after a bare em-dash with no verb following:
+%   "...do not have the same standing.--- and the parts of (P8) do not have the
+%    same standing"
+% Deduplicated.  BUT NOTE WHAT REMAINS: the paragraph now says only what its
+% heading says.  The explanation the heading promises -- WHICH parts, and how
+% their standing differs -- is NOT ON THE PAGE and was presumably lost in the
+% 2026-08-02 splice that produced the duplication.  This is a CONTENT gap in
+% printed supplement text, not a typographical one, and it is recorded as such
+% rather than papered over with a plausible-sounding sentence.  Owner: whoever
+% next opens this file with the (P8) history to hand.
+Convention \textup{(P8)} is re-declared at \cref{def:crossfit}, and the parts of
+\textup{(P8)} do not have the same standing.
+
+% ------------------------------------------------------------------------
+\paragraph{How clause \textup{(c$'$)}'s two sub-clauses stand to clause \textup{(c)}}
+
+Two clauses follow; neither is available from clause \textup{(c)} alone, and
+\textup{(c$'$.1)} is a requirement on the estimators and not a consequence of anything above it, 
+\emph{with \textbf{one} exception, marked at the clause itself, and it is the object clause \textup{(b)} has
+already fully constructed}.
+
+% ------------------------------------------------------------------------
+\paragraph{Clause \textup{(a)}'s truncation is a pointwise operation on the very function it names}
+
+For $\hat\varrho^{(-k)}$ no representative is chosen at all; \cref{def:hatT}'s truncation is then a pointwise operation on the very
+% SPLICE ARTIFACT REPAIRED 2026-08-09: the sentence ended ", and." -- truncated
+% mid-clause.  The dangling conjunction is removed and the sentence closed at the
+% clause that was complete.  What followed "and" is not recoverable from the page;
+% if the paragraph owed a second consequence, it is still owed.
+function clause \textup{(a)} names.
+
+% ------------------------------------------------------------------------
+\paragraph{Why the $L^{2}$ container is nonetheless retained for $\hat\varrho^{(-k)}$}
+
+The $L^{2}$ container is retained
+for $\hat\varrho^{(-k)}$ only because A4(iii)'s \emph{rate} is an $L^{2}$ statement; it is not what any
+pointwise bound rests on.

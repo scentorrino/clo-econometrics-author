@@ -1,0 +1,49 @@
+claim_id: sharpquad-antisym-form-vanishes
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:sharpquad, Step 1)"
+# WHAT THIS CHECKS, AND WHY IT IS NOT DECORATION.
+#
+# prp:sharpquad Step 1 asserts that a quadratic form sees only the SYMMETRIC part
+# of its operator: for B = B_sym + B_anti with B_anti* = -B_anti,
+#     <B h, h> = <B_sym h, h>   for every h.
+# That single line is what makes THREE downstream statements true, and each of
+# them was printed wrongly in some earlier round:
+#   (a) the sharp constant is (1/2)||B_sym||, NOT (1/2)||B||;
+#   (b) (1/2)||B|| is an UPPER bound only (eq:bracket's outermost member);
+#   (c) B need not be self-adjoint for eq:sharpconst to be an IDENTITY -- the
+#       identity is about B_sym, and B_sym always is.
+# glossary C12 records that a round-6 display printed B_sym's compact part as
+# -2 Ktilde, which is B's; the symmetric/antisymmetric bookkeeping is exactly the
+# place that error lives.
+#
+# THE MODEL.  A 3 x 3 antisymmetric matrix is the smallest finite model that is
+# not a special case: 2 x 2 antisymmetric matrices have a ONE-dimensional space
+# (all multiples of [[0,1],[-1,0]]), so a 2 x 2 check could pass for a reason
+# specific to that dimension.  With three free parameters a, b, c the identity
+# has to hold for a genuinely two-parameter family of directions.
+#
+# WHAT A MISMATCH WOULD MEAN.  A mismatch here would mean the antisymmetric part
+# does NOT drop out of the quadratic form, which would invalidate Step 1 and with
+# it clauses (i) and (ii) of prp:sharpquad.  There is no numerical hazard: the
+# expression is a polynomial identity in five real symbols and `expand` decides
+# it.
+#
+# PREDICTED: MATCH.
+variables:
+  a:
+    domain: real
+  b:
+    domain: real
+  c:
+    domain: real
+  h1:
+    domain: real
+  h2:
+    domain: real
+  h3:
+    domain: real
+# h' A h with A = [[0, a, b], [-a, 0, c], [-b, -c, 0]], written out entry by
+# entry so that no matrix machinery is involved and the harness's scalar path is
+# used throughout.
+start: "a*h1*h2 + b*h1*h3 + (-a)*h2*h1 + c*h2*h3 + (-b)*h3*h1 + (-c)*h3*h2"
+operation: expand
+claimed_end: "0"

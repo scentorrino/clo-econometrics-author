@@ -1,0 +1,39 @@
+\begin{tabular}{llrrccc}
+\toprule
+& & & & \multicolumn{3}{c}{$\Pr(\text{rule selects an iterate})$} \\
+\cmidrule(lr){5-7}
+Design and preliminary & Threshold & Budget & $n$ & $\mathsf L=2$ & $\mathsf L=3$ & $\mathsf L=4$ \\
+\midrule
+\multicolumn{7}{l}{\textbf{Block I} --- named configuration, abstract operator, nuisances injected at controlled rates} \\
+\multicolumn{7}{l}{\quad $(\mu,s,a,r,d_Z,p_K)=(2,3,\tfrac34,\tfrac83,3,8)$, $p=4$; $\mathsf L=2$ in this block} \\
+\midrule
+zero preliminary & $10^{-2}$ & 39,528,911,316 & 500 & 0.077 & --- & --- \\
+ &  & 185,035,802,711 & 2,000 & 0.250 & --- & --- \\
+ &  & 875,713,042,937 & 8,000 & 0.653 & --- & --- \\
+ & $3\times10^{-2}$ & 39,528,911,316 & 500 & 0.760 & --- & --- \\
+ &  & 185,035,802,711 & 2,000 & 0.990 & --- & --- \\
+ &  & 875,713,042,937 & 8,000 & 1.000 & --- & --- \\
+\addlinespace
+rate preliminary & $10^{-2}$ & 39,528,911,316 & 500 & 0.027 & --- & --- \\
+ &  & 185,035,802,711 & 2,000 & 0.147 & --- & --- \\
+ &  & 875,713,042,937 & 8,000 & 0.220 & --- & --- \\
+ & $3\times10^{-2}$ & 39,528,911,316 & 500 & 0.603 & --- & --- \\
+ &  & 185,035,802,711 & 2,000 & 0.820 & --- & --- \\
+ &  & 875,713,042,937 & 8,000 & 0.933 & --- & --- \\
+\addlinespace
+\multicolumn{7}{l}{\textbf{Block III} --- multinomial design, shipped engine, nuisances estimated} \\
+\multicolumn{7}{l}{\quad \texttt{sim\_multinomial\_dgp.R} with \texttt{lf\_panel.R}; $\mathsf L\in\{2,3,4\}$ off one draw} \\
+\midrule
+Balanced & $\tau_{\mathrm{DP}}=0.7$ & 100 & 400 & 0.917 [22/24] & 1.000 [24/24] & 1.000 [24/24] \\
+ &  &  & 800 & 1.000 [24/24] & 0.917 [22/24] & 0.750 [18/24] \\
+ &  &  & 1,600 & 1.000 [24/24] & 0.917 [22/24] & 0.875 [21/24] \\
+\addlinespace
+Skewed & $\tau_{\mathrm{DP}}=0.7$ & 100 & 400 & 0.917 [22/24] & 0.875 [21/24] & 0.917 [22/24] \\
+ &  &  & 800 & 0.917 [22/24] & 0.875 [21/24] & 0.792 [19/24] \\
+ &  &  & 1,600 & 1.000 [24/24] & 0.792 [19/24] & 0.667 [16/24] \\
+\addlinespace
+Misspecified $\hat\varrho$ & $\tau_{\mathrm{DP}}=0.7$ & 100 & 400 & 0.958 [23/24] & 0.833 [20/24] & 0.042 [1/24] \\
+ &  &  & 800 & 0.917 [22/24] & 0.500 [12/24] & 0.042 [1/24] \\
+ &  &  & 1,600 & 0.875 [21/24] & 0.250 [6/24] & 0.000 [0/24] \\
+\bottomrule
+\end{tabular}

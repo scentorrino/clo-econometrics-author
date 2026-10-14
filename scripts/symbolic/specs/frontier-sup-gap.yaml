@@ -1,0 +1,16 @@
+claim_id: frontier-sup-gap
+source: quality_reports/theory/panel-npiv-discrete/assumptions.tex
+# CLAIM (companion to frontier-mu-necessity).  For every finite r > 0 the
+# left-hand side is STRICTLY below its r -> oo supremum mu/(2mu+1), the gap
+# being mu*d_Z/((2mu+1)(2r+d_Z)) > 0.  Together with
+# mu/(2mu+1) <= 1/4 for mu <= 1/2 this makes the infeasibility strict.
+variables:
+  mu:
+    domain: positive
+  r:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "mu/(2*mu+1) - 2*mu/(2*mu+1) * r/(2*r+d_Z)"
+operation: none
+claimed_end: "mu*d_Z/((2*mu+1)*(2*r+d_Z))"

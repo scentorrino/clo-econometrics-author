@@ -1,0 +1,23 @@
+claim_id: o11-N1-forces-b-zero
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (cor:udep Step 1)"
+# CLAIM.  With L(u,z) = c(z) u + b(z) and A1's second clause
+# E[Delta U | Delta Z] = 0,
+#     E[L(Delta U, Delta Z) | Delta Z] = c * E[Delta U | Delta Z] + b = b,
+# so N1, which sets the left-hand side to zero, forces b == 0.
+# ISOLATED FROM o11-moment-collapse ON PURPOSE.  The two halves of Step 1 use
+# DIFFERENT assumptions -- this one uses A1's second clause and N1, the other
+# uses only algebra -- and the assumption-auditor reads one spec per assumption
+# consumption.  If A1's second clause were dropped, this spec is the one that
+# should fail, and the collapse in o11-moment-collapse would survive with a
+# residual b(z) that is NOT killed, so psi would acquire a Wt*b(dZ) term that is
+# still (W, Delta Z)-measurable but no longer proportional to Delta U.
+variables:
+  c:
+    domain: real
+  EdU:
+    domain: real
+  b:
+    domain: real
+start: "c*EdU + b"
+operation: "substitute(EdU=0)"
+claimed_end: "b"

@@ -1,0 +1,31 @@
+claim_id: orthog-phi-derivative
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:orthog Part (i))"
+# CLAIM.  Differentiating the moment in the structural-function direction,
+#   psi = dZ * (dU - t1*Dh) + Wt * L( dU - t1*Dh, dZ ),
+# gives  d psi / d t1 |_{t1=0} = -( dZ + Wt * ell(dU, dZ) ) * Dh,
+# i.e. the weight whose difference functional must vanish is exactly
+# g = Delta Z + Wtilde ell_star -- which is what makes (i)'s condition
+# nu_{Delta Z + Wtilde ell_star} == 0 rather than nu_{Wtilde ell_star} == 0.
+# THE SURROGATE.  verify.py has no generic Function, so L(u,z) is instantiated
+# as l0*u + l1*u^2/2, whence ell = partial_u L = l0 + l1*u and, at t1 = 0,
+# ell(dU) = l0 + l1*dU.  Faithful for the purpose: the spec tests the chain rule
+# through L's first argument and the SIGN, and it keeps ell genuinely varying in
+# u (l1 != 0), which cor:udep says the true ell_star must.
+variables:
+  dZ:
+    domain: real
+  dU:
+    domain: real
+  Dh:
+    domain: real
+  Wt:
+    domain: real
+  t1:
+    domain: real
+  l0:
+    domain: real
+  l1:
+    domain: real
+start: "dZ*(dU - t1*Dh) + Wt*(l0*(dU - t1*Dh) + l1*(dU - t1*Dh)**2/2)"
+operation: "diff(t1)"
+claimed_end: "-(dZ + Wt*(l0 + l1*(dU - t1*Dh)))*Dh"

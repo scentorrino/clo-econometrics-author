@@ -1,0 +1,16 @@
+claim_id: compact-hs-sqrt
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex, read as a bound on the HS norm itself"
+# CLAIM (the form quoted in the dispatch: 'the bound 2 cpi ||bar f_0||_inf c_Pi').
+# The proof displays ||A||^2_HS <= 4 cpi^2 f0bar^2 c_Pi^2; the HS norm itself is
+# therefore bounded by 2 cpi f0bar c_Pi.  The square root is legitimate because
+# all three constants are positive.
+variables:
+  cpi:
+    domain: positive
+  f0bar:
+    domain: positive
+  cPi:
+    domain: positive
+start: "sqrt(4*cpi**2*f0bar**2*cPi**2)"
+operation: none
+claimed_end: "2*cpi*f0bar*cPi"

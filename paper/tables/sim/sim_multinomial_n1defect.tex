@@ -1,0 +1,56 @@
+\begin{tabular}{llccccc}
+\toprule
+\multicolumn{7}{l}{\textbf{Block III} --- multinomial design, weight from \texttt{solve\_balance\_weight}} \\
+\multicolumn{7}{l}{\quad the N1 functional is exact; the weight is the estimator's own} \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: the N1 defect at $n_{\mathrm{solve}}=640$, i.e.\ $n=1{,}600$.}} \\
+\multicolumn{7}{l}{\textit{\quad Monte Carlo standard errors over $12$ solve draws.}} \\
+\midrule
+Design & $\mathsf L$ & $\max_{j,l}\|b_{jl}\|$ & $\max_{j,l}\|L_{jl}\|$ & entrywise ratio & $\|b\|_F/\|L\|_F$ & Block I, DGP-A \\
+\midrule
+Balanced & 2 & 3.561 & 5.555 & 0.641 (0.012) & 0.632 (0.011) & $3.34\times10^{-6}$ \\
+ & 3 & 3.020 & 5.342 & 0.558 (0.032) & 0.545 (0.024) & --- \\
+ & 4 & 4.846 & 7.431 & 0.646 (0.018) & 0.589 (0.015) & 0.191 \\
+\addlinespace
+Skewed & 2 & 1.341 & 2.494 & 0.531 (0.030) & 0.530 (0.021) & $3.34\times10^{-6}$ \\
+ & 3 & 2.267 & 3.851 & 0.591 (0.020) & 0.562 (0.014) & --- \\
+ & 4 & 2.945 & 4.945 & 0.588 (0.021) & 0.550 (0.013) & 0.191 \\
+\addlinespace
+Misspecified $\hat\varrho$ & 2 & 5.048 & 6.982 & 0.720 (0.010) & 0.714 (0.010) & $3.34\times10^{-6}$ \\
+ & 3 & 5.762 & 8.452 & 0.675 (0.020) & 0.645 (0.020) & --- \\
+ & 4 & 7.241 & 10.593 & 0.688 (0.012) & 0.649 (0.007) & 0.191 \\
+\addlinespace
+\multicolumn{7}{l}{\textit{Panel B: the entrywise ratio against the solve fold, $\lceil 0.4n\rceil$.}} \\
+\multicolumn{7}{l}{\textit{\quad A restriction on the weight class does not shrink in $n$.}} \\
+\midrule
+Design & $\mathsf L$ & $n_{\mathrm{solve}}=160$ & $n_{\mathrm{solve}}=320$ & $n_{\mathrm{solve}}=640$ & log-log slope & worst $j$ \\
+\midrule
+Balanced & 2 & 0.613 & 0.606 & 0.641 & 0.032 & const. [1.00] \\
+ & 3 & 0.633 & 0.599 & 0.558 & -0.091 & const. [1.00] \\
+ & 4 & 0.620 & 0.604 & 0.646 & 0.029 & const. [1.00] \\
+\addlinespace
+Skewed & 2 & 0.639 & 0.600 & 0.531 & -0.133 & $z_1$ [0.42] \\
+ & 3 & 0.621 & 0.604 & 0.591 & -0.036 & const. [0.67] \\
+ & 4 & 0.593 & 0.651 & 0.588 & -0.006 & const. [0.50] \\
+\addlinespace
+Misspecified $\hat\varrho$ & 2 & 0.659 & 0.675 & 0.720 & 0.064 & const. [1.00] \\
+ & 3 & 0.620 & 0.649 & 0.675 & 0.061 & const. [1.00] \\
+ & 4 & 0.708 & 0.666 & 0.688 & -0.021 & const. [1.00] \\
+\addlinespace
+\multicolumn{7}{l}{\textit{Panel C: the M3-off control, the design ceiling and the quadrature certificates.}} \\
+\midrule
+Design & $\mathsf L$ & control ratio & $R_{\max}$ & $R_{\max}$ control & cert.\ $|\Delta E[L]|$ & scale \\
+\midrule
+Balanced & 2 & $1.63\times10^{-14}$ & 0.8615 & $8.94\times10^{-8}$ & $5.70\times10^{-6}$ & 25.98 \\
+ & 3 & $2.07\times10^{-14}$ &  &  & $1.24\times10^{-5}$ & 46.44 \\
+ & 4 & $2.40\times10^{-14}$ &  &  & $7.78\times10^{-6}$ & 55.26 \\
+\addlinespace
+Skewed & 2 & $2.63\times10^{-14}$ & 0.8615 & $8.94\times10^{-8}$ & $3.45\times10^{-6}$ & 25.90 \\
+ & 3 & $2.71\times10^{-14}$ &  &  & $4.18\times10^{-6}$ & 23.27 \\
+ & 4 & $2.27\times10^{-14}$ &  &  & $5.38\times10^{-6}$ & 29.12 \\
+\addlinespace
+Misspecified $\hat\varrho$ & 2 & --- & 0.9021 & $8.94\times10^{-8}$ & $8.57\times10^{-5}$ & 40.94 \\
+ & 3 & --- &  &  & $9.41\times10^{-5}$ & 59.90 \\
+ & 4 & --- &  &  & $1.67\times10^{-4}$ & 57.33 \\
+\bottomrule
+\end{tabular}

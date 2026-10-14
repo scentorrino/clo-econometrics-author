@@ -143,7 +143,10 @@ These critics are not paired with a worker — they are dispatched directly by `
 
 ### notation-warden
 - **PHASE:** Strategy / Execution (re-runnable any time theory artifacts change)
-- **REQUIRES:** Any of `quality_reports/theory/{project}/{results.tex,proofs.tex,assumptions.tex}` OR `paper/sections/theorems/*.tex`
+- **REQUIRES:** Any of `quality_reports/theory/{project}/{results.tex,proofs.tex,assumptions.tex}` (or the `results_s2/s3/s4/_supp` and `assumptions_main/_supp` split mirrors of the first two)
+  <!-- `paper/sections/theorems/*.tex` REMOVED 2026-08-03: retired renderings, compiled by no
+       document, round-2 vintage. See paper/sections/theorems/_SUPERSEDED.md. -->
+
 - **PRODUCES:** `quality_reports/notation/notation-table.md`
 - **PAIRED WORKER:** None (orchestration-level critic)
 - **ESCALATION_TARGET:** theorist (when collisions or undefined symbols block proof readability)

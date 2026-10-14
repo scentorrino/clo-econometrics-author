@@ -1,0 +1,252 @@
+# Local identification under independence
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% Statements only, twice over. assumptions_main holds the numbered conditions
+% and none of the discussion around them; results_s2 holds this section's
+% statements -- the model, the spaces, the operator equation, the Bierens
+% device, the identification results, the weight and the orthogonality. NO
+% COUNT IS STATED HERE OR BELOW: this read "the 15 core statements" against 17
+% numbered environments plus 2 remarks on disk, and it moves whenever a
+% statement is added or withdrawn. The interpretation of the assumptions, the retirement records
+% and the smoothness-budget table are in the supplement, and so are the proofs.
+\input{../../quality_reports/theory/panel-npiv-discrete/assumptions_main}
+```
+:::
+
+We ask two things of the differenced residual in A1, and the two halves do
+different work. The mean-zero half, $E[\Delta U\mid\Delta Z]=0$, delivers
+restriction (B) of \cref{def:admissible}, the unconditional orthogonality
+$E[\Delta Z\,\Delta U]=0$;
+the conditional-independence half, $\Delta U\upmodels W\mid\Delta Z$, delivers
+restriction (A). Each implication runs one way, A1 being the stronger statement in
+both. Only the first identifies $\theta_\dagger$.
+
+We build everything else from the second: the operator equation, the debiasing
+weight, the Jacobian of the moment, and its orthogonality in two of the three
+nuisance directions.
+
+Restriction (B) identifies $\theta_\dagger$ on its own. Under A1 and A1b(iv),
+$\theta_\dagger=\big(E[\Delta Z\Delta Z']\big)^{-1}E[\Delta Z(\Delta Y-\Delta\vdagger)]$,
+the inverse existing and the expectations being finite by that same clause.
+Neither the source condition A2 nor a rank condition on any other matrix enters.
+That is worth stating plainly rather than leaving to be inferred: routing
+identification of the parametric component through a matrix built from the
+representer would make it contingent on a source condition, and it is not.
+
+Restriction (A) carries no first-order information about $\theta_\dagger$, and that is a
+theorem rather than a shortcoming of the argument. By \cref{lem:shiftinv} the set of
+pairs admitted by (A) is a product set, so no functional of the conditional law of the
+residual given $(W,\Delta Z)$ distinguishes $\theta_\dagger$ from any other value.
+
+It does not follow that $\theta_\dagger$ is
+unidentified, the display above having identified it, and it does not follow that
+(A) is idle. A Neyman correction is mean-zero at the truth *by construction*,
+which is what makes it a correction rather than a second restriction, and that is
+a property of every Riesz representer in the debiased-machine-learning
+construction \citep{chernozhukov2018dml,chernozhukov2022adml,chernozhukov2022riesz}
+and not a defect peculiar to this model.
+
+The comparison with \citet{poirier2017} runs the other way, and the direction is
+worth stating. He shows that replacing a conditional independence restriction by a
+conditional moment restriction loses identification; here identification of
+$\theta_\dagger$ comes from the mean restriction, and conditional independence
+supplies the debiasing channel instead.
+
+What (A) costs is over-identification. Under an *unconditional* independence
+assumption the residual at a wrong $\theta$ would fail to be independent of $W$
+whenever $\Delta Z$ and $W$ are dependent, so (A) would deliver a testable
+restriction on $\theta$. Under A1 as stated, $\theta_\dagger$ is exactly
+identified by (B) and (A) is a pure debiasing device. Solvability of the operator
+equation remains testable in the usual nonparametric-instrumental-variables sense;
+what carries no over-identifying restriction is $\theta$.
+
+What we get from the conditional-independence half and not from the mean-zero
+half is one identity: $E[\widetilde W\,\Xi(\Delta U,\Delta Z)]=0$ for every
+integrable $\Xi$ (Lemma L-1(v) of the supplement).
+
+From that identity, the $\theta$-Jacobian of the debiased moment is $-J$ with
+$J=E[\Delta Z\Delta Z']$ *exactly*, the debiasing summand of \eqref{eq:JSig} being
+the zero matrix (part (iv) of the moment-validity lemma of the supplement). We do
+not assume the local rank condition such a moment would ordinarily require,
+nonsingularity of a matrix built from $\ell_\star$ and therefore statable only
+under A2: it follows from A1 and A1b(iv). And the population moment is affine
+in $\theta$ with $\theta_\dagger$ as its unique root on all of $\IR^{p}$.
+
+Where that identity stops is where our difficulty lives, and it belongs
+beside it. $\Delta h$ is $\sigma(X_1,X_2)$-measurable and not
+$\sigma(\Delta U,\Delta Z)$-measurable, so the same tower step does not run in the
+structural direction: A2 is precisely the assertion that the pairing there equals
+$-E[\Delta Z\,\Delta h]$ for every $h\in\mathcal V$, and were it zero for every
+$h$ the instrument would not move the regressor at all.
+
+We convert that conditional restriction rather than approximate it.
+
+\Cref{lem:bierens} shows (A) equivalent to the vanishing of the unconditional
+family $\{\mathcal M(u,t,l)\}$ of \eqref{eq:Mdef}, and hence to
+$T(\vdagger,\theta_\dagger)=0$ in $L^{2}(\Pi)$, so we never estimate a
+conditional distribution given $\Delta Z$. The contrasts $\widetilde W$ replace
+the $W$-argument by the finite index $l$ and the Bierens index $t$ removes the
+$z$-argument, leaving a family indexed by $(u,t,l)$ with $u$ scalar and $l$
+running over $\{1,\dots,\mathsf L-1\}$; the problem is therefore
+still amenable to the existing Landweber--Fridman machinery, at an enlarged index
+set and no new curse of dimensionality. The reference measure gains a third
+factor with it, $\Pi=\Pi_u\otimes\Pi_t\otimes\Pi_{\mathsf w}$ with
+$\Pi_{\mathsf w}$ a probability measure on $\{1,\dots,\mathsf L-1\}$, and that is
+the whole of the cost: no Bierens-type device is needed in the $W$ direction,
+because the space of conditionally centred functions of $(W,\Delta Z)$ is
+finite-dimensional and \eqref{eq:contrast} is a basis for it.
+
+It is also cheaper than it looks. It requires no moment condition whatsoever on
+$\Delta Y$, $\Delta U$ or $\Delta Z$, and no Lebesgue density for $\Delta U$ or
+$\Delta Z$. That is, $\Delta Z$ may be discrete, $\Delta U$ may have atoms, and
+neither need have a finite mean. That is exactly what boundedness of $\Phi$ in
+B1(i) purchases, and the smoothness
+and moment conditions of C1, C2$'$ and A1b(iv) enter only when the operator is
+differentiated or the parameter is identified. Compactness of $\mathcal T$ is
+sufficient and is not assumed; what the proofs consume is the integrability of
+B1(iv.c) and B1(v).
+
+The weight is the exponential, and B1(ii) fixes it as a correction rather than a
+convenience. Under the textbook condition, with $w$ real-analytic and
+non-polynomial, the converse direction of the Bierens core lemma of the supplement
+fails against the maintained componentwise $\arctan$, which is odd. For $w=\cos$
+and a two-point $V$ the family sees only the even part of the image measure, and
+the supplement's remark on the choice of weight exhibits the witness inside the
+paper's own transform.
+
+That failure reaches \cref{lem:bierens} itself, condition (c) then holding
+whenever the *unconditional* restriction does while the $\Delta Z$-conditional one
+fails through opposite-signed violations that cancel. Repair is not a matter of
+strengthening $\Phi$ but of adding an intercept and indexing the family over a
+subset of $\IR^{1+p}$. It is \citet[Thm.~3.1]{stinchcombewhite1998}, and it is
+load-bearing rather than a *see also*. We do not adopt it.
+
+Adopting it would change the range space and redo the envelope
+bookkeeping of B1(iv)--(v) throughout. We maintain $w=\exp$, which is what
+\citet[Thm.~1]{bierens1990} characterises, and the additional generality is
+consumed nowhere in the programme.
+
+Identification of $\vdagger$ separates into a linearised statement and a global
+one, and we offer a primitive for neither. \Cref{prp:kerchar} characterises the
+kernel of the linearisation: a direction is annihilated exactly when the instrument
+fails to move its period difference given the residual and the controls. The
+obvious primitive would be the transplant of \citet[Prop.~2.2]{feve2014} to the
+conditional-independence design, an instrument-completeness condition on
+$\Lambda\mapsto E[\widetilde W\Lambda\mid\Delta U,\Delta Z]$. *That transplant is
+unavailable, and not because it is strong.* Under conditional exogeneity
+$\widetilde W$ is centred given $\Delta Z$, so the operator annihilates every
+function that is almost surely a function of $(\Delta U,\Delta Z)$, the constants
+included; the completeness condition fails at $\Lambda\equiv1$ at every law the
+model admits. In \citet{feve2014} the restriction is a conditional mean and the
+operator is $g\mapsto E[g\mid W]$, which does not annihilate constants, and their
+operator is linear in $\varphi$, so injectivity *is* identification. Our design
+is the harder one twice over: the operator equation is nonlinear, so the
+linearised and global statements come apart, and the completeness hypothesis
+that would have delivered the linearised one cannot be posed.
+
+The obstruction is nameable. Membership of $\mathcal V_{CI}$ is a family indexed by
+test functions of the *observed* residual at the trial value, whereas running the
+linearised argument globally would need the strictly larger family indexed also by
+test functions of the *true* residual, about which the restriction says nothing at
+a trial $\varphi$. They coincide at $\varphi=\vdagger$ and nowhere else.
+\Cref{prp:compact} closes off the obvious repair: $\mathcal A_{\mathrm{cond}}$ is
+compact, hence not bounded below, so A1c does not even deliver a neighbourhood of
+uniqueness.
+
+We acknowledge that A1b(iii) is assumed rather than derived, and that no primitive
+for it is offered anywhere in this paper. An earlier draft carried one for the
+linearised condition and we have withdrawn it: the hypothesis it rested on is
+empty in this model, for the reason above. \emph{We would rather record a route as
+closed than leave a corollary standing whose hypotheses nothing satisfies.}
+
+Global identification has been treated directly in a nonlinear
+instrumental-variables problem with a duration outcome
+\citep{beyhum2024}. Conditions of that kind are harder to interpret than the
+linearised one and are difficult to check on data.
+
+What a finer instrument does to that hypothesis runs the opposite way to the
+reflex, and \cref{def:cellsets} and \cref{prp:localise} say what it does instead.
+Read $\mathcal V_{\mathsf S}$ for the set of $\varphi$ satisfying the restriction
+across the cells of $\mathsf S\subseteq\{0,\dots,\mathsf L-1\}$, and call
+$\mathsf S$ *consistent* when that set is non-empty. Under A1 every set of cells
+is consistent, at the common $\vdagger$, so a conflict between two cells refutes
+A1; and where a violation exists there is a maximal consistent set of cells and
+the cells in conflict with it are where the failure sits. \Cref{prp:localise}(ii)
+carries no identification hypothesis at all, at the full instrument or at any
+subset, which is why the route is available in a design where A1b(iii) is assumed
+rather than derived.
+
+Four readings of that have to be blocked, and each is the one a reader arriving
+from the linear literature will supply. Extra cells do not buy identification:
+A1b(iii) at a coarsening of $W$, together with A1, *implies* A1b(iii) at the full
+instrument, so a finer instrument makes the identification hypothesis weaker and
+never stronger. They do not buy testability, which is already present at
+$\mathsf L=2$, where the restriction is a continuum of equations in $u$ against
+one unknown function. They do not buy instrument strength, since splitting an
+instrument creates no variation. And the mechanism is not the conditioning of the
+inverse problem: the degree of ill-posedness is a property of the singular values
+of $\mathcal A_{\mathrm{cond}}$, and the cardinality of $W$ does not act on it in
+any way this paper can state. What the extra cells add are moment directions,
+restrictions on the same $\varphi$, and the per-cell decomposition of those
+directions is the localisation.
+
+\Cref{prp:localise}(iv) is where the design earns its keep and where the binary
+case is not merely weaker but empty: its hypothesis, that the full restriction
+has no solution while some set of at least two cells does, is unsatisfiable at
+$\mathsf L=2$. Two limits belong with it. Consistency of every cell set is
+necessary for A1 and not sufficient, since the diagnostic detects
+$\mathcal V_{CI}=\emptyset$ and a violation that some other $\varphi\in\mathcal V$
+reconciles is invisible to it, so a cell showing no conflict is not exonerated.
+And the attribution is relative to a reference set of cells: what the law
+determines is the family of maximal consistent sets, and any rule for choosing one
+member of it is a convention.
+
+\Cref{prp:nophifree} is our negative result and it is an equivalence, not an
+impossibility theorem. A moment with weight $g$ is free of the structural function exactly
+when the two periods' $g$-tilted marginals of the endogenous regressor coincide, that is,
+exactly when $\nu_g\equiv0$. Read at $g\equiv1$ the condition is marginal stationarity of
+$X$; read at $g=\Delta Z$ it is $\nu\equiv0$, the design in which the debiasing weight
+degenerates and the moment collapses to the differenced least-squares one.
+
+The condition was reached independently in the linear case. \citet{feve2014}
+observe that their operator annihilates every $\varphi$ under exchangeability of
+the two periods given the instrument, which is \eqref{eq:tilted} imposed
+simultaneously for every bounded $g=g(W)$. What \cref{prp:nophifree} adds is the
+one-weight-at-a-time equivalence, theirs being the simultaneous condition and
+correspondingly stronger, and the enlargement of $g$ from functions of $W$ to
+functions of $(W,\Delta Z)$, which is the class the debiasing construction actually
+searches.
+
+*The proposition does not assert that \eqref{eq:tilted} holds or fails.* Whether it
+fails is a property of the application, testable through the Picard diagnostic and
+through $\hat\nu_g$ directly, and we report it rather than assert it.
+
+A design in which it holds for the weights of interest is one in which there is
+nothing to debias.
+
+\Cref{cor:udep} closes the chain from that equivalence to the shape of the remainder. If
+the debiasing weight did not vary with the residual, the moment would reduce to a
+$\sigma(W,\Delta Z)$-measurable weight times the residual, and orthogonality would then
+force \eqref{eq:tilted}. So in any design where \eqref{eq:tilted} fails for such
+weights the selected $\ell_\star$ must have $\partial_u\ell_\star\not\equiv0$.
+
+That is what puts a quadratic term in $\varphi$ into the moment, and it is why the
+second-order remainder of \S4 is unavoidable within this moment class rather than an
+artefact of the expansion.
+
+Necessity is not sufficiency here. The condition $\partial_u\ell_\star\not\equiv0$
+is necessary and not sufficient for the second-order form to be nonzero: the
+conditional expectation $q=E[\widetilde W\,\partial_u\ell_\star\mid X_1,X_2]$ can
+still vanish by cancellation, and excluding that is the separate hypothesis O-16
+carried explicitly by \cref{prp:sharpquad}(iii)--(iv). And we make no claim about
+whether the moment class is exhausted.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% The statements of this section, printed where the prose above discusses
+% them.  Before the three-way split they printed under Section 4, forty pages
+% after the paragraphs that refer to them.
+\input{../../quality_reports/theory/panel-npiv-discrete/results_s2_identification}
+```
+:::

@@ -1,0 +1,41 @@
+claim_id: orthog-secondorder-six
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:secondord, all four clauses)"
+# CLAIM.  The full three-nuisance integrand, before any expectation:
+#   Psi(t1,t2,t3) = dZ*(dU - t1*Dh)
+#                 + (Wt - t3*r) * ( Lstar(dU - t1*Dh) + t2*D(dU - t1*Dh) ).
+# lem:secondord asserts SIX second-order terms of which THREE vanish
+# identically.  This spec checks the two exactly-zero pure second derivatives by
+# verifying that Psi is AFFINE in (t2, t3) jointly: the claimed end is Psi
+# rewritten with the (t2, t3) dependence displayed as a bilinear-plus-linear
+# form, from which d^2/dt2^2 = d^2/dt3^2 = 0 is immediate and
+# d^2/(dt2 dt3) = -r*D is read off.
+# THE SURROGATES.  Lstar(u) = l0*u + l1*u^2/2 and D(u) = d0*u + d1*u^2/2, so
+# both have genuinely u-varying derivatives.  Scalar form throughout.
+variables:
+  dZ:
+    domain: real
+  dU:
+    domain: real
+  Dh:
+    domain: real
+  Wt:
+    domain: real
+  r:
+    domain: real
+  t1:
+    domain: real
+  t2:
+    domain: real
+  t3:
+    domain: real
+  l0:
+    domain: real
+  l1:
+    domain: real
+  d0:
+    domain: real
+  d1:
+    domain: real
+start: "dZ*(dU - t1*Dh) + (Wt - t3*r)*((l0*(dU - t1*Dh) + l1*(dU - t1*Dh)**2/2) + t2*(d0*(dU - t1*Dh) + d1*(dU - t1*Dh)**2/2))"
+operation: "diff(t2)"
+claimed_end: "(Wt - t3*r)*(d0*(dU - t1*Dh) + d1*(dU - t1*Dh)**2/2)"

@@ -1,0 +1,15 @@
+claim_id: frontier-table-muinf-dz5
+source: quality_reports/theory/panel-npiv-discrete/assumptions.tex:L452-459 (A5(iii) substitution table)
+# Table entry (mu = infinity (limit row), d_Z = 5) of the eighteen-entry substitution table.
+# The threshold is recomputed FROM THE GENERAL FORMULA r > d_Z(2mu+1)/(2(2mu-1))
+# and compared with the value printed in the comment block.
+# The 'mu = infinity' row is the mu -> oo LIMIT of the threshold; its
+# provenance is verified separately in frontier-table-limit-identity.yaml.
+variables:
+  mu:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "d_Z/2"
+operation: "substitute(d_Z=5)"
+claimed_end: "5/2"

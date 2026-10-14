@@ -1,0 +1,17 @@
+claim_id: frontier-at-r2-dz3
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A5(iii)), read at r = 2, d_Z = 3"
+# CROSS-CHECK (continued).  At r = 2, d_Z = 3 the frontier numerator is
+# 2mu - 7, so an order-2 Holder propensity in THREE dimensions satisfies A5(iii)
+# only if mu > 7/2.  This is consistent with the printed table, whose mu = 3 row
+# requires r > 2.1 > 2 at d_Z = 3.  So "order 2 clears n^{-1/4}" is true of the
+# RAW nuisance rate and false of the frontier unless mu is large.
+variables:
+  mu:
+    domain: positive
+  r:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "2*r*(2*mu-1) - d_Z*(2*mu+1)"
+operation: "substitute(r=2, d_Z=3)"
+claimed_end: "2*mu - 7"

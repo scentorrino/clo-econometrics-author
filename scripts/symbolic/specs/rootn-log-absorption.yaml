@@ -1,0 +1,112 @@
+claim_id: rootn-log-absorption
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (thm:rootn Step 4(b): 'delta_n^2 = o(n^{-1/2}) by A5(iii): writing hat-delta_n = n^{-alpha}, kappa = 2 mu/(2 mu + 1) and kappa alpha = 1/4 + epsilon with epsilon > 0 by the strict inequality eq:frontier, delta_n^2 = n^{-1/2 - 2 epsilon} (ln n)^{2 kappa} = o(n^{-1/2})'); the same computation with the BOUNDARY half at results.tex (rem:rootnlog(3)(a): 'And the strictness is not decoration: at kappa alpha = 1/4 exactly, delta_n = n^{-1/4}(ln n)^kappa is NOT o(n^{-1/4}), so the boundary of eq:frontier fails, which is what makes A5(iii)'s ``if and only if'' literally correct at the boundary under eq:deltalog'); eq:deltalog at results.tex and assumptions.tex (A5(ii)); eq:frontier at assumptions.tex (A5(iii))"
+# WHAT THIS CHECKS, AND WHY BOTH HALVES ARE ONE IDENTITY.
+# A5(ii) is delta_n := (hat-delta_n ln n)^{2 mu/(2 mu + 1)}, so the logarithm sits
+# INSIDE the kappa-power and delta_n^2 carries (ln n)^{2 kappa} -- not (ln n)^2, and
+# not no logarithm at all.  With hat-delta_n = n^{-alpha} and kappa alpha = 1/4 + eps,
+#
+#     sqrt(n) * delta_n^2  =  n^{1/2} * n^{-2 kappa alpha} (ln n)^{2 kappa}
+#                          =  n^{-2 eps} (ln n)^{2 kappa} .
+#
+# That single identity carries BOTH statements the review asked for, because the
+# n^{-1/4} statement is its square root:
+#
+#     n^{1/4} delta_n  =  n^{-eps} (ln n)^{kappa} ,
+#
+# and a nonnegative quantity is o(1) if and only if its square is.  So the two
+# claims cannot come apart, and one file is the honest number of files.
+#
+# THE eps DECLARATION IS THE ENCODING OF THE BOUNDARY, AND IT IS DELIBERATE.
+# `eps` is declared REAL, not positive.  eq:frontier is kappa alpha > 1/4, i.e.
+# eps > 0; declaring eps positive would put the boundary OUTSIDE the identity's
+# domain and the file would certify only the half that never failed.  With eps real
+# the identity holds at eps = 0 as well, and its eps = 0 instance IS the failure:
+#
+#     eps > 0 :  sqrt(n) delta_n^2 = n^{-2 eps} (ln n)^{2 kappa}     -> 0
+#     eps = 0 :  sqrt(n) delta_n^2 = (ln n)^{2 kappa}                -> +oo
+#
+# At the boundary EVERY POWER OF n CANCELS EXACTLY -- the right-hand side loses its
+# only n-dependent factor -- and what is left is a strictly divergent power of the
+# logarithm.  So at kappa alpha = 1/4 the quantity does not merely fail to be o(1);
+# it diverges, and it diverges by exactly (ln n)^{2 kappa}.  This is why A5(iii)'s
+# "if and only if" is literally correct AT the boundary and not merely on the open
+# side of it, and it is the place two earlier rounds were reversed.
+#
+# HOW LARGE THE DEFICIT IS, AND WHERE THAT NUMBER IS ALREADY MECHANISED.
+# 2 kappa = 4 mu/(2 mu + 1) > 1 exactly when mu > 1/2, and eq:muhalf forces
+# mu > 5/6, so the divergent factor (ln n)^{2 kappa} carries an exponent strictly
+# above 1 at every configuration the block admits.  That count is
+# phirate-muthreshold-strict's, computed there as the log deficit 2 kappa - 1 and
+# evaluated at 1/4 when mu = 5/6.  The two files are the same arithmetic seen from
+# the two ends of the block: there it decides that rem:h6bandwidth's thresholds are
+# strict, here it decides that eq:frontier's is.
+#
+# WHY THE PRODUCT FORM (n^{-alpha} * Ln)^{2 kappa} IS KEPT AND NOT PRE-SPLIT.
+# Writing `start` as n^{1/2} * n^{-2 kappa alpha} * Ln^{2 kappa} would be the same
+# number and would test nothing about A5(ii).  The whole content of the dispatch-10
+# amendment is that ln n is INSIDE the power, so squaring delta_n squares the log
+# exponent too.  The product form is what tests that; the split form assumes it.
+# `Ln` is a positive symbol standing for ln n rather than log(n), so that SymPy's
+# power_base expansion can pull the product apart -- log(n) for a merely positive n
+# is not known nonnegative and the split would not fire.  The substantive cost of
+# that device is stated as declared gap (a) below.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.
+# (a) `Ln` is a free positive symbol, so the file does NOT verify that Ln -> +oo,
+#     which is what makes (ln n)^{2 kappa} divergent rather than merely nonzero.
+#     Ln -> +oo is elementary and is not in doubt; but a reader must not quote this
+#     spec as certifying the divergence.  What it certifies is that at eps = 0 the
+#     n-dependence cancels EXACTLY and the surviving factor is Ln^{2 kappa} with
+#     2 kappa > 0.
+# (b) It does not verify that n^{-2 eps} beats Ln^{2 kappa} when eps > 0.  That is a
+#     limit statement, not an identity, and it is the same gap
+#     phirate-muthreshold-strict declares as its item (b).  It is where the
+#     STRICTNESS of eq:frontier pays for itself, and this harness cannot decide it.
+# (c) It does not check that hat-delta_n = n^{-alpha} with alpha = r/(2r + d_Z);
+#     that is A5(i) with A4(iii), read off assumptions.tex, and it is a definition
+#     here.
+# (d) It does not check kappa = 2 mu/(2 mu + 1) or 2 kappa > 1; kappa is a free
+#     positive symbol.  The mu-dependence of the deficit is
+#     phirate-muthreshold-strict's file, not this one.
+#
+# FALSIFICATION (hand-computed).
+#   * claimed_end "n**(-2*eps)*Ln**kappa" -- one log instead of two, i.e. forgetting
+#     that squaring delta_n squares the log exponent -- leaves residual
+#     n^{-2 eps} (Ln^{2 kappa} - Ln^{kappa}), nonzero for Ln != 1 and kappa != 0;
+#     MISMATCH.  This is the error the A5(ii) amendment exists to prevent and it is
+#     the one this form is built to catch.
+#   * claimed_end "n**(-eps)*Ln**(2*kappa)" -- margin not doubled -- leaves residual
+#     Ln^{2 kappa} (n^{-2 eps} - n^{-eps}), nonzero for eps != 0; MISMATCH.  Note it
+#     is ZERO at eps = 0: the two readings agree exactly at the boundary and differ
+#     everywhere else, which is the correct behaviour for a perturbation of a margin.
+#   * claimed_end "n**(-2*eps)" -- the logarithm dropped entirely, i.e. the
+#     pre-dispatch-10 log-free reading of A5(ii) -- leaves residual
+#     n^{-2 eps}(Ln^{2 kappa} - 1), nonzero; MISMATCH.
+#   * operation "substitute(alpha=(1/2 + eps)/kappa)" -- mis-reading eq:frontier's
+#     threshold as kappa alpha > 1/2 -- gives n^{-1/2 - 2 eps} Ln^{2 kappa}, leaving
+#     residual Ln^{2 kappa} n^{-2 eps} (n^{-1/2} - 1), nonzero for n != 1; MISMATCH.
+#   * operation "substitute(alpha=(1/4 + eps)/(2*kappa))" -- halving the exponent
+#     that converts hat-delta_n into delta_n -- makes 2 kappa alpha = 1/4 + eps, so
+#     start becomes n^{1/2} n^{-(1/4 + eps)} Ln^{2 kappa} = n^{1/4 - eps} Ln^{2 kappa},
+#     leaving residual Ln^{2 kappa} (n^{1/4 - eps} - n^{-2 eps}), nonzero; MISMATCH.
+#
+# PREDICTED: MATCH.  The reduction needs sp.expand's power_base pass to split
+# (n^{-alpha} Ln)^{2 kappa}, which fires because both factors are declared positive;
+# the remaining steps are automatic combination of like powers of n.  If SymPy
+# returns an unevaluated Pow the report will read MISMATCH with a residual that
+# still contains the unsplit bracket -- that is a HARNESS outcome, not a refutation,
+# and it is diagnosable at sight from the printed residual.
+variables:
+  n:
+    domain: positive
+  Ln:
+    domain: positive
+  kappa:
+    domain: positive
+  alpha:
+    domain: positive
+  eps:
+    domain: real
+start: "sqrt(n)*(n**(-alpha)*Ln)**(2*kappa)"
+operation: "substitute(alpha=(1/4 + eps)/kappa)"
+claimed_end: "n**(-2*eps)*Ln**(2*kappa)"

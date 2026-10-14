@@ -1,0 +1,51 @@
+\begin{tabular}{rrlrrrrrc}
+\toprule
+ & & A5(i) & & \multicolumn{2}{c}{$\sqrt n\,\delta_n^2$} & & & Budget \\
+\cmidrule(lr){5-6}
+$n$ & $\ln n$ & branch & $\delta_n$ & A5(i) as written & $r_n$ only & $\sqrt n r_n\delta_n$ & $\delta_n/n^{-1/4}$ & $<1$? \\
+\midrule
+\multicolumn{9}{l}{\textit{$c_\delta=1.00$}} \\
+\midrule
+125 & 4.83 & parametric & 0.9535 & 10.164 & 4.903 & 1.403 & 3.19 & no \\
+354 & 5.87 & parametric & 0.7752 & 11.308 & 5.314 & 1.240 & 3.36 & no \\
+1,000 & 6.91 & parametric & 0.6038 & 11.530 & 5.434 & 1.049 & 3.40 & no \\
+2,828 & 7.95 & parametric & 0.4557 & 11.045 & 5.331 & 0.861 & 3.32 & no \\
+8,000 & 8.99 & parametric & 0.3359 & 10.094 & 5.068 & 0.689 & 3.18 & no \\
+22,627 & 10.03 & parametric & 0.2431 & 8.892 & 4.702 & 0.542 & 2.98 & no \\
+64,000 & 11.07 & parametric & 0.1734 & 7.606 & 4.277 & 0.420 & 2.76 & no \\
+181,019 & 12.11 & parametric & 0.1222 & 6.350 & 3.828 & 0.322 & 2.52 & no \\
+\addlinespace
+\multicolumn{9}{l}{\textit{$c_\delta=0.35$}} \\
+\midrule
+125 & 4.83 & parametric & 0.3337 & 1.245 & 0.601 & 0.491 & 1.12 & no \\
+354 & 5.87 & parametric & 0.2713 & 1.385 & 0.651 & 0.434 & 1.18 & no \\
+1,000 & 6.91 & parametric & 0.2113 & 1.412 & 0.666 & 0.367 & 1.19 & no \\
+2,828 & 7.95 & parametric & 0.1595 & 1.353 & 0.653 & 0.301 & 1.16 & no \\
+8,000 & 8.99 & parametric & 0.1176 & 1.237 & 0.621 & 0.241 & 1.11 & no \\
+22,627 & 10.03 & parametric & 0.0851 & 1.089 & 0.576 & 0.190 & 1.04 & no \\
+64,000 & 11.07 & parametric & 0.0607 & 0.932 & 0.524 & 0.147 & 0.97 & \textbf{yes} \\
+181,019 & 12.11 & parametric & 0.0428 & 0.778 & 0.469 & 0.113 & 0.88 & \textbf{yes} \\
+\addlinespace
+\multicolumn{9}{l}{\textit{$c_\delta=0.25$}} \\
+\midrule
+125 & 4.83 & parametric & 0.2384 & 0.635 & 0.306 & 0.351 & 0.80 & \textbf{yes} \\
+354 & 5.87 & parametric & 0.1938 & 0.707 & 0.332 & 0.310 & 0.84 & \textbf{yes} \\
+1,000 & 6.91 & parametric & 0.1510 & 0.721 & 0.340 & 0.262 & 0.85 & \textbf{yes} \\
+2,828 & 7.95 & parametric & 0.1139 & 0.690 & 0.333 & 0.215 & 0.83 & \textbf{yes} \\
+8,000 & 8.99 & parametric & 0.0840 & 0.631 & 0.317 & 0.172 & 0.79 & \textbf{yes} \\
+22,627 & 10.03 & parametric & 0.0608 & 0.556 & 0.294 & 0.136 & 0.75 & \textbf{yes} \\
+64,000 & 11.07 & parametric & 0.0433 & 0.475 & 0.267 & 0.105 & 0.69 & \textbf{yes} \\
+181,019 & 12.11 & parametric & 0.0305 & 0.397 & 0.239 & 0.080 & 0.63 & \textbf{yes} \\
+\addlinespace
+\multicolumn{9}{l}{\textit{Shipped design at $c_\delta=1$, for reference}} \\
+\midrule
+125 & 4.83 & propensity & 1.0238 & 11.720 & 11.720 & 2.442 & 3.42 & no \\
+354 & 5.87 & propensity & 0.9169 & 15.818 & 15.818 & 2.637 & 3.98 & no \\
+1,000 & 6.91 & propensity & 0.8007 & 20.274 & 20.274 & 2.776 & 4.50 & no \\
+2,828 & 7.95 & propensity & 0.6864 & 25.057 & 25.057 & 2.870 & 5.01 & no \\
+8,000 & 8.99 & propensity & 0.5804 & 30.127 & 30.127 & 2.926 & 5.49 & no \\
+22,627 & 10.03 & propensity & 0.4855 & 35.450 & 35.450 & 2.951 & 5.95 & no \\
+64,000 & 11.07 & propensity & 0.4026 & 40.997 & 40.997 & 2.951 & 6.40 & no \\
+181,019 & 12.11 & propensity & 0.3315 & 46.744 & 46.744 & 2.930 & 6.84 & no \\
+\bottomrule
+\end{tabular}

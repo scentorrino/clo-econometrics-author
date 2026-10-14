@@ -1,0 +1,31 @@
+claim_id: jacobian-dims-numeric
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A3, ass:rank); notation_glossary.md Sec.6 (J is p x p)"
+# DIMENSION CHECK, and it FOUND A TYPING ERROR -- see finding F-15.
+#
+# A3 declares J = E[dZ dZ'] + E[Wtilde ell_star dZ'] to be p x p.  The first
+# term is (p x 1)(1 x p) = p x p.  The second is well typed ONLY IF ell_star is
+# p x 1: a SCALAR ell would make Wtilde ell dZ' a 1 x p row, and the sum
+# ill-formed.  The same count applies to the moment function itself:
+#     psi = dZ * dU + Wtilde * L(dU, dZ)
+# is p x 1 plus L, so L must be p x 1 as well.
+# notation_glossary.md typed L and ell as R x R^p -> R, i.e. SCALAR, while
+# typing psi as R^p-valued.  Those cannot both hold.  The resolution is that L
+# and ell are R^p-VALUED -- one debiasing coordinate per coordinate of theta --
+# which is already implicit in A2's own wording, "EACH COORDINATE of nu/pi lies
+# in R(A*_cond)".  The glossary is corrected accordingly.
+#
+# NUMERIC SHAPES (p = 3) are used because verify.py crashes on symbolic matrix
+# shapes with exit 1, which is indistinguishable from a genuine MISMATCH; with
+# concrete shapes the identity is decidable.  dim_check.py handles the symbolic
+# version if it is ever wanted.  Treat any matrix-valued result from this
+# harness as advisory, per the harness's own documented limitations.
+variables:
+  dZ:
+    domain: matrix
+    dims: [3, 1]
+  ell:
+    domain: matrix
+    dims: [3, 1]
+start: "dZ*dZ.T + ell*dZ.T"
+operation: expand
+claimed_end: "(dZ + ell)*dZ.T"

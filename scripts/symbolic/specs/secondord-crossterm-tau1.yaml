@@ -1,0 +1,60 @@
+claim_id: secondord-crossterm-tau1
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:secondord Step 4, clause (iii)); requested by the theorist-critic after M-4; stated conclusion corrected in round 7 (MAJ-E)"
+# CLAIM (the M-4 repair, made mechanical).  The (L, varrho) cross-partial of the
+# integrand is
+#     d^2 Psi / (dt2 dt3) = -r * D( dU - t1*Dh ),
+# which at t1 = 0 is -r*D(dU) -- whose EXPECTATION vanishes under N1' -- but at
+# t1 != 0 is evaluated at the SHIFTED residual, where the conditional-mean
+# restriction says nothing.
+#
+# WHAT THIS SPEC CERTIFIES, EXACTLY.  With the SMOOTH direction
+# D(u) = d0*u + d1*u^2/2, the cross-partial at general t1 differs from its value
+# at t1 = 0 by
+#     -r*D(dU - t1*Dh) + r*D(dU) = r*t1*Dh*( d0 + d1*dU - d1*t1*Dh/2 ),
+# which is NOT identically zero.  That is the whole of what is checked here:
+# "identically in tau" -- correct for lem:secondord(ii) -- is FALSE for (iii),
+# and a Taylor remainder taken along the path at Step 6/7 would inherit the false
+# version.
+#
+# WHAT THIS SPEC DOES *NOT* CERTIFY, AND A ROUND-6 VERSION OF THIS COMMENT
+# CLAIMED IT DID.  The round-6 text closed: "The residual is O(t1), i.e. a
+# product term, which is exactly how the corrected clause states it."  BOTH
+# HALVES ARE WRONG.
+#   (1) THE CORRECTED CLAUSE STATES THE OPPOSITE.  lem:secondord(iii) and
+#       eq:crossshift bound the cross-partial by the norm of the SHIFTED
+#       direction, ||D||_{0,h}, and say in terms that this is NOT controlled by
+#       ||D||_{L^2(P)}.  A "product term" would be a bound
+#       C*||r||_inf*||D||_{L^2(P)}, and the printed counterexample -- D an
+#       indicator vanishing on the support of dU -- shows that no such bound
+#       exists: it would read M/2 <= C*0.
+#   (2) THE MODEL CANNOT REACH THE NEGATIVE CONTENT.  D here is a quadratic
+#       POLYNOMIAL, i.e. exactly the smooth case the printed counterexample
+#       deliberately avoids.  A smooth D with a bounded second derivative HAS an
+#       O(t1) expansion; the claim under test is that a general admissible D need
+#       not.  A spec on a smooth model can certify the positive algebra and
+#       nothing about the negative statement.
+# The model is RETAINED rather than replaced, because the algebra above is a
+# genuine mechanical check of a genuine (positive) claim and no smooth model can
+# be made to carry the negative one.  The negative content is checked separately
+# by secondord-shift-nonintegrable.
+#
+# THE GENERAL LESSON, WHICH IS THE THEORIST'S OWN (memo Sec.D-0000, MAJ-2): a
+# passing spec aimed at the wrong claim is worse than no spec, because it
+# converts an unchecked claim into an apparently checked one.  This comment is
+# the claim; the YAML below is only the arithmetic.
+variables:
+  dU:
+    domain: real
+  Dh:
+    domain: real
+  r:
+    domain: real
+  t1:
+    domain: real
+  d0:
+    domain: real
+  d1:
+    domain: real
+start: "-r*(d0*(dU - t1*Dh) + d1*(dU - t1*Dh)**2/2) + r*(d0*dU + d1*dU**2/2)"
+operation: expand
+claimed_end: "r*t1*Dh*(d0 + d1*dU - d1*t1*Dh/2)"

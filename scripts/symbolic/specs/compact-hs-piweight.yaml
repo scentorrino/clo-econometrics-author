@@ -1,0 +1,39 @@
+claim_id: compact-hs-piweight
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:compact Step 3: 'the Hilbert-Schmidt norm of an integral operator out of L^2(pi) is int int |k|^2 pi dx dPi')"
+# THE NON-OBVIOUS POINT.  For an operator OUT OF L^2(pi) the HS norm carries the
+# pi weight: the kernel is squared against BOTH reference measures, not against
+# Lebesgue on the domain side.  Verified on the finite-dimensional model of the
+# same statement, where it is decidable.
+#
+# Model.  Domain L^2(q) on {x_1,x_2} with weights q_1,q_2 > 0 and inner product
+# <f,g> = sum_i f_i g_i q_i; range L^2(P) on {1,2} with weights P_1,P_2 > 0.
+# The integral operator with kernel k is (T h)_a = sum_i k_{a i} h_i q_i, i.e.
+# T = K*Dq in coordinates -- exactly the form of eq:kernel, in which the kernel
+# is integrated against h*pi*dx.
+#
+# Orthonormal bases: Dq^{-1/2} e_i for L^2(q), DP^{-1/2} e_a for L^2(P).  The
+# matrix of T in those bases is DP^{1/2} (K Dq) Dq^{-1/2}, and its squared
+# Frobenius norm -- the basis-free HS norm -- is built below as trace(M' M).
+# CLAIM: it equals sum_{a,i} P_a q_i k_{a i}^2, the discrete form of
+# int int |k|^2 pi dx dPi.  Had the pi weight been dropped on the domain side,
+# the q_i factors would be absent.
+variables:
+  P1:
+    domain: positive
+  P2:
+    domain: positive
+  q1:
+    domain: positive
+  q2:
+    domain: positive
+  k11:
+    domain: real
+  k12:
+    domain: real
+  k21:
+    domain: real
+  k22:
+    domain: real
+start: "((Matrix([[sqrt(P1),0],[0,sqrt(P2)]])*(Matrix([[k11,k12],[k21,k22]])*Matrix([[q1,0],[0,q2]]))*Matrix([[1/sqrt(q1),0],[0,1/sqrt(q2)]])).T*(Matrix([[sqrt(P1),0],[0,sqrt(P2)]])*(Matrix([[k11,k12],[k21,k22]])*Matrix([[q1,0],[0,q2]]))*Matrix([[1/sqrt(q1),0],[0,1/sqrt(q2)]]))).trace()"
+operation: none
+claimed_end: "P1*q1*k11**2 + P1*q2*k12**2 + P2*q1*k21**2 + P2*q2*k22**2"

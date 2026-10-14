@@ -1,0 +1,114 @@
+claim_id: rootn-frontier-implies-rndelta
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (rem:rootnlog(3)(b): 'r_n delta_n = o(n^{-1/2}): free, and implied by eq:frontier rather than assumed ... alpha(1+kappa) - 1/2 > (1+kappa)/(4 kappa) - 1/2 = (1-kappa)/(4 kappa) > 0', with the labelled display eq:rndeltamargin at results.tex reading (1-kappa)/(4 kappa) = (2 mu + 1)^{-1} / (8 mu/(2 mu + 1)) = 1/(8 mu)); the same computation at proofs.tex (thm:rootn Step 4(c), which prints '= 1/(8 mu) > 0' inline and then 'at alpha = 1/(4 kappa), the boundary of eq:frontier, the middle inequality holds with equality, so 1/(8 mu) is the infimum'); eq:frontier at assumptions.tex (A5(iii)); kappa = 2 mu/(2 mu + 1) at results.tex and proofs.tex"
+# WHY THIS SPEC EXISTS, AND WHY IT IS THE HIGHEST-VALUE ONE IN THE PART-I SET.
+# A round-10 draft of rem:rootnlog(3)(b) wrote the margin as 1/(4 mu) and carried
+# two illustrative numbers -- 3/10 and 1/8 -- wrong by the same factor of two.
+# The implication survived and no conclusion moved, but the arithmetic IS the whole
+# content of the clause, which is why dispatch 11 gave the constant its own display
+# (eq:rndeltamargin) rather than leaving it in a sentence.  This spec is that
+# display's arithmetic.  It is the one place in Part I where a wrong constant was
+# actually printed, so it is the one place a mechanical check has already earned
+# its keep once.
+#
+# WHAT THE IDENTITY IS, AND WHY IT IS EVALUATED AT THE BOUNDARY.
+# eq:frontier is kappa*alpha > 1/4 with kappa = 2 mu/(2 mu + 1) in (0,1) and
+# alpha = r/(2r + d_Z).  With hat-delta_n = r_n = n^{-alpha} and
+# delta_n = (hat-delta_n ln n)^kappa, the product r_n delta_n is
+# n^{-alpha(1+kappa)} (ln n)^kappa, so what decides r_n delta_n = o(n^{-1/2}) is the
+# sign of the MARGIN
+#
+#     M(alpha, kappa)  :=  alpha (1 + kappa) - 1/2 .
+#
+# M is strictly increasing in alpha (dM/d alpha = 1 + kappa > 0), so on the open
+# frontier alpha > 1/(4 kappa) it is bounded below by its value AT the boundary,
+# and that value is what the spec computes:
+#
+#     M(1/(4 kappa), kappa)  =  (1 + kappa)/(4 kappa) - 1/2
+#                            =  (1 + kappa - 2 kappa)/(4 kappa)
+#                            =  (1 - kappa)/(4 kappa) ,
+#
+# and at kappa = 2 mu/(2 mu + 1), where 1 - kappa = 1/(2 mu + 1) and
+# 4 kappa = 8 mu/(2 mu + 1),
+#
+#     (1 - kappa)/(4 kappa)  =  [1/(2 mu + 1)] * [(2 mu + 1)/(8 mu)]  =  1/(8 mu) .
+#
+# THE SPEC EVALUATES AT alpha = 1/(4 kappa) DELIBERATELY, AND THAT IS THE
+# FALSIFICATION ARM THE REVIEW ASKED FOR.  Substituting the BOUNDARY value of alpha
+# turns the paper's chain of two strict inequalities into a chain of two EQUALITIES,
+# which is exactly the claim rem:rootnlog(3)(b) and Step 4(c) both close with: the
+# middle inequality holds with equality at alpha = 1/(4 kappa), so 1/(8 mu) is the
+# INFIMUM of M over the configurations eq:frontier admits and cannot be improved
+# from eq:frontier alone.  The infimum is NOT ATTAINED, because eq:frontier is
+# strict and excludes its own boundary -- so this spec certifies a value of M at a
+# point the block does not admit, and that is the point: it is the greatest lower
+# bound, approached and not reached.  An equality here is therefore not a weakening
+# of the paper's strict inequality; it is the exact statement that the strict
+# inequality cannot be sharpened.
+#
+# WHAT THIS BUYS THE MEMO.  It removes r_n delta_n = o(n^{-1/2}) from T2's list as
+# an INDEPENDENT condition.  The block imposes eq:frontier and gets this product for
+# free; nothing extra is assumed about r_n against delta_n.  That is a statement
+# about the hypothesis count, which is why it belongs to the assumption-auditor and
+# not only to the proof.
+#
+# THE TWO ILLUSTRATIVE NUMBERS, RECORDED HERE AS READINGS OF THE SAME IDENTITY.
+# 1/(8 mu) at mu = 5/6 is 6/40 = 3/20; at mu = 2 it is 1/16.  The round-10 draft's
+# 3/10 and 1/8 are each exactly twice these.  Both readings are obtained from this
+# spec by appending a third substitution (mu = 5/6 or mu = 2) and setting
+# claimed_end to 3/20 or 1/16; both should MATCH, and 3/10 or 1/8 should MISMATCH
+# with residual -3/20 and -1/16 respectively.  They are recorded as readings rather
+# than given files of their own because they are the same identity at two points.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.
+# (a) It does not verify the STRICT inequality M > (1-kappa)/(4 kappa) on the open
+#     frontier.  SymPy cannot decide an inequality over a semialgebraic set from
+#     this harness's grammar.  The step is one line by hand -- M is affine in alpha
+#     with slope 1 + kappa > 0, so alpha > 1/(4 kappa) gives strict inequality --
+#     and it is available as a separate one-line spec (start "alpha*(1+kappa) - 1/2",
+#     operation "diff(alpha)", claimed_end "1 + kappa") if a later dispatch wants
+#     the monotonicity mechanised too.  It is not written, because the monotonicity
+#     is not where the error was.
+# (b) It does not verify that a strictly positive POLYNOMIAL margin absorbs the
+#     factor (ln n)^kappa.  That is a limit statement, not an identity, and it is
+#     the same declared gap phirate-muthreshold-strict records as its item (b).
+#     The two files together are the paper's "a strictly positive polynomial margin
+#     that absorbs (ln n)^kappa": this one supplies the margin and its exact value,
+#     that one supplies the log arithmetic; neither supplies the absorption.
+# (c) It does not check kappa < 1.  That is 2 mu/(2 mu + 1) < 1 for mu > 0, which
+#     is immediate and which the paper states as "kappa < 1 holds at every mu, so
+#     the implication is unconditional within the block".
+# (d) It says nothing about whether eq:frontier is SATISFIABLE at a given
+#     (mu, d_Z); that is the frontier table and frontier-boundary,
+#     frontier-equivalence, frontier-table-limit-identity.
+#
+# FALSIFICATION (hand-computed).
+#   * claimed_end "1/(4*mu)" leaves residual 1/(8*mu) - 1/(4*mu) = -1/(8*mu),
+#     nonzero for mu > 0; MISMATCH.  THIS IS THE ROUND-10 ERROR, AND IT IS THE
+#     REASON THE FILE EXISTS: the spec is not merely consistent with the corrected
+#     constant, it REFUTES the printed one.
+#   * claimed_end "3/20" leaves residual 1/(8*mu) - 3/20, nonzero for mu != 5/6;
+#     MISMATCH.  So the spec distinguishes the general constant from its value at
+#     the threshold of eq:muhalf and cannot be satisfied by quoting one instance.
+#   * operation "substitute(alpha=1/(2*kappa), kappa=2*mu/(2*mu+1))" -- i.e.
+#     mis-reading eq:frontier's threshold as kappa*alpha > 1/2 instead of > 1/4 --
+#     gives (1+kappa)/(2 kappa) - 1/2 = (2 mu + 1)/(4 mu), leaving residual
+#     (2 mu + 1)/(4 mu) - 1/(8 mu) = (4 mu + 1)/(8 mu), nonzero; MISMATCH.
+#   * operation "substitute(alpha=1/(4*kappa), kappa=mu/(2*mu+1))" -- halving kappa,
+#     which is the other way a factor of two could enter.  Then
+#     1 + kappa = (3 mu + 1)/(2 mu + 1) and 4 kappa = 4 mu/(2 mu + 1), so the
+#     quotient is (3 mu + 1)/(4 mu) and the margin is
+#     (3 mu + 1 - 2 mu)/(4 mu) = (mu + 1)/(4 mu); residual
+#     (mu + 1)/(4 mu) - 1/(8 mu) = (2 mu + 1)/(8 mu), nonzero; MISMATCH.
+#
+# PREDICTED: MATCH.  Sequential rational substitution followed by cancellation;
+# sp.simplify, sp.together or sp.cancel each suffice.
+variables:
+  mu:
+    domain: positive
+  kappa:
+    domain: positive
+  alpha:
+    domain: positive
+start: "alpha*(1 + kappa) - 1/2"
+operation: "substitute(alpha=1/(4*kappa), kappa=2*mu/(2*mu+1))"
+claimed_end: "1/(8*mu)"

@@ -1,0 +1,60 @@
+claim_id: rstar-heinz-gap
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (rem:pasrc(1): 'what (L5) needs is A^{-2mu} <= c^2 B^{-2mu}, and A^{-1} <= m^{-2} B^{-1} gives A^{-p} <= m^{-2p} B^{-p} ONLY FOR 0 <= p <= 1 ... Here p = 2mu, and eq:muhalf forces 2mu > 5/3: no configuration this block admits escapes'); eq:muhalf at results.tex; the same computation at results.tex, results.tex and proofs.tex"
+# WHAT THE SEPARATION IS, AND WHY IT IS NOT ITSELF AN IDENTITY.  This round split
+# one symbol into two.  R is an H^s BALL RADIUS -- def:srcball, A5(vi'), (P-a.1),
+# (P-c), (P-g), eq:entropy -- carrying units of Sobolev norm and entering
+# APPROXIMATION statements.  R_* is a SPECTRAL PRE-IMAGE NORM in L^2(pi) --
+# (P-a.3)'s bound on varsigma^{(k)} -- entering only through (F-f) and fixing
+# c_17 = 2 c_mu R_*^{1/(2mu+1)}, hence c_15, which def:lfstep must print BEFORE
+# the data are seen (results.tex).  Through round 11 ONE symbol sat on
+# both sides of that inequality.
+#
+# The separation is therefore a TYPING decision, and "R and R_* are not comparable
+# in either direction" is a NON-EXISTENCE claim, not an algebraic identity.  What
+# IS an identity -- and what this spec verifies -- is the arithmetic that LICENSES
+# the split: the unique device that would bound R_* by R is unavailable, by a
+# margin, at every parameter value the block admits.
+#
+# THE ALGEBRA.  The bridge from an H^s source condition plus a link condition to
+# (F-f)'s spectral condition is Hilbert-scale operator interpolation.  With A the
+# compression eq:compress and B the compressed scale operator, the link condition
+# gives m^2 B <= A <= M^2 B; what (L5) needs is A^{-2mu} <= c^2 B^{-2mu}; and
+# operator monotonicity of z -> z^p delivers A^{-p} <= m^{-2p} B^{-p} only on the
+# HEINZ RANGE 0 <= p <= 1.  Here p = 2mu.  eq:muhalf is mu > 5/6, so
+#
+#     2mu - 1  =  2(mu - 5/6) + 2/3  >  2/3  >  0
+#
+# at every admissible mu: the interpolation exponent overshoots the Heinz range by
+# at least 2/3, uniformly.  The excess is bounded away from zero, so the failure is
+# not a boundary case that a sharper argument might recover, and
+# lem:srctransfer(ii.a) is a proof IN THIS FILE that the device fails at every
+# p > 1.  Hence R_* cannot be obtained from R, hence two symbols.
+#
+# WHAT MAKES THIS THE RIGHT MECHANISATION.  The margin is the point.  If the
+# threshold in eq:muhalf were mu > 1/2 the excess would be 2(mu - 1/2) + 0, i.e.
+# it would vanish at the boundary and the split would be a boundary artefact.  It
+# is not: (P-f) forces mu > 5/6, which is strictly inside the region where
+# interpolation has already failed.  results.tex states exactly this ("no
+# configuration this block admits escapes") and this spec is that sentence's
+# arithmetic.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAP.  (a) It does not prove R and R_* are
+# INCOMPARABLE; it shows the one available bridge is unavailable.  A different
+# bridge could exist and none is known -- results.tex prices the only
+# candidate (a commutativity proviso) and declines it.  (b) It does not check
+# operator monotonicity of z -> z^p on [0,1], which is Loewner/Heinz and is cited,
+# not proved here.  (c) It does not check lem:srctransfer(ii.a)'s 2x2
+# counterexample, which is a construction and not an identity.
+#
+# FALSIFICATION (hand-computed).  claimed_end "2*(mu - 5/6) + 1/3" leaves residual
+# 1/3; MISMATCH.  claimed_end "2*(mu - 1/2) + 2/3" leaves residual 2/3; MISMATCH --
+# and that perturbation is exactly the substantive error the spec excludes, namely
+# reading the threshold off mu > 1/2 (contraction) instead of mu > 5/6 ((P-f)).
+#
+# PREDICTED: MATCH.  Both sides reduce to 2*mu - 1 under Add/Mul flattening.
+variables:
+  mu:
+    domain: positive
+start: "2*mu - 1"
+operation: none
+claimed_end: "2*(mu - 5/6) + 2/3"

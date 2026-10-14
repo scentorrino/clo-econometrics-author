@@ -10,5 +10,30 @@ $postscript_mode = $dvi_mode = 0;
 ensure_path('TEXINPUTS', './preambles//');
 ensure_path('BIBINPUTS', '..//');
 
+# Prefer TinyTeX when it is installed.
+#
+# WHY THIS EXISTS. A second TeX distribution earlier on PATH silently wins, and
+# the failure is confusing rather than obvious: the build stops on a missing
+# .sty that IS installed — just not in the distribution that got invoked. This
+# machine had exactly that (MacPorts TeX Live at /opt/local/bin shadowing
+# TinyTeX, each holding packages the other lacked).
+#
+# Portable and self-disabling: the loop tries the standard TinyTeX roots and the
+# TINYTEX_ROOT override, takes the first bin directory that exists, and does
+# nothing at all when none do — so a machine with a single complete TeX Live is
+# unaffected, and Overleaf (which ignores this) is unaffected.
+foreach my $root ($ENV{'TINYTEX_ROOT'},
+                  "$ENV{'HOME'}/Library/TinyTeX",   # macOS
+                  "$ENV{'HOME'}/.TinyTeX",          # Linux
+                  "$ENV{'APPDATA'}/TinyTeX") {      # Windows
+    next unless defined $root && -d $root;
+    foreach my $bin (glob("$root/bin/*")) {
+        next unless -d $bin && -x "$bin/xelatex";
+        $ENV{'PATH'} = "$bin:$ENV{'PATH'}";
+        last;
+    }
+    last;
+}
+
 # Silence — stop on errors but don't pause
 $xelatex = 'xelatex -interaction=nonstopmode %O %S';

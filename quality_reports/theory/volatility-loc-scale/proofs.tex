@@ -1,0 +1,367 @@
+% ============================================================================
+%  Standalone proof of Proposition prp:lepskii.
+%  This file is meant to be \input{} from paper/sections/theorems/prp-lepskii.tex.
+%  The statement of the proposition itself lives in results.tex; this file
+%  provides only the proof body, opened with \begin{proof} ... \end{proof}.
+%
+%  Patch markers (CR1 / CR2 / M1--M6 / MN1--MN10) mirror those in results.tex.
+% ============================================================================
+
+\begin{proof}[Proof of Proposition~\ref{prp:lepskii}]
+The argument is operator-agnostic: it uses only
+(i) the monotone bias bound $B$;
+(ii) the per-iterate variance bound of Lemma~\ref{lem:itervar};
+(iii) the propagator substitution of Lemma~\ref{lem:propagator};
+(iv) the sub-Gaussian tail of Assumption~\ref{ass:subgauss};
+(v) the uniform $L^4$-bound on iterates of Assumption~\ref{ass:iterbd};
+(vi) the link condition (Assumption~\ref{ass:linkcond}) and the smooth map
+$\Phi$ for the transfer to integrated and original coordinates.
+The proof is in five steps: \emph{Step~1} sets up the two high-probability
+events $\Omega_n$ and $\Omega'_n$; \emph{Step~2} establishes
+$\hat m \le m^*$ on the joint event; \emph{Step~3} bounds
+$\|\hat b'_{\hat m} - b'_\dagger\|$ on the joint event; \emph{Step~4}
+controls the off-event contribution; \emph{Step~5} transfers the bound to
+$\hat b_{\hat m}$ and $\hat a_{\hat m}$.
+
+Throughout, $C, c_0, c_1, \ldots$ denote finite positive constants that may
+differ between occurrences but never depend on $n$, $m$, or $\tau$. Set
+\[
+m^{*} \;:=\; \arg\min_{1 \le m \le M_n}\!\bigl[\,B(m) + \tilde V(m)\,\bigr];
+\]
+existence and well-definedness of $m^*$ are guaranteed because $B$ is
+non-increasing and $\tilde V$ is non-decreasing by construction of the
+running maximum. % PATCH-M4
+Under Assumption~\ref{ass:mn-growth}, $m^* \le M_n$ for all $n$ large
+enough. % PATCH-MN9
+
+\smallskip
+\emph{Step~1: High-probability events.}
+
+Define the operator-norm event % PATCH-M2
+\begin{equation}\label{eq:Omegaprime-pf}
+\Omega'_n \;:=\; \Bigl\{\|\hat{\mathsf T}'_{b_\dagger}\|^2
+\;\le\; 2\,\|\mathsf T'_{b_\dagger}\|^2\Bigr\},
+\qquad P(\Omega'_n) \;\ge\; 1 - O(\gamma_n^2),
+\end{equation}
+by Markov applied to
+$E\|\hat{\mathsf A}^{*}_{b_\dagger} - \mathsf A^{*}_{b_\dagger}\|^2 = O(\gamma_n^2)$
+(Assumption~\ref{ass:rateconv} with $l = 1$). Higher moments
+$E\|\hat{\mathsf T}(b_\dagger) - \mathsf T(b_\dagger)\|^{2l} = O(\delta_n^{2l})$
+for $l \le l_0$ (Assumption~\ref{ass:rateconv} with $l \ge 4$) % PATCH-M6
+license the $E\|\hat e_j\|^8 \cdot E\|\mathsf T'_{b_\dagger}\hat e_j\|^8$
+products that appear in the induction underlying Lemma~\ref{lem:itervar}.
+
+% PATCH-R2-G3: explicit display of the L^8 induction step.
+\emph{Displayed induction step (consumption of the $L^8$ moments).}
+Inside the four-term decomposition
+$\hat e_m = I_m + II_m + III_m + IV_m$ from the proof of
+Lemma~\ref{lem:itervar}, the Fr\'echet-remainder Term~$III_m$ is
+bounded on $\Omega_n \cap \Omega'_n$ by Cauchy--Schwarz and the
+spectral-filter contraction
+$|\lambda^{1/2}g_{m-j}(\lambda)| \le (m-j)^{-1/2}$ as
+% PATCH-R3-G3: hypercontractive moment-equivalence step (replaces backwards Jensen).
+\begin{equation}\label{eq:Lqdisp-pf}
+E\|III_m\|^2 \;\le\; c\,\hat M^{2}\sum_{j=0}^{m-1}(m-j)^{-1}
+\bigl(E\|\hat e_j\|^{4}\bigr)^{1/2}
+\bigl(E\|\mathsf T'_{b_\dagger}\hat e_j\|^{4}\bigr)^{1/2}.
+\end{equation}
+By Assumption~\ref{ass:rateconv}\textup{(iv)} at $q = 2$,
+$(E\|\hat e_j\|^{4})^{1/2} \le C_2\,E\|\hat e_j\|^{2}$ and the same
+inequality for $\mathsf T'_{b_\dagger}\hat e_j$; substituting the
+induction hypothesis $E\|\hat e_j\|^2 = O(V(j)^2)$ yields
+\begin{equation}\label{eq:IIImbound-pf}
+E\|III_m\|^2 \;\le\; C\sum_{j=0}^{m-1}(m-j)^{-1}V(j)^{4}
+\;\le\; C\,V(m)^{4}\log m
+\;=\; o(V(m)^{2}),
+\end{equation}
+where the last $o$ uses Assumption~\ref{ass:restrvarth}\textup{(i)}
+($V(m)^2 = o(1)$). The hypercontractive clause
+\textup{(iv)} of Assumption~\ref{ass:rateconv} is what makes $C_2$
+finite and the chain
+\eqref{eq:Lqdisp-pf}--\eqref{eq:IIImbound-pf} work; this is its
+load-bearing use.
+Choose the LF step size $c < (2\,\|\mathsf T'_{b_\dagger}\|^2)^{-1}$ so that,
+on $\Omega'_n$, $c\,\|\hat{\mathsf T}'_{b_\dagger}\|^2 \le 1$ and the LF
+spectral-filter inequality applies to the empirical operator.
+
+Define the concentration event % PATCH-CR1
+\begin{equation}\label{eq:Omegan-pf}
+\Omega_n \;:=\; \Bigl\{\,\|\hat b'_m - b'_m\| \;\le\; \tau\,V(m)\quad
+\forall\, m \le M_n\Bigr\}.
+\end{equation}
+
+% PATCH-R2-G1: explicit four-term sub-Gaussian decomposition for m >= 2.
+The \citet[Theorem~6]{hansen2008} % PATCH-R3-CITE inequality supplies a sub-Gaussian tail only
+for a \emph{single} kernel sample-average; for $m \ge 2$, $\hat b'_m$ is
+built recursively through estimated operators, so the per-$m$ tail must
+factor through a decomposition. Following the proof of
+Lemma~\ref{lem:itervar},
+\begin{equation}\label{eq:fourterm-pf}
+\hat b'_m - b'_m \;=\; I_m + II_m + III_m + IV_m,
+\end{equation}
+with (using $g_m(\lambda) = c\sum_{j=0}^{m-1}(1 - c\lambda)^j$):
+\begin{align*}
+II_m  &= -c\sum_{j=0}^{m-1}\!(I - c\hat{\mathsf T}'^{*}_{b_\dagger}\hat{\mathsf T}'_{b_\dagger})^{m-1-j}\,
+        \hat{\mathsf T}'^{*}_{b_\dagger}\bigl(\hat{\mathsf T}(b_\dagger) - \mathsf T(b_\dagger)\bigr),\\
+IV_m  &= -c\sum_{j=0}^{m-1}(I - c\hat{\mathsf T}'^{*}_{b_\dagger}\hat{\mathsf T}'_{b_\dagger})^{m-1-j}
+        \bigl(\hat{\mathsf A}^{*}_{b_\dagger} - \mathsf A^{*}_{b_\dagger}\bigr)\bigl(\hat{\mathsf T}(\hat b_j) - \mathsf T(b_\dagger)\bigr),
+\end{align*}
+and $I_m$, $III_m$ the initial-condition and Fr\'echet-remainder pieces.
+
+\emph{Term $II_m$.} \citet[Theorem~6]{hansen2008} % PATCH-R3-CITE under
+Assumption~\ref{ass:subgauss} gives the single-kernel tail
+$\Pr(\|\hat{\mathsf T}(b_\dagger) - \mathsf T(b_\dagger)\| > t) \le
+\exp(-c_1 t^2/\delta_n^2)$. The LF spectral-filter inequality
+$\sup_\lambda |\lambda^{1/2}g_m(\lambda)| \le \sqrt m$
+\citep[Eq.~6.5]{engl2000} applied to the operator
+$g_m(\hat{\mathsf T}'^{*}_{b_\dagger}\hat{\mathsf T}'_{b_\dagger})\hat{\mathsf T}'^{*}_{b_\dagger}$
+delivers $\|II_m\| \le \sqrt m \,\|\hat{\mathsf T}(b_\dagger) - \mathsf T(b_\dagger)\|$
+on $\Omega'_n$, hence
+\begin{equation}\label{eq:II-tail-pf}
+\Pr\!\bigl(\|II_m\| > \tau c_v\,\delta_n\sqrt m\bigr) \le \exp(-c_1\tau^2).
+\end{equation}
+
+\emph{Term $IV_m$.} By Cauchy--Schwarz, the deterministic bound
+$\|\hat{\mathsf T}(\hat b_j) - \mathsf T(b_\dagger)\| \le \delta_n + \tau V(j)$
+on $\Omega_n \cap \Omega'_n$, and \citet[Theorem~6]{hansen2008} % PATCH-R3-CITE applied to
+$\hat{\mathsf A}^{*}_{b_\dagger} - \mathsf A^{*}_{b_\dagger}$,
+\begin{equation}\label{eq:IV-tail-pf}
+\Pr\!\bigl(\|IV_m\| > \tau c'_v\,\gamma_n m^{(1-\beta)/2}\bigr) \le \exp(-c_2\tau^2).
+\end{equation}
+
+\emph{Term $III_m$.} % PATCH-R3-G1-III
+By Proposition~\ref{prp:koper}\textup{(a)} on $\Omega_n \cap \Omega'_n$
+and the LF spectral-filter contraction $|c\sum_j g| \le \sqrt m$, the
+correct deterministic bound is
+$\|III_m\| \le C\,\hat M\tau^{2}V(m)^{2}\sqrt m$. Under
+Assumption~\ref{ass:mn-growth} ($M_n = O(\delta_n^{-1})$), this is
+$O(V(m))$ --- not strictly $o(V(m))$ --- at $m = M_n$; we absorb it
+into the variance constant $c_v$ of Lemma~\ref{lem:itervar}.
+% PATCH-R4-F5: tau^2-bookkeeping for III_m absorption.
+Since $\|III_m\| \le C\hat M\tau^{2}V(m)^{2}\sqrt m$ scales as
+$\tau^{2}$, the per-$m$ Bernstein constant $c_0$ in
+\eqref{eq:bernstein-pf} retains the $\tau^{2}$-scaling when $III_m$ is
+absorbed --- i.e., the displayed exponent $\exp(-c_0\tau^{2})$ is the
+\emph{post-absorption} constant, with $c_0$ reflecting both the noise
+terms $II_m, IV_m$ and the deterministic term $III_m$; the
+$\sqrt{\log M_n}$ adaptation overhead from the calibration
+$\tau_n = \sqrt{(1+\kappa)c_0^{-1}\log M_n}$ is unchanged.
+Off-event contributions are absorbed by Assumption~\ref{ass:iterbd}.
+
+\emph{Term $I_m$.} The initial-condition propagation is sub-exponential
+with tail $\exp(-c_3 \tau^2/(m\gamma_n)^2)$, absorbed into the $V(m)$
+envelope since $m\gamma_n = o(\sqrt m \delta_n)$ under
+Assumption~\ref{ass:restrvarth}.
+
+% PATCH-R4-B1: honest framing of the per-iterate Bernstein constant.
+Combining \eqref{eq:II-tail-pf}, \eqref{eq:IV-tail-pf}, and the
+deterministic bounds on $I_m, III_m$ on $\Omega_n \cap \Omega'_n$, the
+four-term decomposition delivers a per-iterate sub-exponential tail.
+Specifically, there exist constants $c_0 > 0$ and $\tau_0 \ge 1$ ---
+bandwidth-free, depending only on $(c_1, c_2, c_3, \hat M)$ and the
+constants $R^\sigma, M_1, M_2, M_3, m_4$ of Assumption~\ref{ass:unifbd}
+together with the LF qualification --- such that for each $m \le M_n$
+and every $\tau \ge \tau_0$,
+\begin{equation}\label{eq:bernstein-pf}
+P\!\bigl(\|\hat b'_m - b'_m\| > \tau V(m)\bigr) \;\le\; \exp\!\bigl(-c_0\tau^2\bigr).
+\end{equation}
+The bandwidth dependence enters this bound \emph{only through the rates
+$\delta_n, \gamma_n$ scaling $V(m)$}, not through the exponent. The
+inheritance of a single sub-exponential exponent across the four-term
+decomposition follows the standard inverse-problem-with-noisy-operator
+accounting of \citet[Section~2]{bauerhohage2005},
+\citet[Section~4]{werner2015}, and \citet[Section~3]{hofmannmathe2007},
+packaged as the per-iterate concentration $c_0$ above. A union bound across $m \le M_n$ yields
+\begin{equation}\label{eq:omegan-prob-pf}
+P(\Omega_n) \;\ge\; 1 - M_n\,e^{-c_0\tau^2}.
+\end{equation}
+Choosing $\tau = \tau_n := \sqrt{(1+\kappa)\,c_0^{-1}\,\log M_n}$ for any
+$\kappa > 0$ (inflation parameter, distinct from the LF step size $c$)
+gives $P(\Omega_n) \ge 1 - M_n^{-\kappa}$. % PATCH-M3 Combined with
+\eqref{eq:Omegaprime-pf}, the joint event has probability $\ge 1 -
+M_n^{-\kappa} - O(\gamma_n^2)$.
+
+\smallskip
+\emph{Step~2: $\hat m \le m^*$ on $\Omega_n \cap \Omega'_n$.}
+
+We verify that the index $m = m^*$ satisfies the Lepskii defining condition
+\eqref{eq:lepskiidef}. By the triangle inequality and the bias / variance
+decomposition $\hat b'_k - \hat b'_{m^*} = (\hat b'_k - b'_k) - (\hat
+b'_{m^*} - b'_{m^*}) + (b'_k - b'_\dagger) - (b'_{m^*} - b'_\dagger)$, on
+$\Omega_n$:
+\begin{align}
+\|\hat b'_k - \hat b'_{m^*}\|
+&\le \|\hat b'_k - b'_k\| + \|b'_k - b'_\dagger\|
+   + \|b'_{m^*} - b'_\dagger\| + \|b'_{m^*} - \hat b'_{m^*}\| \notag\\
+&\le \tau V(k) + B(k) + B(m^*) + \tau V(m^*)
+   \notag\\
+&\le 2\tau\,\tilde V(k) + 2\,B(m^*),
+   \label{eq:cert1-pf}
+\end{align}
+where the last inequality uses $V(k) \le \tilde V(k)$ and the monotonicities
+$B(k) \le B(m^*)$, $V(m^*) \le \tilde V(m^*) \le \tilde V(k)$. The balancing
+definition of $m^*$ gives $B(m^*) \le 2\,\tilde V(k)$ for any $k \ge m^*$.
+Substituting,
+\[
+\|\hat b'_k - \hat b'_{m^*}\| \;\le\; (2\tau + 4)\,\tilde V(k)
+\;\le\; 4\tau\,\tilde V(k),
+\]
+% PATCH-R4-B3 (supersedes PATCH-MN4): tau_0 as bandwidth-free C_V floor.
+provided $\tau \ge \tau_0$, where
+$\tau_0 := C_V \vee 2$ and
+$C_V := \sup_{1 \le m \le M_n - 1}\tilde V(m+1)/\tilde V(m) < \infty$ is
+a $\beta$-dependent but \emph{bandwidth-free} constant. Direct
+calculation: $\sqrt{(m+1)/m} \le \sqrt 2$,
+$((m+1)/m)^{(1-\beta)/2} \le 2^{((1-\beta)/2)\vee 0}$, and
+$\ln(m+1)/\ln m \to 1$ for the $\beta = 2$ log factor; ratios of
+$\tilde V$ inherit the same uniform bound via the running-maximum
+construction. The constants $c_v, c'_v$ from
+Lemma~\ref{lem:itervar} cancel in $\tilde V(m+1)/\tilde V(m)$.
+Therefore $\hat m \le m^*$.
+
+\smallskip
+\emph{Step~3: On-event bound for $\|\hat b'_{\hat m} - b'_\dagger\|$.}
+
+Continuing on $\Omega_n \cap \Omega'_n$:
+\begin{align}
+\|\hat b'_{\hat m} - b'_\dagger\|
+&\le \|\hat b'_{\hat m} - \hat b'_{m^*}\|
+  + \|\hat b'_{m^*} - b'_{m^*}\|
+  + \|b'_{m^*} - b'_\dagger\| \notag\\
+&\le 4\tau\,\tilde V(m^*) + \tau V(m^*) + B(m^*)
+   \notag\\
+&\le (5\tau + 1)\bigl[\,B(m^*) + \tilde V(m^*)\,\bigr],
+   \label{eq:on-event-pf}
+\end{align}
+where the second line uses the Lepskii defining condition at $\hat m$ with
+$k = m^*$ (valid by Step~2 since $\hat m \le m^*$), and the third uses
+$V(m^*) \le \tilde V(m^*)$.
+
+The propagator substitution of Lemma~\ref{lem:propagator} % PATCH-M1
+is implicit in the bound \eqref{eq:on-event-pf}: on $\Omega_n \cap
+\Omega'_n$, the four-term decomposition of $\hat e_m := \hat b'_m -
+b'_\dagger$ with the random propagator
+$\prod_{k=j+1}^{m-1}(I - c\hat{\mathsf T}'^*_{\hat b_k}\hat{\mathsf T}'_{\hat b_k})$
+can be replaced by the fixed propagator
+$(I - c\hat{\mathsf T}'^*_{b_\dagger}\hat{\mathsf T}'_{b_\dagger})^{m-1-j}$ plus a
+remainder $R_{m,j}$.
+
+% PATCH-R3-G2-c: absorption via quadratic residual.
+\emph{Display of the absorption step (quadratic-residual version).}
+The first-order Lipschitz residual
+$\|R_{m,j}\| \le cL_{\mathsf T}\sum_k\|\hat e_k\|$ used in Round~2 does
+\emph{not} absorb at the Round-1 / -2 horizon $M_n \asymp \delta_n^{-2}$:
+the resulting bound $O(\delta_n^{2}m^{3}V(m)^{2})$ fails the absorption
+requirement $o(mV(m)^{2})$ at $m \asymp \delta_n^{-2}$. We therefore use
+the quadratic-residual bound \eqref{eq:Tquadres} of
+Lemma~\ref{lem:propagator}, which derives from the $C^2$-Fr\'echet
+hypothesis Assumption~\ref{ass:frediff}\textup{(ii)}:
+$\|R^{(2)}_{m,j}\| \le c L'_{\mathsf T}\sum_k\|\hat e_k\|^{2}
+\le c L'_{\mathsf T}\tau^{2}(m-j)V(m)^{2}$ on $\Omega_n \cap \Omega'_n$
+(by Assumption~\ref{ass:frediff}\textup{(ii)}, with the
+$\kappa_n^{-1}$-dependence of $L'_{\mathsf T}$ disclosed there).
+The contribution of $R^{(2)}_{m,j}$ to Term~$IV_m$ is then
+\begin{align*}
+E\bigl\|R^{(2)}_{m,j}\bigl(\hat{\mathsf T}(\hat b_j) - \mathsf T(b_\dagger)\bigr)\bigr\|^{2}
+&\le c^{2}L'^{2}_{\mathsf T}\tau^{4}(m-j)^{2}V(m)^{4}\,
+   E\|\hat{\mathsf T}(\hat b_j) - \mathsf T(b_\dagger)\|^{2}\\
+&\le c^{2}L'^{2}_{\mathsf T}\tau^{4}(m-j)^{2}V(m)^{4}\,\delta_n^{2}.
+\end{align*}
+Summing across $j = 0, \ldots, m-1$,
+\begin{equation}\label{eq:Rabsorb-pf}
+E\Bigl\|\sum_{j=0}^{m-1}R^{(2)}_{m,j}\bigl(\hat{\mathsf T}(\hat b_j) - \mathsf T(b_\dagger)\bigr)\Bigr\|^{2}
+\;\le\; C\,\delta_n^{2}\,m^{3}\,V(m)^{4}.
+\end{equation}
+\emph{Rate-balance check.} The absorption requirement
+$\delta_n^{2}m^{3}V(m)^{4} = o(mV(m)^{2})$, equivalently
+$\delta_n^{2}m^{2}V(m)^{2} = o(1)$, closes under the tightened
+Assumption~\ref{ass:mn-growth} ($M_n = O(\delta_n^{-1})$): at
+$m = M_n$, $V(M_n)^{2} = O(\delta_n)$ and
+$\delta_n^{2}\cdot M_n^{2}\cdot V(M_n)^{2} = \delta_n^{2}\cdot\delta_n^{-2}\cdot\delta_n
+= \delta_n = o(1)$. The absorption fails at the historical horizon
+$\delta_n^{-2}$ -- see Remark~\ref{rem:scope}, which documents the
+adaptivity scope restriction to $\beta_\epsilon \ge 1$ that follows.
+
+The constants $(c_v, c'_v)$ declared in
+Lemma~\ref{lem:itervar} -- depending only on
+$c, R^\sigma, M_1, M_2, M_3, m_4$ % PATCH-MN2
+and on the qualification of LF -- are unchanged.
+
+The wording ``for each $m \le M_n$, with constants $(c_v, c'_v)$ not
+depending on $m$'' in Lemma~\ref{lem:itervar} % PATCH-MN10
+is what makes the union bound in \eqref{eq:omegan-prob-pf} valid: the
+constants in the per-$m$ Bernstein bound \eqref{eq:bernstein-pf} are
+uniformly bounded in $m \le M_n$.
+
+\smallskip
+\emph{Step~4: Off-event contribution.}
+
+On the complement $\Omega_n^c \cup \Omega'^c_n$, by
+Assumption~\ref{ass:iterbd}: % PATCH-CR2
+\begin{align*}
+E\!\bigl[\|\hat b'_{\hat m} - b'_\dagger\|^2\,\mathbf 1_{\Omega_n^c \cup \Omega'^c_n}\bigr]
+&\le \bigl(E\,\|\hat b'_{\hat m} - b'_\dagger\|^4\bigr)^{1/2}\,
+     P(\Omega_n^c \cup \Omega'^c_n)^{1/2}
+   \quad \text{(Cauchy--Schwarz)} \\
+&\le \bigl(8\,C_4 + 8\,\|b'_\dagger\|^4\bigr)^{1/2}\,
+   \bigl[M_n e^{-c_0\tau^2} + O(\gamma_n^2)\bigr]^{1/2} \\
+&\le C\bigl[\sqrt{M_n}\,e^{-c_0\tau^2/2} + \gamma_n\bigr],
+\end{align*}
+where $\|b'_\dagger\| < \infty$ follows from
+Assumption~\ref{ass:unifbd}\textup{(iii)} and the source condition. With
+$\tau = \tau_n$, this off-event term is $O(M_n^{-\kappa/2} + \gamma_n)$,
+which is $o(1)$ and (for $\kappa$ large enough relative to the smallest
+pole rate) dominated by $[B(m^*) + \tilde V(m^*)]^2$. Thus
+\begin{equation}\label{eq:off-event-bound-pf}
+\bigl(E\,\|\hat b'_{\hat m} - b'_\dagger\|^2\,
+\mathbf 1_{\Omega_n^c \cup \Omega'^c_n}\bigr)^{1/2}
+\;\le\; C(\tau)\,\bigl[B(m^*) + \tilde V(m^*)\bigr],
+\qquad C(\tau) = O(\tau^{-1}).
+\end{equation}
+Combining \eqref{eq:on-event-pf} and \eqref{eq:off-event-bound-pf},
+\begin{equation}\label{eq:combined-pf}
+\bigl(E\,\|\hat b'_{\hat m} - b'_\dagger\|^2\bigr)^{1/2}
+\;\le\; C(\tau)\,\inf_{1 \le m \le M_n}\bigl[B(m) + \tilde V(m)\bigr],
+\end{equation}
+with $C(\tau) := 5\tau + 1 + O(\tau^{-1})$. This is the oracle inequality.
+
+\smallskip
+\emph{Step~5: Transfer to $\hat b_{\hat m}$ and $\hat a_{\hat m}$.}
+
+By Assumption~\ref{ass:linkcond}, the componentwise integration operator
+$D^{-1}$ is bounded between matched Hilbert scales with norm equivalent to
+$(\mathsf{T}'^*_{b_\dagger}\mathsf{T}'_{b_\dagger})^{1/(2(a+1))}$
+\citep{florens2012}; % PATCH-MN1
+applying $D^{-1}$ to \eqref{eq:combined-pf} produces the additional factor
+$\delta_n^{1/(a+1)}$ through the source-bias balance of
+Corollary~\ref{cor:rates}.
+
+The Jacobian
+$\Phi'(b_\dagger) = \bigl(\begin{smallmatrix}-\sigma_\dagger & -\varphi_\dagger \\ 0 & -\sigma_\dagger\end{smallmatrix}\bigr)$
+is bounded in operator norm by
+$C_\Phi := \max(R^\sigma, R^\varphi) < \infty$ on $\mathcal{B}_{b_\dagger}$
+via the strengthened Assumption~\ref{ass:unifbd}\textup{(iii)}, % PATCH-M5
+which delivers $|\varphi_\dagger(x)| \le R^\varphi$ (without this strengthening,
+$L^2_X$ membership does not imply $L^\infty$ boundedness; alternatively, under
+Assumption~\ref{ass:sourcecond} with $\beta > p/2$, Sobolev embedding
+delivers the same $L^\infty$ bound). The second derivative $\Phi''(b)$ is
+bounded on the same $L^\infty$ neighbourhood. By the mean-value theorem
+along the segment $b_\dagger \to \hat b_{\hat m}$,
+\[
+\|\hat a_{\hat m} - a_\dagger\|
+\le C_\Phi\,\|\hat b_{\hat m} - b_\dagger\|
++ \tfrac12\,\sup_{b \in \mathcal B_{b_\dagger}}\!\|\Phi''(b)\|\,
+\|\hat b_{\hat m} - b_\dagger\|^{2},
+\]
+and the quadratic remainder is bounded by
+$\tfrac12\sup\|\Phi''\|\cdot\mathrm{diam}(\mathcal B_{b_\dagger})\cdot
+\|\hat b_{\hat m} - b_\dagger\|$, which is linear in
+$\|\hat b_{\hat m} - b_\dagger\|$ with finite constant. The oracle
+inequality therefore transfers with constant $C(\tau)\,C_\Phi$.
+
+The LF spectral-filter constant $c_g$ used in the per-$m$ variance bound of
+Lemma~\ref{lem:itervar} is the LF step size $c$ itself; we have kept a single
+symbol $c$ for both quantities throughout. % PATCH-MN3
+
+This completes Step~5 and the proof.
+\end{proof}

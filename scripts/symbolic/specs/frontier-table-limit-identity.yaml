@@ -1,0 +1,18 @@
+claim_id: frontier-table-limit-identity
+source: quality_reports/theory/panel-npiv-discrete/assumptions.tex ("infinity  r > 1.5  r > 2  r > 2.5  (unattainable)"), and ("r > d_Z/2 ... is the mu -> infinity LIMIT ... and is NOT the operative condition")
+# CLAIM.  The last row of the table is the mu -> oo limit of the threshold, and
+# the limit is never attained.  Both follow from the exact decomposition
+#     d_Z(2mu+1)/(2(2mu-1)) = d_Z/2 + d_Z/(2mu-1),
+# whose second term is > 0 for every finite mu > 1/2 (so the threshold is
+# STRICTLY above d_Z/2 at every admissible mu: "unattainable" is correct) and
+# tends to 0 as mu -> oo (so the limit row is d_Z/2, giving 1.5, 2, 2.5 at
+# d_Z = 3, 4, 5).  It also shows the threshold is decreasing in mu, which is the
+# "BUY mu, NOT r" reading of the table.
+variables:
+  mu:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "d_Z*(2*mu+1)/(2*(2*mu-1))"
+operation: none
+claimed_end: "d_Z/2 + d_Z/(2*mu-1)"

@@ -1,0 +1,61 @@
+claim_id: phirate-muthreshold-strict
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (rem:h6bandwidth(2), immediately after eq:muthreshold: 'The inequality is strict, and by clause (0) it must be: at mu = 5/6 exactly the powers of n balance and the left side carries (ln n)^{2 kappa} = (ln n)^{5/4} against the right side's (ln n)^1, so (P-f) fails by (ln n)^{1/4}'), resting on proofs.tex (clause (0): '2 kappa = 4 mu/(2 mu + 1) > 1 <=> mu > 1/2 ... at any configuration where the powers of n balance exactly, (P-f) fails by a power of ln n, and every threshold below must therefore be read strictly')"
+# WHY THIS SPEC EXISTS.  eq:muhalf and eq:muthreshold are STRICT: mu > 5/6, not
+# mu >= 5/6.  The companion spec phirate-retune-mu-five-sixths verifies the POWER
+# condition and locates its root at exactly 5/6, but an identity between rational
+# functions cannot distinguish an attained threshold from an unattained one.  What
+# makes the threshold strict is clause (0)'s logarithm count, and that count is
+# arithmetic, so it can be mechanised.  This spec is that arithmetic.  The two
+# specs together are eq:muthreshold; neither alone is.
+#
+# THE CLAIM.  After A7's amendment both sides of (P-f) carry powers of ln n:
+#
+#     delta_n^2            =  hat-delta_n^{2 kappa} (ln n)^{2 kappa} ,
+#     h_u^2 hat-delta_n ln n  =  h_u^2 hat-delta_n (ln n)^{1} ,
+#
+# so the LOG DEFICIT of (P-f) is 2 kappa - 1 with kappa = 2 mu/(2 mu + 1), i.e.
+# 4 mu/(2 mu + 1) - 1.  At the threshold mu = 5/6 the powers of n balance exactly
+# (that is phirate-retune-mu-five-sixths' root), so the logarithms decide, and
+#
+#     4 mu/(2 mu + 1) - 1   at mu = 5/6   =   (10/3)/(8/3) - 1   =   5/4 - 1   =   1/4 .
+#
+# So at mu = 5/6 the left side of (P-f) exceeds the right by exactly (ln n)^{1/4},
+# the domination fails, and the boundary is inadmissible.  The paper's "(P-f) fails
+# by (ln n)^{1/4}" is this number.
+#
+# THE STRUCTURAL POINT clause (0) MAKES, and it is more general than the boundary.
+# The log deficit 2 kappa - 1 is STRICTLY POSITIVE for every mu > 1/2, since
+# 2 kappa = 4 mu/(2 mu + 1) > 1 <=> 4 mu > 2 mu + 1 <=> mu > 1/2.  As mu > 1/2
+# holds throughout Part H, the left side ALWAYS carries the larger power of ln n.
+# Hence every threshold in rem:h6bandwidth readings (1) and (2) must be read
+# strictly, not just this one -- which is why clause (0) is placed first and says
+# "Read this clause first."  The same count is what makes proofs.tex's
+# boundary configuration (mu, d_Z, r) = (1, 3, 4.5) fail by (ln n)^{1/3}: at mu = 1,
+# 4/(3) - 1 = 1/3.  That second instantiation is a second reading of the same
+# formula and is recorded here rather than given its own spec.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.  (a) It does not check that
+# delta_n = (hat-delta_n ln n)^kappa carries (ln n)^{2 kappa} on squaring, nor that
+# A7's amendment puts a single ln n on the right; both are read off eq:phirate and
+# eq:a7amend and are substitutions, not derivations.  (b) It does not check that a
+# strict inequality between polynomial exponents ABSORBS a fixed power of ln n --
+# the sufficiency direction clause (0) also uses.  That is a limit statement, not an
+# identity, and it is where the strictness pays for itself.  (c) It says nothing
+# about whether mu > 5/6 is SATISFIABLE; that is the frontier table and
+# rem:h6bandwidth(5), which exhibits mu = 2.
+#
+# FALSIFICATION (hand-computed).  claimed_end "0" leaves residual 1/4; MISMATCH --
+# and residual 0 is exactly the claim that the threshold is attained, so the spec
+# refutes the weak-inequality reading rather than merely failing to support it.
+# claimed_end "1/3" leaves residual -1/12; MISMATCH -- 1/3 is the deficit at mu = 1
+# (the boundary configuration), so the spec discriminates the two instantiations.
+# Substituting mu = 1/2 gives 4*(1/2)/2 - 1 = 0, not 1/4; MISMATCH -- confirming the
+# spec is sensitive to the location of the threshold and not merely to its sign.
+#
+# PREDICTED: MATCH.
+variables:
+  mu:
+    domain: positive
+start: "4*mu/(2*mu + 1) - 1"
+operation: "substitute(mu=5/6)"
+claimed_end: "1/4"

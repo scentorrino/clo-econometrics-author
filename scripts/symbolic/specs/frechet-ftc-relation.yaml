@@ -1,0 +1,17 @@
+claim_id: frechet-ftc-relation
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (rem:quadremainder, display)"
+# CLAIM, verbatim from the remark:
+#   int_0^1 ||A_{phi + varsigma h} - A_phi|| ||h|| d varsigma
+#       <= 2 C_A ||h||^2 int_0^1 varsigma d varsigma = C_A ||h||^2.
+# This is the abstract form of frechet-constant-chain: the factor 2 in
+# eq:lipschitz is exactly consumed by int_0^1 varsigma d varsigma = 1/2.
+variables:
+  C_A:
+    domain: positive
+  Hn:
+    domain: positive
+  varsigma:
+    domain: positive
+start: "integrate(2*C_A*varsigma*Hn**2, (varsigma, 0, 1))"
+operation: none
+claimed_end: "C_A*Hn**2"

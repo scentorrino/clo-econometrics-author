@@ -1,0 +1,27 @@
+claim_id: p4c-extended-binary
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (convention (P4c)); consumed at prp:kerchar Step 5"
+# CLAIM (P4c), the A1-licensed enlargement of (P4b).  For a sigma-field C with
+# sigma(Delta Z) subset C subset sigma(Delta U, Delta Z), A1 gives
+# P(W = 1 | C) = varrho, and then for an ARBITRARY integrable Lambda (NOT
+# required to be C-measurable):
+#     E[W Lambda | C]  = varrho * L1,        L1 := E[Lambda | C, W = 1],
+#     E[Lambda | C]    = varrho * L1 + (1 - varrho) * L0,
+#     E[Wtilde Lambda | C] = E[W Lambda | C] - varrho E[Lambda | C]
+#                          = varrho (1 - varrho) (L1 - L0).
+# This is the display prp:kerchar Step 5 uses to pass between clause (b) and
+# clause (c).  It is the SAME algebra as p4b-prefactor.yaml but with cell
+# conditional expectations L1, L0 of an arbitrary Lambda in place of g_1, g_0;
+# what changed is not the arithmetic but the sigma-field on which
+# P(W = 1 | .) = varrho is available, and that is supplied by A1, not by the
+# definition of varrho.  Contrast kernelcompare-tower.yaml, where the field is
+# sigma(X_1, X_2, Delta Z), P(W = 1 | .) = p_X, and the collapse FAILS.
+variables:
+  rho:
+    domain: real
+  L1:
+    domain: real
+  L0:
+    domain: real
+start: "rho*L1 - rho*(rho*L1 + (1-rho)*L0)"
+operation: simplify
+claimed_end: "rho*(1-rho)*(L1-L0)"

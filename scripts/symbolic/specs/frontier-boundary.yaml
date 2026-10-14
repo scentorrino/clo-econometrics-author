@@ -1,0 +1,14 @@
+claim_id: frontier-boundary
+source: quality_reports/theory/panel-npiv-discrete/assumptions.tex (A5(iii), eq:frontier)
+# CLAIM.  r = d_Z(2mu+1)/(2(2mu-1)) is exactly the boundary of the frontier:
+# substituting it into the left-hand side returns 1/4 identically in (mu,d_Z).
+variables:
+  mu:
+    domain: positive
+  r:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "2*mu/(2*mu+1) * r/(2*r+d_Z)"
+operation: "substitute(r=d_Z*(2*mu+1)/(2*(2*mu-1)))"
+claimed_end: "1/4"

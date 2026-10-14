@@ -1,0 +1,8 @@
+claim_id: nprate-margin-d1
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A5(ii): delta_n = o_P(n^{-1/4}))"
+# CLAIM.  n^{-2/5} clears n^{-1/4}: the exponent margin is 2/5 - 1/4 = 3/20,
+# a positive rational, so the clearance is with room and not marginal.
+variables: {}
+start: "2/5 - 1/4"
+operation: none
+claimed_end: "3/20"

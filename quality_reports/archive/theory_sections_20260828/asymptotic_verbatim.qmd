@@ -1,0 +1,206 @@
+# Asymptotic properties
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% The four asymptotic statements.  The other 62 environments of results.tex are
+% in results_supp.tex, which supplement.qmd inputs ahead of proofs.tex; the
+% prose here and in Sections 2 and 3 refers to them BY NAME.  results_s2 +
+% results_s3 + results_s4 + results_supp are the undivided results.tex.
+\input{../../quality_reports/theory/panel-npiv-discrete/results_s4_asymptotics}
+```
+:::
+
+\Cref{thm:rootn} is our main result: the cross-fitted one-step is
+$\sqrt n$-consistent and asymptotically normal with influence function
+$J^{-1}\psi_\star$ and limiting variance $J^{-1}\Sigma J^{-1\prime}$, and the sample
+sandwich $\hat V$ is consistent for it.
+
+What carries the theorem is an *exact* decomposition rather than an expansion. The
+bias decomposition of the supplement writes the conditional bias of the debiased
+moment at the estimated nuisances as the balancing pairing
+$-\langle\nu_{g_k}/\pi,h_k\rangle$ plus
+exactly three remainders, one quadratic in the structural error and two products of
+two estimation errors. There is no Taylor remainder in the weight or the propensity
+directions, because the moment is bi-affine there. What makes each of the three
+$o_P(n^{-1/2})$ is the frontier \eqref{eq:frontier}.
+
+The empirical-process term costs nothing at scale $n^{-1/2}$, and that is a positioning
+commitment rather than a technical convenience. Lemma L-8 of the supplement obtains
+$\sqrt n\sum_{k=1}^{\mathsf F}\tfrac{n_k}{n}(\mathbb E_{n,k}-E)[\hat\psi^{(-k)}-\psi_\star]=o_P(1)$ from conditional
+Chebyshev at a frozen nuisance, so the only input is $L^{2}(P)$-consistency of the
+estimated moment: no entropy condition, no Donsker property, no stochastic
+equicontinuity at the estimated point. We make that concession once, in the
+$\varphi$-step, where we take a uniform law with a rate over a slowly growing
+ball at scale $\hat\delta_n\gg n^{-1/2}$. A penalised
+sieve minimum-distance treatment of $\theta$ would need the harder statement at the
+harder scale.
+
+The sandwich is simpler than its construction suggests. $J$ is defined as
+the $\theta$-derivative of a two-summand moment, but under A1 the debiasing summand is the
+zero matrix, so $J=E[\Delta Z\Delta Z']$ exactly and no rank condition beyond A1b(iv) is
+needed anywhere (part (iv) of the moment-validity lemma of the supplement). As a
+matter of fact the variance splits exactly, by the same tower step applied to the
+cross term:
+$\Sigma=E[\Delta Z\Delta Z'\Delta U^{2}]+E[L_\star\widetilde W\widetilde W'L_\star']$.
+So the
+sandwich is the variance the infeasible plug-in \eqref{eq:prelimtheta} would have at
+a *known* $\vdagger$, plus a positive semidefinite term that does not vanish under
+overlap.
+
+That the second term does not vanish is reached differently at
+$\mathsf L\ge3$, and the binary route is unavailable there rather than merely
+weaker. At $\mathsf L=2$, $\widetilde W^{2}\ge\varepsilon_\varrho^{2}$ surely under
+A4(i), which bounds the term below by $\varepsilon_\varrho^{2}E[L_\star L_\star']$.
+At $\mathsf L\ge3$ that argument fails outright: $\widetilde W\widetilde W'$ has
+rank one, so no sure inequality $\widetilde W\widetilde W'\succeq cI$ holds at any
+$c>0$, and $L_\star\widetilde W\widetilde W'L_\star'$ is singular at every sample
+point once $p>1$. The route that works at every $\mathsf L$ is the conditional
+one, and it is what \eqref{eq:omegafloor} was written for: under A1,
+$E[\widetilde W\widetilde W'\mid\Delta U,\Delta Z]=\Omega(\Delta Z)$, and A4(i)
+gives $\Omega(\Delta Z)\succeq(\varepsilon_\varrho/\mathsf L)I$.
+
+*What the debiasing weight buys is not variance but the removal of the first-order
+bias* that the plug-in carries at exact order $\|h_k\|$. That is the standard
+debiasing trade \citep[see][]{chernozhukov2022lr,ichimuranewey2022}, and it is not
+a defect.
+
+We do not compare the estimator to a semiparametric efficiency bound. The bound
+\citet{poirier2017} computes under independence restrictions is for a model
+without a structural inverse \citep[see also][]{aichen2012,bkrw1993}, and
+computing one here, where the nuisance solves an ill-posed nonlinear operator
+equation, is a step we leave to future research.
+
+No correction for the estimation of $\varrho$ appears in the influence function, and its
+absence is a consequence rather than an omission. By \cref{prp:orthog}(iii) the
+$\varrho$-derivative of the moment vanishes exactly under N1, so there is nothing for a
+correction to remove; Lemma L-11 of the supplement states this as a property of the
+limit and not as an approximation to it.
+
+The positivity the studentised statement needs is *implied by the theorem's hypotheses
+rather than assumed*. Notice that its conclusion is quantified over every
+$\vartheta$ with $\|\vartheta\|=1$, not over the directions on which the sandwich
+happens to be positive. By part (v) of the moment-validity lemma of the supplement, $\Sigma\succ0$
+follows from A1b(iv) and
+C2$'$(i), both of which the theorem already carries, since
+$E[\Delta Z\Delta Z']$ nonsingular gives $P(\vartheta'\Delta Z\ne0)>0$ and a
+conditional density for $\Delta U$ gives $P(\Delta U=0)=0$.
+
+A proviso that a theorem's hypotheses entail belongs in its conclusion and not on
+the user's checklist.
+
+The scope is mild ill-posedness, and severe ill-posedness is a place the theorem does not
+reach rather than a gap in the proof. What \eqref{eq:frontier} requires is that $\delta_n$
+be a *polynomial* rate faster than $n^{-1/4}$, which under H1's $\sigma_j\asymp j^{-a}$ is
+what a source condition delivers. Under exponentially decaying singular values the
+rate attainable from *any* source condition is logarithmic in $n$, so A5(ii) fails
+at every $r$ and the theorem is unavailable.
+
+H1's scale supplies a shorter reading of that scope, and it needs qualifying. The
+reading pairs mild ill-posedness with $s>a+\tfrac12$, hence
+$\mu>\tfrac12+1/(4a)$, and at $a\le\tfrac34$ that inequality is taken to deliver
+the source-index restriction the theorem carries.
+
+The inequalities in that reading are statements about $\mu_{\text{H1}}=s/(2a)$, the
+index of A2 at the *population* operator on all of $\mathcal V$ at $\theta_\dagger$, whereas
+\eqref{eq:muhalf} and \eqref{eq:frontier} carry (P-a.3)'s primitive $\mu$ at the
+finite-rank compression of the realised operator at $\theta_\circ$. The bridge
+between them is the operator interpolation that the supplement's remark on (P-a.3)
+shows unavailable at every $2\mu>1$, and the commutativity proviso that would
+restore it is stated and declined.
+
+Read as an interpretation it is right; read as a scope statement it both excludes
+designs the theorem covers and claims designs it does not.
+
+The rate condition cannot be relaxed by bounding the remainder more carefully, *and that
+is a weaker claim than necessity*. By \cref{prp:sharpquad} the supremum of the second-order
+remainder over an $L^{2}(\pi)$-ball of radius $\delta$ in $\mathcal V$ is exactly
+$\tfrac12\delta^{2}$ times the norm of the compressed symmetrised form, which is strictly
+positive under O-16(a). So the direct bound is order-sharp, and no argument that
+merely improves it will weaken \eqref{eq:frontier}.
+
+The sharpness statement invites readings that the supplement's scope remark blocks.
+It does not
+say that the realised remainder at $h_k=\hat\varphi^{(-k)}-\vdagger$ fails to be
+$o_P(\|h_k\|^{2})$: a regularisation path confined to directions on which the form
+is small could do better, and nothing here excludes that. It does not say that
+$\delta_n=o(n^{-1/4})$ is *necessary* for $\sqrt n$-estimability of $\theta_\dagger$
+by some estimator. And it does not say the moment class is exhausted.
+
+What relaxing the frontier would require is a different selection, one with a
+smaller $\sigma_q$ and compact part, which is open. The alternative is a restriction
+on the *direction* of the first-stage error, which is an extra hypothesis and not a
+sharper argument. The sharpness statement carries a hypothesis of its own, O-16, which asserts that
+the form does not degenerate and which does not follow from \cref{cor:udep}. Here
+$q$ can vanish by cancellation inside the conditional expectation, and
+$q\not\equiv0$ alone is not enough either, an antisymmetric $q\,f_{X_1,X_2}$ making
+the form vanish against the symmetric $(\Delta h)^{2}$.
+
+*We acknowledge that near the frontier the theorem's asymptotics do not bind at any
+sample size anyone will run, and we would rather say so than let a referee find it.*
+
+Write $\hat\delta_n=n^{-\alpha}$ and $\kappa=2\mu/(2\mu+1)$. The $\theta$-remainder is
+$O_P(n^{-1/2}+\sqrt n\,\delta_n^{2})$ and its second term is
+$\sqrt n\,\delta_n^{2}=n^{-\beta}(\ln n)^{2\kappa}$ with $\beta=2\kappa\alpha-\tfrac12$,
+which is strictly positive by \eqref{eq:frontier}. In $t=\ln n$ that is
+$e^{-\beta t}t^{2\kappa}$, which is *increasing* for $t<2\kappa/\beta$, so the remainder
+*rises* in $n$ up to $n^{\ast}=\exp\{2\kappa/\beta\}$ and only then falls. The
+Monte Carlo experiment at the configuration this theory names, which the
+supplement carries, runs at $\mu=2$, hence $\kappa=\tfrac45$, and at
+$\alpha=0.32$, so that $\kappa\alpha=0.256>\tfrac14$ and the design sits *inside* the
+frontier. There one gets $\beta=0.012$ and $n^{\ast}=e^{400/3}\approx10^{58}$.
+
+That threshold is a fact about where the design sits and not about the theorem, and the
+same formula prices designs that sit elsewhere. It is not an artefact of a badly chosen
+parameterisation: $\beta\downarrow0$ as $\kappa\alpha\downarrow\tfrac14$, so
+$n^{\ast}\uparrow\infty$ at the frontier and the $10^{58}$ is a property of
+\eqref{eq:frontier} itself. But $n^{\ast}$ falls away from the frontier as steeply as it
+climbs towards it, and it does so well inside the admissible range rather than at its edge.
+
+Take $d_Z=1$. A first stage with $r=5$ derivatives gives $\alpha=\tfrac5{11}$, hence
+$\beta=\tfrac5{22}$ and $n^{\ast}=e^{176/25}\approx1{,}140$ at $\mu=2$, and
+$n^{\ast}=e^{352/61}\approx320$ at $\mu=4$; at $r=12$ and $\mu=10$,
+$n^{\ast}=e^{400/87}\approx99$. These are ordinary smooth designs with a scalar
+conditioning variable, satisfying every hypothesis the theorem carries, and at them the turn
+happens at sample sizes anyone will run.
+*So the concession is that the asymptotics do not bind near the frontier, and that
+the configuration that experiment runs is near it.* It is not that they bind nowhere.
+
+Nothing in this weakens \eqref{eq:rootn}. The $o_P(1)$ there is a statement
+about the limit and it is proved. What changes is how finite-sample evidence should be
+read. Below $n^{\ast}$ the object that describes the estimator is
+\cref{cor:ratefloor}, in which $\delta_n^{2}$, $\delta_n\epsilon_n$, $r_n\delta_n$ and
+$r_n\epsilon^{L}_n$ appear as *terms* of the rate and not as remainders sent to zero, and
+\eqref{eq:rootn} is the special case in which every term after $n^{-1/2}$ is
+$o(n^{-1/2})$.
+
+That corollary is honest about its own exponents in the same way. On the branch that
+prices $\hat\ell$ directly, two of them, $\epsilon_n$ and $\epsilon^{L}_n$, are
+assumed and not derived, because neither has a supplier in the maintained block.
+Only on the sieve branch for the first-order bias, together with N1$'$ at each
+estimated direction, do both unsupplied symbols disappear. What is in primitives is
+then not \eqref{eq:ratefloor} but the display that replaces it,
+$\delta_n\epsilon_n$ giving way to
+$O_P(n^{-1/2}\delta_n)+O_P(\mathsf R\,L_x^{-s})$ and $r_n\epsilon^{L}_n$ dropping
+out, every exponent of which is a function of $(\mu,r,d_Z,s)$.
+
+So the correct reading of \eqref{eq:frontier} is that it is a *qualitative*
+frontier: crossing it makes the remainder vanish eventually and says nothing about
+where.
+
+Finally, the theorem is *pointwise in $P$*, and this is the quantifier the finite-sample
+caveats all sit inside. Every hypothesis is imposed at a single data-generating law, and
+$\mu$, $\mathsf R_\ast$, $a$, $s$, $\varepsilon_\varrho$, $r$, $\bar c_\pi$, the
+representer's budgets and the singular system of $\mathcal A_{\mathrm{cond}}$ are all
+$P$-specific constants.
+
+The consequences are real limitations rather than formalities. The $o_P(1)$ in
+\eqref{eq:rootn} is not uniform over any neighbourhood of $P$, so the theorem does not
+deliver confidence sets whose coverage is honest over a class, and no such class is
+defined here. The $10^{58}$ of the previous paragraph is that gap displayed numerically:
+within any class containing laws arbitrarily close to the frontier the convergence cannot
+be uniform. And $\lambda_{\min}(\Sigma)>0$ holds at each $P$ and may be arbitrarily
+small along a sequence of laws, so the positivity established above is pointwise too.
+
+A uniform statement would need a class on which those constants are bounded, a
+uniform version of \eqref{eq:phirate} at a random compressed operator, and a
+Lindeberg condition uniform in $P$. We attempt none of the three.

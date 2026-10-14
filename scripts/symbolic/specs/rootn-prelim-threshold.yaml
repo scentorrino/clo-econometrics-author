@@ -1,0 +1,109 @@
+claim_id: rootn-prelim-threshold
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (thm:rootn Step 2, 'the theta-remainder, and this is the only place a RATE for hat theta^{(0)} is used': 'By lem:prelimtheta(i), ||hat theta^{(0)} - theta_dagger|| = O_P(n^{-1/2} + delta_n), and by A5(ii) in the form eq:deltalog, delta_n = o_P(n^{-1/4}). Hence ... sqrt(n) ||Psi^theta_n|| = O_P( sqrt(n) (n^{-1/2} + delta_n)^2 ) = O_P( n^{-1/2} + sqrt(n) delta_n^2 ) = o_P(1)', closing 'the threshold is exactly o_P(n^{-1/4}) --- sqrt(n)(n^{-1/2} + delta_n)^2 = o(1) if and only if delta_n = o(n^{-1/4})'); the same inequality stated from the lemma's side at results.tex (lem:prelimtheta closing: 'thm:rootn Step 2 works at the uncollapsed rate eq:prelimthetarate, since sqrt(n)(n^{-1/2}+delta_n)^2 <= 2(n^{-1/2} + sqrt(n) delta_n^2)'); eq:prelimthetarate at results.tex (clause (i), no threshold) and eq:prelimthetathresh at results.tex (clause (ii))"
+# WHAT STEP 2 ACTUALLY CONSUMES, READ OFF THE LIVE PROOF AND NOT OFF THE PROPOSAL.
+# lem:prelimtheta was split this round into clause (i) -- the rate
+# eq:prelimthetarate, O_P(n^{-1/2}) + O_P(delta_n), on a list with NO threshold in n
+# -- and clause (ii), the threshold eq:prelimthetathresh, o_P(n^{-1/4}).  thm:rootn
+# Step 2 cites CLAUSE (i) and works at the UNCOLLAPSED rate: the sentence "The
+# uncollapsed rate is used deliberately ... this step needs neither [A5(i) nor
+# A5(iii)]" is the record.  Clause (ii) is consumed by nothing.  So the object Step 2
+# forms is
+#
+#     sqrt(n) * ( n^{-1/2} + delta_n )^2 ,
+#
+# with BOTH summands present, and that is what this spec starts from.  A spec built
+# on clause (ii) would test a statement the theorem does not use; a spec built on the
+# collapsed rate O_P(delta_n) would test the simplification lem:prelimtheta calls
+# "cosmetic and used by neither clause".
+#
+# THE PARENT IDENTITY, EXACT AND HAND-VERIFIED.  Expanding,
+#
+#     sqrt(n) ( n^{-1/2} + delta_n )^2  =  n^{-1/2} + 2 delta_n + sqrt(n) delta_n^2 ,
+#
+# three summands with three different fates: n^{-1/2} vanishes always; 2 delta_n
+# vanishes exactly when the preliminary is consistent; sqrt(n) delta_n^2 vanishes
+# exactly when delta_n = o(n^{-1/4}).  The third implies the second, so the whole
+# expression is o(1) if and only if delta_n = o(n^{-1/4}) -- which is Step 2's
+# closing sentence, and the "only if" is the half that needed a discharge (memo item
+# m-23).  The paper does not use the exact expansion; it uses the AM-GM bound
+# sqrt(n)(n^{-1/2}+delta_n)^2 <= 2(n^{-1/2} + sqrt(n) delta_n^2), whose SLACK is
+# exactly 2(n^{-1/2} + sqrt(n) delta_n^2) - [n^{-1/2} + 2 delta_n + sqrt(n) delta_n^2]
+# = n^{-1/2} - 2 delta_n + sqrt(n) delta_n^2 = sqrt(n) (n^{-1/2} - delta_n)^2 >= 0.
+# So the paper's inequality is the exact identity minus a perfect square, it is
+# never wasteful by more than that square, and it is tight exactly at
+# delta_n = n^{-1/2}.  Recorded here because it explains why the bound costs nothing
+# and why the exact form is the better thing to mechanise.
+#
+# WHAT THIS FILE ENCODES, AND WHY IT IS THE THRESHOLD INSTANCE AND NOT THE PARENT.
+# The parent identity is three lines of algebra and nothing turns on it.  What turns
+# on something is the LOCATION of the threshold, so the file evaluates the parent at
+# the critical family delta_n = c n^{-1/4}, c a constant, and certifies
+#
+#     sqrt(n) ( n^{-1/2} + c n^{-1/4} )^2  =  c^2 + 2 c n^{-1/4} + n^{-1/2} .
+#
+# The limit is c^2.  So along the critical family the quantity converges to the
+# SQUARE OF THE CONSTANT, and it is o(1) if and only if c = 0 -- i.e. if and only if
+# delta_n is o(n^{-1/4}) and not merely O(n^{-1/4}).  THE CONSTANT IS THE EXACT
+# OBSTRUCTION, and it is not lost in an inequality: the arm the review asked for at
+# delta_n asymp n^{-1/4} is not "the bound fails to be useful" but "the limit is c^2,
+# a number the harness computes".  `c` is declared REAL, not positive, so that c = 0
+# is inside the identity's domain and the o/O distinction is a substitution into a
+# certified identity rather than a separate claim.
+#
+# THE m-23 DISCHARGE, IN ONE SENTENCE.  m-23 asked whether Step 2 needed the
+# threshold as a hypothesis or derived it.  It needs it: at c != 0 the theta-
+# remainder contributes c^2 to the limit of sqrt(n)||Psi^theta_n||, which does not
+# vanish, so eq:rootn's o_P(1) fails.  A5(ii)'s second half is therefore not
+# removable at Step 2 by a sharper argument, and A5(iii) -- equivalent to it under
+# eq:deltalog -- is genuinely assumed rather than delivered, which is what (T-4)'s
+# annotation says.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.
+# (a) The equivalence is certified ALONG THE ONE-PARAMETER FAMILY delta_n = c n^{-1/4}
+#     only, not for an arbitrary sequence delta_n.  That family is the sharp one --
+#     it is exactly the family that separates o(n^{-1/4}) from O(n^{-1/4}) -- but a
+#     general "if and only if" over all sequences is a limit statement and is outside
+#     this harness.  Anyone quoting the file should quote this sentence with it.
+# (b) It does not verify that ||Psi^theta_n|| <= (1/2) * (Hessian envelope) *
+#     ||hat theta^{(0)} - theta_dagger||^2.  That is Step 1's Taylor bound with the
+#     integral remainder, an analytic step; rootn-jacobian-sign carries the ALGEBRAIC
+#     half of Step 1 (the assembly) and this file carries Step 2's arithmetic.
+# (c) It does not verify lem:prelimtheta(i) itself, i.e. that the preliminary
+#     inherits O_P(n^{-1/2}) + O_P(delta_n).  That is the lemma's Steps 1-6 and rests
+#     on A0, A1, A1b(iv), C1(ii), def:crossfit and eq:foldrates display 1.
+# (d) It says nothing about clause (ii) of lem:prelimtheta, which is consumed by
+#     nothing in the file and which the reviewer flagged for the assumption-auditor
+#     on exactly that ground.
+#
+# FALSIFICATION (hand-computed).
+#   * claimed_end "c**2 + c*n**(-1/4) + n**(-1/2)" -- cross-term coefficient 1
+#     instead of 2 -- leaves residual c n^{-1/4}, nonzero for c != 0; MISMATCH.
+#   * claimed_end "c + 2*c*n**(-1/4) + n**(-1/2)" -- the limit read as c rather than
+#     c^2 -- leaves residual c^2 - c, nonzero for c not in {0, 1}; MISMATCH.
+#   * claimed_end "c**2 + 2*c*n**(-1/2) + n**(-1/2)" -- cross term at the wrong power
+#     -- leaves residual 2 c (n^{-1/4} - n^{-1/2}), nonzero for c != 0 and n != 1;
+#     MISMATCH.
+#   * operation "substitute(d=c*n**(-1/2))" -- the threshold mis-read at n^{-1/2} --
+#     gives n^{-1/2}(1 + c)^2, leaving residual
+#     n^{-1/2}(2c + c^2) - c^2 - 2 c n^{-1/4}, nonzero; MISMATCH.  And the actual end
+#     is o(1) for EVERY c, which is the substantive point: at delta_n asymp n^{-1/2}
+#     nothing binds, so n^{-1/2} is not where the threshold is.
+#   * operation "substitute(d=c*n**(-1/3))" gives
+#     n^{-1/2} + 2 c n^{-1/3} + c^2 n^{-1/6}, MISMATCH -- and that actual end is o(1)
+#     for every c, so n^{-1/3} is strictly INSIDE the admissible region.  Taken with
+#     the previous item, the two arms bracket the threshold from below and the
+#     identity itself pins it from above: the spec discriminates WHICH exponent is
+#     critical, not merely that some exponent is.
+#
+# PREDICTED: MATCH.  Binomial expansion of a square in one variable followed by
+# automatic combination of like powers of a positive base; sp.expand suffices.
+variables:
+  n:
+    domain: positive
+  d:
+    domain: positive
+  c:
+    domain: real
+start: "sqrt(n)*(n**(-1/2) + d)**2"
+operation: "substitute(d=c*n**(-1/4))"
+claimed_end: "c**2 + 2*c*n**(-1/4) + n**(-1/2)"

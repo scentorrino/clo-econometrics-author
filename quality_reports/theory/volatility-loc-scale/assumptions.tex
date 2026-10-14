@@ -1,0 +1,254 @@
+% ============================================================================
+%  Assumptions invoked by the corrected Proposition prp:lepskii
+%  (Lepskii oracle inequality for the location-scale LF estimator)
+%
+%  These assumptions either restate the source-paper assumptions
+%  (\ref{ass:identif} -- \ref{ass:restrvarth}; \ref{ass:app1} -- \ref{ass:app6})
+%  or strengthen / replace them as required by the audit patches.
+%  Labels are stable across results.tex / proofs.tex.
+% ============================================================================
+
+% ----------------------------------------------------------------------------
+% Restated identification scaffolding (verbatim from the source paper)
+% ----------------------------------------------------------------------------
+
+\begin{assumption}[Local identification]\label{ass:identif}
+$b_\dagger \in \mathcal{A}'_b$ and the model is locally identified on
+$\mathcal{B}_{b_\dagger}$ in the sense of Proposition~\ref{prp:onetoone}.
+\end{assumption}
+
+\begin{assumption}[Initial condition]\label{ass:initcond}
+$b_0 \in \mathcal{B}_{b_\dagger}$.
+\end{assumption}
+
+\begin{assumption}[Source condition]\label{ass:sourcecond}
+Under Assumption~\ref{ass:initcond}, there exists $\beta \in (0, 2]$ such that
+$b'_0 - b'_\dagger = (\mathsf{A}^*_{b_\dagger}\mathsf{A}_{b_\dagger})^{\beta/2} v$
+for some $v \in \mathcal{H}$ with $\|v\| = 1$.
+\end{assumption}
+
+\begin{assumption}[Link condition]\label{ass:linkcond}
+For some $a > 1$, $(\mathsf{T}'^{*}_{b_\dagger}\mathsf{T}'_{b_\dagger})^{1/(2a)}
+\sim D^{-1}$ in the matched Hilbert-scale sense of \citet{florens2012}.
+\end{assumption}
+
+\begin{assumption}[Frechet differentiability of $\hat{\mathsf T}$]\label{ass:frediff}
+\textup{(i)} $\hat{\mathsf T}$ is Frechet differentiable for all
+$b \in \mathcal{A}'$ in the $b$-coordinate system.
+% PATCH-R3-G2-a: C^2 Fréchet hypothesis on the Hessian-like operator.
+\textup{(ii)} The map $b \mapsto \hat{\mathsf T}'^{*}_{b}\hat{\mathsf T}'_{b}$
+is twice Fr\'echet differentiable on $\mathcal{B}_{b_\dagger}$, with first
+Fr\'echet derivative denoted $\mathsf{L}_{b}$ (a bounded operator on the
+ambient Hilbert space) and second Fr\'echet derivative bounded in
+operator norm by a deterministic constant $L'_{\mathsf T} < \infty$ on
+$\mathcal{B}_{b_\dagger}$, uniformly on the event $\Omega'_n$ of
+Lemma~\ref{lem:propagator}. Equivalently, there exists
+$L'_{\mathsf T} < \infty$ such that, for all $b, b' \in \mathcal{B}_{b_\dagger}$
+on $\Omega'_n$,
+\[
+\bigl\|\hat{\mathsf T}'^{*}_{b}\hat{\mathsf T}'_{b}
+- \hat{\mathsf T}'^{*}_{b'}\hat{\mathsf T}'_{b'}
+- \mathsf{L}_{b'}(b - b')\bigr\|
+\;\le\; L'_{\mathsf T}\,\|b - b'\|^{2}.
+\]
+% PATCH-R4-B5: disclose explicit dependence list for L'_T.
+The constant
+$L'_{\mathsf T} = L'_{\mathsf T}(R^\sigma, M_1, M_2, M_3,
+\kappa_n^{-1}, \text{kernel-envelope}) < \infty$ on $\Omega'_n$.
+The $\kappa_n^{-1}$-factor enters through the Hessian of
+$\hat{\mathsf T}'^{*}_{b}\hat{\mathsf T}'_{b}$ along the
+$f_U^{-1}$-direction; under
+Assumption~\ref{ass:restrvarth}, the product
+$\kappa_n^{-1}\delta_n^{2}M_n^{2}V(M_n)^{2} = o(1)$ at $m = M_n$, so
+the propagator-residual absorption in Step~3 of
+Proposition~\ref{prp:lepskii} closes.
+\end{assumption}
+
+% ----------------------------------------------------------------------------
+% PATCH-M6 / PATCH-CR1 / PATCH-MN10:
+%   Strengthened operator-rate assumption with $L^{2l}$ moments
+%   (replaces source ass:rateconv).
+% ----------------------------------------------------------------------------
+
+\begin{assumption}[$L^{2l}$ rates of convergence of estimated operators]\label{ass:rateconv}
+\textup{(i)} There exist sequences $\delta_n, \gamma_n \to 0$ as
+$n \to \infty$ and an integer $l_0 \ge 4$ such that, for every integer $l$
+with $1 \le l \le l_0$,
+\[
+E\,\bigl\|\hat{\mathsf T}(b_\dagger) - \mathsf T(b_\dagger)\bigr\|^{2l}
+\;=\; O\!\bigl(\delta_n^{2l}\bigr),
+\qquad
+E\,\bigl\|\hat{\mathsf A}^{*}_{b_\dagger} - \mathsf A^{*}_{b_\dagger}\bigr\|^{2l}
+\;=\; O\!\bigl(\gamma_n^{2l}\bigr).
+\]
+The rates $(\delta_n, \gamma_n)$ specialise to the discrete-$W$ (FI) or
+continuous-$W$ (MI) regime as in the source paper.
+
+% PATCH-R3-G3 (NEW): hypercontractive / moment-equivalence clause on iterates.
+\textup{(iv)} \emph{(Moment equivalence on iterates.)} There exists a
+finite constant $C_q > 0$ such that, for every integer $q \ge 1$ and every
+$m \le M_n$,
+\[
+\bigl(E\,\|\hat e_m\|^{2q}\bigr)^{1/q}
+\;\le\; C_q\, E\,\|\hat e_m\|^{2},
+\qquad
+\hat e_m := \hat b'_m - b'_\dagger,
+\]
+and the same inequality holds with $\hat e_m$ replaced by
+$\mathsf T'_{b_\dagger}\hat e_m$, with constant $C_q$ that may differ but
+is finite for every $q \le 2l_0$. Equivalently, the iterate $\hat e_m$ is
+sub-Gaussian on $\mathcal{B}_{b_\dagger}$ with proxy variance
+$C_1\,E\|\hat e_m\|^{2}$.
+\end{assumption}
+
+\begin{remark}[Justification of Assumption \ref{ass:rateconv}(iv)]\label{rem:hyper}
+The moment-equivalence clause is plausible under the surrounding
+assumptions but is imposed, not derived. Under
+Assumption~\ref{ass:subgauss} plus the kernel-density-based construction
+of $\hat e_m$, the four-term decomposition
+$\hat e_m = I_m + II_m + III_m + IV_m$ used in
+Lemma~\ref{lem:itervar} has each term sub-Gaussian individually:
+Term~$II_m$ and Term~$IV_m$ are sub-Gaussian kernel sample-averages
+weighted by the bounded LF spectral filter (Hansen, 2008,
+Theorem~6); Term~$III_m$ is a quadratic Fr\'echet remainder
+deterministically bounded on $\Omega_n$; Term~$I_m$ is initial-condition
+bias built from sub-Gaussian pilots. Sums of sub-Gaussian variables are
+sub-Gaussian, and the moment-equivalence
+$(E|X|^{2q})^{1/q} \le C_q\,E|X|^2$ for a sub-Gaussian real random
+variable $X$ is the standard hypercontractive principle of
+\citet[Theorem~2.5.2]{vershynin2018}, with the foundational entropy
+form in \citet[Ch.~2]{boucheron2013} as supporting context. We state
+\textup{(iv)} as an assumption rather than derive it because the
+precise sub-Gaussian proxy of the sum requires control of
+cross-correlations between the four terms that is technical and not
+informative for the broader Lepskii argument.
+\end{remark}
+
+\begin{assumption}[Tuning parameters]\label{ass:restrvarth}
+With $\kappa_n = \inf_{|u|\le \ell_n} f_U(u)$ and $\epsilon \in (0, 1/2)$:
+\textup{(i)} $\delta_n N = O(1)$ and $\gamma_n N^{(\epsilon+1)/2} = o(1)$;
+\textup{(ii)} $(\delta_n \vee \gamma_n)\sqrt{N}/(h_u^2 \kappa_n) = o(1)$;
+\textup{(iii)} $N^{-\epsilon/2}/(h_u^2 \kappa_n) = O(1)$.
+\end{assumption}
+
+% ----------------------------------------------------------------------------
+% PATCH-M5: uniform-in-x bound on phi_dagger
+% (this is the strengthened version of ass:unifbd from the source paper).
+% ----------------------------------------------------------------------------
+
+\begin{assumption}[Uniform bounds; strengthened]\label{ass:unifbd}
+\textup{(i)} The conditional density $f_{Y\mid X,W}(y\mid x,w)$ is uniformly
+bounded above by $M_1 < \infty$.
+\textup{(ii)} $|\partial_y f_{Y\mid X,W}(y\mid x,w)| \le M_2$ and
+$f_{X\mid W}(x\mid w) \le M_3 f_X(x)$.
+\textup{(iii)} The scale and location functions are uniformly bounded:
+$0 < R_\sigma \le \sigma_\dagger(x) \le R^\sigma < \infty$ and
+$|\varphi_\dagger(x)| \le R^\varphi < \infty$ for all $x$. Equivalently,
+$-\log R^\sigma \le \omega_\dagger(x) \le -\log R_\sigma$ and
+$\|g_\dagger\|_\infty < \infty$.
+\textup{(iv)} $E[U^4] \le m_4 < \infty$.
+\end{assumption}
+
+% Auxiliary regularity from the source paper (restated verbatim for
+% completeness; cited as a block).
+
+\begin{assumption}[Density and kernel regularity]\label{ass:app1to3}
+The conditional density $f_{Y,X\mid W}$ and the marginal $f_{Y,X}$ are
+$d$-times continuously differentiable and uniformly bounded; $f_{X,W}$, $f_X$,
+$f_W$ are bounded away from $0$ and $\infty$; $f_U$ is absolutely continuous
+and $d$-times continuously differentiable; the kernels $C_h$ (continuous $W$)
+and $L_{h_w}$ (discrete $W$) satisfy the order-$\rho$ and Aitchison-Aitken
+conditions of \textup{ass:app3a}--\textup{ass:app3b} in the source paper.
+\end{assumption}
+
+\begin{assumption}[Residual density floor]\label{ass:app4}
+There exists a sequence $\ell_n$, either bounded or slowly diverging,
+such that $\kappa_n := \inf_{|u|\le\ell_n} f_U(u) > 0$ with
+$\kappa_n^{-1} = o(n^c)$ for some $c > 0$.
+\end{assumption}
+
+\begin{assumption}[Bandwidth conditions]\label{ass:app5}
+$h_u, h_w, h_x \to 0$ with $(n h_x^p h_u^3)^{-1} \ln n \to 0$.
+\end{assumption}
+
+\begin{assumption}[LF qualification]\label{ass:app6}
+There exist $M_\eta < \infty$ and $\eta > 0$ such that, for the LF spectral
+filter, $\sup_{N^{-1} \le t \le \|\mathsf T'_{b_\dagger}\|^2}
+t^{\beta/2 - \eta} \le M_\eta N^{-\beta/2} N^\eta$.
+\end{assumption}
+
+% ----------------------------------------------------------------------------
+% PATCH-CR1: Sub-Gaussian concentration assumption.
+% This is the assumption that replaces the (unsupported) appeal to ass:app4
+% for sub-exponential tails in the original proof.
+% ----------------------------------------------------------------------------
+
+\begin{assumption}[Sub-Gaussian conditional response]\label{ass:subgauss}
+There exists $\sigma_Y^2 < \infty$ such that, for all $(x,w)$ and all
+$t \in \IR$,
+\[
+E\!\bigl[\exp\bigl(t\,(Y - E[Y \mid X = x, W = w])\bigr) \,\big|\, X = x, W = w\bigr]
+\;\le\; \exp\!\bigl(\tfrac12\,\sigma_Y^2\, t^2\bigr).
+\]
+Equivalently, $U \mid X, W$ is sub-Gaussian with variance proxy
+$\sigma_Y^2 / R_\sigma^2$ (this equivalence uses Assumption
+\ref{ass:unifbd}\textup{(iii)}).
+\end{assumption}
+
+% ----------------------------------------------------------------------------
+% PATCH-CR2: A-priori boundedness of iterates in derivative coordinates.
+% Two equivalent options were on the table; we adopt the moment-bound version
+% (uniformly bounded $L^4$ norm of iterates) because it is the cleanest to
+% propagate in the off-event bookkeeping.
+% ----------------------------------------------------------------------------
+
+\begin{assumption}[Uniform $L^4$ bound on iterates]\label{ass:iterbd}
+There exists a finite constant $C_4 \ge 1$ such that, for all $n$ large enough,
+\[
+\sup_{0 \le m \le M_n} E\,\bigl\|\hat b'_m\bigr\|^4 \;\le\; C_4.
+\]
+% PATCH-R4-B4: derivation chain remark.
+Under Assumption~\ref{ass:rateconv}\textup{(i)} at $l_0 \ge 4$ and
+Assumption~\ref{ass:unifbd}, the $L^4$ envelope $C_4$ is finite and
+bandwidth-free; the assumption packages the resulting uniform bound
+without re-deriving the chain.
+\end{assumption}
+
+% ----------------------------------------------------------------------------
+% PATCH-MN9: Growth of the maximal Lepskii index.
+% ----------------------------------------------------------------------------
+
+% PATCH-R3-G2-d: tightened M_n growth from delta_n^{-2} to delta_n^{-1}.
+\begin{assumption}[Maximal Lepskii index]\label{ass:mn-growth}
+The Lepskii horizon satisfies $M_n \to \infty$ with $M_n = O(\delta_n^{-1})$.
+In particular, $m^*(n) \le M_n$ eventually whenever the source-condition
+exponent satisfies $\beta_\epsilon \ge 1$, where
+$m^*(n) := \arg\min_{1 \le m \le M_n}[B(m) + \tilde V(m)]$ is the oracle
+balancing index defined in Proposition \textup{\ref{prp:lepskii}}.
+\end{assumption}
+
+\begin{remark}[Scope trade-off implied by the tightened $M_n$]\label{rem:scope}
+% PATCH-R3-G2-e: spell out the adaptivity scope restriction.
+Round-2 of this proof attempted $M_n \asymp \delta_n^{-2}$. The rate
+algebra in the propagator-residual absorption step (Step~3 of
+Proposition~\ref{prp:lepskii}) does \emph{not} close at that horizon
+even under the strengthened
+Assumption~\ref{ass:rateconv}\textup{(iv)}: a quadratic-remainder
+argument (replacing the first-order Lipschitz step \eqref{eq:Tlip-historical} by the
+$C^2$-Fr\'echet hypothesis of
+Assumption~\ref{ass:frediff}\textup{(ii)}) requires
+$\delta_n^{2} m^{2} V(m)^{2} = o(1)$ at $m = M_n$; with
+$V(M_n)^2 \asymp \delta_n^{2}M_n$, this forces $M_n = O(\delta_n^{-1})$.
+The cost of this tightening is that the calibrated optimal index
+$m^{*}(n) \asymp \delta_n^{-2/(\beta_\epsilon + 1)}$ of
+Corollary~\ref{cor:rates} satisfies $m^{*}(n) \le M_n$ only when
+$\beta_\epsilon \ge 1$. For source-condition exponents
+$\beta_\epsilon < 1$ (very rough source conditions), the optimal index
+exceeds $M_n$ and the Lepskii rule is \emph{not adaptive} under the
+tightened Assumption~\ref{ass:mn-growth}; instead, the rule selects
+$\hat m = M_n$ and the realised rate becomes $V(M_n)$, strictly slower
+than the oracle. Lepskii adaptation under
+Proposition~\ref{prp:lepskii} therefore covers the regime
+$\beta_\epsilon \ge 1$ only --- a substantive narrowing of the result's
+scope relative to the source paper's stated theorem.
+\end{remark}

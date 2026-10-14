@@ -1,0 +1,14 @@
+claim_id: frechet-deltahbound-constant
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (eq:deltahbound), with cpi = max_j ||f_{X_j}/pi||_inf"
+# CLAIM (constant half of eq:deltahbound).  2 int h^2 (f_{X_1} + f_{X_2}) dx
+# <= 2 int h^2 (cpi*pi + cpi*pi) dx = 4 cpi int h^2 pi dx, i.e. the bound picks
+# up cpi ONCE PER PERIOD and the leading 2 from (a-b)^2 <= 2a^2 + 2b^2.
+# P denotes int h^2 pi dx.
+variables:
+  cpi:
+    domain: positive
+  P:
+    domain: positive
+start: "2*(cpi*P + cpi*P)"
+operation: none
+claimed_end: "4*cpi*P"

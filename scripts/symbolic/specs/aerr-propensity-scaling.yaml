@@ -1,0 +1,17 @@
+claim_id: aerr-propensity-scaling
+source: "quality_reports/theory/panel-npiv-discrete/proofs_partH.tex, proof of lem:aerr Step 3 ('the second factor is O(h_u^{-1/2}) and the third is O(h_x^{-1/2}) ... hence O_P(r_n (h_x h_u)^{-1/2})'), and results_partH.tex eq:gamman fourth term"
+# CLAIM, AND IT IS A CORRECTION.  An earlier draft asserted that the bandwidth
+# factors CANCEL in the propensity component of the operator-estimation error,
+# leaving O_P(r_n).  THEY DO NOT.  The two factors are
+#     || h_u^{-1} C_{h_u}(. - u_i, 1) ||_{L2(Pi_u)}
+#         = h_u^{-1} ( h_u * int Theta^2 )^{1/2}   = O(h_u^{-1/2}),
+#     || varpi^d_i ||_{L2(dx)}                      = O(h_x^{-1/2}),
+# by the substitutions w = h_u varsigma and x = X_ij + h_x varsigma.  Their
+# PRODUCT is O((h_x h_u)^{-1/2}), NOT O(1).  This spec mechanises the first of
+# the two, which is the one that was mis-stated: h_u^{-1} * h_u^{1/2} = h_u^{-1/2}.
+variables:
+  h_u:
+    domain: positive
+start: "h_u**(-1) * (h_u)**(Rational(1,2))"
+operation: none
+claimed_end: "h_u**(-Rational(1,2))"

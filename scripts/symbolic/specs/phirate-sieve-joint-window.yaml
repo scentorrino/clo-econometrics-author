@@ -1,0 +1,46 @@
+claim_id: phirate-sieve-joint-window
+source: "quality_reports/theory/panel-npiv-discrete/results.tex, prp:phirate hypothesis (P-d) and eq:lxwindow; assumptions.tex smoothness-budget table, last two rows"
+# CLAIM.  Two windows for the sieve dimension L_x must be read together, and
+# they give DIFFERENT smoothness thresholds.  Write delta-hat_n = n^{-alpha},
+# h_u ~ delta-hat_n^{1/p_K} with p_K = 8, so h_u = n^{-alpha/8}.
+#
+#   (P-d)  eq:entropysieve       L_x ln n = o(n^{1 - 2 alpha})
+#                                 ==>  UPPER end, exponent 1 - 2 alpha.
+#   (P-c)  R L_x^{-s} = O(h_u delta-hat_n) = O(n^{-9 alpha/8})
+#                                 ==>  LOWER end, exponent 9 alpha/(8 s).
+#   A8's lower end   L_x >> n^{1/(2 s)}
+#                                 ==>  LOWER end, exponent 1/(2 s).
+#
+# Non-emptiness of each window is the ordering of the exponents:
+#   (P-c) ^ (P-d)      non-empty iff  9 alpha/(8 s) < 1 - 2 alpha
+#                      iff  s > 9 alpha / (8 (1 - 2 alpha))        [eq:lxwindow]
+#   A8  ^ (P-d)        non-empty iff  1/(2 s) < 1 - 2 alpha
+#                      iff  s > 1 / (2 (1 - 2 alpha)).
+#
+# THE CLAIM VERIFIED HERE is the DIFFERENCE of the two thresholds:
+#       1/(2(1-2a)) - 9a/(8(1-2a))  =  (4 - 9 a) / (8 (1 - 2 a)),
+# which is STRICTLY POSITIVE for every alpha < 4/9 (and 1 - 2 alpha > 0 holds
+# always, alpha < 1/2 by A5(i)).  So A8's LOWER END, not (P-c), is the binding
+# constraint at every configuration this paper contemplates, and dropping it --
+# which prp:phirate now does, citing A8 by clause -- is what keeps the window
+# non-empty.
+#
+# NUMERICAL INSTANCES, recorded because this is the arithmetic that drifted.
+#   alpha = 3/8   (BOUNDARY configuration, mu = 1, d_Z = 3, r = 4.5):
+#       (P-c) ^ (P-d)  needs s > 27/16   = 1.6875
+#       A8    ^ (P-d)  needs s > 2
+#       difference     = (4 - 27/8)/(8 * 1/4) = (5/8)/2 = 0.3125 = 2 - 1.6875  OK
+#       The block recorded s > 1.75 for this configuration.  1.75 clears the
+#       first line and FAILS the second: with A8 in full the window is EMPTY,
+#       n^{0.2857} against n^{0.25}.
+#   alpha = 0.32  (FRONTIER-CLEARING configuration, mu = 2, s = 3, a = 3/4):
+#       (P-c) ^ (P-d)  needs s > 1
+#       A8    ^ (P-d)  needs s > 1/(2*0.36) = 1.3889
+#       difference     = (4 - 2.88)/(8 * 0.36) = 1.12/2.88 = 0.3889  OK
+#       s = 3 clears both with room.
+variables:
+  alpha:
+    domain: positive
+start: "1/(2*(1 - 2*alpha)) - 9*alpha/(8*(1 - 2*alpha))"
+operation: none
+claimed_end: "(4 - 9*alpha)/(8*(1 - 2*alpha))"

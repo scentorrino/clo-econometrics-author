@@ -1,0 +1,52 @@
+claim_id: rstar-heinz-gap-design
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (rem:h6bandwidth(5): 'The frontier-clearing configuration is (mu, s, a, alpha) = (2, 3, 3/4, 0.32)'), read against results.tex (rem:pasrc(4): '(a)+(b) at index s/(2a) give (P-a.3) at mu = s/(2a) with R_* <= c R') and results.tex (the Heinz range 0 <= 2mu <= 1)"
+# WHAT THIS CHECKS.  The Heinz gap of spec rstar-heinz-gap, evaluated at the ONE
+# configuration this block calls admissible, so that the failure is a number and
+# not a uniform statement a reader might suspect of being vacuous at the design
+# point.  Under H1 the source index is mu = s/(2a); at the frontier-clearing
+# configuration (s, a) = (3, 3/4):
+#
+#     mu  =  s/(2a)  =  3/(3/2)  =  2 ,      2mu - 1  =  2*(3/(2*(3/4))) - 1  =  3 .
+#
+# So at the design point the interpolation exponent p = 2mu is 4, against a Heinz
+# ceiling of 1: it overshoots by 3, i.e. by four times the whole admissible range.
+# The bridge R_* <= c R that rem:pasrc(4) prices is not marginally unavailable at
+# the design; it is unavailable by a factor of four.
+#
+# WHY THIS SPEC AND NOT ONLY THE UNIFORM ONE.  rstar-heinz-gap shows the excess
+# exceeds 2/3 at every admissible mu.  A referee may reasonably ask whether the
+# block's own working configuration sits near that infimum, in which case a
+# sharper interpolation result might rescue the bridge and the two radii could be
+# recombined.  It does not: mu = 2 is far above 5/6.  The spec also cross-checks
+# that H1's mu = s/(2a) is CONSISTENT with rem:h6bandwidth(5)'s mu = 2 -- the
+# configuration is quoted as a quadruple (mu, s, a, alpha) with mu listed
+# separately, so the consistency of mu with (s, a) is an arithmetic claim the
+# paper makes implicitly and does not display.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAP.  (a) It does not assume H1 supplies mu
+# for (P-a.3)'s operator: results.tex is explicit that H1's matching is
+# about the POPULATION operator A_cond on V while (P-a.3) is about a realised,
+# finite-rank, sieve-compressed operator at a random base point, so "H1 therefore
+# never delivered mu = s/(2a) for the operator (P-a) is about".  The identity
+# mu = s/(2a) is STRUCK from prp:phirate's hypothesis line (assumptions.tex).
+# This spec verifies the arithmetic of the CONDITIONAL statement rem:pasrc(4)
+# prices, not a live derivation.  (b) It does not check the four clearances that
+# make (2, 3, 3/4, 0.32) admissible (eq:frontier, (P-f), eq:lxwindow, A8 in full);
+# those are separate conditions, three of which have their own specs.
+#
+# FALSIFICATION (hand-computed).  claimed_end "2" leaves residual 1; MISMATCH.
+# Substituting (s, a) = (3, 1) gives 2*(3/2) - 1 = 2, not 3; MISMATCH.  So neither
+# the target nor the configuration can be perturbed silently.  Substituting
+# (s, a) = (1, 1) gives 2*(1/2) - 1 = 0 -- the boundary of the Heinz range -- which
+# would MISMATCH against 3, confirming the spec is sensitive to exactly the
+# quantity at issue.
+#
+# PREDICTED: MATCH.
+variables:
+  s:
+    domain: positive
+  a:
+    domain: positive
+start: "2*(s/(2*a)) - 1"
+operation: "substitute(s=3, a=3/4)"
+claimed_end: "3"

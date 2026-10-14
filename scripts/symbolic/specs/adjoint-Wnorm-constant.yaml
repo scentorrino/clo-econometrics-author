@@ -1,0 +1,28 @@
+claim_id: adjoint-Wnorm-constant
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (lem:adjoint(ii), the constant in ||W||)"
+# CLAIM.  Composing the three bounds of lem:adjoint Step 2 --
+#   (1) pointwise Cauchy-Schwarz in Pi_t:   |W ell|^2 <= varpi^2 * cw2 * S,
+#   (2) the measure change of adjoint-W-measure-change,
+#   (3) f varpi <= f0bar * varpibar  by (P7b) and B1(iv.a),
+# gives  E[(W ell)^2] <= cw2 * f0bar * varpibar * ||ell||^2_{L^2(Pi)}, hence
+#        ||W|| <= sqrt( f0bar * varpibar * cw2 ),
+# with cw2 = int bar-w^2 dPi_t.  This spec substitutes the three bounds into the
+# composed expression and checks the constant, so that a later edit that drops
+# varpibar or squares it is caught.  NOTE varpibar appears to the FIRST power,
+# not the second: one factor of varpi went into the measure at step (2).
+variables:
+  cw2:
+    domain: positive
+  fdu:
+    domain: positive
+  varpi:
+    domain: positive
+  f0bar:
+    domain: positive
+  varpibar:
+    domain: positive
+  lnorm2:
+    domain: positive
+start: "cw2*(fdu*varpi)*lnorm2"
+operation: "substitute(fdu=f0bar, varpi=varpibar)"
+claimed_end: "cw2*f0bar*varpibar*lnorm2"

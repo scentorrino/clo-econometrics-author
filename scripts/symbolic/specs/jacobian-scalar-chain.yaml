@@ -1,0 +1,32 @@
+claim_id: jacobian-scalar-chain
+source: "quality_reports/strategy/panel-npiv-discrete/proof_strategy_memo.md Sec.1.1 item 8 (J = E[dZ dZ'] + E[Wtilde ell_star dZ']); consumed by A3 (assumptions.tex ass:rank)"
+# CLAIM.  Differentiating the moment function in theta,
+#     psi(theta) = dZ * dU(theta) + Wt * L( dU(theta), dZ ),
+#     dU(theta)  = dY - dphi - dZ * theta,      so   d dU / d theta = -dZ,
+# the chain rule gives
+#     d psi / d theta = -dZ^2 - Wt * ell( dU(theta), dZ ) * dZ,   ell := partial_u L.
+# THE SURROGATE.  verify.py's expression grammar has no generic Function, so L
+# is instantiated as L(u,z) = l0*u + l1*u^2/2, whence ell(u,z) = l0 + l1*u.  That
+# is faithful for the purpose: the spec tests the CHAIN-RULE BOOKKEEPING -- the
+# factor -dZ pulled through L's first argument, and the overall sign -- which is
+# exactly what a Jacobian error would break, and it tests it for an ell that
+# genuinely varies with u (l1 != 0), which cor:udep says the true ell_star must.
+# Taking l1 = 0 collapses to the u-constant case of cor:udep.
+variables:
+  dZ:
+    domain: real
+  dY:
+    domain: real
+  dphi:
+    domain: real
+  th:
+    domain: real
+  Wt:
+    domain: real
+  l0:
+    domain: real
+  l1:
+    domain: real
+start: "dZ*(dY - dphi - dZ*th) + Wt*(l0*(dY - dphi - dZ*th) + l1*(dY - dphi - dZ*th)**2/2)"
+operation: "diff(th)"
+claimed_end: "-dZ**2 - Wt*(l0 + l1*(dY - dphi - dZ*th))*dZ"

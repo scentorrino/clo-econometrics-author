@@ -1,0 +1,21 @@
+claim_id: compact-hs-dims
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:compact Steps 1 and 3)"
+# DIMENSION CHECK for the finite-dimensional HS model of compact-hs-piweight.
+# The operator maps the domain space (m grid points, weight matrix Dq, m x m)
+# into the range space (M grid points, weight matrix DP, M x M) through the
+# kernel matrix K (M x m).  The Gram matrix whose trace is the HS norm squared
+# is (SP*K*Sq)' (SP*K*Sq), of size m x m.  This spec exists so dim_check.py can
+# confirm the flow M x m -> m x m independently of any simplification.
+variables:
+  SP:
+    domain: matrix
+    dims: [M, M]
+  K:
+    domain: matrix
+    dims: [M, m]
+  Sq:
+    domain: matrix
+    dims: [m, m]
+start: "(SP*K*Sq).T*(SP*K*Sq)"
+operation: none
+claimed_end: "Sq.T*K.T*SP.T*SP*K*Sq"

@@ -1,0 +1,43 @@
+claim_id: adjoint-transpose-pairing
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:adjoint Step 1, kernel form)"
+# CLAIM.  Step 1 of lem:adjoint asserts that the adjoint of an integral operator
+# with kernel k, taken between L^2(pi) on the domain and L^2(Pi) on the range,
+# is the integral operator with the TRANSPOSED kernel integrated against Pi.
+# The measure-theoretic content is Fubini; the ALGEBRAIC content is the
+# regrouping, and that is what this spec checks in the two-point finite model:
+#   domain points x_1, x_2 with pi-masses q1, q2 (folded into h1, h2 below is
+#   NOT done -- q1, q2 are carried explicitly);
+#   range points (u,t)_1, (u,t)_2 with Pi-masses P1, P2;
+#   kernel k_{ab} = k(range a; domain b).
+# LHS  = <A h, ell>_{L^2(Pi)} = sum_a (sum_b k_ab h_b q_b) ell_a P_a
+# RHS  = <h, A* ell>_{L^2(pi)} = sum_b h_b q_b (sum_a k_ab ell_a P_a)
+# Written scalar-form deliberately: verify.py crashes on symbolic matrix shapes
+# and reports MISMATCH on ZeroMatrix differences, so no matrix object is used.
+variables:
+  k11:
+    domain: real
+  k12:
+    domain: real
+  k21:
+    domain: real
+  k22:
+    domain: real
+  h1:
+    domain: real
+  h2:
+    domain: real
+  l1:
+    domain: real
+  l2:
+    domain: real
+  q1:
+    domain: positive
+  q2:
+    domain: positive
+  P1:
+    domain: positive
+  P2:
+    domain: positive
+start: "(k11*h1*q1 + k12*h2*q2)*l1*P1 + (k21*h1*q1 + k22*h2*q2)*l2*P2"
+operation: expand
+claimed_end: "h1*q1*(k11*l1*P1 + k21*l2*P2) + h2*q2*(k12*l1*P1 + k22*l2*P2)"

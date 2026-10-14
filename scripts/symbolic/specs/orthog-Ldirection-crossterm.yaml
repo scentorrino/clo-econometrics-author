@@ -1,0 +1,30 @@
+claim_id: orthog-Ldirection-crossterm
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:secondord Step 4, clause (iii))"
+# CLAIM.  The (L, varrho) cross derivative of the integrand of orthog-secondorder-six
+# is  d^2 Psi / (dt2 dt3) = -r * D(dU - t1*Dh),  which at t1 = 0 is -r*D(dU).
+# Its EXPECTATION vanishes iff E[D | Delta Z] = 0 -- i.e. iff the DIRECTION
+# satisfies N1, not merely L_star.  That distinction is the content of clause
+# (iii) and it is what makes the term vanish only when the estimator imposes the
+# sample analogue of N1 on L-hat.
+# Taking the t2-derivative from orthog-secondorder-six and differentiating once
+# more in t3 isolates the cross term.
+variables:
+  dU:
+    domain: real
+  Dh:
+    domain: real
+  Wt:
+    domain: real
+  r:
+    domain: real
+  t1:
+    domain: real
+  t3:
+    domain: real
+  d0:
+    domain: real
+  d1:
+    domain: real
+start: "(Wt - t3*r)*(d0*(dU - t1*Dh) + d1*(dU - t1*Dh)**2/2)"
+operation: "diff(t3)"
+claimed_end: "-r*(d0*(dU - t1*Dh) + d1*(dU - t1*Dh)**2/2)"

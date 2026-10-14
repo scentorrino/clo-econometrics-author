@@ -1,0 +1,30 @@
+claim_id: adjoint-W-measure-change
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:adjoint Step 2, the norm bound on the induction map W)"
+# CLAIM.  Step 2 of lem:adjoint bounds
+#     E[(W ell)(Delta U, Delta Z)^2]
+#        <= cw2 * int f_{Delta U}(u) varpi(u)^2 Sell(u) du,   Sell(u) = int ell^2 dPi_t,
+# and then converts the u-integral into an integral against Pi_u by REGROUPING
+# one factor of varpi out of varpi^2 and into the measure:
+#     f * varpi^2 * Sell   =   (f * varpi) * (Sell * varpi),
+# NAME NOTE: the inner integral is called Sell, not S.  verify.py layers its
+# local_dict over SymPy's global namespace, in which S is the singleton registry
+# (S.Zero, S.One, ...); declaring a variable named S invites a parse that is
+# correct today and fragile across SymPy versions.
+# so that the second factor is the L^2(Pi) integrand -- since
+# Pi(du,dt) = varpi(u) du Pi_t(dt) -- and the first factor is what gets bounded
+# by ||bar f_0||_inf ||varpi_u||_inf.
+# THE REGROUPING IS THE STEP THAT USES THE STRENGTHENED B1(iv.a).  Without an
+# absolutely continuous Pi_u there is no varpi to move, the u-integration is not
+# a conditional expectation, and lem:adjoint(ii) has no (Delta U, Delta Z)
+# representative to produce.  This spec records the one line of algebra that the
+# measure-theoretic step reduces to once the density exists.
+variables:
+  fdu:
+    domain: positive
+  varpi:
+    domain: positive
+  Sell:
+    domain: positive
+start: "fdu*varpi**2*Sell"
+operation: none
+claimed_end: "(fdu*varpi)*(Sell*varpi)"

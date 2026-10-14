@@ -1,0 +1,155 @@
+claim_id: rootn-rate-products
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (cor:ratefloor, eq:ratefloor: '||hat theta - theta_dagger|| = O_P( n^{-1/2} + delta_n epsilon_n + delta_n^2 + r_n delta_n + r_n epsilon^L_n )') and results.tex ('eq:rootn is the special case of eq:ratefloor in which every term after the first is o(n^{-1/2})'); the four terms discharged one by one at proofs.tex (thm:rootn Step 4(a)-(d)); the rate definitions at assumptions.tex (A5(ii), delta_n = (hat-delta_n ln n)^{2 mu/(2 mu+1)}), assumptions.tex (A5(iv), epsilon_n and delta_n epsilon_n = o_P(n^{-1/2})), results.tex (thm:rootn (R-c.2), epsilon^L_n and r_n epsilon^L_n = o(n^{-1/2})), and the primitive reading at results.tex (cor:ratefloor(a): 'delta_n = (hat-delta_n ln n)^{2 mu/(2 mu+1)} with hat-delta_n = n^{-r/(2r+d_Z)} and r_n = n^{-r/(2r+d_Z)}')"
+# WHAT THIS FILE IS.  eq:ratefloor is a five-term order list over five rate symbols,
+# and its four products are the single most error-prone object in Part I: they are
+# discharged in four separate places (Step 4(a)-(d)), by four different mechanisms,
+# and the arithmetic is carried in prose.  This spec turns the whole list into ONE
+# identity by evaluating every symbol at its configuration and reading off the five
+# EXPONENTS.  It is the replacement the review named for a demoted spec, on the
+# ground that "this is where an arithmetic error moves a conclusion, and it is
+# exactly the bookkeeping that went wrong" -- the round-10 1/(4 mu), which is
+# rootn-frontier-implies-rndelta's subject and which lives in the fourth of these
+# four products.
+#
+# THE CONFIGURATION.  hat-delta_n = r_n = n^{-alpha} with alpha = r/(2r + d_Z)
+# (A5(i) with A4(iii)); delta_n = (hat-delta_n ln n)^kappa with
+# kappa = 2 mu/(2 mu + 1) (A5(ii), eq:deltalog).  epsilon_n and epsilon^L_n have NO
+# primitive supplier anywhere in the maintained block -- cor:ratefloor(b) says so in
+# terms -- so they are written n^{-beta_e} and n^{-beta_L} with beta_e, beta_L free
+# positive exponents.  Writing them as free exponents is not a modelling choice; it
+# is the honest encoding of "assumed and not derived".
+#
+# THE IDENTITY, AND WHY IT IS NORMALISED BY sqrt(n).  Multiplying eq:ratefloor
+# through by sqrt(n) turns "is this term o(n^{-1/2})?" into "is this exponent
+# negative?", so every term of `claimed_end` displays its own MARGIN:
+#
+#   term                exponent of n            exponent of ln n     margin
+#   ---------------------------------------------------------------------------
+#   n^{-1/2}            0                        0                    -- (the unit)
+#   delta_n epsilon_n   -(kappa alpha + beta_e - 1/2)   kappa    kappa alpha + beta_e - 1/2
+#   delta_n^2           -2 (kappa alpha - 1/4)         2 kappa   2 (kappa alpha - 1/4)
+#   r_n delta_n         -(alpha (1+kappa) - 1/2)       kappa     alpha (1+kappa) - 1/2
+#   r_n epsilon^L_n     -(alpha + beta_L - 1/2)        0         alpha + beta_L - 1/2
+#
+# and eq:ratefloor collapses to eq:rootn exactly when all four margins are positive.
+# Two of the four margins are the subjects of the two companion files:
+# 2 (kappa alpha - 1/4) is rootn-log-absorption's 2 eps, and alpha(1+kappa) - 1/2 is
+# rootn-frontier-implies-rndelta's M.  This file is the bookkeeping that puts them
+# in the same table with the right log exponents attached.
+#
+# THE LOG EXPONENTS ARE THE PART A READER GETS WRONG.  delta_n carries (ln n)^kappa,
+# so delta_n^2 carries (ln n)^{2 kappa} and delta_n epsilon_n and r_n delta_n each
+# carry (ln n)^{kappa}, while r_n epsilon^L_n carries none.  Three different log
+# exponents across four products, from one definition.  A form that pre-split the
+# power would not test this; `start` keeps delta_n as the product power
+# (n^{-alpha} ln n)^kappa so that the log exponent is DERIVED in every one of the
+# three places it appears.  `Ln` is a positive symbol for ln n rather than log(n),
+# for the reason rootn-log-absorption states.
+#
+# THE BOUNDARY TALLY AT kappa alpha = 1/4, COMPUTED RATHER THAN QUOTED, AND IT DOES
+# NOT SAY WHAT THE REVIEW'S ONE-LINE SUMMARY SAID.  The review asked for a
+# falsification arm at kappa alpha = 1/4 "where three of the four must fail".  Read
+# as "fail to be o(n^{-1/2})", that count is WRONG, and the file records the
+# computation rather than the summary.  Substituting alpha = 1/(4 kappa) into the
+# margins above:
+#
+#   delta_n^2         margin  2(1/4 - 1/4) = 0          FAILS.  The n-powers cancel
+#                                                       exactly and (ln n)^{2 kappa}
+#                                                       survives, divergent since
+#                                                       2 kappa > 1 for mu > 1/2.
+#   r_n delta_n       margin  1/(4 kappa) + 1/4 - 1/2
+#                           =  (1 - kappa)/(4 kappa)
+#                           =  1/(8 mu)  >  0           HOLDS.  This is the whole
+#                                                       content of eq:rndeltamargin:
+#                                                       the margin is ATTAINED at the
+#                                                       boundary and is still
+#                                                       strictly positive there.
+#   delta_n epsilon_n margin  beta_e - 1/4              UNDECIDABLE from primitives.
+#   r_n epsilon^L_n   margin  1/(4 kappa) + beta_L - 1/2  UNDECIDABLE from primitives.
+#
+# So exactly ONE of the four fails outright; ONE survives, with margin exactly
+# 1/(8 mu); and TWO are not decidable by arithmetic at all, because their exponents
+# have no primitive supplier and are imposed as hypotheses (A5(iv) and (R-c.2))
+# which remain available at the boundary.  The review's "three of the four" is
+# correct under the DIFFERENT reading "fail to be certified from the primitives" --
+# which is cor:ratefloor(a)/(b)'s own split, listing n^{-1/2}, delta_n^2 and
+# r_n delta_n as having exponents in (mu, r, d_Z) and the other two as "assumed and
+# not derived" -- and it is that reading, not the o(n^{-1/2}) reading, that this
+# file adopts and states.  RECORDED IN FULL BECAUSE THIS IS PRECISELY THE SPECIES OF
+# BOOKKEEPING THAT PRODUCED THE 1/(4 mu) ERROR: a count carried in a sentence.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.
+# (a) It does not certify that eq:ratefloor IS the bound -- that is cor:ratefloor's
+#     proof from eq:rootnid, and it is an ordering argument over four bias terms,
+#     an empirical-process term and a theta-remainder, not an identity.  This file
+#     takes the five-term list as given and prices it.
+# (b) It does not decide any of the four margins' SIGNS.  Signs are inequalities;
+#     the harness compares expressions.  What it certifies is that the margins ARE
+#     the four expressions displayed, so that a sign argument made about them is
+#     made about the right numbers.
+# (c) It does not verify that beta_e and beta_L exist, i.e. that epsilon_n and
+#     epsilon^L_n are polynomial rates at all.  They may be any rates; the
+#     polynomial parameterisation is the one under which the comparison is
+#     arithmetic, and it is the parameterisation cor:ratefloor(c) uses on the
+#     (R-e.2)+(R-c.1) branch where both symbols disappear.
+# (d) It does not check kappa = 2 mu/(2 mu + 1) or alpha = r/(2r + d_Z); both are
+#     free positive symbols here.  The mu-dependence of the r_n delta_n margin is
+#     rootn-frontier-implies-rndelta's file.
+#
+# FALSIFICATION (hand-computed).  Each perturbation targets one exponent, so the
+# residual names the term that moved.
+#   * claimed_end with "n**(-(kappa*alpha - 1/4))" in place of
+#     "n**(-2*(kappa*alpha - 1/4))" -- the delta_n^2 margin not doubled, i.e.
+#     forgetting that delta_n is SQUARED -- leaves residual
+#     Ln^{2 kappa} ( n^{-2(kappa alpha - 1/4)} - n^{-(kappa alpha - 1/4)} ), nonzero;
+#     MISMATCH.
+#   * claimed_end with "Ln**(2*kappa)" on the r_n delta_n term in place of
+#     "Ln**kappa" -- two logarithms where there is one -- leaves residual
+#     n^{-(alpha(1+kappa) - 1/2)} ( Ln^{kappa} - Ln^{2 kappa} ), nonzero; MISMATCH.
+#     This is the error class that produced the round-10 constant: a log exponent
+#     read off the wrong product.
+#   * claimed_end with "Ln**kappa" appended to the r_n epsilon^L_n term -- a
+#     logarithm on the one product that carries none -- leaves residual
+#     n^{-(alpha + beta_L - 1/2)} ( 1 - Ln^{kappa} ), nonzero; MISMATCH.
+#   * claimed_end with "n**(-(alpha*(1+kappa) - 1))" in place of
+#     "n**(-(alpha*(1+kappa) - 1/2))" -- the normalisation read at n^{-1} rather
+#     than n^{-1/2} -- leaves a nonzero residual on that term alone; MISMATCH.
+#   * THE BOUNDARY ARM.  Appending ", alpha=1/(4*kappa)" to the operation, so that
+#     the substitution list ends by imposing kappa alpha = 1/4, leaves a MISMATCH
+#     against the general claimed_end -- necessarily, since claimed_end still
+#     carries a free alpha -- and the printed ACTUAL END is the boundary table
+#         1 + n^{1/4 - beta_e} Ln^kappa + Ln^{2 kappa}
+#           + n^{-(1-kappa)/(4 kappa)} Ln^kappa + n^{1/2 - 1/(4 kappa) - beta_L} ,
+#     whose third term has lost its power of n entirely and whose fourth has
+#     exponent -(1-kappa)/(4 kappa) = -1/(8 mu).  Running that perturbation and
+#     reading the actual end is the intended way to consume the boundary tally
+#     above; the MISMATCH is expected and is not evidence about the paper.
+#
+# PREDICTED: MATCH.  The reduction needs sp.expand's power_base pass to split the
+# three occurrences of (n^{-alpha} Ln)^{kappa or 2 kappa}, which fires because both
+# factors are declared positive, and its power_exp pass to put both sides' n-powers
+# in the same form; the remaining steps are automatic combination of like powers.
+variables:
+  n:
+    domain: positive
+  Ln:
+    domain: positive
+  alpha:
+    domain: positive
+  kappa:
+    domain: positive
+  beta_e:
+    domain: positive
+  beta_L:
+    domain: positive
+  dl:
+    domain: positive
+  rn:
+    domain: positive
+  ep:
+    domain: positive
+  epL:
+    domain: positive
+start: "sqrt(n)*(n**(-1/2) + dl*ep + dl**2 + rn*dl + rn*epL)"
+operation: "substitute(dl=(n**(-alpha)*Ln)**kappa, rn=n**(-alpha), ep=n**(-beta_e), epL=n**(-beta_L))"
+claimed_end: "1 + n**(-(kappa*alpha + beta_e - 1/2))*Ln**kappa + n**(-2*(kappa*alpha - 1/4))*Ln**(2*kappa) + n**(-(alpha*(1+kappa) - 1/2))*Ln**kappa + n**(-(alpha + beta_L - 1/2))"

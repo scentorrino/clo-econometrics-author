@@ -1,0 +1,41 @@
+claim_id: cap-hu-exponent-c5i
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (C5'(i) as amended: p_K = 8 and h_u asymp sd(Delta U) hat-delta_n^{1/p_K} = sd(Delta U) n^{-alpha/8}) and assumptions.tex ('h_u ~ n^{-alpha/8} = n^{-0.04}'); consumed at results.tex"
+# WHAT THIS CHECKS.  The first of the three exponents that the eq:cap repricing
+# reads off the configuration: that C5'(i) at alpha = 0.32 gives h_u asymp
+# n^{-0.04}, i.e.
+#
+#     (n^{-alpha})^{1/p_K}  at  alpha = 8/25, p_K = 8   is   n^{-1/25} ,
+#
+# since (8/25) * (1/8) = 1/25 = 0.04.
+#
+# WHY IT IS WORTH PINNING.  This exponent is the one the round changed.  Through
+# round 9 the block set h_u asymp n^{-1/16}, matching the smoothing bias h_u^{p_K}
+# to the STOCHASTIC FLOOR n^{-1/2} (spec bandwidth-hu-pk8 verifies that older
+# arithmetic and is retained as the record of the retired choice).  C5'(i) as
+# amended matches the bias to hat-delta_n instead, which is the level Step 6
+# actually needs, and the exponent becomes alpha-DEPENDENT -- assumptions.tex
+# and rem:h6bandwidth(2') both flag that as a real cost.  0.04 versus 1/16 = 0.0625
+# is the numerical difference, and every downstream number in the eq:cap repricing
+# (0.08, 0.44, 0.208, 0.52, 0.848, 1.16) inherits it.
+#
+# WHAT THIS DOES NOT CHECK.  It drops the deterministic factor sd(Delta U), which
+# C5'(i) carries and which does not affect the exponent.  It does not check that
+# p_K = 8 is the right kernel order (that is C2'(ii) and A10's p_K >= s - 1/2),
+# and it does not check that matching the bias to hat-delta_n rather than n^{-1/2}
+# is correct -- that is rem:h6bandwidth(2), an argument and not an identity.
+#
+# FALSIFICATION (hand-computed).  claimed_end "n**(-1/16)" (the retired round-9
+# bandwidth) leaves residual n^{-1/25} - n^{-1/16}, nonzero for n > 1; MISMATCH.
+# Substituting alpha = 3/8 (the BOUNDARY configuration) gives n^{-3/64}, not
+# n^{-1/25}; MISMATCH.  So the spec distinguishes the amended bandwidth from both
+# the retired one and the other running configuration.
+#
+# PREDICTED: MATCH.
+variables:
+  n:
+    domain: positive
+  alpha:
+    domain: positive
+start: "(n**(-alpha))**(1/8)"
+operation: "substitute(alpha=8/25)"
+claimed_end: "n**(-1/25)"

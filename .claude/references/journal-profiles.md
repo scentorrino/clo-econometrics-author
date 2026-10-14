@@ -186,6 +186,15 @@ Each journal profile includes a **Referee pool** that weights which dispositions
 **Typical concerns:** "Is the measurement precise enough?" "Have you tested every assumption?" "What about measurement error in [variable]?"
 **Referee pool:** MEASUREMENT (high), SKEPTIC (high), CREDIBILITY (high), THEORY (medium), STRUCTURAL (low), POLICY (low)
 
+### Oxford Bulletin of Economics and Statistics (OBES)
+**Focus:** Applied economics and **applied econometrics** — panel data, time series, cointegration, and estimation methods aimed at practitioners. Published by Wiley for the Department of Economics, University of Oxford.
+**Bar:** A method other people will *use*. OBES has a real methodological pedigree — its tradition runs through cointegration and ML estimation of long-run relations (Johansen & Juselius), robust within-group inference for panels (Arellano), and the panel unit-root / panel-cointegration special issue (Maddala & Wu; Pedroni). But the identity of the journal is applied: the readership is empirical economists, not econometric theorists. A theorem is welcome; a theorem with no visible route to practice is not.
+**Domain referee adjusts:** Ask "who runs this, on what data, tomorrow?" Panel-data methodology is squarely in-scope and historically well-received. The contribution must be legible to someone who will not read the proofs — the introduction, the estimator's definition, and the practical guidance carry the paper. Positioning is against *usable* alternatives (what does the applied researcher currently do, and why is it wrong?), not only against the theoretical frontier. An empirical application is close to expected, and it should show the method changing a conclusion, not merely running.
+**Methods referee adjusts:** Formal results required but they need not dominate the page. **Proofs belong in an online supplement** — this is the norm here, not a concession. Assumptions must be interpreted, not just stated: for every high-level condition, say what it rules out in terms an applied reader recognises. Monte Carlo evidence matters *more* than at a pure methods journal and must be run at sample sizes the readership actually has — asymptotic dominance at $n=10^5$ is not a selling point if the audience has $n=2{,}000$. Tuning parameters (bandwidths, regularisation, stopping rules) must come with a concrete, defensible selection rule; "chosen by the discrepancy principle" needs the constant pinned down or shown not to matter. Code availability expected.
+**Typical concerns:** "Is this implementable, and did you implement it?" "What do I set the tuning parameter to?" "Does it work at my sample size?" "What does this assumption rule out in practice?" "How much do I gain over the standard approach?"
+**Referee pool:** MEASUREMENT (high), CREDIBILITY (high), THEORY (medium), SKEPTIC (medium), STRUCTURAL (low), POLICY (low)
+**Table format:** Standard economics convention — significance stars, SEs in parentheses, booktabs. **Not** an AEA journal; the no-stars rule does not apply.
+
 ---
 
 **Health Economics**

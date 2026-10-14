@@ -1,0 +1,21 @@
+claim_id: kernelcompare-tower
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (eq:kernelcompare)"
+# CLAIM.  E[ Wtilde f_{Delta U | X_1,X_2,Delta Z,W}(u) | X_1, X_2, Delta Z ]
+#           = p_X (1 - varrho) f_1(u) - (1 - p_X) varrho f_0(u),
+# with Wtilde = W - varrho(Delta Z) (glossary L126) and
+# p_X = P(W = 1 | X_1, X_2, Delta Z).
+# Mechanised as the two-cell tower expansion over the binary W: the W = 1 cell
+# contributes p_X (1 - varrho) f_1 and the W = 0 cell (1 - p_X)(0 - varrho) f_0.
+# varrho is sigma(Delta Z)-measurable, hence constant under the conditioning.
+variables:
+  pX:
+    domain: real
+  rho:
+    domain: real
+  f1:
+    domain: real
+  f0:
+    domain: real
+start: "pX*(1-rho)*f1 + (1-pX)*(0-rho)*f0"
+operation: none
+claimed_end: "pX*(1-rho)*f1 - (1-pX)*rho*f0"

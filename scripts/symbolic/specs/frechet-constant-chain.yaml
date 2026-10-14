@@ -1,0 +1,36 @@
+claim_id: frechet-constant-chain
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (rem:quadremainder), against Step 3 (L140-158) and Step 5 (L174-199)"
+# THE HEADLINE CHECK.  prp:frechet(i) and (ii) were derived SEPARATELY.  If (ii)
+# is integrated along the segment from varphi to varphi+h, the fundamental
+# theorem must return (i) with EXACTLY the same constant, not merely the same
+# order.  Both sides are rebuilt here from PRIMITIVES, so the test also exercises
+# the Cauchy-Schwarz constant, the 1/2 from the Taylor remainder, and the factor
+# 4*cpi from eq:deltahbound.
+#
+#   LHS  (Step 5, then FTC).  At increment varsigma*h the Lipschitz display gives
+#         ||A_{phi+varsigma h} - A_phi||
+#           <= f1bar * cPi * sqrt(4 cpi ||varsigma h||^2) * sqrt(4 cpi * 1^2)
+#       -- the two square roots being the two Cauchy-Schwarz factors, the second
+#       at the sup over ||h'|| <= 1.  Integrating that modulus times ||h|| over
+#       varsigma in (0,1) is the FTC bound on the first-order remainder.
+#
+#   RHS  (Step 3, direct).  int_0^1 (1-varsigma) d varsigma = 1/2, times
+#       f1bar * cPi * 4 * cpi * ||h||^2  -- i.e. C_A ||h||^2 with
+#       C_A = 2 cpi f1bar cPi.
+#
+# Symbols: cpi = bar-c_pi (C1(ii)); f1bar = ||bar f_1||_inf (C2'(i));
+#          cPi = c_Pi (B1(iv.c)); Hn = ||h||_{L^2(pi)}.
+variables:
+  cpi:
+    domain: positive
+  f1bar:
+    domain: positive
+  cPi:
+    domain: positive
+  Hn:
+    domain: positive
+  varsigma:
+    domain: positive
+start: "Hn*integrate(f1bar*cPi*sqrt(4*cpi*(varsigma*Hn)**2)*sqrt(4*cpi), (varsigma, 0, 1))"
+operation: none
+claimed_end: "integrate(1-varsigma, (varsigma, 0, 1))*f1bar*cPi*4*cpi*Hn**2"

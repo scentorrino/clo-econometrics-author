@@ -1,0 +1,8 @@
+claim_id: nprate-margin-d3
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A5(ii): delta_n = o_P(n^{-1/4}))"
+# CLAIM.  n^{-2/7} clears n^{-1/4}: the exponent margin is 2/7 - 1/4 = 1/28,
+# positive but seven times thinner than the d = 1 margin.
+variables: {}
+start: "2/7 - 1/4"
+operation: none
+claimed_end: "1/28"

@@ -207,6 +207,46 @@ def apply_operation(start: sp.Expr, operation: str, symbols: dict[str, Any]) -> 
     sys.exit(2)
 
 
+def is_zero(r: Any) -> bool:
+    """Zero test that handles scalars AND matrix expressions, and never raises.
+
+    Two failure modes this exists to prevent, both observed in practice:
+
+    1. ``ZeroMatrix`` is not equal to the integer 0, and ``MatrixExpr.equals``
+       does not recognise it either -- so a spec whose difference reduces to a
+       zero matrix printed "Residual: 0" and was then reported MISMATCH.
+    2. ``MatrixExpr.equals`` raises ``ValueError`` on symbolic shapes. Raising
+       out of ``reduce_to_zero`` made Python exit 1, which is *indistinguishable
+       from a genuine MISMATCH* in a batch run.
+    """
+    # NOTE: the isinstance dispatch is deliberately OUTSIDE any try/except.
+    # An earlier version referenced an unimported name here; the resulting
+    # NameError was swallowed by a broad `except Exception: return False`,
+    # so every spec in the suite silently reported MISMATCH. A programming
+    # error must not be able to masquerade as "the residual is nonzero" --
+    # that is the same failure class this function exists to remove.
+    if isinstance(r, sp.ZeroMatrix):
+        return True
+    if isinstance(r, (sp.MatrixBase, sp.MatrixExpr)):
+        # Concrete shapes: expand to entries and test them.
+        try:
+            return bool(sp.Matrix(r.as_explicit()).is_zero_matrix)
+        except Exception:
+            # Symbolic shapes cannot be made explicit. Fall back to a
+            # structural test on the simplified expression.
+            try:
+                return isinstance(sp.simplify(r), sp.ZeroMatrix)
+            except Exception:
+                return False
+    # Scalar path: `==` is cheap, `.equals` is the thorough (and fallible) one.
+    try:
+        if r == 0:
+            return True
+        return bool(r.equals(0))
+    except Exception:
+        return False
+
+
 def reduce_to_zero(expr: sp.Expr) -> tuple[bool, sp.Expr]:
     """Apply a battery of simplification passes; return (is_zero, residual)."""
     # Try a sequence of simplifiers; succeed if any reduces to zero
@@ -215,16 +255,14 @@ def reduce_to_zero(expr: sp.Expr) -> tuple[bool, sp.Expr]:
             r = f(expr)
         except Exception:  # pragma: no cover
             continue
-        if r == 0 or r.equals(0):
+        if is_zero(r):
             return True, r
     # Last-resort: combined simplify on expanded form
     try:
         r = sp.simplify(sp.expand(expr))
-        if r == 0 or r.equals(0):
-            return True, r
-        return False, r
+        return is_zero(r), r
     except Exception:
-        return False, expr
+        return is_zero(expr), expr
 
 
 def verify(spec: dict[str, Any]) -> int:

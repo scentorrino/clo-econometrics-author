@@ -1,0 +1,53 @@
+claim_id: cap-hx-lower-c5ii
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex ('Clause (ii), (n h_x^2 h_u^3)^{-1} ln n -> 0, is h_x >> n^{-1/2} h_u^{-3/2} (ln n)^{1/2} = n^{-0.44} (ln n)^{1/2}'); C5'(ii) stated at assumptions.tex; consumed at results.tex"
+# WHAT THIS CHECKS.  The LOWER end of the admissible h_x window, which is the
+# UPPER end of the eq:cap inflation.  C5'(ii) is (n h_x^2 h_u^3)^{-1} ln n -> 0,
+# i.e. h_x^2 >> n^{-1} h_u^{-3} ln n, i.e. h_x >> n^{-1/2} h_u^{-3/2} (ln n)^{1/2}.
+# In powers of n with h_u = n^{-beta_u}:
+#
+#     n^{-1/2} * (n^{-beta_u})^{-3/2}  at  beta_u = 1/25   is   n^{-1/2 + 3/50} = n^{-11/25} = n^{-0.44} .
+#
+# Check: -1/2 + (3/2)(1/25) = -25/50 + 3/50 = -22/50 = -11/25.
+#
+# THE LOGARITHM IS DROPPED, DELIBERATELY AND WITH THE REASON STATED.  C5'(ii)
+# delivers h_x >> n^{-0.44} (ln n)^{1/2}, and the (ln n)^{1/2} is real.  The
+# harness compares POWERS OF n, and a strict polynomial inequality absorbs any
+# fixed power of ln n -- which is the same device rem:h6bandwidth(0) uses in the
+# opposite direction, where the logarithms DO decide the boundary because the
+# powers of n balance exactly.  Here they do not balance (0.44 > 0.128 with room),
+# so dropping the logarithm is safe for the WINDOW's non-emptiness.  It would NOT
+# be safe at a boundary configuration, and this spec should not be quoted as if it
+# were.  Declared rather than silent.
+#
+# WHY THE EXPONENT 3 ON h_u IS THE ONE USED.  assumptions.tex records
+# that C5'(ii)'s exponents (2 on h_x, 3 on h_u) are INHERITED from a
+# density-derivative estimator and are conservative; lem:aerr reading (i)
+# (results.tex) shows the operator actually needs only one power of each,
+# and the relaxed condition (n h_x h_u)^{-1} ln n -> 0 gives h_x >> n^{-0.96}, a
+# much wider window (assumptions.tex).  THE RELAXATION IS DELIBERATELY
+# NOT TAKEN, so the LIVE window uses exponent 3 and this spec encodes the live
+# version.  A reader who re-derives the window from lem:aerr's relaxed condition
+# will get 0.96 and should read assumptions.tex before concluding the
+# paper is wrong.
+#
+# WHAT THIS DOES NOT CHECK.  It does not check that the window is non-empty; that
+# is the comparison 0.44 > 0.128, which is an inequality between the two exponents
+# this spec and cap-hx-upper-pg return and which the harness cannot decide as an
+# identity.  Stated here so the pair is not over-quoted.
+#
+# FALSIFICATION (hand-computed).  claimed_end "n**(-1/2)" (i.e. forgetting the
+# h_u^{-3/2} factor) leaves residual n^{-11/25} - n^{-1/2}, nonzero for n > 1;
+# MISMATCH.  Substituting beta_u = 1/16 (the RETIRED round-9 bandwidth) gives
+# -1/2 + 3/32 = -13/32 = -0.40625, which is exactly the retired lower end recorded
+# at assumptions.tex and is NOT -11/25; MISMATCH.  So the spec
+# discriminates the amended bandwidth from the retired one.
+#
+# PREDICTED: MATCH.
+variables:
+  n:
+    domain: positive
+  beta_u:
+    domain: positive
+start: "n**(-1/2) * (n**(-beta_u))**(-3/2)"
+operation: "substitute(beta_u=1/25)"
+claimed_end: "n**(-11/25)"

@@ -1,0 +1,36 @@
+\begin{tabular}{lrrccc}
+\toprule
+Design and nuisance regime & $n$ & $B$ & $\mathsf L=2$ & $\mathsf L=3$ & $\mathsf L=4$ \\
+\midrule
+\multicolumn{6}{l}{\textbf{Block I} --- named configuration, abstract operator, nuisances injected at controlled rates} \\
+\multicolumn{6}{l}{\quad $(\mu,s,a,r,d_Z,p_K)=(2,3,\tfrac34,\tfrac83,3,8)$, $p=4$; $\mathsf L=2$ in this block} \\
+\midrule
+DGP A, injected $c_\delta=0.25$ & 181,019 & 5,000 & 0.952 (0.003) & --- & --- \\
+DGP A, injected $c_\delta=1.00$ & 181,019 & 5,000 & 0.919 (0.004) & --- & --- \\
+DGP B, injected $c_\delta=0.25$ & 181,019 & 5,000 & 0.950 (0.003) & --- & --- \\
+DGP B, injected $c_\delta=1.00$ & 181,019 & 5,000 & 0.934 (0.004) & --- & --- \\
+\addlinespace
+\multicolumn{6}{l}{\textbf{Block II} --- headroom configuration, abstract operator, nuisances injected at controlled rates} \\
+\multicolumn{6}{l}{\quad $(\mu,s,a,r,d_Z,p_K)=(5,4,\tfrac25,\tfrac{21}8,1,8)$, $p=2$; $\mathsf L=2$ in this block} \\
+\midrule
+DGP-HA, injected $c_\delta=0.25$ & 181,019 & 5,000 & 0.947 (0.003) & --- & --- \\
+DGP-HA, injected $c_\delta=0.35$ & 181,019 & 5,000 & 0.944 (0.003) & --- & --- \\
+DGP-HA, injected $c_\delta=1.00$ & 181,019 & 5,000 & 0.955 (0.003) & --- & --- \\
+DGP-HB, injected $c_\delta=0.25$ & 181,019 & 5,000 & 0.952 (0.003) & --- & --- \\
+DGP-HB, injected $c_\delta=0.35$ & 181,019 & 5,000 & 0.953 (0.003) & --- & --- \\
+DGP-HB, injected $c_\delta=1.00$ & 181,019 & 5,000 & 0.950 (0.003) & --- & --- \\
+\addlinespace
+\multicolumn{6}{l}{\textbf{Block III} --- multinomial design, shipped engine, nuisances estimated} \\
+\multicolumn{6}{l}{\quad \texttt{sim\_multinomial\_dgp.R} with \texttt{lf\_panel.R}; $\mathsf L\in\{2,3,4\}$ off one draw} \\
+\midrule
+Balanced, Constant, estimated & 1,600 & 120 & 0.900 (0.027) & 0.867 (0.031) & 0.867 (0.031) \\
+Balanced, $z_1$, estimated & 1,600 & 120 & 0.975 (0.014) & 0.917 (0.025) & 0.950 (0.020) \\
+Balanced, $z_2$, estimated & 1,600 & 120 & 0.917 (0.025) & 0.975 (0.014) & 0.958 (0.018) \\
+Skewed, Constant, estimated & 1,600 & 120 & 0.883 (0.029) & 0.925 (0.024) & 0.933 (0.023) \\
+Skewed, $z_1$, estimated & 1,600 & 120 & 0.967 (0.016) & 0.950 (0.020) & 0.967 (0.016) \\
+Skewed, $z_2$, estimated & 1,600 & 120 & 0.867 (0.031) & 0.867 (0.031) & 0.875 (0.030) \\
+Misspecified $\hat\varrho$, Constant, estimated & 1,600 & 120 & 0.708 (0.041) & 0.308 (0.042) & 0.267 (0.040) \\
+Misspecified $\hat\varrho$, $z_1$, estimated & 1,600 & 120 & 0.950 (0.020) & 0.942 (0.021) & 0.950 (0.020) \\
+Misspecified $\hat\varrho$, $z_2$, estimated & 1,600 & 120 & 0.900 (0.027) & 0.900 (0.027) & 0.925 (0.024) \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,659 @@
+% ############################################################################
+% ##  SUPERSEDED 2026-08-03 -- NOT COMPILED BY ANY DOCUMENT. DO NOT EDIT.
+% ##
+% ##  This file is a per-theorem rendering from an ABANDONED architecture in
+% ##  which paper/main.tex would \input one file per result.  paper/main.tex
+% ##  DOES NOT EXIST.  The manuscript is paper/qmd/{main,supplement}.qmd, and
+% ##  both \input the theory corpus directly.  Verified 2026-08-03: neither
+% ##  .qmd references sections/theorems.
+% ##
+% ##  The text below is ROUND-2 vintage against a corpus now at dispatch 25.
+% ##  66-78% of its substantive lines no longer match the corpus -- that is old
+% ##  text the corpus has since revised, NOT unique work.  Every \label here is
+% ##  also declared in the live corpus.
+% ##
+% ##  SOURCE OF RECORD:
+% ##    statements  quality_reports/theory/panel-npiv-discrete/results.tex
+% ##    assumptions quality_reports/theory/panel-npiv-discrete/assumptions.tex
+% ##    proofs      quality_reports/theory/panel-npiv-discrete/proofs.tex
+% ##
+% ##  Kept rather than deleted because nothing in this repo is committed.
+% ##  Full rationale: paper/sections/theorems/_SUPERSEDED.md
+% ############################################################################
+
+% ============================================================================
+%  lem:adjoint -- closed form of the adjoint of the linearisation, with the
+%  Bierens induction map that makes the representer evaluable at the data.
+%  Project: panel-npiv-discrete.  Target of plan Sec.2.7; memo Sec.10 Step 3.
+%
+%  Source of record: quality_reports/theory/panel-npiv-discrete/{results,proofs}.tex
+%  Assumptions cited by tag; see .../assumptions.tex.
+%  Requires \IR, \un, \upmodels, \vdagger from preamble.tex.
+%
+%  DEPENDENCIES that must appear EARLIER in the compiled document:
+%    def:model     -- eq:trialres, cited via prp:nophifree Step 0 in cor:rangegap;
+%    def:spaces    -- V, L^2(Pi), nu_g (eq:nudef), the domain convention;
+%    def:operator  -- T, M(u,t;varphi,theta) (eq:Mdef, eq:Tdef);
+%    prp:wellposed -- Step 1's exhaustion argument, reused in lem:adjoint Step 2;
+%    prp:frechet   -- A_varphi and eq:Adef;
+%    prp:compact   -- the kernel k = nu_{g_{u,t}}/pi (eq:kernel), Steps 0-2;
+%    lem:density   -- claim (i) and its Step 1, used for the density of R(W)
+%                     and, with T replaced by T_1, inside lem:adjoint Step 4;
+%    lem:bierenscore, lem:bierens -- Steps 2 and 5, used by prp:kerchar;
+%    prp:nophifree -- Step 0 and eq:gproviso, used by cor:rangegap Step 1.
+%  NOT a dependency, despite an earlier version of this header: def:admissible.
+%  Conventions used: (P1), (P2), (P5), (P6a), (P7a), (P7b), and (P4c) in
+%  prp:kerchar Step 5.  All are stated once in proofs.tex.
+%
+%  ASSUMPTION TAGS, BY RESULT rather than in aggregate (round-7 narrowing:
+%  every "C1" below was found to consume only C1(ii); C1(i) has no consumer
+%  before Step 6.  ROUND-8: four A1b(i) citations struck or redirected to the
+%  DEFINITION of V -- see the round-8 note at the foot of this header):
+%    lem:nusigma    C1(ii); A1b(ii) for (ii); A1 for (v).
+%    lem:adjfubini  B1(i), (ii), (iv.c); C1(ii); C2'(i).  NOT A0: P is
+%                   sigma-finite by def:model, and the round-6 appeal is struck.
+%    lem:levels     A0 (X is a compact INTERVAL); C1(ii).
+%    lem:adjoint    B1(i), (ii), (iv); C1(ii); C2'(i).   NOT B1(iii): the density
+%                   half derives Leb(T_1) > 0 from B1(iv.b) instead.
+%    cor:elldiff    B1(i), (ii), (iv.a); A2b (the PROPERTY tag, at a generic
+%                   admissible representer).  A2'(i.a)-(i.b) is what specialises
+%                   it to ell^Pi_star and is NOT its hypothesis.
+%    cor:rangegap   the hypotheses of lem:adjoint; A1b(iv) via eq:gproviso.
+%    prp:kerchar    (i) B1(i)-(iv), C1(ii), C2'(i);  (ii) adds A1 and A4(i).
+%    cor:a1cprim    B1(i)-(iv), C1(ii), C2'(i), A1b(ii), A1d -- nothing more.
+%
+%  THIS FILE IS AN ALTERNATIVE RENDERING of EIGHT numbered environments --
+%    lem:nusigma, lem:adjfubini, lem:levels, lem:adjoint, cor:elldiff,
+%    cor:rangegap, prp:kerchar, cor:a1cprim -- plus the TWO remarks
+%    rem:adjointreconcile and rem:ffcompare, TEN environments in all, carrying
+%  the SAME \label keys as
+%  quality_reports/theory/panel-npiv-discrete/results.tex.  The two must never
+%  be \input into the same document.  (Round 7: the count word said NINE and the
+%  list named eight; Part E carries thirteen environments in total, of which
+%  rem-nophifree.tex renders the other three.  The partition was sound; only the
+%  count was wrong.)
+%
+%  ROUND-8 SYNC.  THE HAND-KEPT EXCEPTION LIST IS ABOLISHED, and this is the
+%  substantive change to this header.
+%
+%  The round-7 header enumerated the "known unsynced" items and warned, in its
+%  own voice, that "a hand-kept list of exceptions is the SAME failure mode as a
+%  hand-kept header, one remove further out -- it failed in exactly that way in
+%  round 7, the list said FIVE and omitted a sixth".  IT THEN SAID SIX AND
+%  OMITTED A SEVENTH: C25's rename of lem:nusigma(v)'s generic integrable
+%  function from \vartheta to \Xi was live at four lines of this file, on the
+%  letter that is BINDING on the Step-4 dispatch, and lem:solset(iii) closes by
+%  \cref-ing this lemma "applied with \Xi = partial_u ell_star" -- so the
+%  cross-reference already pointed across the gap.
+%
+%  A THIRD ITERATION OF THE SAME LIST IS NOT THE FIX.  The authoritative unsynced
+%  set is whatever a MECHANICAL DIFF of this file against results.tex and
+%  proofs.tex returns.  That diff is now a runnable artifact:
+%
+%      scripts/render-sync/check_rendering_sync.py
+%
+%  It compares, per \label key, the statement text of each environment rendered
+%  here against the environment carrying the same key in
+%  quality_reports/theory/panel-npiv-discrete/results.tex, and it sweeps a
+%  declared symbol-rename table (glossary Sec.1.4-1.5) across the whole file.  It
+%  reports; it does not edit.  RUN IT BEFORE ANY CLAIM THAT THIS FILE IS SYNCED.
+%
+%  WHAT ROUND 8 CLOSED IN THIS FILE, BY DOING IT RATHER THAN LISTING IT:
+%    - \vartheta -> \Xi in lem:nusigma(v), statement and proof (C25);
+%    - \mathcal B -> \Upsilon throughout cor:rangegap, statement and all three
+%      proof steps (C20);
+%    - \mathcal B(.) -> \mathfrak B(.) for the BOREL sigma-algebra at both sites,
+%      lem:levels(ii) and the functional monotone class step of prp:kerchar (C20);
+%    - A1b(i) -> the definition of V in lem:nusigma(ii), statement and proof, and
+%      A1b(i) struck from lem:levels, cor:a1cprim and rem:ffcompare (auditor
+%      Finding 1);
+%    - cor:elldiff RESTATED at a generic admissible representer under the new
+%      property tag A2b, with ell^Pi_star as the specialisation, statement and
+%      proof, in the unstarred budgets Lambda^(0), Lambda^(1) (auditor Finding 4,
+%      which gated Step 4);
+%    - \mathrm{supp} -> \operatorname{supp} (spacing differs in the compiled
+%      document).
+%  WITH THE FIRST THREE DONE, THE \mathcal B COLLISION THAT WAS "LIVE IN THE
+%  COMPILED DOCUMENT AND DEFERRED, NOT RESOLVED" IS RESOLVED.
+%
+%  WHAT REMAINS UNSYNCED IS NOT ENUMERATED HERE, ON PURPOSE.  Three round-7 proof
+%  refinements (the (P6) integrable substitution lemma, the Pi_u (x) Pi_t Fubini
+%  step, the Leb(U_k) attribution) and cor:elldiff's second continuity pass are
+%  known to differ from proofs.tex; the diff script is what says whether that
+%  list is complete, and this header is not.  Resync mechanically when Parts E
+%  and F are generated together after Step 4.
+%
+%  SYNC DISCIPLINE.  This header was wrong in five ways after the round-5
+%  resync, in a file whose mathematics was correct -- four environments missing
+%  from the list above, two dependencies uncited, one cited but unused, two
+%  conventions omitted, and the assumption tags given in aggregate rather than
+%  by result.  A HAND-MAINTAINED HEADER IS THE SAME FAILURE MODE AS A
+%  HAND-MAINTAINED RENDERING, one remove further out.  When Parts E and F are
+%  generated together after Step 4, the label list, the dependency list and the
+%  per-result tag list must all be produced MECHANICALLY from results.tex and
+%  proofs.tex, and diffed, not retyped.
+% ============================================================================
+
+\begin{lemma}\label{lem:nusigma}
+The period-difference operator is bounded with kernel the constants, and the two functionals it
+generates differ in exactly one respect: the difference functional integrates to zero and the sum
+functional does not.
+Suppose Assumption C1(ii) holds and let $g$ be a random variable with $E|g\,h(X_1)|<\infty$ and
+$E|g\,h(X_2)|<\infty$ for the $h$ named in each clause. Then
+\begin{enumerate}
+\item[(i)] $\|\Delta h\|_{L^{2}(P)}\le2\,\bar c_\pi^{1/2}\|h\|_{L^{2}(\pi)}$ for every $h\in\mathcal V$;
+\item[(ii)] $\Delta h=0$ almost surely if and only if $h$ is almost surely constant, provided A1b(ii)
+holds; consequently, under A1b(ii) alone, $\ker\Delta\cap\mathcal V=\{0\}$, the passage from
+``constant'' to ``zero'' being $\int h\,d\pi=0$ for $h\in\mathcal V$, which is the definition of
+$\mathcal V$ and not an assumption;
+\item[(iii)] $E[g\,\Delta h]=\int_{\mathcal X}\nu_g(x)\,h(x)\,dx=\langle\nu_g/\pi,\,h\rangle_{L^{2}(\pi)}$,
+for each $h$ satisfying the integrability proviso above --- in particular for every $h\in\mathcal V$ and
+for $h\equiv1$;
+\item[(iv)] $\int_{\mathcal X}\nu_g\,dx=0$ and $\int_{\mathcal X}\sigma_g\,dx=2\,E[g]$, where
+\begin{equation}\label{eq:sigmadef}
+\sigma_g(x)\;:=\;E[g\mid X_2=x]\,f_{X_2}(x)\;+\;E[g\mid X_1=x]\,f_{X_1}(x);
+\end{equation}
+\item[(v)] if in addition A1 holds and $g=\widetilde W\,\Xi(\Delta U,\Delta Z)$ for an integrable
+$\Xi$, then $E[g]=0$ and hence $\int_{\mathcal X}\sigma_g\,dx=0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Each clause is short; they are taken in order.
+
+\emph{(i).} By $(a-b)^{2}\le2a^{2}+2b^{2}$ and C1(ii),
+$E[(\Delta h)^{2}]\le2\int h^{2}(f_{X_1}+f_{X_2})\,dx\le4\bar c_\pi\|h\|^{2}_{L^{2}(\pi)}$ with
+$\bar c_\pi=\max_j\|f_{X_j}/\pi\|_\infty$; take square roots.
+
+\emph{(ii).} If $h$ is a.s.\ constant then $\Delta h=0$ a.s. Conversely $\Delta h=0$ a.s.\ says
+$h(X_1)=h(X_2)$ a.s., so A1b(ii) makes $h$ a.s.\ constant; if $h\in\mathcal V$ then $\int h\,d\pi=0$ by
+the definition of $\mathcal V$, and a constant with zero $\pi$-mean is zero because $\int\pi=1$.
+
+\emph{(iii).} This is convention (P5), whose term-by-term integrability proviso is the hypothesis of the
+lemma; the second equality divides and multiplies by $\pi$, which is bounded below away from zero on
+$\mathcal X$ by C1(ii).
+
+\emph{(iv).} Taking $h\equiv1$ in (iii) gives $\Delta h=0$, hence $\int\nu_g\,dx=0$. For $\sigma_g$,
+$\int E[g\mid X_j=x]f_{X_j}(x)\,dx=E[g]$ for $j=1,2$ by the tower property, and the two terms add rather
+than cancel. \emph{This one sign separates the first-order from the second-order analysis:} the
+difference structure that makes $\int\nu_g=0$ automatic buys nothing about $\int\sigma_g$.
+
+\emph{(v).} Under A1, $\Delta U\upmodels W\mid\Delta Z$, so
+$E[\widetilde W\Xi(\Delta U,\Delta Z)\mid\Delta Z]
+=E[\widetilde W\mid\Delta Z]E[\Xi\mid\Delta Z]=0$ by (P3); take expectations and apply (iv).
+\end{proof}
+
+\begin{lemma}\label{lem:adjfubini}
+The $(u,t)$-integration defining the adjoint may be taken inside the expectation.
+Suppose Assumptions B1(i), (ii), (iv.c), C1(ii) and C2$'$(i) hold. Then for every $\ell\in L^{2}(\Pi)$
+and every $h\in\mathcal V$ the function $(u,t,\omega)\mapsto g_{u,t}(\omega)\Delta h(\omega)\ell(u,t)$ is
+$\Pi\otimes P$-integrable, with
+\begin{equation}\label{eq:adjenv}
+\int_{\IR\times\mathcal T}E\big[\big|g_{u,t}\,\Delta h\big|\big]\,|\ell(u,t)|\,\Pi(du,dt)
+\;\le\;2\,\bar c_\pi^{1/2}\,\|\bar f_0\|_\infty\,c_\Pi\,\|h\|_{L^{2}(\pi)}\,\|\ell\|_{L^{2}(\Pi)},
+\end{equation}
+and consequently $\int_{\IR\times\mathcal T}E[g_{u,t}\Delta h]\ell(u,t)\Pi(du,dt)
+=E\big[\Delta h\int_{\IR\times\mathcal T}g_{u,t}\ell(u,t)\Pi(du,dt)\big]$.
+\end{lemma}
+
+\begin{proof}
+The proof establishes the envelope \eqref{eq:adjenv}; Fubini's theorem then applies on $\Pi\otimes P$.
+
+Joint measurability of $(u,t,\omega)\mapsto g_{u,t}(\omega)$ is Step~0 of the proof of
+\cref{prp:compact}. By (P1), (P2) and $|f_{\Delta U\mid\cdots}(u)|\le\|\bar f_0\|_\infty$ from C2$'$(i),
+$|g_{u,t}|\le\bar w(t)\|\bar f_0\|_\infty$, so by the Cauchy--Schwarz inequality in $P$ and
+\cref{lem:nusigma}(i),
+$E[|g_{u,t}\Delta h|]\le\bar w(t)\|\bar f_0\|_\infty(E[(\Delta h)^{2}])^{1/2}
+\le2\bar c_\pi^{1/2}\|\bar f_0\|_\infty\bar w(t)\|h\|_{L^{2}(\pi)}$. Multiplying by $|\ell(u,t)|$ and
+integrating against $\Pi$, the Cauchy--Schwarz inequality in $\Pi$ gives
+$\int\bar w(t)|\ell|\,d\Pi\le(\int\bar w^{2}d\Pi)^{1/2}\|\ell\|_{L^{2}(\Pi)}=c_\Pi\|\ell\|_{L^{2}(\Pi)}$
+by B1(iv.c). Combining the two displays gives \eqref{eq:adjenv}, which is finite; Fubini's theorem for
+the $\sigma$-finite product $\Pi\otimes P$ permits the exchange.
+\end{proof}
+
+\begin{lemma}\label{lem:levels}
+The orthogonality condition and the source condition are the same in the two parameterisations; the
+remainder bound and the rate condition are not, and levels is the weaker of the two.
+Suppose $\mathcal X$ is a compact interval as in A0, and Assumption C1(ii) holds; let
+$\mathcal D^{-1}_0:L^{2}(\pi)\to\mathcal V$ be integration from the left endpoint of $\mathcal X$
+followed by centring in $L^{2}(\pi)$. Then
+\begin{enumerate}
+\item[(i)] $\mathcal D^{-1}_0$ is bounded, with
+$\|\mathcal D^{-1}_0\|\le2(|\mathcal X|\,\|1/\pi\|_\infty)^{1/2}$, and injective, while $\mathcal D$ is
+unbounded on $L^{2}(\pi)$;
+\item[(ii)] for integrable $\nu_g$, writing
+$\mathcal N_g(v):=\int_{\{x\ge v\}\cap\mathcal X}\nu_g(x)\,dx$, one has $\mathcal N_g\equiv0$ if and only
+if $\nu_g\equiv0$ almost everywhere on $\mathcal X$;
+\item[(iii)] A2 holds for $\mathcal A_{\mathrm{cond}}$ if and only if the corresponding source condition
+holds for $\mathcal A_{\mathrm{cond}}\mathcal D^{-1}_0$;
+\item[(iv)] $\|h\|_{L^{2}(\pi)}\le\|\mathcal D^{-1}_0\|\,\|h'\|_{L^{2}(\pi)}$ whenever
+$h=\mathcal D^{-1}_0h'$, so a rate in the derivative norm implies the same rate in the level norm, while
+the converse fails.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The four clauses are taken in order; the only substantive step is (ii), and (iii) follows from it by
+injectivity rather than by a range computation.
+
+\emph{(i).} Write $x_{\min}:=\min\mathcal X$, finite because $\mathcal X$ is compact, and
+$\mathcal D^{-1}h'(x):=\int_{x_{\min}}^{x}h'(v)\,dv$. By the Cauchy--Schwarz inequality and C1(ii),
+$|\mathcal D^{-1}h'(x)|^{2}\le|\mathcal X|\int_{\mathcal X}|h'|^{2}dv\le|\mathcal X|\|1/\pi\|_\infty\|h'\|^{2}_{L^{2}(\pi)}$
+for every $x$, so $\|\mathcal D^{-1}h'\|^{2}_{L^{2}(\pi)}\le|\mathcal X|\|1/\pi\|_\infty\|h'\|^{2}_{L^{2}(\pi)}$
+since $\int\pi=1$; centring adds at most the same amount again by the Cauchy--Schwarz inequality, giving
+the stated constant. If $\mathcal D^{-1}_0h'=0$ then $\mathcal D^{-1}h'$ is $\pi$-a.e.\ constant, hence
+constant by continuity, so $h'=0$ a.e.\ by Lebesgue differentiation. That $\mathcal D$ is unbounded is
+exhibited by $h_k(x)=k^{-1}\sin(kx)$, for which $\|h_k\|_{L^{2}(\pi)}\to0$ while $\|h_k'\|_{L^{2}(\pi)}$
+does not.
+
+\emph{(ii).} One direction is immediate. Conversely, if $\mathcal N_g\equiv0$ then for $v_1<v_2$ the
+difference gives $\int_{[v_1,v_2)\cap\mathcal X}\nu_g\,dx=0$; such intervals form a $\pi$-system
+generating $\mathfrak B(\mathcal X)$ and containing $\mathcal X$, so the finite signed measure
+$\nu_g\,dx$ vanishes identically and $\nu_g=0$ a.e.
+
+\emph{(iii).} $(\mathcal D^{-1}_0)^{\ast}$ is injective on $\mathcal V$: if
+$(\mathcal D^{-1}_0)^{\ast}\zeta=0$ then $\langle\mathcal D^{-1}_0h',\zeta\rangle=0$ for every $h'$, and
+$\mathcal R(\mathcal D^{-1}_0)$ contains every centred $C^{1}$ function on $\mathcal X$, hence is dense
+in $\mathcal V$, so $\zeta=0$. Since
+$(\mathcal A_{\mathrm{cond}}\mathcal D^{-1}_0)^{\ast}=(\mathcal D^{-1}_0)^{\ast}\mathcal A^\ast_{\mathrm{cond}}$,
+the derivative-side source condition reads
+$(\mathcal D^{-1}_0)^{\ast}(\nu/\pi)=(\mathcal D^{-1}_0)^{\ast}\mathcal A^\ast_{\mathrm{cond}}\ell$, and
+injectivity gives $\nu/\pi=\mathcal A^\ast_{\mathrm{cond}}\ell$, which is A2. The converse is immediate.
+
+\emph{(iv).} The inequality is (i); the failure of the converse is the sequence $h_k$ of (i). \emph{The
+consequence is that the rate requirement must be stated in the level norm, where it is the weaker of the
+two demands.}
+\end{proof}
+
+\begin{lemma}\label{lem:adjoint}
+The adjoint of the linearisation is the difference functional of the debiasing weight, divided by the
+reference density, once the weight is read through the Bierens family.
+Suppose Assumptions B1(i), (ii), (iv), C1 and C2$'$(i) hold. Then, with $g_{u,t}$ as in
+\eqref{eq:kernel}:
+\begin{enumerate}
+\item[(i)] for every $\ell\in L^{2}(\Pi)$,
+$(\mathcal A^\ast_{\mathrm{cond}}\ell)(x)=\int_{\IR\times\mathcal T}\mathsf k(u,t;x)\ell(u,t)\Pi(du,dt)\in\mathcal V$;
+\item[(ii)] the induction map
+\begin{equation}\label{eq:Wdef}
+\big(\mathcal W\ell\big)(u,z)\;:=\;\varpi_u(u)\int_{\mathcal T}\ell(u,t)\,w\big(t'\Phi(z)\big)\,\Pi_t(dt)
+\end{equation}
+is a bounded linear map from $L^{2}(\Pi)$ into $L^{2}(P_{\Delta U,\Delta Z})$ with
+$\|\mathcal W\|\le(\|\bar f_0\|_\infty\|\varpi_u\|_\infty\int_{\mathcal T}\bar w^{2}d\Pi_t)^{1/2}$, its
+range is dense, and $\ker\mathcal W\subseteq\ker\mathcal A^\ast_{\mathrm{cond}}$;
+\item[(iii)] for every $\ell\in L^{2}(\Pi)$,
+\begin{equation}\label{eq:adjclosed}
+\mathcal A^\ast_{\mathrm{cond}}\ell\;=\;\frac{\nu_{\widetilde W\,(\mathcal W\ell)}}{\pi},
+\end{equation}
+so $\mathcal A^\ast_{\mathrm{cond}}\ell=-\nu/\pi$ if and only if
+$\nu_{\Delta Z+\widetilde W(\mathcal W\ell)}\equiv0$ almost everywhere on $\mathcal X$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The proof has four steps: the kernel form; boundedness of the induction map; the closed form, which is
+one application of \cref{lem:adjfubini} followed by (P7a), the tower property and (P5); and the two
+structural claims.
+
+\emph{Step 1: part (i).}
+By \cref{prp:compact}, $\mathcal A_{\mathrm{cond}}$ is the integral operator on $\mathcal V$ with kernel
+$\mathsf k$ and $\iint|\mathsf k|^{2}\pi\,dx\,d\Pi<\infty$. Fubini, licensed by that
+square-integrability and the Cauchy--Schwarz inequality, gives
+$\langle\mathcal A_{\mathrm{cond}}h,\ell\rangle_{L^{2}(\Pi)}
+=\langle h,\int\mathsf k(\cdot,\cdot;\cdot)\ell\,d\Pi\rangle_{L^{2}(\pi)}$, which identifies
+$\mathcal A^\ast_{\mathrm{cond}}\ell$; membership of $\mathcal V$ is Step~2 of the proof of
+\cref{prp:compact}.
+
+\emph{Step 2: $\mathcal W$ is well defined and bounded.}
+Joint measurability of $(u,z)\mapsto(\mathcal W\ell)(u,z)$ follows from joint measurability of
+$(u,t,z)\mapsto\ell(u,t)w(t'\Phi(z))$ with the domination $|\ell(u,t)|\bar w(t)$ of (P2), by the
+exhaustion over $\{\|t\|_1\le k\}$ of \cref{prp:wellposed} Step~1. By the Cauchy--Schwarz inequality in
+$\Pi_t$ and (P2),
+\begin{equation}\label{eq:Wpointwise}
+\big|(\mathcal W\ell)(u,z)\big|^{2}\;\le\;\varpi_u(u)^{2}\Big(\int_{\mathcal T}\bar w^{2}d\Pi_t\Big)\int_{\mathcal T}\ell(u,t)^{2}\Pi_t(dt).
+\end{equation}
+Taking expectations over $(\Delta U,\Delta Z)$, using (P7b) and $\Pi_u(du)=\varpi_u(u)du$,
+\[
+E\big[(\mathcal W\ell)(\Delta U,\Delta Z)^{2}\big]
+\le\Big(\int_{\mathcal T}\bar w^{2}d\Pi_t\Big)\int_{\IR\times\mathcal T}\ell(u,t)^{2}f_{\Delta U}(u)\varpi_u(u)\,\Pi(du,dt)
+\le\|\bar f_0\|_\infty\|\varpi_u\|_\infty\Big(\int_{\mathcal T}\bar w^{2}d\Pi_t\Big)\|\ell\|^{2}_{L^{2}(\Pi)}.
+\]
+
+\emph{Step 3: the closed form, part (iii).}
+By \cref{prp:compact} Step~1, $\mathcal A_{\mathrm{cond}}h(u,t)=E[g_{u,t}\Delta h]$. By
+\cref{lem:adjfubini},
+\begin{equation}\label{eq:adjstep}
+\langle\mathcal A_{\mathrm{cond}}h,\ell\rangle_{L^{2}(\Pi)}
+=E\Big[\widetilde W\,\Delta h\int_{\IR\times\mathcal T}w\big(t'\Phi(\Delta Z)\big)f_{\Delta U\mid\mathcal F_{XZW}}(u)\,\ell(u,t)\,\Pi(du,dt)\Big].
+\end{equation}
+Since $\Delta Z$ is $\mathcal F_{XZW}$-measurable, (P7a) with
+$\zeta(u)=\int_{\mathcal T}\ell(u,t)w(t'\Phi(\Delta Z))\Pi_t(dt)$ --- $\Pi_u$-integrable by
+\eqref{eq:Wpointwise} --- identifies the inner integral with
+$E[(\mathcal W\ell)(\Delta U,\Delta Z)\mid\mathcal F_{XZW}]$ almost surely. \emph{This is the only step
+that uses the absolute continuity of $\Pi_u$ in \textup{B1(iv.a)}, and without it the inner integral has
+no representation as a function of $(\Delta U,\Delta Z)$.} Substituting into \eqref{eq:adjstep}, using
+$\mathcal F_{XZW}$-measurability of $\widetilde W$ and $\Delta h$ and then the tower property,
+$\langle\mathcal A_{\mathrm{cond}}h,\ell\rangle_{L^{2}(\Pi)}=E[\widetilde W(\mathcal W\ell)(\Delta U,\Delta Z)\Delta h]$.
+Convention (P5) applies --- $E|\widetilde W(\mathcal W\ell)h(X_j)|\le\|\mathcal W\ell\|_{L^{2}}(E[h(X_j)^{2}])^{1/2}<\infty$
+by (P1), Step~2 and C1(ii) --- and yields \eqref{eq:adjclosed}. The final claim follows because $\pi>0$
+by C1(ii) and $g\mapsto\nu_g$ is linear.
+
+\emph{Step 4: the structural claims of part (ii).}
+If $\mathcal W\ell=0$ then $\widetilde W(\mathcal W\ell)=0$ a.s., so \eqref{eq:adjclosed} gives
+$\mathcal A^\ast_{\mathrm{cond}}\ell=0$; hence
+$\ker\mathcal W\subseteq\ker\mathcal A^\ast_{\mathrm{cond}}$. Density is shown in three parts.
+
+\emph{A reduced generating family.} Put $\mathcal U_k:=\{u:\varpi_u(u)\ge1/k\}$,
+$\mathcal T_1:=\mathcal T\cap\operatorname{supp}\Pi_t$, and let $\mathcal G_\ast$ be the collection of
+$(u,z)\mapsto\varsigma(u)w(t_0'\Phi(z))$ with $\varsigma$ bounded measurable supported in some
+$\mathcal U_k$ and $t_0\in\mathcal T_1$. If $\xi\perp\mathcal G_\ast$ then, since $\varpi_u>0$ everywhere
+by B1(iv.a) gives $\bigcup_k\mathcal U_k=\IR$, dominated convergence with envelope
+$|\xi|\|\varsigma\|_\infty\bar w(t_0)$ extends $E[\xi\varsigma(\Delta U)e^{t_0'\Phi(\Delta Z)}]=0$ to
+every bounded measurable $\varsigma$, and Step~1 of the proof of \cref{lem:density} --- which requires of
+the index set only positive Lebesgue measure, through \cref{lem:bierenscore} --- gives $\xi=0$.
+\emph{The reduction is needed because B1(iv.a) makes $\varpi_u$ strictly positive pointwise but not
+bounded below, so $\varpi_u^{-1}$ need not be integrable against an arbitrary $\varsigma\in C_b$.}
+
+\emph{Index points.} By B1(iv.b) and the Lebesgue decomposition $\Pi_t$ has a nonzero absolutely
+continuous part $\varpi_t\,d\mathrm{Leb}$ on $\mathcal T_0$ --- $\Pi_t$ itself is not assumed absolutely
+continuous, and $\varpi_t$ is the density of its absolutely continuous part only. At every Lebesgue
+density point $t_0$ of $\{\varpi_t>0\}$, $\Pi_t(B_\epsilon(t_0))>0$ for every $\epsilon>0$. The set of
+such $t_0$ has positive Lebesgue measure and lies in $\mathcal T_1$.
+
+\emph{The approximation.} Fix such a $t_0$ and $\varsigma$ supported in $\mathcal U_k$, and put
+$\ell_\epsilon(u,t):=\varpi_u(u)^{-1}\varsigma(u)\Pi_t(B_\epsilon(t_0))^{-1}\un\{t\in B_\epsilon(t_0)\}$,
+for which
+$\|\ell_\epsilon\|^{2}_{L^{2}(\Pi)}=\Pi_t(B_\epsilon(t_0))^{-1}\int_{\mathcal U_k}\varsigma^{2}\varpi_u^{-1}du\le k\Pi_t(B_\epsilon(t_0))^{-1}\|\varsigma\|^{2}_{L^{2}}<\infty$.
+Then $(\mathcal W\ell_\epsilon)(u,z)-\varsigma(u)w(t_0'\Phi(z))$ is $\varsigma(u)$ times a
+$\Pi_t$-average of $w(t'\Phi(z))-w(t_0'\Phi(z))$ over $B_\epsilon(t_0)$, and for $w=\exp$ with
+$\|\Phi(z)\|_\infty\le c_\Phi$ the mean value theorem bounds that difference by
+$c_\Phi\|t-t_0\|_1e^{c_\Phi(\|t_0\|_1+\|t-t_0\|_1)}$ uniformly in $z$, hence by
+$c_\Phi\epsilon\sqrt p\,e^{c_\Phi(\|t_0\|_1+\epsilon\sqrt p)}$ on $B_\epsilon(t_0)$. The bound tends to
+zero with $\epsilon$, uniformly in $(u,z)$, so every element of $\mathcal G_\ast$ lies in
+$\overline{\mathcal R(\mathcal W)}$ and the first paragraph gives density.
+\end{proof}
+
+\begin{corollary}[to \cref{lem:adjoint}]\label{cor:elldiff}
+Regularity of a range-space representer transfers to its observable-space image, and the transfer
+is what makes the sup-norm requirements of A2$'$ well posed.
+Suppose Assumptions B1(i), (ii), (iv.a) hold and let $\ell^\Pi\in L^{2}(\Pi)$ be an
+\emph{admissible representer} in the sense of A2b, with budgets $\Lambda^{(0)},\Lambda^{(1)}$. Then
+$\ell:=\mathcal W\ell^\Pi$ is bounded, is continuously differentiable in $u$ with
+\begin{equation}\label{eq:Wderiv}
+\partial_u\ell(u,z)
+=\varpi_u'(u)\!\int_{\mathcal T}\!\ell^\Pi(u,t)\,w(t'\Phi(z))\,\Pi_t(dt)
++\varpi_u(u)\!\int_{\mathcal T}\!\partial_u\ell^\Pi(u,t)\,w(t'\Phi(z))\,\Pi_t(dt),
+\end{equation}
+and satisfies $\|\ell\|_\infty\le\|\varpi_u\|_\infty\Lambda^{(0)}$ and
+$\|\partial_u\ell\|_\infty\le\|\varpi_u'\|_\infty\Lambda^{(0)}+\|\varpi_u\|_\infty\Lambda^{(1)}$.
+\emph{Specialisation.} Under A2$'$(i.a)--(i.b) the selected solution $\ell^\Pi_\star$ satisfies A2b with
+the starred budgets, so the displays hold at $\ell=\ell_\star:=\mathcal W\ell^\Pi_\star$.
+\emph{Nothing here uses that $\ell^\Pi_\star$ solves the adjoint equation}, which is why the statement is
+available at a generic representer and why the results that apply it there may cite its own hypothesis
+line rather than restate the bridge.
+\end{corollary}
+
+\begin{proof}
+Fix $z$. By (P2), the integrand $u\mapsto\ell^\Pi(u,t)w(t'\Phi(z))$ is continuously differentiable
+for $\Pi_t$-a.e.\ $t$ by A2b, with
+\[
+\sup_{u\in\IR}\big|\partial_u\ell^\Pi(u,t)\,w(t'\Phi(z))\big|\;\le\;
+\Big(\sup_{u\in\IR}\big|\partial_u\ell^\Pi(u,t)\big|\Big)\,\bar w(t)
+\qquad\text{for every }z,
+\]
+and the right-hand side is $\Pi_t$-integrable with integral $\Lambda^{(1)}<\infty$ \emph{by the
+form of A2b, inherited from \textup{A2$'$(i.b)}, in which the supremum is inside the integral}. That
+ordering is what makes
+this a dominating function: a bound of the form $\sup_u\int(\cdot)\,d\Pi_t<\infty$ would give
+$L^{1}(\Pi_t)$-boundedness in $u$ without uniform integrability, and Leibniz's rule requires the latter.
+Differentiation under the integral sign therefore applies, uniformly in $z$; multiplying by $\varpi_u$,
+continuously differentiable by B1(iv.a), and applying the product rule gives \eqref{eq:Wderiv}. The two
+bounds follow from (P2) and the definitions of $\Lambda^{(0)}$, $\Lambda^{(1)}$.
+\end{proof}
+
+\begin{corollary}[to \cref{lem:adjoint}]\label{cor:rangegap}
+The source condition and the orthogonality equation the estimator targets can differ only inside the
+non-closedness of the range of the adjoint.
+Suppose the hypotheses of \cref{lem:adjoint} hold and define the \emph{tilted difference map}
+$\Upsilon:L^{2}(P_{\Delta U,\Delta Z})\to\mathcal V$ by $\Upsilon\Xi:=\nu_{\widetilde W\Xi}/\pi$.
+Then $\Upsilon$ is a bounded linear operator with $\|\Upsilon\|\le2\bar c_\pi^{1/2}$,
+$\mathcal A^\ast_{\mathrm{cond}}=\Upsilon\circ\mathcal W$, and
+\begin{equation}\label{eq:rangegap}
+\mathcal R\big(\mathcal A^\ast_{\mathrm{cond}}\big)\;\subseteq\;\mathcal R(\Upsilon)\;\subseteq\;
+\overline{\mathcal R\big(\mathcal A^\ast_{\mathrm{cond}}\big)} .
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The proof checks that $\Upsilon$ is bounded, factors the adjoint through it, and reads the two
+inclusions off density of $\mathcal R(\mathcal W)$ and continuity of $\Upsilon$.
+
+\emph{Step 1: boundedness.} For $\Xi\in L^{2}(P_{\Delta U,\Delta Z})$ put
+$g_\Xi:=\widetilde W\Xi(\Delta U,\Delta Z)$, so $E|g_\Xi|\le\|\Xi\|$ by (P1) and Cauchy--Schwarz and
+$E|g_\Xi h(X_j)|\le\|\Xi\|(E[h(X_j)^{2}])^{1/2}<\infty$ for $h\in\mathcal V$ by C1(ii). By
+\cref{lem:nusigma}(iii), (P1) and \cref{lem:nusigma}(i),
+$|\int\nu_{g_\Xi}h\,dx|=|E[g_\Xi\Delta h]|\le\|\Xi\|\|\Delta h\|_{L^{2}(P)}\le2\bar c_\pi^{1/2}\|\Xi\|\|h\|_{L^{2}(\pi)}$.
+\emph{Those two bounds are precisely clauses 1 and 2 of \eqref{eq:gproviso} for $g_\Xi$, so Step~0 of the
+proof of \cref{prp:nophifree} applies verbatim and gives $\nu_{g_\Xi}/\pi\in L^{2}(\pi)$} --- which must
+be established before the inner product below can be written, rather than read off it.
+So $h\mapsto\int\nu_{g_\Xi}h\,dx$ is bounded on $\mathcal V$ with norm at most $2\bar c_\pi^{1/2}\|\Xi\|$;
+since $\nu_{g_\Xi}/\pi\in L^{2}(\pi)$, the identity
+$\int\nu_{g_\Xi}h\,dx=\langle\nu_{g_\Xi}/\pi,h\rangle_{L^{2}(\pi)}$ is well formed by C1(ii), so the
+Riesz representer is the $\mathcal V$-projection of $\nu_{g_\Xi}/\pi$ --- and that projection is
+$\nu_{g_\Xi}/\pi$ itself, since $\int(\nu_{g_\Xi}/\pi)\pi\,dx=\int\nu_{g_\Xi}\,dx=0$ by
+\cref{lem:nusigma}(iv). Hence $\Upsilon\Xi=\nu_{g_\Xi}/\pi\in\mathcal V$.
+
+\emph{Step 2: factorisation and the first inclusion.} \Cref{lem:adjoint}(iii) is
+$\mathcal A^\ast_{\mathrm{cond}}\ell=\Upsilon(\mathcal W\ell)$, so
+$\mathcal R(\mathcal A^\ast_{\mathrm{cond}})=\Upsilon(\mathcal R(\mathcal W))\subseteq\mathcal R(\Upsilon)$.
+
+\emph{Step 3: the second inclusion.} Given $\Xi$, \cref{lem:adjoint}(ii) supplies $\ell_k$ with
+$\mathcal W\ell_k\to\Xi$; continuity of $\Upsilon$ gives
+$\mathcal A^\ast_{\mathrm{cond}}\ell_k\to\Upsilon\Xi$, so
+$\Upsilon\Xi\in\overline{\mathcal R(\mathcal A^\ast_{\mathrm{cond}})}$. \emph{Only density of
+$\mathcal R(\mathcal W)$ is used; the range is not characterised.}
+\end{proof}
+
+\begin{remark}\label{rem:adjointreconcile}
+Four consequences of \cref{lem:adjoint} are worth separating from the statement.
+
+\emph{(i) The representer is evaluable at the data, and that is now a theorem.} A solution of the adjoint
+equation is an element of $L^{2}(\Pi)$, a function of $(u,t)$ with $t$ the Bierens index; A2$'$(i)
+and \eqref{eq:JSig} evaluate
+$\ell_\star(\Delta U,\Delta Z)$ with $z$ a value of $\Delta Z$. \emph{The citation read
+``A2$'$(i)--(ii)'' through dispatch~13}; A2$'$(ii) is retired --- it is implied by A2$'$(i) in full
+together with B1(i), (ii), (iv.a) --- and the clause that evaluates $\ell_\star$ at the data was always
+(i), whose closing sentence fixes $\ell_\star:=\mathcal W\ell^\Pi_\star$ pointwise.
+Part (ii) supplies the map between the
+two and part (iii) shows it commutes with the adjoint equation, so the object A2$'$ and \eqref{eq:JSig}
+speak about is constructed rather than posited. \emph{The second citation read ``A3'' through
+dispatch~12}; that tag is retired and the display it presupposed is \eqref{eq:JSig}, which is what the
+sentence always meant. The construction consumes exactly one thing beyond the round-2
+assumption block, namely absolute continuity of the range measure's $u$-factor in B1(iv.a) --- a
+restriction on a reference measure the analyst chooses, not on the data-generating process.
+
+\emph{(ii) The correction measure is not free.} The map \eqref{eq:Wdef} integrates against $\Pi_t$, so
+the correction measure of B1(v) is $\Pi_t$ and the first half of B1(v) is implied by B1(iv.c) through the
+Cauchy--Schwarz inequality rather than assumed. This is consistent with the estimator solving for $L$
+directly: by part (ii) the Bierens family and the sieve have the same closure, so no $t$-integral has to
+be computed even though the population representer is defined through one.
+
+\emph{(iii) What the construction does not give, and what it gives anyway.} $\mathcal W$ has dense range
+but need not be surjective, so a selection criterion posed over all of $L^{2}(P_{\Delta U,\Delta Z})$ may
+be unreachable; and $\mathcal W$ need not be injective, though
+$\ker\mathcal W\subseteq\ker\mathcal A^\ast_{\mathrm{cond}}$ means no direction relevant to the selection
+is lost. \emph{It does not follow that the gap between A2 and the equation the estimator targets is
+uncontrolled.} By \cref{cor:rangegap} that gap is confined to
+$\overline{\mathcal R(\mathcal A^\ast_{\mathrm{cond}})}\setminus\mathcal R(\mathcal A^\ast_{\mathrm{cond}})$,
+\emph{with no characterisation of $\mathcal R(\mathcal W)$ required}. That set is nonempty under H1:
+$\mathcal A^\ast_{\mathrm{cond}}$ is compact, being the adjoint of a compact operator, and a compact
+operator has closed range if and only if that range is finite-dimensional, which H1's infinite-rank
+clause excludes. \emph{Injectivity is neither available nor needed for this} --- the same paragraph
+concedes $\ker\mathcal W\subseteq\ker\mathcal A^\ast_{\mathrm{cond}}$ two sentences above --- and an
+earlier version gave injectivity as the reason. The gap is exactly where the ill-posedness lives.
+
+\emph{(iii$'$) The derivative of the representer.} The sup-norm requirements on $\ell_\star$ remain
+assumptions, but they are stated on $\ell^\Pi_\star$, in A2$'$(i.a)--(i.b), and \cref{cor:elldiff}
+derives from them both \eqref{eq:Wderiv} and the two bounds. Rounds 1--2 assumed
+$\|\partial_u\ell_\star\|_\infty<\infty$ for an object whose derivative nothing in the block made exist;
+the $C^{1}$ clause of B1(iv.a) alone controls only the first term of \eqref{eq:Wderiv}. \eqref{eq:Wderiv}
+is a \emph{conditional} identity whose hypothesis is A2$'$(i.b), a primitive awaiting L-21.
+
+\emph{(iv) The $\nu/\pi$ referent is confirmed independently, and in the same form.} \emph{Notation:}
+\citet{feve2014} write the endogenous regressors as $Z_1,Z_2$ with generic value $z$, the instrument as
+$W$ with generic value $w$, and a generic element of the range space as $\psi$; the translation to this
+paper is $Z_t\mapsto X_t$, $z\mapsto x$, and their $\psi$ is our $\ell$, the letter $\psi$ being reserved
+here for the moment function. For the linear conditional-mean panel operator
+$K\varphi=E[\varphi(Z_2)-\varphi(Z_1)\mid W]$, their Proposition~2.1 gives, \emph{verbatim in their
+notation},
+\[
+\big(K^{\ast}\psi\big)(z)\;=\;\int\psi(w)\,\frac{f_{Z_2,W}(z,w)-f_{Z_1,W}(z,w)}{\pi(z)}\,dw ,
+\]
+followed immediately by the statement that $K^{\ast}\psi$ satisfies the normalising constraint
+$\int[(K^{\ast}\psi)(z)]\pi(z)\,dz=0$. Translated, the numerator is $\nu_{\ell(W)}$ and the display is
+$\nu_{\ell(W)}/\pi$. \emph{One difference of setting must be flagged rather than absorbed:} their $dw$
+integral ranges over a general instrument space, whereas $W$ is binary here, so the counterpart in this
+paper is the two-point sum
+$\nu_{\ell(W)}(x)=\sum_{j\in\{0,1\}}\ell(j)\{f_{X_2,W}(x,j)-f_{X_1,W}(x,j)\}$; the
+difference-of-densities structure is what carries over, not the integral. \emph{Both features of
+\eqref{eq:adjclosed} therefore appear in print in the linear case:} the division by the reference
+density --- with the same letter $\pi$ --- and the zero $\pi$-mean, which is membership of $\mathcal V$
+and which \cref{prp:compact} Step~2 proves here from $\int\nu_g\,dx=0$ at $h\equiv1$. \emph{The
+$\pi^{-1}$ is therefore not an artefact of the $L^{2}(\pi)$ convention adopted here; it is the shape the
+adjoint takes in a first-differenced panel.} What transfers is that shape and nothing more: their $K$ is
+a fixed linear conditional-expectation operator, while $\mathcal A_{\mathrm{cond}}$ is a Fr\'echet
+derivative, and the induction map $\mathcal W$ has no counterpart there because their restriction is
+already unconditional in the residual.
+\end{remark}
+
+\begin{proposition}\label{prp:kerchar}
+A direction is annihilated by the linearised operator exactly when the instrument fails to move its
+period difference, given the residual and the controls.
+Suppose Assumptions B1(i)--(iv), C1 and C2$'$(i) hold, and let $h\in\mathcal V$. Then \emph{(i)} the
+following are equivalent: \emph{(a)} $\mathcal A_{\mathrm{cond}}h=0$ in $L^{2}(\Pi)$; \emph{(b)}
+$E[\widetilde W\{h(X_2)-h(X_1)\}\mid\Delta U,\Delta Z]=0$ almost surely. And \emph{(ii)} if in addition
+Assumptions A1 and A4(i) hold, \emph{(b)} is equivalent to \emph{(c)}
+$E[h(X_2)-h(X_1)\mid\Delta U,\Delta Z,W=1]=E[h(X_2)-h(X_1)\mid\Delta U,\Delta Z,W=0]$ almost surely.
+\end{proposition}
+
+\begin{proof}
+Part (i) is Steps 1--4: (a)$\Rightarrow$(b) by stripping the Bierens index and then the $u$-index, and
+(b)$\Rightarrow$(a) by reversing both. Part (ii) is Step 5, the extended binary identity (P4c). Steps
+1--4 use neither A1 nor A4(i).
+
+\emph{Step 1: (a) implies the pointwise family.}
+The map $(u,t)\mapsto E[g_{u,t}\Delta h]$ is continuous in $u$ for each $t$ --- dominated convergence
+with envelope $\bar w(t)\bar f_0|\Delta h|$, integrable by C2$'$(i), (P1), (P2) and
+\cref{lem:nusigma}(i), together with continuity of $u\mapsto f_{\Delta U\mid\mathcal F_{XZW}}(u)$ from
+C2$'$(i) --- and real-analytic in $t$ by Step~2 of the proof of \cref{lem:bierenscore}. Step~5 of the
+proof of \cref{lem:bierens}, which consumes only B1(iv.a) and B1(iv.b), upgrades the $\Pi$-a.e.\
+statement to $\mathcal A_{\mathrm{cond}}h(u,t)=0$ for every $(u,t)\in\IR\times\mathcal T$.
+
+\emph{Step 2: stripping the Bierens index.}
+Fix $u$, set $\varepsilon_u:=\widetilde Wf_{\Delta U\mid\mathcal F_{XZW}}(u)\Delta h$, integrable since
+$E|\varepsilon_u|\le\|\bar f_0\|_\infty E|\Delta h|<\infty$, and note
+$\mathcal A_{\mathrm{cond}}h(u,t)=E[\varepsilon_ue^{t'\Phi(\Delta Z)}]$. By \cref{lem:bierenscore} with
+$V=\Delta Z$, under B1(i)--(iii), $E[\varepsilon_u\mid\Delta Z]=0$ almost surely for each $u$.
+
+\emph{Step 3: stripping the $u$-index.}
+For $\varsigma\in C_b(\IR)$, multiply by $\varsigma(u)$ and integrate over $u\in\IR$. The interchange is
+licensed by Fubini with the envelope
+$|\varsigma(u)\widetilde Wf_{\Delta U\mid\mathcal F_{XZW}}(u)\Delta h|\le\|\varsigma\|_\infty f_{\Delta U\mid\mathcal F_{XZW}}(u)|\Delta h|$,
+whose double integral is $\|\varsigma\|_\infty E|\Delta h|<\infty$ by (P1),
+$\int_\IR f_{\Delta U\mid\mathcal F_{XZW}}(u)du=1$ and \cref{lem:nusigma}(i). Then (P6a)'s substitution
+lemma together with the tower property, $\widetilde W\Delta h$ being $\mathcal F_{XZW}$-measurable and
+$\sigma(\Delta Z)\subseteq\mathcal F_{XZW}$, gives
+\begin{equation}\label{eq:kerfam}
+E\big[\widetilde W\,\Delta h\,\varsigma(\Delta U)\,\big|\,\Delta Z\big]=0\quad\text{a.s., for every }\varsigma\in C_b(\IR).
+\end{equation}
+Multiplying by a bounded $\beta(\Delta Z)$ and taking expectations, the functional monotone class
+theorem --- the product functions $\varsigma\otimes\beta$ are closed under multiplication, contain the
+constants and generate $\mathfrak B(\IR)\otimes\mathfrak B(\IR^{p})$, and the dominating function is
+$|\widetilde W\Delta h|\sup_k\|\Lambda_k\|_\infty$ --- gives $E[\widetilde W\Delta h\,\Lambda]=0$ for
+every bounded $\sigma(\Delta U,\Delta Z)$-measurable $\Lambda$, which is (b).
+
+\emph{Step 4: (b) implies (a).}
+(b) recovers \eqref{eq:kerfam}, which says the finite signed measure
+$A\mapsto E[\widetilde W\Delta h\un\{\Delta U\in A\}\mid\Delta Z]$ integrates every $\varsigma\in C_b$ to
+zero, hence vanishes, hence has zero density $E[\varepsilon_u\mid\Delta Z]=0$ for a.e.\ $u$ and, by the
+continuity of Step~1, for every $u$. Multiplying by $e^{t'\Phi(\Delta Z)}$ and taking expectations gives
+$\mathcal A_{\mathrm{cond}}h(u,t)=0$ for every $(u,t)$.
+
+\emph{Step 5: part (ii) --- (b) is equivalent to (c), and here A1 and A4(i) enter.}
+By A1, $P(W=1\mid\Delta U,\Delta Z)=\varrho(\Delta Z)$, so (P4c) with
+$\mathcal C=\sigma(\Delta U,\Delta Z)$ and $\Lambda=\Delta h$ gives
+$E[\widetilde W\Delta h\mid\Delta U,\Delta Z]=\varrho(1-\varrho)\{E[\Delta h\mid\Delta U,\Delta Z,W=1]-E[\Delta h\mid\Delta U,\Delta Z,W=0]\}$,
+both cell-conditional expectations being well defined because A4(i) makes both $W$-cells non-null. A4(i)
+also gives $\varrho(1-\varrho)\ge\varepsilon_\varrho(1-\varepsilon_\varrho)>0$, so the product vanishes
+if and only if the brace does.
+\end{proof}
+
+\begin{corollary}[to \cref{prp:kerchar}(i)]\label{cor:a1cprim}
+Instrument completeness given the residual, together with measure separability, delivers first-order
+local identification.
+Suppose Assumptions B1(i)--(iv), C1, C2$'$(i), A1b(ii) and A1d hold. Then A1c holds, that is,
+$\ker\mathcal A_{\mathrm{cond}}=\{0\}$.
+\end{corollary}
+
+\begin{proof}
+Let $h\in\ker\mathcal A_{\mathrm{cond}}\subseteq\mathcal V$. By \cref{prp:kerchar}(i), clause (b) holds:
+$E[\widetilde W\Delta h\mid\Delta U,\Delta Z]=0$ almost surely; and $\Delta h$ lies in
+$L^{2}(P_{X_1,X_2})$ by \cref{lem:nusigma}(i). A1d gives $\Delta h=0$ almost surely, and
+\cref{lem:nusigma}(ii), which consumes A1b(ii) and the definition of $\mathcal V$, gives $h=0$.
+\emph{The corollary reads clause
+\textup{(b)}, not clause \textup{(c)}, so it uses neither A1 nor A4(i):} A1d is a statement about the
+operator $\Lambda\mapsto E[\widetilde W\Lambda\mid\Delta U,\Delta Z]$, and so is clause (b).
+\end{proof}
+
+\begin{remark}\label{rem:ffcompare}
+\Cref{cor:a1cprim} is the transplant of \citet[Prop.~2.2]{feve2014} to the conditional-independence
+design, and it is worth saying what the transplant delivers and what it does not.
+
+\emph{Notation, fixed once.} \Citet{feve2014} write the endogenous regressors as $Z_1,Z_2$ and the
+instrument as $W$; here the endogenous regressors are $X_1,X_2$ and $Z$ is reserved for the exogenous
+controls. All quotations below are verbatim \emph{in their notation}; the translation is
+$Z_t\mapsto X_t$, and no symbol inside a quotation has been altered.
+
+\emph{What it delivers.} Their Proposition~2.2 states: ``Let $\varphi\in E$. If $(Z_1,Z_2)$ is strongly
+identified by $W$ and if $Z_1$ and $Z_2$ are measurably separated the function $\varphi$ is identified.''
+The two primitives become A1d and A1b(ii) here, and the argument is the same in outline: completeness
+removes the period difference from inside the conditional expectation, and measurable separability then
+forces the direction to be constant, which the definition of $\mathcal V$ sets to zero because the
+direction lies in $\mathcal V$. This supplies A1c with a primitive
+sufficient condition it did not previously have.
+
+\emph{What it does not deliver.} It does not reach global identification of $\vdagger$. In
+\citet{feve2014} the restriction is a conditional mean and the operator is linear in $\varphi$, so
+injectivity of the operator \emph{is} identification. Under conditional independence the operator
+equation is nonlinear in $\varphi$ and the two statements separate: membership of $\mathcal V_{CI}$ is the
+family $E[\widetilde W\varsigma(\Delta Y-\Delta\varphi)\mid\Delta Z]=0$ indexed by test functions of the
+\emph{observed} residual at the trial value, whereas running the argument of \cref{prp:kerchar} globally
+would need the strictly larger family
+$E[\widetilde W\varsigma(\Delta Y-\Delta\varphi)\varkappa(\Delta U)\mid\Delta Z]=0$, indexed also by test
+functions of the \emph{true} residual, about which the restriction says nothing at a trial $\varphi$. The
+two coincide at $\varphi=\vdagger$ and nowhere else. \Cref{prp:compact} closes off the obvious repair:
+because $\mathcal A_{\mathrm{cond}}$ is compact it is not bounded below, so A1c does not deliver even a
+neighbourhood of uniqueness.
+
+\emph{Why the gap is recorded rather than closed, and the precedent is sharper than a difficulty claim.}
+\citet{feve2014} reject the hypothesis of their own Proposition~2.2, and their stated reason is the
+excess A1d reproduces exactly: ``The assumption of Proposition 2.2 is too strong because it assumes that
+$E(g(Z_1,Z_2)\mid W)=0$ implies $g(Z_1,Z_2)=0$ a.s.\ for any $g$, and we only use this property for
+$g(Z_1,Z_2)$ of the form $\varphi(Z_2)-\varphi(Z_1)$.'' A1d has the same shape: it quantifies over every
+$\Lambda\in L^{2}(P_{X_1,X_2})$, while \cref{cor:a1cprim} consumes it only at $\Lambda=\Delta h$, a
+difference. \emph{Both papers reach a completeness condition stated over a class strictly larger than the
+one the argument uses, and both decline to repair it by restricting the class}, because injectivity of
+$\Lambda\mapsto E[\widetilde W\Lambda\mid\Delta U,\Delta Z]$ on differences alone is no longer a
+recognisable completeness condition and has no primitive characterisation of its own.
+
+\emph{The two asymmetries are not the same asymmetry.} Theirs runs from the assumption to its use: the
+hypothesis is \emph{stronger than the argument consumes}. The one in the previous paragraph runs the
+other way: the restriction supplies \emph{less information than the argument needs}, the $\varsigma$
+family against the $(\varsigma,\varkappa)$ family. They are opposite inequalities, and they meet at one
+point --- \emph{the recognisable completeness conditions available in either design are stated over a
+coarser class than the design's own information}, so an assumption calibrated to that class is too
+strong and the information calibrated to it is too weak. \emph{That is where a future improvement would
+have to act, in either paper}: not by strengthening the completeness condition, but by finding a
+restriction on $P$ stated over exactly the class the argument uses. A1b(iii) is accordingly kept as an
+assumption, with A1d recorded as the route that reaches the linearised condition and stops there, and
+with its own excess named rather than hidden.
+\end{remark}

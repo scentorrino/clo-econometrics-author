@@ -1,0 +1,70 @@
+% ============================================================================
+%  THEORY-CORPUS BUILD DRIVER -- BODY ONLY.
+%
+%  build.sh wraps this with \documentclass, the project preamble, and an
+%  \addbibresource pointing at the project's own bibliography.  Keeping the
+%  wrapper in the script and the body here means the bib path is computed once,
+%  in shell, from the project slug -- rather than hardcoded in TeX or spliced in
+%  by a text transformation.  A first version of build.sh did splice it in with
+%  awk, got it wrong, and produced a build with NO BIBLIOGRAPHY AT ALL: it still
+%  exited 0, still rendered, and reported all 14 citations unresolved instead of
+%  the true 8.  Two pages shorter, no reference list, exit code 0.  That is the
+%  same class of silent failure this whole script exists to expose, so the fix
+%  was to remove the transformation rather than debug it.
+%
+% ============================================================================
+%  REPOINTED AT THE SPLIT, 2026-08-03 (USER DECISION). READ BEFORE EDITING.
+%
+%  This driver used to compile the UNDIVIDED sources:
+%      \input{assumptions}   \input{results}   \input{proofs}
+%  Those two undivided files are now RETIRED; see the SUPERSEDED banner at the
+%  head of each.
+%
+%  WHY.  results.tex and assumptions.tex were maintained in parallel with a
+%  SPLIT MIRROR -- results_s2/s3/s3_supp/s4/_supp and assumptions_main/_supp --
+%  and the split is what paper/qmd/{main,supplement}.qmd actually \input.  Two
+%  representations of the same mathematics drifted, as two representations do:
+%    * ~95 substantive lines lived only in the parent and ~157 only in the
+%      split, after normalising the \cref/\suppref and \eqref/\suppeq
+%      translation that legitimately differs between them;
+%    * the parent's def:onestep asserted two bibliography keys "are absent from
+%      this project's bibliography" when BOTH ARE PRESENT and the split had been
+%      citing them correctly throughout;
+%    * ass:bierens clause (vi), a 43-line retirement record, is live in the
+%      parent and absent from the split;
+%    * ass:reprsource carries a 56-line proof INSIDE the assumption in the
+%      parent, which the split had already moved to assumptions_supp.
+%  So the build gated one file while the manuscript shipped another: the thing
+%  being validated was not the thing being published, and a defect repaired in
+%  one survived in the other.
+%
+%  THE ORDER BELOW IS supplement.qmd's, VERBATIM, AND THAT IS THE POINT.  It is
+%  the only order proven to compile this set -- the supplement renders CLEAN
+%  from exactly these eight inputs in exactly this sequence.  Theorem,
+%  definition and EQUATION counters advance in \input order, so reordering
+%  renumbers the corpus away from the manuscript.  DO NOT REORDER.
+%
+%  The partition this relies on, and which the build now actively tests:
+%      assumptions_main + assumptions_supp                  == assumptions.tex
+%      results_s2 + results_s3 + results_s3_supp
+%                 + results_s4 + results_supp               == results.tex
+%  Every \label is declared exactly once across each pair, so the "multiply
+%  defined" check is the live test that the split is a true partition rather
+%  than an overlapping copy.  If it ever fires, the split has been broken.
+% ============================================================================
+\input{assumptions_main}
+\clearpage
+\input{results_s2_identification}
+\clearpage
+\input{results_s3_estimation}
+\clearpage
+\input{results_s4_asymptotics}
+\clearpage
+\input{assumptions_supp}
+\clearpage
+\input{results_s3_supp}
+\clearpage
+\input{results_supp}
+\clearpage
+\input{proofs}
+\clearpage \small \printbibliography

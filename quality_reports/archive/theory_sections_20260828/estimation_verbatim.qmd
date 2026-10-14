@@ -1,0 +1,219 @@
+# Estimation
+
+Recall that the differenced model is
+$\Delta Y=\Delta\vdagger+\Delta Z'\theta_\dagger+\Delta U$, with $\vdagger$ the
+unknown function and $W$ taking values in $\{0,1,\dots,\mathsf L-1\}$. We estimate
+$\vdagger$ in a $\varphi$-step, which
+solves an ill-posed inverse problem by regularisation and returns a rate slower
+than $n^{-1/2}$; the $\theta$-step is a cross-fitted one-step on a moment built to
+be insensitive to that error to first order. The multinomial first stage fits the
+$\mathsf L-1$ propensities $\varrho_1,\dots,\varrho_{\mathsf L-1}$, which is why
+A0 asks that $\mathsf L$ be known: the analyst has to know how many functions to
+fit. A4(i)'s overlap floor $\varepsilon_\varrho$ lies in $(0,1/\mathsf L)$ and is
+imposed at every cell including the base one, so it tightens mechanically as cells
+are added, and \eqref{eq:omegafloor} converts it into
+$\lambda_{\min}(\Omega(\Delta Z))\ge\varepsilon_\varrho/\mathsf L$.
+
+What keeps the two from being circular is an anchor, and the anchor is licensed by
+\S2 rather than assumed.
+
+One requirement of the assumption block is a restriction on how the analyst writes
+$\Delta Z$, and it is stated here because it is invisible where it is imposed.
+A4(ii) asks that the number $d_Z$ of non-degenerate coordinates of $\Delta Z$
+satisfy $1\le d_Z\le p-1$, degenerate meaning almost surely equal to a constant.
+Read against A1b(iv) the upper bound is sharper than it looks. It says at least one
+coordinate of $\Delta Z$ is almost surely constant; that constant cannot be zero,
+since a zero coordinate makes a row and a column of $E[\Delta Z\Delta Z']$ vanish
+and A1b(iv) fails; and there cannot be two of them, since two non-zero constant
+coordinates make two rows of that matrix proportional and A1b(iv) fails again. So
+the two clauses together force $d_Z=p-1$ exactly, and force $\Delta Z$ to carry
+exactly one constant coordinate, non-zero: *the differenced equation must include a
+period effect.* What is not required is that the period effect be non-zero in the
+population, its coefficient being an ordinary component of $\theta_\dagger$ that
+may be zero; what is required is that the coordinate be present, so that
+$\Delta Z$ spans an intercept in differences. A specification in which every
+coordinate of $\Delta Z$ varies is excluded by A4(ii), and one in which two do not
+is excluded by A1b(iv).
+
+The lower bound does different work and is not a modelling choice. At $d_Z=0$ the
+propensity exponent $\alpha=r/(2r+d_Z)$ is $\tfrac12$ exactly, A5(i)'s declared
+floor puts $\hat\delta_n$ at $n^{-1/2}\sqrt{\ln n}$, and the sieve-entropy
+condition $L_x\ln n=o(n\hat\delta_n^{2})$ then reads $L_x=o(1)$, which no integer
+$L_x\ge1$ satisfies. \Cref{prp:phirate} has no admissible sieve dimension there and
+\cref{thm:rootn} is vacuous rather than false. That is not a pathology of the
+propensity, which at $d_Z=0$ is a constant and estimable at the parametric rate;
+what fails is the $\varphi$-step's entropy budget, which needs room between the
+noise level and the sieve dimension.
+
+The $\varphi$-step is iterated linearisation with sieve Landweber--Fridman
+(\cref{def:lfstep}). At stage $k$ we pose the linear equation
+$\hat{\mathcal A}_{\hat\varphi^{(k-1)}}v=-\hat T_{h_x}(\hat\varphi^{(k-1)},\theta)$
+on the spline sieve $\mathcal S_n$ of A8 \citep[see][]{devorelorentz1993,schumaker2007},
+solve it by Landweber--Fridman from $v_0=0$ at the relaxation
+\eqref{eq:normconst} \citep[see][]{dunker2014,engl2000}, and add the update to the
+previous iterate.
+
+*Every Landweber pass is applied to a linear equation*; the nonlinearity is carried
+by the outer index $k$ and by nothing else. That is what makes a tangential cone
+condition \citep{hanke1995} unnecessary, and the point is stronger than
+convenience. The cone condition is not merely strong here: the supplement refutes
+it, proving that its event has probability zero, and proving that for every
+bounded candidate linearisation and for the one unbounded candidate as well.
+
+The refutation is bounded, and the three qualifiers are load-bearing: the
+condition is posed on $\mathcal V$, in the levels parameterisation, off the sieve.
+A cone condition restricted to $\mathcal S_n$ is untouched by the refutation and is
+also unproved, as part (3) of the supplement's remark on where the failure stops
+records, and in a space of derivatives the proposition
+dissolves altogether at a cost in the source index \eqref{eq:muhalf} will not pay.
+Nothing in the argument above needs any of that: the $\varphi$-step is licensed by
+the linearity of each pass, not by the refutation.
+
+The derivative parameterisation is available and we decline it. Estimating the
+derivative of the structural function is standard in the linear problem and
+carries into the nonlinear one, where it lifts a saturation ceiling on the source
+index \citep{florens2012,centorrinofeveflorens2019}. Here it pushes the wrong
+way. Composing with the inverse derivative operator raises the degree of
+ill-posedness from $a$ to $a+1$ *and* lowers the source index from $s/(2a)$ to
+$(s-1)/\{2(a+1)\}$. At the frontier-clearing configuration $(s,a)=(3,\tfrac34)$
+of the Monte Carlo that returns $\tfrac47$ in place of $2$, below the $\tfrac56$ that
+\eqref{eq:muhalf} requires.
+
+We leave recovering marginal effects from $\hat\varphi$ to future research.
+
+We stop the iteration on a discrepancy principle at a level that is
+stage-dependent and deterministic, and both features are load-bearing.
+
+Stage-dependent, because the data error of the stage-$k$ equation is not
+$\hat\delta_n$ but $\hat\delta_n\ln n$ plus the linearisation remainder
+$h_u^{-2}\varepsilon_{k-1}^{2}$. A fixed level sits below the true data error in
+exactly the regime the recursion must pass through, and there the classical
+discrepancy guarantee does not apply.
+
+Deterministic, for two reasons of different status. The first is this paper's own
+and is sharp: the realised residual cannot supply the level, because bounding the
+unobservable error from below through the residual would require a lower bound on
+$\|\hat{\mathcal A}v\|$ in terms of $\|v\|$. That
+$\|\hat{\mathcal A}v_\dagger\|\ll\|v_\dagger\|$ is available is not an accident of
+this construction but the definition of ill-posedness. The second is classical and
+is cited: no rule depending on the data alone can make a regularisation method
+convergent for a genuinely ill-posed problem \citep{bakushinskii1984}.
+
+*That statement is weaker than it looks here.* It is worst-case and deterministic,
+and in the statistical setting we inhabit it does not exclude data-driven
+selection. Lepskii-type balancing over the regularisation index is purely
+data-driven and attains the optimal rate up to a logarithmic factor
+\citep[see][]{dunker2021,lepskii1990}. We therefore prefer the schedule of
+\eqref{eq:lfsched}, and are not forced into it.
+
+It is preferred at a stated price. That schedule is *computable* from four inputs, and it
+is not *known*: the two constants $\mathsf c_{14}$ and $\mathsf c_{15}$ must be chosen and
+are not identified by the data, and what they must dominate are analytic constants built
+from the kernel, from the design, and from the spectral pre-image radius
+$\mathsf R_\ast$ of (P-a.3).
+
+The error is not symmetric in direction. Chosen too large, the rule stops
+earlier, the rate is unchanged in order and the constant degrades. Chosen too
+small, the implemented level again sits below the true data error at some stage and
+the discrepancy guarantee is void, leaving whatever the cap \eqref{eq:cap} returns.
+This is the one place the procedure carries a tuning constant the theory does not
+pin, and we say so here rather than leave it to be discovered.
+
+\Cref{prp:phirate} is the rate: $\|\hat\varphi-\vdagger\|_{L^{2}(\pi)}=O_P(\delta_n)$ with
+$\delta_n=(\hat\delta_n\ln n)^{2\mu/(2\mu+1)}$, at a finite $\bar k$ that does not grow
+with $n$, and $\delta_n=o_P(n^{-1/4})$ whenever the frontier \eqref{eq:frontier} holds. It
+discharges A5(i)--(iii) rather than assuming them. Two things we do not claim
+should be read with it. It is an upper bound and not a
+sharpness statement, and nothing there says $\delta_n$ cannot be improved. And the
+source index $\mu$ is *primitive*, at (P-a.3), together with $\mathsf R_\ast$.
+
+H1 fixes the Sobolev scale and supplies A2's Picard form, but the identity
+$\mu=s/(2a)$ is not used on the rate route. The passage from a Hilbert-scale source
+condition plus a link condition to the *spectral* condition the classical
+discrepancy theorem consumes is operator interpolation at exponent $2\mu$. That is
+available only at $2\mu\le1$, while \eqref{eq:muhalf} forces $2\mu>\tfrac53$. A
+referee who asks what pins $\mu$ should be given that answer and not the identity.
+
+The $\theta$-step runs on the debiased moment $\psi$ of \eqref{eq:psidef}: the differenced
+least-squares moment plus $\widetilde W$ times a weight evaluated at the residual.
+We split the observations into $\mathsf F$ folds fixed independently of the data
+(\cref{def:crossfit}), compute every nuisance on the complement of the fold it is
+evaluated on, and take the one-step \eqref{eq:onestep} from the plug-in
+preliminary \eqref{eq:prelimtheta} \citep[see][]{chernozhukov2018dml,neweyrobins2018}.
+
+The preliminary inherits the first-stage rate,
+$\|\hat\theta^{(0)}-\theta_\dagger\|=O_P(n^{-1/2})+O_P(\delta_n)$, and it inherits it
+because $\theta_\dagger$ is identified by restriction (B) alone (the plug-in
+preliminary lemma of the supplement); no condition on the weight, on the propensity or on A2 enters it. Its variance estimator
+is the sample sandwich \eqref{eq:Sighat}, which carries a transpose because $\hat J$ is
+not symmetric even though $J$ is.
+
+We run the $\varphi$-step at a fixed anchor $\theta_\circ$ chosen in advance of
+the data, and that is what removes the circularity.
+
+It is licensed and not free. By \cref{cor:opsol} and \cref{lem:shiftinv} the
+population solution set of the operator equation in $\varphi$ is $\mathcal V_{CI}$
+at *every* $\theta$, so under A1b(iii) the $\varphi$-step targets $\vdagger$ at
+$\theta_\circ$ as well as at $\theta_\dagger$. What is not $\theta$-free is the
+conditioning of the inverse problem. In
+\eqref{eq:Adef} a conditional density is evaluated at a $\theta$-dependent point,
+so the singular values, the degree of ill-posedness $a$, the source index $\mu$,
+the radius $\mathsf R_\ast$ and the operator noise $\hat\delta_n$ are all
+$\theta_\circ$-specific, and \cref{prp:phirate}'s hypotheses are read there. The
+population solution set is $\theta$-free; the operator is not.
+
+Debiasing enters through the choice of weight, and \cref{prp:orthog} prices all three
+nuisance directions. In the structural direction the derivative of the moment vanishes for
+every $h\in\mathcal V$ if and only if the representer solves the adjoint equation
+$\mathcal A^\ast_{\mathrm{cond}}\ell^\Pi=-\nu/\pi$, which is A2. In the weight direction it
+vanishes *exactly*, at every perturbation and not merely to first order, because $\psi$ is
+bi-affine there.
+
+In the propensity direction it vanishes exactly if and only if the weight satisfies
+N1, conditional centring given $\Delta Z$. N1 can always be arranged by a
+straightforward re-anchoring, at no cost to $\partial_uL$ and none to $E[\psi]$, but it does not
+hold automatically, and \cref{prp:orthog}(iii) is the statement of exactly what its
+failure costs. That equivalence is what demotes $\varrho$ from a $\sqrt n$ nuisance
+to a product-rate one. Forming the weight never requires a weighting measure on
+$\mathcal T$ to be chosen:
+by Lemma L-2 of the supplement the estimator solves for $L$ inside a dense class,
+so we compute no $t$-integral in forming it, which is also the argument against a
+continuum-GMM formulation \citep{carrascoflorens2000}.
+
+*We assume two ingredients of this estimator to exist with stated properties and
+construct neither in this paper; three further conditions we take as primitive
+rather than derive. Each is named in a hypothesis rather than buried in a
+regularity condition.*
+
+The two unbuilt ingredients are estimators. The estimator $\hat\ell$ of the
+representer is priced by A5(iv) at rate $\epsilon_n$ with
+$\delta_n\epsilon_n=o_P(n^{-1/2})$, and no construction attaining that rate is
+supplied. The preliminary $\hat\varphi^{(0)}$ has no supplier either, the schedule
+\eqref{eq:lfsched} needing it at a declared deterministic envelope
+$\hat\varepsilon_0$ of polynomial order, for which consistency will not do.
+
+The three primitives are conditions, not objects. Both $\mu$ and $\mathsf R_\ast$
+are primitive, as above. Global identification of $\vdagger$ is assumed at
+A1b(iii) and not derived. And on the sieve branch of the first-order bias, the
+sieve display of Lemma L-7 in the supplement is assumed.
+
+Obligations of a second kind are construction claims rather than assumptions and
+are carried explicitly by the hypotheses that consume them. The first is that
+$\hat L^{(-k)}$ *is* an anchored antiderivative
+$L^{\,\hat b^{(-k)}}_{\hat\ell^{(-k)}}$ of a bounded, $u$-continuous
+$\hat\ell^{(-k)}$, which is (R-a) of \cref{thm:rootn}. The second is that the
+direction $\hat L^{(-k)}-L_\star$ is conditionally centred, which is (R-c), a
+disjunction whose first branch assumes N1$'$ and whose second *prices the failure*
+at $r_n\epsilon^{L}_n$ through the fourth term of the supplement's bias
+decomposition. Pricing a failure is the honest third option, and it is neither a
+discharge nor an evasion. The supplement's remark on open verification obligations
+is the single inventory.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+% The four statements that define the estimator: the sieve Landweber--Fridman
+% varphi-step, the debiased moment with its two matrices, the cross-fitting
+% scheme, and the preliminary and one-step theta-estimator.
+\input{../../quality_reports/theory/panel-npiv-discrete/results_s3_estimation}
+```
+:::

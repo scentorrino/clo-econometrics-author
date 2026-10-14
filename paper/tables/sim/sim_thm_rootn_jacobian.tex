@@ -1,0 +1,43 @@
+\begin{tabular}{llrrrr}
+\toprule
+\multicolumn{6}{l}{\textit{Panel A: finite-difference check of $\partial_\theta\bar\psi_n=-\hat J$ of \eqref{eq:Jhat}}} \\
+\midrule
+DGP & $\theta$ & Step & Max rel.\ gap to $-\hat J$ & Min rel.\ gap to $+\hat J$ & Sign agreement \\
+\midrule
+A & $\theta_\dagger$ & 1e-03 & 6.3e-07 & 2.000 & 1.000 \\
+A & $\theta_\dagger$ & 1e-04 & 6.3e-07 & 2.000 & 1.000 \\
+A & $\theta_\dagger$ & 1e-05 & 6.3e-07 & 2.000 & 1.000 \\
+A & displaced & 1e-03 & 6.3e-07 & 2.000 & 1.000 \\
+A & displaced & 1e-04 & 6.3e-07 & 2.000 & 1.000 \\
+A & displaced & 1e-05 & 6.3e-07 & 2.000 & 1.000 \\
+B & $\theta_\dagger$ & 1e-03 & 1.0e-06 & 2.000 & 1.000 \\
+B & $\theta_\dagger$ & 1e-04 & 1.0e-06 & 2.000 & 1.000 \\
+B & $\theta_\dagger$ & 1e-05 & 1.0e-06 & 2.000 & 1.000 \\
+B & displaced & 1e-03 & 1.1e-06 & 2.000 & 1.000 \\
+B & displaced & 1e-04 & 1.1e-06 & 2.000 & 1.000 \\
+B & displaced & 1e-05 & 1.1e-06 & 2.000 & 1.000 \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Panel B: direction of the one-step, $\|\hat\theta-\theta_\dagger\|/\|\hat\theta^{(0)}-\theta_\dagger\|$}} \\
+\midrule
+DGP & Displacement & & $+\hat J^{-1}$ (MC SE) & $-\hat J^{-1}$ (MC SE) & \\
+\midrule
+A & 0.15 & & 0.2947 (0.0080) & 2.027 (0.012) & \\
+A & 0.59 & & 0.0799 (0.0023) & 2.000 (0.004) & \\
+B & 0.15 & & 0.5599 (0.0186) & 2.052 (0.024) & \\
+B & 0.59 & & 0.1347 (0.0043) & 2.008 (0.006) & \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Panel C: the second summand of $J$, $E[\widetilde W\ell_\star\Delta Z']$, measured directly}} \\
+\midrule
+DGP & $\max|J|$ & $\max|E[\widetilde W\ell_\star\Delta Z']|$ & MC SE & $\max|t|$ & $\|J-J'\|_\infty$ \\
+\midrule
+A & 1.122 & 2.19e-03 & 8.93e-04 & 2.46 & 1.06e-03 \\
+B & 1.010 & 9.21e-04 & 8.40e-04 & 1.10 & 9.22e-04 \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Panel D: the asymptotic sd of $\hat\theta_2$ under two admissible anchors}} \\
+\midrule
+DGP & Zero anchor & N1 anchor & N1 / zero & $\|\hat b\|/\|L_\star\|$ (rms) & Zero / no debias. \\
+\midrule
+A & 1.0055 & 1.0055 & 1.0000 & 1.2e-02 & 1.042 \\
+B & 2.0810 & 2.0810 & 1.0000 & 1.2e-02 & 1.032 \\
+\bottomrule
+\end{tabular}

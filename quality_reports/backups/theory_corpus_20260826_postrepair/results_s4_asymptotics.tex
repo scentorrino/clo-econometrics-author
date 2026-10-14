@@ -1,0 +1,445 @@
+% ============================================================================
+%  RESULTS -- MAIN TEXT, SECTION 4: ASYMPTOTIC PROPERTIES
+%  project `panel-npiv-discrete`
+%
+%  WHAT THIS FILE HOLDS.  The 4 statements that belong under Section 4:
+%  the four asymptotic statements: the second-order remainder on the ball, the
+%  rate for the varphi-step, the root-n theorem, and the rate floor.
+%  Nothing else.  In order: prp:sharpquad, prp:phirate, thm:rootn, cor:ratefloor.
+%
+%  WHY THREE FILES AND NOT ONE.  results_main.tex printed all 23 core statements
+%  in one block, which the article had to \input somewhere; it went under
+%  Section 4, so Section 2's prose forward-referenced statements forty pages
+%  later.  The three files are \input under the three sections that discuss
+%  them.  The split is a PARTITION: results_s2 + results_s3 + results_s4 +
+%  results_supp = the undivided results.tex, every \label declared exactly once
+%  across the four, no statement rewritten, retitled or renumbered.  Relative
+%  order inside each file is the order of the parent file.
+%
+%%  DO NOT \input THIS FILE ALONGSIDE results.tex OR assumptions.tex.
+%%  results.tex and assumptions.tex SURVIVE UNDIVIDED and remain the source of
+%%  record: scripts/build-theory/build.sh compiles them, scripts/render-sync/
+%%  check_rendering_sync.py reads them, and ~100 files under scripts/symbolic/
+%%  specs/ cite them BY LINE NUMBER.  Neither was edited.  Every \label in this
+%%  file is therefore declared TWICE on disk -- here and in its parent -- and the
+%%  two must never reach the same document.
+%
+%  SUPPLEMENT POINTERS.  A statement kept here may cite a statement that lives
+%  in the supplement.  Those calls are written \suppref{Kind}{name} ->
+%  "Kind S:name" and \suppeq{name} -> "(S:name)", both defined in
+%  paper_header.tex.  They are not \cref calls and cannot render "??".
+% ============================================================================
+
+
+% THE THREE DEFINITIONS BELOW WERE ADDED 2026-08-05 and sit AHEAD of the
+% proposition rather than inside it.  B_sym, q and sigma_q appear in the
+% proposition's own precis and in its numbered conclusions eq:sharpconst and
+% eq:bracket, and were defined only in the supplement -- so the article printed a
+% sharp-constant equality and a bracketing whose norms had no antecedent in the
+% document a reader was holding.  A first attempt put them after the precis,
+% which left sigma_q still used before it was defined, inside the same printed
+% environment; setup belongs before the statement it is setup for.
+Three objects in what follows are constructed in the supplement and are
+recalled here so that the statement can be read where it is printed.
+$\mathcal B_{\mathrm{sym}}:=\tfrac12(\mathcal B+\mathcal B^{\ast})$ is the
+symmetric part of $\mathcal B$; $q:=E[\partial_u\ell_\star\,\widetilde W\mid
+X_1,X_2]\in\IR^{p}$, the $\IR^{p\times(\mathsf L-1)}$-valued $\partial_u\ell_\star$
+contracted against the contrast vector $\widetilde W$ of \eqref{eq:contrast} and then
+conditioned; and, for an integrable $g$, $\sigma_g(x):=E[g\mid X_2=x]f_{X_2}(x)
++E[g\mid X_1=x]f_{X_1}(x)$, taken coordinatewise for a vector-valued $g$, so that
+$\sigma_q$ is that object at $g=q$ and is $\IR^{p}$-valued. The
+multiplier is written out as $\vartheta'\sigma_q/\pi$ throughout and is given no
+abbreviation, because $\mathcal B_{\mathrm{mult}}$ is multiplication \emph{by} it
+and an abbreviation would collapse the distinction.
+At $\mathsf L=2$ the contraction is a product of scalars in the second factor,
+$\partial_u\ell_\star\widetilde W=\widetilde W\partial_u\ell_\star$, and $q$, $\sigma_q$ and
+$\vartheta'\sigma_q/\pi$ are the objects earlier rounds printed.
+
+\begin{proposition}[The second-order remainder on the ball: the sharp constant, and the exact $\delta^{2}$ order under O-16(a)]\label{prp:sharpquad}
+The supremum of the second-order remainder over a ball of radius $\delta$ in the structural direction is
+exactly $\tfrac12\delta^{2}$ times the norm of the compressed symmetrised form, and it is bounded below by
+$\tfrac12\delta^{2}\|\vartheta'\sigma_q/\pi\|_\infty$; so, provided the form does not degenerate, no bound
+of the form $o(\delta^{2})$, and in particular no bound in the weak norm
+$\|\mathcal A_{\mathrm{cond}}\cdot\|_{L^{2}(\Pi)}$, holds uniformly on that ball.
+Suppose the hypotheses of \suppref{Lemma}{solset} hold, and for clause \textup{(iv)} in addition
+\textbf{C2$'$(i)}. Fix $\vartheta\in\IR^{p}$ with $\|\vartheta\|=1$,
+and let the \emph{second-order remainder in the structural direction} at $h\in\mathcal V$ be
+\begin{equation}\label{eq:quadrem}
+\tfrac12\,\vartheta'\partial^{2}_{\tau_1\tau_1}\Psi(0)
+\;=\;\tfrac12\,E\big[\vartheta'\,\partial_u\ell_\star\,\widetilde W\,(\Delta h)^{2}\big]
+\;=\;\tfrac12\,\big\langle\mathcal Bh,h\big\rangle_{L^{2}(\pi)} ,
+\end{equation}
+which is \suppref{Lemma}{secondord}\textup{(i)}, read at the admissible direction pair
+$(D,\mathsf r)=(0,0)$, contracted in $\vartheta$ and transferred to $L^{2}(\pi)$ by
+\suppref{Lemma}{solset}\textup{(iii)}.
+% WHY lem:solset IS CITED BY CLAUSE, what reading lem:secondord at (0,0) buys and
+% what it does not inherit, and why the remainder carries no symbol of its own:
+% rem:sharpquadread.
+Then, for every $\delta>0$:
+\begin{enumerate}
+\item[(i)] \emph{The sharp constant.}
+\begin{equation}\label{eq:sharpconst}
+\sup_{h\in\mathcal V,\ \|h\|_{L^{2}(\pi)}\le\delta}\ \tfrac12\,\big|\big\langle\mathcal Bh,h\big\rangle_{L^{2}(\pi)}\big|
+\;=\;\tfrac12\,\delta^{2}\,\big\|P_{\mathcal V}\mathcal B_{\mathrm{sym}}P_{\mathcal V}|_{\mathcal V}\big\| ,
+\end{equation}
+a supremum that need not be attained.
+\item[(ii)] \emph{Bracketing.} The constant in \eqref{eq:sharpconst} obeys
+\begin{equation}\label{eq:bracket}
+\big\|\vartheta'\sigma_q/\pi\big\|_\infty
+\;\le\;\big\|P_{\mathcal V}\mathcal B_{\mathrm{sym}}P_{\mathcal V}|_{\mathcal V}\big\|
+\;\le\;\big\|\mathcal B_{\mathrm{sym}}\big\|\;\le\;\big\|\mathcal B\big\| ,
+\end{equation}
+where the first inequality holds under O-16\textup{(b)} and the outer two hold always.
+% The left-hand member is a LOWER bound and the right-hand members are UPPER
+% bounds; neither is the sharp constant.  rem:sharpquadread(4).
+\item[(iii)] Positivity, which is a hypothesis and is stated as one. Under
+\textbf{O-16\textup{(a)}}, there exists $h\in\mathcal V$ with $\vartheta'E[q\,(\Delta h)^{2}]\ne0$, 
+the constant in \eqref{eq:sharpconst} is strictly positive, so
+$\sup_{\|h\|\le\delta}\tfrac12|\langle\mathcal Bh,h\rangle|\asymp\delta^{2}$ with a constant free of
+$\delta$, and no bound of the form $o(\delta^{2})$ as $\delta\downarrow0$ holds uniformly over
+$\{h\in\mathcal V:\|h\|_{L^{2}(\pi)}\le\delta\}$. Under \textbf{O-16\textup{(b)}}, 
+$\vartheta'\sigma_q\not\equiv0$, the constant is at least $\|\vartheta'\sigma_q/\pi\|_\infty>0$, and
+O-16\textup{(b)} implies O-16\textup{(a)}.
+\item[(iv)] \emph{No weak-norm bound.} Under O-16\textup{(b)} there is no finite $\lambda$ with
+\begin{equation}\label{eq:noweak}
+\tfrac12\big|\big\langle\mathcal Bh,h\big\rangle_{L^{2}(\pi)}\big|
+\;\le\;\lambda\,\big\|\mathcal A_{\mathrm{cond}}h\big\|^{2}_{L^{2}(\Pi)}
+\qquad\text{for all }h\in\mathcal V ;
+\end{equation}
+nor with $\|\mathcal A_{\mathrm{cond}}h\|^{2}$ replaced by
+$\|h\|_{L^{2}(\pi)}\,\|\mathcal A^\ast_{\mathrm{cond}}\mathcal A_{\mathrm{cond}}h\|_{L^{2}(\pi)}$.
+\end{enumerate}
+\end{proposition}
+
+\noindent\emph{Notes on \cref{prp:sharpquad}.} How its hypothesis list is read is
+\suppref{Remark}{sharpquadread}; what it claims and the four things it does not are
+\suppref{Remark}{sharpscope}.
+
+% The internal label was printed in this heading through dispatch 25: the article
+% rendered "Proposition 25 (prp:phirate: the rate for the varphi-step)".  A label
+% is a source-side handle, not part of the result's name.
+\begin{proposition}[The rate for the $\varphi$-step]\label{prp:phirate}
+Suppose A0, A1, A1b(iii)--(iv), A4(ii)--(iii), A5(vi$'$), B1(i)--(v), C1(ii), C2$'$, C3 and C5$'$(i) hold.
+% A4, C1 AND C5' ARE CITED BY CLAUSE AND NOT AS A BLOCK, and each restriction drops
+% a clause this proposition cannot have.  Why, with the parameter configuration at
+% which a block citation of C5' would make the hypothesis set empty:
+% rem:phirhyp(1).
+% A4 NARROWED 2026-08-10 (Phase 6a).  The tag read "A4" through dispatch 25 while
+% the comment two lines below announced this proposition's own by-clause policy for
+% C1 and C5', so the line applied its stated rule to two tags out of three.
+% Sweeping the whole proof: A4 is cited at two steps and both are A4(ii)--(iii);
+% A4(i) is consumed at NO step.  The downstream disclaimers are already explicit --
+% lem:unifop prints that eq:wbounds "is not on this line: that display is two-sided
+% and its lower half rests on A4(i), which neither appeal reads" -- so the block
+% citation contradicted a result this proposition consumes.  NOTHING INHERITS THE
+% NARROWING BY SURPRISE: thm:rootn's (T-5) enumerates what it takes from here and
+% never names A4, and (T-3) carries A4(i), (ii), (iii) on its own line.
+Suppose H1 holds, \emph{for the Sobolev scale $H^{s}$ that \suppref{Definition}{srcball}, A5(vi$'$),
+(P-c) and (P-g) are written in, and for A2's Picard form; the identity $\mu=s/(2a)$ is \textbf{not}
+assumed and is \textbf{not} used, $\mu$ being primitive at (P-a.3)}. Suppose A8 holds in its
+\emph{basis} clause, $b_1,\dots,b_{L_x}$ is a B-spline basis of degree exceeding $s-\tfrac12$ on a
+quasi-uniform mesh over $\mathcal X$, and in its \emph{upper end} $L_x\ll n^{1/2}$, but \textbf{not} in
+its lower end $L_x\gg n^{1/(2s)}$; and suppose $p_K\ge s-\tfrac12$, which with
+$p_K=8$ caps $s\le\tfrac{17}2$ and therefore, against \eqref{eq:lxwindow}'s floor,
+\emph{restricts $\alpha<\tfrac{68}{145}$}.
+% THE alpha RESTRICTION IS PRINTED HERE AS OF 2026-08-05.  It was previously
+% derivable only by combining two clauses and was worked out in rem:phirhyp(2),
+% a supplement remark; the statement itself imposed nothing on alpha, so a reader
+% checking the hypotheses at r = 8, d_Z = 1 (alpha = 8/17, frontier and eq:muhalf
+% both clear) would find no s and no warning.  On that band this proposition and
+% thm:rootn's group (T-5) are vacuous rather than false.  A hypothesis a reader
+% can check is not the same thing as a remark that records the emptiness.
+% ARCHAEOLOGY.  Through dispatch 20 the p_K clause was said to be "free at every s
+% the budget table admits", which is FALSE: with p_K = 8 fixed by C3 and C5'(i) the
+% clause is a hard cap s <= 17/2, and it collides with eq:lxwindow's floor at every
+% alpha >= 68/145.  The disposition -- vacuity, not falsity -- is rem:phirhyp(2).
+And suppose
+\begin{enumerate}
+\item[(P-a)] \emph{(preliminary, and the \textbf{spectral} source condition at the compression)} Three
+clauses, all three \emph{envelopes holding with probability tending to one} rather than $O_P$
+statements, \suppref{Remark}{paenvelope} says why the distinction is load-bearing.
+\begin{enumerate}
+\item[(P-a.1)] \emph{(preliminary, $H^{s}$, and $\sigma(\mathcal I_\ast)$-measurable)}
+$\hat\varphi^{(0)}$ is a $\sigma(\mathcal I_\ast)$-measurable random element of $\mathcal V$, in the sense and
+with the fold $\mathcal I_\ast$ of \cref{def:lfstep}; $\hat\varphi^{(0)}\in\mathcal S_n$; and
+$P\big(\|\vdagger-\hat\varphi^{(0)}\|_{H^{s}}\le\mathsf R\big)\to1$, with $\mathsf R$ the
+\emph{same} deterministic radius as in \suppref{Definition}{srcball}, A5(vi$'$), (P-c) and (P-g).
+\emph{A5(vi$'$), (P-c) and (P-g) are named here as instances and this clause maintains no list}:
+\suppref{Definition}{srcball} carries the enumeration --- seven sites, this clause itself the third of
+them --- and this points at it. \emph{The distinction is not clerical here, because this clause is a
+\textbf{hypothesis}} and a reader must act on it: a radius chosen to clear only the sites named above
+need not clear \suppeq{entropy} or \suppref{Lemma}{unifop} Step~4, which are the remaining two, and the
+existential is over \textbf{one} $\mathsf R$ meeting all seven at once.
+% WHY THE MEASURABILITY HALF IS STATED HERE, and why the two remaining halves are
+% jointly satisfiable only under eq:sieveinhs: rem:phirhyp(3).
+% "THIRD BULLET" WAS RETIRED 2026-08-02 AND THE REASON IS STRUCTURAL, NOT STYLISTIC.
+% def:lfstep's measurability verification was four bullets when this sentence was
+% written; the triage of that day moved them to results_s3_supp.tex, so in the
+% ARTICLE the phrase named a bullet the article no longer prints -- a printed
+% hypothesis pointing at absent text.  "Measurability paragraph" names what the
+% article DOES retain and stays true on either side of the split.
+% NOT CHANGED IN results.tex: that file is the UNDIVIDED corpus source, still
+% carries all eight bullets, and "third bullet" remains correct there.  The two
+% files disagree because the documents disagree, which is the point of the split.
+% ARCHAEOLOGY.  Through dispatch 19 the measurability half was stated only inside
+% that verification -- a hypothesis a proof reads that no hypothesis list stated.
+\item[(P-a.2)] \emph{(preliminary, rate)} $P\big(\|\vdagger-\hat\varphi^{(0)}\|_{L^{2}(\pi)}\le\hat\varepsilon_0\big)\to1$
+for a known deterministic $\hat\varepsilon_0=O(n^{-\varsigma_0})$ whose exponent clears the repelling
+fixed point of the stagewise recursion,
+\[
+\varsigma_0\;>\;\frac{\kappa\,\alpha}{4\,(2\kappa-1)},
+\qquad \kappa=\frac{2\mu}{2\mu+1},\quad\alpha=\frac{r}{2r+d_Z}
+\]
+% This requirement is strictly weaker than the conclusion eq:phirate precisely
+% when mu > 5/6, which is (P-f) and is the same inequality: rem:phirhyp(6).
+\item[(P-a.3)] \emph{(source condition, stated \textbf{spectrally} and \textbf{at the compression})}
+There are $\mu>0$ and a finite $\mathsf R_\ast$, neither depending on $n$, such that with
+\begin{equation}\label{eq:compress}
+\hat{\mathcal P}^{\,\mathcal S}_{\varphi}\;:=\;P_{\mathcal S_n}\,\hat{\mathcal A}^{\ast}_{\varphi}\hat{\mathcal A}_{\varphi}\big\vert_{\mathcal S_n}
+\;:\;\mathcal S_n\to\mathcal S_n
+\end{equation}
+the \emph{compression} of $\hat{\mathcal A}^{\ast}_{\varphi}\hat{\mathcal A}_{\varphi}$ to
+$\mathcal S_n$,
+\[
+P\Big(\ \bar v^{(k)}_\dagger=\big(\hat{\mathcal P}^{\,\mathcal S}_{\hat\varphi^{(k-1)}}\big)^{\mu}\varsigma^{(k)}
+\ \text{ with }\ \big\|\varsigma^{(k)}\big\|_{L^{2}(\pi)}\le\mathsf R_\ast
+\ \text{ for every }k\le\bar k\ \Big)\;\longrightarrow\;1 ,
+\]
+where $\bar v^{(k)}_\dagger:=P_{\mathcal S_n}\big(\vdagger-\hat\varphi^{(k-1)}\big)$.
+\end{enumerate}
+% (P-a.3) IS NOT THE HILBERT-SCALE PAIR AND DOES NOT FOLLOW FROM IT, and the
+% operator is named as the compression on purpose: rem:phirhyp(4), with the full
+% disposition at rem:pasrc.
+% ARCHAEOLOGY.  Rounds 1--11 assumed the Hilbert-scale pair; the replacement is a
+% repair and not a strengthening, and is the most consequential amendment of that
+% round.  Through round 11 the hypothesis named the restriction of A*A to S_n and
+% the proof used the compression.
+\item[(P-b)] \emph{(no hypothesis).} There is \textbf{no} hypothesis (P-b): the list runs
+\textup{(P-a)}, \textup{(P-c)}--\textup{(P-g)};
+% What the letter reserved -- an operator-estimation budget on a route Step 0 does
+% not take -- is rem:phirhyp(5).
+\item[(P-c)] \emph{(sieve approximation, a \textbf{lower} end for $L_x$)}
+$\mathsf R\,L_x^{-s}=O\big(h_u\,\hat\delta_n\big)$;
+% The factor h_u is not decoration, and (P-c) REPLACES A8's lower end rather than
+% restating it: rem:phirhyp(7).
+\item[(P-d)] \emph{(uniformity, an \emph{upper} end for $L_x$)} \suppeq{entropysieve}, so that
+\suppref{Lemma}{unifop} clause (b) is available. \emph{(P-c) and (P-d) are the two ends of one window
+and must be read together}: with $\hat\delta_n=n^{-\alpha}$ and $h_u\asymp\hat\delta_n^{1/8}$ they are
+$L_x\gg n^{9\alpha/(8s)}$ and $L_x=o\big(n^{1-2\alpha}/\ln n\big)$, so the window is non-empty if and
+only if
+\begin{equation}\label{eq:lxwindow}
+s\;>\;\frac{9\alpha}{8\,(1-2\alpha)} ;
+\end{equation}
+% What eq:lxwindow is numerically, and what carrying A8's lower end as well would
+% have cost: rem:phirhyp(8).
+\item[(P-e)] \emph{(stopping)} A7 in the amended form \eqref{eq:a7amend}, with
+$\tau_{\mathrm{DP}}>2$;
+\item[(P-f)] \emph{(the linearisation remainder is absorbed)}
+$\delta_n^{2}=O\big(h_u^{2}\,\hat\delta_n\ln n\big)$, a hypothesis in which a bandwidth appears
+explicitly, as (P-c) and (P-g) also do, and no claim of exhaustiveness is made in naming it so;
+% What (P-f) reads at the unamended and at the amended bandwidth, and why the
+% threshold is strict: rem:h6bandwidth, and rem:phirhyp(6).
+\item[(P-g)] \emph{($x$-smoothing bias)} $\mathsf R\,h_x^{s-1/2}=O\big(h_u\,\hat\delta_n\big)$, an
+\emph{upper} bound on $h_x$, which C5$'$ does not carry;
+% THE FACTOR h_u IS NOT DECORATION HERE EITHER, AND IT WAS MISSING THROUGH
+% DISPATCH 25.  lem:unifop Step 4 bounds the displacement of the two operator
+% families in OPERATOR NORM by c_2 c_Pi h_u^{-1} max_i |Delta_{h_x} varphi_i -
+% Delta varphi_i|; the h_u^{-1} is lem:intker(ii)'s ||partial_v C_{h_u}||_inf <=
+% c_2 h_u^{-1}, the same h_u^{-1} that forces the net radius at lem:unifop(3c)
+% and the h_u inside eq:entropy.  With eq:xsmoothbias that composes to
+% c h_u^{-1} R h_x^{s-1/2}, so the step needs R h_x^{s-1/2} = O(h_u delta-hat_n).
+% UNDER THE OLD FORM O(delta-hat_n) THE STEP DOES NOT CLOSE: at h_x at the top of
+% its own admissible window the displacement is n^{alpha/8} delta-hat_n >>
+% delta-hat_n, so (N1) does not follow, and (N1) feeds delta^eff, the rate
+% recursion, eq:phirate and thm:rootn through (T-5).  (P-c) already carried the
+% factor and prints "The factor h_u is not decoration"; (P-g) was the one place
+% it was dropped, and rem:tccwhy(3) printed the correct arithmetic against it.
+% WHAT MOVED WITH IT, all in one pass: lem:unifop's and lem:aerr's provisos,
+% rem:tccwhy(3)'s quotation, rem:app5read(2) and eq:hxwindow, rem:phirhyp(1),
+% rem:rootngroups(3) and (5), lem:scaleinv's cap inflation, and the budget-table
+% row.  NO CONCLUSION IS LOST: the non-emptiness threshold rises from
+% s > 1/2 + 8 alpha/(8 - alpha) to s > 1/2 + 9 alpha/(8 - alpha), whose supremum
+% over alpha < 1/2 moves from 31/30 = 1.0333 to 11/10 = 1.1, and both running
+% configurations of rem:h6bandwidth(5) clear the stricter threshold at s = 3
+% with margins +2.06 and +2.13.  rem:app5read(2) prints that.
+\end{enumerate}
+and suppose finally
+\begin{equation}\label{eq:muhalf}
+\mu\;>\;\tfrac56 .
+\end{equation}
+Then there is a finite $\bar k$, not depending on $n$ and computable from $(\mu,\varsigma_0,\alpha)$,
+such that the estimator of \cref{def:lfstep} satisfies
+\begin{equation}\label{eq:phirate}
+\big\|\hat\varphi-\vdagger\big\|_{L^{2}(\pi)}\;=\;O_P(\delta_n),
+\qquad
+\delta_n\;:=\;\big(\hat\delta_n\ln n\big)^{2\mu/(2\mu+1)} ,
+\end{equation}
+and $\delta_n=o_P(n^{-1/4})$ whenever \eqref{eq:frontier} holds.
+% WHAT THE CONCLUSION DISCHARGES AND WHAT IT CONSUMES in the maintained block --
+% A5(i)--(iii) discharged, A5(vi') consumed, A5(vi) implied, A5(iv) and A5(v)
+% untouched -- is rem:phirhyp(9).
+% WHERE THE THRESHOLD eq:muhalf COMES FROM, and why 1/2 and not 5/6 is the
+% coincidence worth naming: rem:phirhyp(10).
+% WHAT HAPPENS AT 5/6, and why it is not a second coincidence: rem:phirhyp(11).
+% WHY (P-a.3) IS THE LOAD-BEARING HYPOTHESIS and must be read in the same breath
+% as eq:muhalf: rem:phirhyp(12).
+% ARCHAEOLOGY.  The symbol delta_n^{(k)} that a round-9 draft used for the
+% unobservable error is withdrawn; glossary C58.
+% ARCHAEOLOGY.  A round-9 draft called the agreement at 5/6 a coincidence and said
+% the two conditions were not restatements of one another; that sentence is struck.
+\end{proposition}
+
+\noindent\emph{Notes on \cref{prp:phirate}.} What its hypotheses carry, where the threshold
+\eqref{eq:muhalf} comes from and why (P-a.3) is the load-bearing one are \suppref{Remark}{phirhyp}; why
+(P-a.3) is spectral and at the compression is \suppref{Remark}{pasrc}; why (P-a)'s clauses are
+w.p.$\to1$ envelopes is \suppref{Remark}{paenvelope}; the nonlinear route it declines is
+\suppref{Remark}{lfnonlinear}; and what it does \emph{not} claim is \suppref{Remark}{phirscope}.
+
+% ===========================================================================
+%  I.4  THE THEOREM
+% ===========================================================================
+
+\begin{theorem}[Asymptotic normality of the cross-fitted one-step estimator]\label{thm:rootn}
+The one-step estimator is $\sqrt n$-consistent and asymptotically normal with the sandwich variance, under
+mild ill-posedness and a propensity smooth enough to put the structural rate strictly inside $n^{-1/4}$.
+% THE STATEMENT CARRIES CONDITIONS AND CONCLUSIONS AND NOTHING ELSE.  The
+% hypothesis groups are tagged (T-1)--(T-5) and the additional hypotheses
+% (R-a)--(R-e), on the model of prp:phirate's (P-a)--(P-g).  What each group
+% does and does not carry is rem:rootngroups; how the conclusion is read is
+% rem:rootnread.  Both live in results_supp.tex.
+% ARCHAEOLOGY.  A draft of this theorem tagged the groups (H1)--(H5).  H1 is the
+% Hilbert-scale link, it is cited INSIDE group (T-5), and a group label reading
+% "H1" next to an assumption tag reading "H1" is the collision this file has
+% repaired four times elsewhere.
+Suppose
+\begin{enumerate}
+\item[(T-1)] \emph{(sampling, model, identification)} A0; A1; A1b(i), A1b(iii), A1b(iv);
+\item[(T-2)] \emph{(the representer and the weight)} A2; A$2'$(i.a), A$2'$(i.b), A$2'$(iii); N1 at
+$L_\star$, \emph{which is $p(\mathsf L-1)$ scalar conditions and \textbf{not} a condition on a
+contraction of the $\mathsf L-1$ columns} (\cref{cor:centarity}), \emph{and which, together with
+\textup{(R-a)}, pins the anchor A$2'$\textup{(iii)} leaves free}: \textup{(R-a)} forces
+$\hat b^{(-k)}\to b_\star$, so $b_\star$ must be the N1 anchor of \suppref{Remark}{anchor} and the
+construction must target it;
+% ARCHAEOLOGY.  A3 stood in this group through dispatch 12.  No local rank
+% condition on ell_star is in this group either; rem:rootngroups(1) says why.
+\item[(T-3)] \emph{(index set, densities, propensity)} B1(i), (ii), (iv); C1(ii); C2$'$(i); A4(i),
+A4(ii), A4(iii);
+\item[(T-4)] \emph{(rates)} A5(i) and A5(ii) in the form \suppeq{deltalog}; A5(iii); and A5(vi) with
+$s>\tfrac12$, read at each fold as in \cref{def:crossfit}(d);
+% The group is NOT homogeneous in status: (T-5) delivers two of these clauses and
+% no result in this paper delivers A5(iii).  rem:rootngroups(2) records which is
+% which, and why the (T-5) delivery does not make the listing redundant.
+\item[(T-5)] \emph{(the $\varphi$-step)} the hypotheses of \cref{prp:phirate}, read at the anchor
+$\theta_\circ$ of \cref{def:crossfit}(b), H1; A5(vi$'$); A8's basis and upper-end clauses;
+$p_K\ge s-\tfrac12$, which against \eqref{eq:lxwindow}'s floor gives $\alpha<\tfrac{68}{145}$; (P-a.1)--(P-a.3), (P-c)--(P-g); and
+\eqref{eq:muhalf}, $\mu>\tfrac56$ strictly, 
+so that \eqref{eq:phirate} holds on each $\mathcal I_{-k}$;
+\end{enumerate}
+and suppose in addition
+\begin{enumerate}
+\item[(R-a)] \emph{(the weight is built as an anchored antiderivative, with a bounded derivative)} for each
+$k$, $\hat L^{(-k)}=L^{\,\hat b^{(-k)}}_{\hat\ell^{(-k)}}$ in the sense of \cref{def:weight}(b), with
+$\hat\ell^{(-k)}$ continuously differentiable in $u$ at every point and bounded,
+\[
+\max_{k\le\mathsf F}\Big\{\big\|\hat\ell^{(-k)}\big\|_\infty+\big\|\partial_u\hat\ell^{(-k)}\big\|_\infty\Big\}=O_P(1),
+\qquad
+\max_{k\le\mathsf F}E\big\|\hat b^{(-k)}(\Delta Z)\big\|^{4}=O_P(1),
+\]
+and $\max_{k\le\mathsf F}\|\hat L^{(-k)}-L_\star\|_{L^{2}(P)}=o_P(1)$;
+% WHAT THIS CLAUSE DOES NOT REQUIRE -- sure boundedness of partial_u hat-ell --
+% and what it adds to def:crossfit(c'.2)'s [0,+infty] typing: rem:rootngroups(3).
+% ARCHAEOLOGY.  Dispatch 19 added a sure-boundedness conjunct on the ground that
+% the two proof steps read finiteness straight off this hypothesis, and the same
+% paragraph then recorded that "nothing was broken by the omission".  Both cannot
+% be true of a minimal clause; the conjunct went and the O_P(1) display stayed, and
+% the two proof sentences were re-grounded on the display rather than deleted.  A
+% third site, thm:rootn Step 1, reads the clause only for the C^2 property of
+% hat-L^{(-k)} and for the O_P rate, and is untouched either way.
+\item[(R-b)] \emph{(fourth moments, and exactly two of them)} $E\|\Delta Z\|^{4}<\infty$ and
+$E[\Delta U^{4}]<\infty$;
+% Why a fourth moment of b_star is NOT needed: rem:rootngroups(4).
+% ARCHAEOLOGY.  A round-10 draft carried a third clause, E||b_star||^4 < infinity.
+\item[(R-c)] \emph{(the $\varrho\times L$ cross term)} \textbf{either} \textup{(c.1)} $D_k=\hat L^{(-k)}-L_\star$
+satisfies N1$'$ for every $k$, \textbf{or} \textup{(c.2)}
+$\max_k\|D_k\|_{L^{2}(P)}=O_P(\epsilon^{L}_n)$ with $r_n\,\epsilon^{L}_n=o(n^{-1/2})$;
+\item[(R-d)] \emph{(no hypothesis).} There is \textbf{no} hypothesis (R-d): the list runs (R-a), (R-b),
+(R-c), (R-e), on the \textup{(P-b)} pattern above;
+\item[(R-e)] \emph{(the first-order bias)} \textbf{either} \textup{(e.1)} A5(iv) read at each fold, i.e.\ the
+third display of \eqref{eq:foldrates} together with $\delta_n\epsilon_n=o_P(n^{-1/2})$, \textbf{or}
+\textup{(e.2)} the hypotheses of \suppref{Lemma}{balance}\textup{(iii)}, the sieve solve sets term
+\textup{(II)} of \suppeq{balance3} to zero, A8 holds with a B-spline basis of degree exceeding
+$s-\tfrac12$, A5(vi) holds and \suppeq{nuhat} holds, together with
+$\max_k\|\hat\ell^{(-k)}-\ell_\star\|_{L^{2}(P)}=o_P(1)$, \textbf{and} with
+\begin{equation}\label{eq:re2window}
+s\;>\;\frac{1}{2\,(1-2\alpha)} .
+\end{equation}
+% Why eq:re2window is stated on this branch and on no other, with the witness at
+% which the branch would otherwise be empty: rem:rootngroups(5).
+\end{enumerate}
+Then, with $\hat\theta$ of \eqref{eq:onestep} and $J,\Sigma$ of \eqref{eq:JSig},
+\begin{equation}\label{eq:rootn}
+\begin{split}
+\sqrt n\,\big(\hat\theta-\theta_\dagger\big)
+&\;=\;J^{-1}\,\frac1{\sqrt n}\sum_{i=1}^{n}\psi_\star(O_i)\;+\;o_P(1)\\[2pt]
+&\;\xrightarrow{\;d\;}\;\text{the centred Gaussian law on }\IR^{p}\text{ with covariance matrix }
+J^{-1}\Sigma J^{-1\prime} ,
+\end{split}
+\end{equation}
+and $\hat V\xrightarrow{p}J^{-1}\Sigma J^{-1\prime}$, so that for \textbf{every} $\vartheta\in\IR^{p}$ with
+$\|\vartheta\|=1$,
+\[
+\sqrt n\,\vartheta'\big(\hat\theta-\theta_\dagger\big)\big/\big(\vartheta'\hat V\vartheta\big)^{1/2}
+\;\xrightarrow{\;d\;}\;\text{the standard Gaussian law on }\IR ,
+\]
+the ratio being read on $\{\vartheta'\hat V\vartheta>0\}$, an event of probability tending to one.
+% HOW THE CONCLUSION IS READ -- why the quantifier is "every" and not "every
+% vartheta with vartheta' J^{-1} Sigma J^{-1'} vartheta > 0", why that is not a
+% uniform lower bound, why the denominator can still vanish at finite n, what
+% binds the letter vartheta, and why both limit laws are written out rather than
+% given a symbol -- is rem:rootnread.
+% ARCHAEOLOGY.  Through dispatch 13 the quantifier read "every vartheta with
+% vartheta' J^{-1} Sigma J^{-1'} vartheta > 0"; the change is a strengthening of
+% the statement at no cost in hypotheses, and the entailment was found by probing
+% this very display.
+% ARCHAEOLOGY.  Glossary C25.
+% ARCHAEOLOGY (dispatch-23 change to how this theorem is PRINTED and to nothing it
+% says).  Through dispatch 22 the two displays read N(0, J^{-1} Sigma J^{-1'}) and
+% N(0,1) -- a law with two arguments on the letter lem:pfreeze's clause reserves.
+% Step 5 of the proof already said "the limit law is written out and carries no
+% symbol" while this statement printed the symbol twice.  The census behind glossary
+% C84 named its own pattern as "N(", which does not match "N\big(", so the two
+% displays here and the third at prp:medianpart were invisible to it: the proof was
+% repaired and the three STATEMENTS were not.  Glossary C90 prints the per-file
+% counts.
+\end{theorem}
+
+\noindent\emph{Notes on \cref{thm:rootn}.} What each hypothesis group does and does not carry is
+\suppref{Remark}{rootngroups}; how the conclusion is read is \suppref{Remark}{rootnread}; what the theorem
+covers and the six things it does not are \suppref{Remark}{rootnscope}; the clause-by-clause usage audit is
+\suppref{Remark}{rootnhyp}; the logarithm in \eqref{eq:phirate} is \suppref{Remark}{rootnlog}.
+
+\begin{corollary}[T2$'$: the rate floor, without \eqref{eq:frontier}]\label{cor:ratefloor}
+The same decomposition delivers a rate whether or not the frontier holds; \emph{on the sieve branch, and
+only there, every exponent in that rate is a function of the primitives}.
+Suppose (T-1)--(T-3), (T-5), (R-a), (R-b) hold, together with A5(i), A5(vi) with $s>\tfrac12$,
+$\delta_n\to0$, $\epsilon_n\to0$, $r_n\to0$, and (R-c.2), (R-e.1) with the two products left
+\emph{unrestricted}. Then
+\begin{equation}\label{eq:ratefloor}
+\big\|\hat\theta-\theta_\dagger\big\|
+\;=\;O_P\Big(n^{-1/2}\;+\;\delta_n\epsilon_n\;+\;\delta_n^{2}\;+\;r_n\delta_n\;+\;r_n\epsilon^{L}_n\Big).
+\end{equation}
+Under (R-e.2) in place of (R-e.1) the term $\delta_n\epsilon_n$ is replaced by
+$O_P(n^{-1/2}\delta_n)+O_P(\mathsf R\,L_x^{-s})$, and no rate for $\hat\ell$ enters
+\eqref{eq:ratefloor} at all. Finally, \eqref{eq:rootn} is the special case of \eqref{eq:ratefloor} in
+which every term after the first is $o(n^{-1/2})$.
+% HOW MUCH OF eq:ratefloor IS IN PRIMITIVES, stated by branch because the answer
+% differs by branch, and the sharper display available on the sieve branch:
+% rem:ratefloorprim.
+% ARCHAEOLOGY.  A round-10 draft of this corollary claimed the stronger of the two
+% answers on the weaker branch.
+% ARCHAEOLOGY.  A round-10 draft listed a symbol "mu-prime", defined nowhere in
+% this project and with no glossary row; it was deleted rather than defined.
+\end{corollary}
+
+\noindent\emph{Notes on \cref{cor:ratefloor}.} How much of \eqref{eq:ratefloor} is in primitives, and
+which branch buys which answer, is \suppref{Remark}{ratefloorprim}.

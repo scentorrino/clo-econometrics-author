@@ -1,0 +1,20 @@
+claim_id: compact-hs-bound
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:compact Step 3, HS bound)"
+# CLAIM.  Squaring the kernel bound and integrating against pi (mass 1) and Pi:
+#   ||A_cond||^2_HS <= (2 cpi f0bar)^2 * [int pi dx] * [Pi_u(R) int bar-w^2 dPi_t]
+#                    = 4 cpi^2 f0bar^2 c_Pi^2,
+# using int pi = 1 (C1) and c_Pi^2 = Pi_u(R) int bar-w^2 dPi_t (glossary L150,
+# B1(iv.c)).  Written here with Ipi := int pi dx substituted at 1 so that the
+# use of the normalisation is explicit rather than silent.
+variables:
+  cpi:
+    domain: positive
+  f0bar:
+    domain: positive
+  cPi:
+    domain: positive
+  Ipi:
+    domain: positive
+start: "(2*cpi*f0bar)**2 * Ipi * cPi**2"
+operation: "substitute(Ipi=1)"
+claimed_end: "4*cpi**2*f0bar**2*cPi**2"

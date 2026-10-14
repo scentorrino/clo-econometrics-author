@@ -97,8 +97,10 @@ Rscript scripts/R/FILENAME.R 2>&1 | tail -20
 Read `PROJECT_TYPE` from `CLAUDE.md`. If `theory` or `mixed`, also run these five binary checks per `.claude/rules/quality.md` §4. **Any failure blocks the submission gate regardless of the weighted aggregate score.**
 
 ### TG1. Every theorem proved
-- Walk `paper/sections/theorems/*.tex`. For each file, confirm a `\begin{proof}` ... `\end{proof}` block exists (either inline or via `\input{}` from `quality_reports/theory/{project}/proofs.tex`).
-- Stub files containing only a theorem statement without a proof block FAIL this check.
+- Collect every `\label` on a theorem-like environment (`theorem`, `proposition`, `lemma`, `corollary`) in `quality_reports/theory/{project}/results.tex`. For each, confirm a matching `\begin{proof}` ... `\end{proof}` exists in `quality_reports/theory/{project}/proofs.tex`.
+- A statement with no matching proof FAILS this check. Stubs and TODOs FAIL.
+- **Gate on the UNDIVIDED `results.tex`**, not the `results_s2/s3/s4/_supp` split. Both are on disk and the split is derived; checking the split can miss a statement that lives only in the parent.
+- **REPOINTED 2026-08-03.** This check used to walk `paper/sections/theorems/*.tex`. That directory is compiled by no document and is round-2 vintage against a corpus at dispatch 25 — and because those files *do* contain proofs, the check would have **passed while inspecting the wrong artifact**. See `paper/sections/theorems/_SUPERSEDED.md`.
 
 ### TG2. theorist-critic cleared
 - Read `quality_reports/research_journal.md`. Locate the most recent theorist-critic entry.

@@ -1,0 +1,73 @@
+% ============================================================================
+%  PAPER HEADER -- project `panel-npiv-discrete`.
+%
+%  Spliced in AFTER paper/preambles/preamble.tex by the `include-in-header'
+%  list in main.qmd and supplement.qmd.  Two jobs, both of which have to happen
+%  after the shared preamble has loaded biblatex and cleveref.
+% ============================================================================
+
+% ---------------------------------------------------------------------------
+%  1.  THE BIBLIOGRAPHY, DECLARED HERE AND NOT BY THE `bibliography:' KEY.
+%
+%  WHY.  Quarto's `bibliography:' key routed the path through pandoc, which
+%  LaTeX-escaped the underscore in it:
+%      \addbibresource{../../quality\_reports/literature/.../references.bib}
+%  biber then reported "Cannot find '../../quality\_reports/...'" and ABORTED
+%  THE RUN.  An aborted biber leaves a ZERO-BYTE .bbl, so the reference list was
+%  empty and all twenty cited keys rendered as bare text -- "in the manner of
+%  bierens1990" -- in a document that compiled and exited 0.
+%
+%  The path is written here, unescaped, relative to paper/qmd/ where quarto
+%  runs LaTeX.  It is the project's own bibliography, named in full rather than
+%  as a bare `references.bib': two files in this repository carry that name.
+% ---------------------------------------------------------------------------
+\addbibresource{../../quality_reports/literature/panel-npiv-discrete/references.bib}
+
+% ---------------------------------------------------------------------------
+%  2.  POINTERS INTO THE ONLINE SUPPLEMENT.
+%
+%  WHY THESE EXIST.  The article and the supplement are separate documents, so a
+%  \cref from a statement printed in the article to a statement printed in the
+%  supplement has no target and renders "??" in a document that still exits 0.
+%  There were 259 such calls, over 69 distinct targets.  Each is written as one
+%  of the two commands below.
+%
+%  RESOLVE-IF-PRESENT, ADDED 2026-08-05.  The original definitions printed the
+%  label stem unconditionally -- "Lemma S:secondord" -- in BOTH documents.  In
+%  the article that is the lesser evil, since the target genuinely lives
+%  elsewhere.  In the SUPPLEMENT it was simply wrong: the target is in the same
+%  document and already numbered, so the reader was shown an internal handle
+%  ("S:secondord") for an object whose own heading two hundred pages earlier
+%  reads "Lemma 54".  The commands now test whether the label is defined in the
+%  document being compiled and print the number when it is:
+%
+%    in the supplement   \suppref{Lemma}{secondord}  ->  Lemma 54
+%    in the article      \suppref{Lemma}{secondord}  ->  Lemma S:secondord
+%
+%  No call site changes.  The test is \@ifundefined{r@<label>}, which reads the
+%  .aux, so the first LaTeX pass prints the fallback and a later pass prints the
+%  number; the reference machinery already requires multiple passes.
+%
+%  \ref and not \cref, deliberately: the Kind word is supplied by the call site
+%  and is always capitalised, so \ref preserves today's rendering exactly and
+%  does not depend on how cleveref's names are configured.
+% ---------------------------------------------------------------------------
+\makeatletter
+\@namedef{suppkind@Lemma}{lem}
+\@namedef{suppkind@Proposition}{prp}
+\@namedef{suppkind@Corollary}{cor}
+\@namedef{suppkind@Theorem}{thm}
+\@namedef{suppkind@Definition}{def}
+\@namedef{suppkind@Remark}{rem}
+\def\suppref#1#2{%
+  \@ifundefined{suppkind@#1}%
+    {#1~\textup{S:#2}}%                       % unknown Kind: unchanged fallback
+    {\edef\supp@lab{\@nameuse{suppkind@#1}:#2}%
+     \@ifundefined{r@\supp@lab}%
+       {#1~\textup{S:#2}}%                    % not in this document: fallback
+       {#1~\expandafter\ref\expandafter{\supp@lab}}}%
+}
+\def\suppeq#1{%
+  \@ifundefined{r@eq:#1}{\textup{(S:#1)}}{\eqref{eq:#1}}%
+}
+\makeatother

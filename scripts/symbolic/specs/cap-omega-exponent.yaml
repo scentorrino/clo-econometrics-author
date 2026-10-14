@@ -1,0 +1,52 @@
+claim_id: cap-omega-exponent
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (lem:scaleinv closing, the repricing of eq:cap: 'With omega_n asymp h_u^{-1} h_x^{-1/2} from eq:normconst, omega_n^2 asymp h_u^{-2} h_x^{-1}' and the display bar-m_n >= omega_n^2 hat-delta_n^{-2}); eq:normconst at results.tex"
+# WHAT THIS CHECKS.  The GENERAL exponent arithmetic behind the repriced cap,
+# before any configuration is substituted.  Write
+#     h_u = n^{-beta_u},   h_x = n^{-beta_x},   hat-delta_n = n^{-alpha}.
+# eq:normconst gives omega_n asymp h_u^{-1} h_x^{-1/2}, so omega_n^2 asymp
+# h_u^{-2} h_x^{-1}, and eq:cap's right-hand side is
+#
+#     omega_n^2 hat-delta_n^{-2}  =  h_u^{-2} h_x^{-1} hat-delta_n^{-2}
+#                                 =  n^{2 beta_u + beta_x + 2 alpha} ,
+#
+# to be read against the round-9 cap hat-delta_n^{-2} = n^{2 alpha}.  The
+# INFLATION is therefore exactly n^{2 beta_u + beta_x}, and it is polynomial:
+# the two bandwidth exponents add, they do not cancel against alpha, and the
+# cap's exponent is strictly larger than 2 alpha at every admissible bandwidth
+# pair.  results.tex states this as "the inflation is polynomial and not
+# negligible"; this spec is the exponent bookkeeping for that sentence.
+#
+# WHY IT IS SEPARATE FROM THE INSTANTIATED SPECS.  cap-window-lower and
+# cap-window-upper substitute the frontier-clearing configuration into THIS
+# identity.  Keeping the mu-free / configuration-free version as its own spec
+# means an error in the general algebra cannot hide behind two numerical
+# coincidences, and it records that the h_x exponent enters with weight 1 and the
+# h_u exponent with weight 2 -- which is where the "decreasing in h_x" remark of
+# results.tex comes from.
+#
+# WHAT THIS DOES NOT CHECK.  It does not check eq:normconst's CONSTANT (the
+# prefactor 2 (2 c_C)^{1/2} c_2^2 c_Pi ||1/pi||_infty^{1/2}), only its bandwidth
+# dependence h_u^{-1} h_x^{-1/2}, which is what the exponent arithmetic sees.
+# It does not check that the cap is the RIGHT cap; that is lem:scaleinv(v), spec
+# cap-scaleinv-stopping-omega2.
+#
+# FALSIFICATION (hand-computed).  Replacing claimed_end's "2*alpha" by "alpha"
+# leaves residual n^{2 beta_u + beta_x + 2 alpha} - n^{2 beta_u + beta_x + alpha},
+# nonzero for n > 1; MISMATCH.  Replacing "beta_x" by "2*beta_x" (i.e. mis-reading
+# eq:normconst's h_x^{-1/2} as h_x^{-1}) likewise gives a nonzero residual.  Both
+# perturbations are exactly the two errors this spec exists to exclude.
+#
+# PREDICTED: MATCH.  n is declared positive, so SymPy collapses (n^a)^b to n^{ab}
+# and combines the three powers of the common base at parse time.
+variables:
+  n:
+    domain: positive
+  beta_u:
+    domain: positive
+  beta_x:
+    domain: positive
+  alpha:
+    domain: positive
+start: "(n**(-beta_u))**(-2) * (n**(-beta_x))**(-1) * (n**(-alpha))**(-2)"
+operation: none
+claimed_end: "n**(2*beta_u + beta_x + 2*alpha)"

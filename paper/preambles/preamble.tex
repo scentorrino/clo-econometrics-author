@@ -1,0 +1,361 @@
+% ============================================================================
+%  preamble.tex — shared LaTeX header
+%  Project: clo-econometrics-author
+%
+%  RESOLUTION: paper/latexmkrc puts './preambles//' on TEXINPUTS, so a document
+%  at paper/main.tex reaches this file with \input{preamble}. Do not hard-code
+%  the path.
+%
+%  AUTHORITY: the body of this file implements the reference preamble in
+%  .claude/rules/working-paper-format.md, which the writer-critic scores
+%  against. The theory block at the end implements
+%  .claude/references/theorem-environment-style.md. Change either rule first,
+%  then this file — not the reverse.
+%
+%  CREATED 2026-07-29 to close F-13. That item was recorded against a copy of
+%  a preamble living outside this repository; no preamble.tex existed here at
+%  all, so every \IR, \un, \upmodels, \vdagger and every theorem environment in
+%  quality_reports/theory/ and paper/sections/theorems/ was undefined at
+%  document level. See the F-13 note in the theory block below.
+% ============================================================================
+
+\usepackage[left=1.0in,right=1.0in,top=1.0in,bottom=1.0in]{geometry}
+\usepackage{setspace}
+\doublespacing
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ====== Typography and Fonts ======
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[normalem]{ulem}
+\usepackage[T1]{fontenc}
+
+% ====== Section Styling ======
+%
+%  UNDO PANDOC'S \paragraph REDEFINITION BEFORE titlesec LOADS. Do not remove,
+%  and do not "simplify" to a bare \usepackage{titlesec}.
+%
+%  This preamble is shared by TWO build paths and only one of them has the
+%  problem:
+%    - scripts/build-theory/build.sh -> driver.tex -> xelatex.  Nothing has
+%      touched \paragraph, \oldparagraph is undefined, and BOTH lines below are
+%      no-ops.  This path was never broken.
+%    - paper/qmd/ -> quarto -> pandoc -> pdflatex.  Pandoc's default template
+%      emits a "Make \paragraph and \subparagraph free-standing" block that does
+%      `\let\oldparagraph\paragraph` and then \renewcommand's \paragraph into a
+%      wrapper around \oldparagraph.  Quarto's include-in-header splices THIS
+%      file in AFTER that block, so titlesec loaded against a \paragraph that is
+%      no longer \@startsection-shaped, recorded no format for it, and the build
+%      died at the first use:
+%          ! Package titlesec Error: No format for this command.
+%          l.2557 \paragraph{Discussion.}
+%      (\paragraph{Discussion.} comes from the theory corpus, which is \input
+%      raw, so the qmd cannot avoid it and the corpus should not be edited to
+%      dodge a template collision.)
+%
+%  THE FIX IS RESTORATION, NOT REDECLARATION.  The obvious alternative --
+%  `\titleformat{\paragraph}{...}` after loading titlesec -- would have titlesec
+%  take ownership of pandoc's wrapper and would also impose a \paragraph style on
+%  the LaTeX path, which is not this file's business.  Restoring first means
+%  titlesec sees the stock article \paragraph on both paths and behaves
+%  identically on both.  Pandoc's free-standing-paragraph cosmetic is discarded
+%  deliberately: this document uses \paragraph as a run-in heading.
+\ifx\oldparagraph\undefined\else\let\paragraph\oldparagraph\fi
+\ifx\oldsubparagraph\undefined\else\let\subparagraph\oldsubparagraph\fi
+\usepackage{titlesec}
+\usepackage[title]{appendix}
+\usepackage{titling}
+\pretitle{\begin{center}\large\bfseries}
+\posttitle{\end{center}}
+\preauthor{\begin{center}\normalsize}
+\postauthor{\end{center}}
+\predate{\begin{center}\normalsize}
+\postdate{\end{center}}
+
+% ====== Math Packages ======
+\usepackage{amssymb, amsmath, amsfonts, mathtools}
+\usepackage{dsfont}
+\usepackage{amsthm}
+\usepackage{aliascnt}   % shared theorem counters that cleveref can still name
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\1}[1]{\mathds{1}\left[#1\right]}
+
+% ====== Table Packages ======
+\usepackage{array, booktabs, makecell, cellspace}
+\usepackage{siunitx}
+\usepackage[flushleft]{threeparttable}
+\usepackage{rotating, tabularx}
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs, siunitx}
+
+% ====== Figure and Caption Packages ======
+\usepackage{graphicx, subcaption}
+\usepackage{pdflscape, tikz}
+\usepackage{caption}
+\captionsetup{font=small, labelfont=bf, justification=justified}
+\captionsetup[figure]{labelfont=bf}
+\usepackage{float}
+
+% ====== List Formatting ======
+\usepackage{enumitem}
+
+% ====== Bibliography and Citation (biblatex + biber) ======
+\usepackage{xurl}
+\usepackage{xcolor}
+\definecolor{citationcolor}{RGB}{0, 127, 255}
+
+\usepackage[backend=biber,
+            style=authoryear,
+            maxcitenames=3,
+            mincitenames=1,
+            maxbibnames=99,
+            giveninits=true,
+            uniquename=false,
+            uniquelist=true,
+            dashed=false,
+            urldate=long,
+            url=true,
+            natbib=true]{biblatex}
+
+% Bibliography resource.
+%
+% N-21 (standing rule): checker authority is not build authority. The file
+% named here is what the BUILD resolves against; /tools validate-bib may read a
+% different file. A key that exists only in the validator's file passes
+% validation and still breaks the build. Before pinning any citation, check the
+% key against THIS name.
+%
+% DEMONSTRATED 2026-07-29, not hypothetical. A full latexmk build of the four
+% panel-npiv-discrete theorem files against this resource alone produced FOUR
+% undefined citations out of four cited keys:
+%   chernozhukov2018dml, stinchcombewhite1998
+%       -> present in quality_reports/literature/panel-npiv-discrete/
+%          references.bib (60 entries), absent here. Exactly N-21's case.
+%   bierens1990, feve2014
+%       -> PRESENT IN NO .bib FILE IN THE REPOSITORY AT ALL. Both are
+%          load-bearing (the Bierens device; the Feve-Florens comparison whose
+%          full text was verified this session). For the librarian.
+% Bibliography_base.bib itself currently holds 2 entries and is a template stub.
+%
+% A PROJECT ADDS ITS OWN BIBLIOGRAPHY IN ITS main.tex, NOT HERE — this preamble
+% is shared across projects, so naming one project's file would break the rest:
+%     \addbibresource{../quality_reports/literature/<project>/references.bib}
+% Use the RELATIVE PATH, not the bare name. Two different files are named
+% references.bib (panel-npiv-discrete and volatility-loc-scale) and BIBINPUTS
+% is set to '..//', so a bare \addbibresource{references.bib} resolves to
+% whichever kpathsea finds first — silently, and possibly to the wrong project.
+%
+% AND THE FAILURE EXITS 0. Omitting the project bibliography does not break the
+% build: biber reports "I didn't find a database entry", LaTeX downgrades it to a
+% warning, and every citation renders [?] in a document that compiled fine. On
+% this project 8 of 14 keys sat in that state for weeks. `latexmk' exiting 0 is
+% not a verification — scripts/build-theory/build.sh separates the two, and any
+% main.tex added here should be checked the same way.
+\addbibresource{Bibliography_base.bib}
+
+% Citation color settings
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\color{citationcolor}\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+\DeclareCiteCommand{\parencite}[\mkbibparens]
+  {\usebibmacro{prenote}}
+  {\usebibmacro{citeindex}%
+   \printtext[bibhyperref]{\color{citationcolor}\usebibmacro{cite}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+% ====== Custom Column Types ======
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+
+% ====== Footnote Settings ======
+\interfootnotelinepenalty=10000
+\setlength{\footnotesep}{0.5cm}
+
+% ====== URL Bleeding Fixes ======
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{9000}
+
+% ====== Hyperref (loaded second-to-last) ======
+\usepackage[hidelinks, breaklinks, colorlinks=true,
+            linkcolor=citationcolor, citecolor=citationcolor,
+            urlcolor=citationcolor]{hyperref}
+
+% ====== Cleveref (loaded after hyperref) ======
+\usepackage[nameinlink]{cleveref}
+
+
+% ============================================================================
+%  THEORY BLOCK
+%  Consumed by quality_reports/theory/{project}/{assumptions,results,proofs}.tex
+%  and paper/sections/theorems/*.tex, which declare at their head:
+%      "Requires \IR, \un, \upmodels, \vdagger from preamble.tex."
+% ============================================================================
+
+% ---- Theorem environments -------------------------------------------------
+%
+%  F-13, and the fix.
+%  ------------------
+%  The out-of-repo preamble F-13 was recorded against wrote
+%
+%        \newtheorem{remark}[]{Remark}
+%        \newtheorem{example}[]{Example}
+%
+%  An EMPTY optional argument is not the same as an absent one. LaTeX reads the
+%  bracket as "share the counter named by this argument", finds no name, and
+%  raises an error rather than silently defaulting to an own-counter or
+%  unnumbered environment. Never emit \newtheorem{x}[]{X}. The three valid
+%  forms are:
+%        \newtheorem{x}{X}            own counter
+%        \newtheorem{x}[theorem]{X}   shares the `theorem` counter
+%        \newtheorem*{x}{X}           unnumbered
+%
+%  WHICH ONE FOR remark: unnumbered.
+%  .claude/references/theorem-environment-style.md specifies
+%  \theoremstyle{remark} + \newtheorem*{remark}{Remark}. Remarks are scope
+%  notes placed after proofs and are referred to in prose, not by number. This
+%  is the answer to the open question "are remarks numbered?" — they are not.
+%
+%  SHARED COUNTER for the result environments. The same reference lists
+%  "numbering theorems and propositions in separate sequences" as an
+%  anti-pattern: "number them in one sequence, or under one shared counter."
+%  So theorem/proposition/lemma/corollary/definition/remark all advance
+%  `theorem`. Result 7 is Result 7 wherever it appears.
+%
+%  WHY aliascnt AND NOT THE PLAIN \newtheorem{lemma}[theorem]{Lemma} FORM.
+%  ---------------------------------------------------------------------
+%  cleveref names a reference from the COUNTER it was made against, not from
+%  the environment. Under the plain shared-counter form every environment
+%  writes to the counter literally named `theorem`, so \cref{lem:adjoint}
+%  renders "theorem 12" — and \crefname{lemma}{...} cannot fix it, because no
+%  reference is ever tagged `lemma`. This was verified by compilation, not
+%  assumed: the first version of this file did exactly that and the smoke test
+%  printed "theorem 1, theorem 2, ..." for a lemma, a proposition, a theorem
+%  and a corollary in a row. With 255 \cref calls across the theory files
+%  (124 lem:, 71 prp:, 35 cor:, 25 def:, 6 rem:) that is not cosmetic.
+%
+%  \newaliascnt{lemma}{theorem} creates a counter named `lemma` that IS
+%  `theorem` — one shared sequence, but references carry the environment's own
+%  name, so \crefname works and \cref{lem:adjoint} renders "Lemma 12".
+%  \aliascntresetthe keeps \thelemma in step with \thetheorem.
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\newtheorem{hyp}{Hypothesis}
+
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+%  ASSUMPTIONS ARE UNNUMBERED BY DESIGN.
+%  The blocks carry their own tags in the optional argument —
+%  \begin{assumption}[A1: Conditional exogeneity] — and those tags are not a
+%  sequence: A1b, A1c, A1d, A2$'$, B1, C2$'$ all exist. An automatic counter
+%  would print "Assumption 7 (A1c: ...)", giving every assumption two
+%  identifiers, one of which no proof ever cites. Proofs cite the tag.
+\theoremstyle{definition}
+\newtheorem*{assumption}{Assumption}
+
+%  REMARKS ARE NUMBERED. SETTLED 2026-07-29 WITH USER APPROVAL.
+%  -----------------------------------------------------------
+%  .claude/references/theorem-environment-style.md previously specified
+%  \newtheorem*{remark}{Remark} — unnumbered. The reference has been amended to
+%  match this file; see its "Remarks are numbered" section for the rationale.
+%
+%  The reason, kept here so nobody "simplifies" it back: the theory files
+%  cross-reference remarks BY CLAUSE —
+%
+%        \cref{rem:R1}(iv)        \cref{rem:adjointreconcile}(iv)
+%
+%  and an unnumbered environment writes no counter, so a \label inside it
+%  silently captures the enclosing \section and the reference renders
+%  "section 3(iv)". That is WRONG OUTPUT, NOT AN ERROR: nothing fails, nothing
+%  warns, and the wrong number reaches the page. Verified by compilation.
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newtheorem*{example}{Example}
+
+%  cleveref names. Required for every aliascnt environment — the alias makes
+%  the reference nameable, \crefname supplies the name.
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{assumption}{Assumption}{Assumptions}
+\Crefname{assumption}{Assumption}{Assumptions}
+\crefname{hyp}{Hypothesis}{Hypotheses}
+\Crefname{hyp}{Hypothesis}{Hypotheses}
+
+% ---- Blackboard sets ------------------------------------------------------
+\newcommand{\IR}{\mathbb{R}}
+\newcommand{\IQ}{\mathbb{Q}}
+\newcommand{\IN}{\mathbb{N}}
+\newcommand{\IZ}{\mathbb{Z}}
+\newcommand{\IC}{\mathbb{C}}
+\newcommand{\IE}{\mathbb{E}}
+
+% ---- Project symbols ------------------------------------------------------
+%
+%  \un — the indicator, used as a BARE SYMBOL followed by literal braces:
+%        \un\{u\in[1,2]\}    ->   1{u in [1,2]}
+%  It takes no argument. All 40 uses in the theory files are of this form, so
+%  it must NOT be defined as \newcommand{\un}[1]{...}; that would silently
+%  absorb the following token. \1[#1] above is the bracketed argument-taking
+%  variant from the project standard; the two coexist deliberately.
+\newcommand{\un}{\mathds{1}}
+
+%  \upmodels — statistical independence, a binary relation:
+%        \Delta U \upmodels W \mid \Delta Z
+%  Rotated \models, the conventional glyph. \mathrel gives it relation spacing;
+%  rotatebox needs graphicx, loaded above.
+\newcommand{\upmodels}{\mathrel{\rotatebox[origin=c]{90}{$\models$}}}
+
+%  \vdagger — the true structural function \varphi_\dagger. Defined as a macro
+%  rather than written out because it appears ~65 times and the dagger
+%  subscript is load-bearing notation: \dagger marks the truth throughout,
+%  against \star for a selected/normalised object. See the notation glossary.
+%
+%  HAZARD, found by the first compilation of results.tex (2026-07-30). Because
+%  the subscript is baked in, \vdagger CANNOT TAKE A FURTHER SUBSCRIPT:
+%  `\Delta\vdagger_i' expands to \varphi_{\dagger}_i and dies with
+%  "! Double subscript."  This is the only macro in this preamble with a
+%  baked-in subscript, so the hazard is confined to this one name.  Write the
+%  unit-indexed truth out as \varphi_{\dagger i} (as `eq:diffs' now does).
+\newcommand{\vdagger}{\varphi_{\dagger}}

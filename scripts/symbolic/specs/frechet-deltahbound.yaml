@@ -1,0 +1,19 @@
+claim_id: frechet-deltahbound
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (eq:deltahbound)"
+# CLAIM.  E[(Delta h)^2] <= 2 E[h(X_1)^2] + 2 E[h(X_2)^2]
+#                        =  2 int h^2 (f_{X_1} + f_{X_2}) dx
+#                        <= 4 cpi int h^2 pi dx.
+# Two things to check.  (a) The elementary inequality (a-b)^2 <= 2a^2 + 2b^2 --
+# equivalent to 2a^2 + 2b^2 - (a-b)^2 = (a+b)^2 >= 0, which is what this spec
+# verifies (the slack is exactly (a+b)^2, so the constant 2 is not improvable
+# without a sign restriction).  (b) The constant: with f_{X_j} <= cpi*pi for
+# j = 1, 2 the bound is 2*(cpi + cpi) = 4*cpi -- checked in
+# frechet-deltahbound-constant.yaml.
+variables:
+  a:
+    domain: real
+  b:
+    domain: real
+start: "2*a**2 + 2*b**2 - (a-b)**2"
+operation: none
+claimed_end: "(a+b)**2"

@@ -1,0 +1,25 @@
+claim_id: kernelcompare-collapse
+source: "quality_reports/theory/panel-npiv-discrete/results.tex ('The two coincide up to the factor varrho(1-varrho) if and only if p_X = varrho')"
+# CLAIM (the IF AND ONLY IF).  The discrepancy between eq:kernelcompare and the
+# draft's varrho(1-varrho){f_1 - f_0} factors EXACTLY as
+#     p_X(1-varrho) f_1 - (1-p_X) varrho f_0 - varrho(1-varrho)(f_1 - f_0)
+#         = (p_X - varrho) { (1 - varrho) f_1 + varrho f_0 }.
+# Both directions read off this single identity:
+#   (<=) p_X = varrho kills the first factor, for any (f_1, f_0);
+#   (=>) under A4(i) overlap varrho in [eps, 1-eps], so the bracket is a strictly
+#        positive combination of the two conditional densities and cannot vanish
+#        identically; hence the discrepancy vanishes for all (f_1, f_0) only at
+#        p_X = varrho.
+# The factorisation is what makes the "iff" mechanical rather than asserted.
+variables:
+  pX:
+    domain: real
+  rho:
+    domain: real
+  f1:
+    domain: real
+  f0:
+    domain: real
+start: "pX*(1-rho)*f1 - (1-pX)*rho*f0 - rho*(1-rho)*(f1-f0)"
+operation: none
+claimed_end: "(pX-rho)*((1-rho)*f1 + rho*f0)"

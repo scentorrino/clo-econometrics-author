@@ -1,0 +1,43 @@
+claim_id: cap-hx-upper-pg
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex ('(P-g), R h_x^{s-1/2} = O(delta-hat_n), is h_x = O(n^{-alpha/(s-1/2)}) = O(n^{-0.128}). WINDOW: (n^{-0.44}, n^{-0.128})'); (P-g) stated at results.tex; consumed at results.tex"
+# WHAT THIS CHECKS.  The UPPER end of the admissible h_x window, which is the
+# LOWER end of the eq:cap inflation.  (P-g) is R h_x^{s-1/2} = O(hat-delta_n),
+# an upper bound on h_x; solving it in powers of n with hat-delta_n = n^{-alpha}
+# gives h_x = O(n^{-alpha/(s-1/2)}), and at the frontier-clearing configuration
+# alpha = 0.32, s = 3:
+#
+#     -alpha/(s - 1/2)  at  alpha = 8/25, s = 3   is   -(8/25)/(5/2) = -16/125 = -0.128 .
+#
+# WHY (P-g) AND NOT C5' SUPPLIES THIS END.  assumptions.tex records that
+# C5'(ii) is the only place in the block where h_x carries a LOWER bound and that
+# the block carries NO UPPER bound on h_x at all; (P-g) is prp:phirate's own
+# upper bound, a genuine budget line from lem:unifop Step 4.  So the h_x window
+# is assembled from two DIFFERENT sources -- one an assumption, one a proposition
+# hypothesis -- and assumptions.tex warns that whoever promotes (P-g)
+# into C5'(ii) must re-run both ends.  This spec and cap-hx-lower-c5ii are those
+# two ends, mechanised separately for that reason.
+#
+# WHAT THIS DOES NOT CHECK.  It drops the radius R, which (P-g) carries and which
+# is O(1) in n (it is a FIXED deterministic ball radius, def:srcball, and
+# rem:paenvelope insists on that reading), so it does not enter the exponent.
+# Note that the R here is the H^s ball radius and NOT the spectral pre-image
+# radius R_* -- (P-g) is one of the four places results.tex lists as
+# carrying R; see spec rstar-heinz-gap for why the two are different symbols.
+#
+# FALSIFICATION (hand-computed).  claimed_end "n**(-8/25)" (i.e. mis-reading the
+# exponent as -alpha, forgetting the s - 1/2 division) leaves a nonzero residual;
+# MISMATCH.  Substituting s = 2 (the boundary configuration's s, "just above 2")
+# gives -(8/25)/(3/2) = -16/75, not -16/125; MISMATCH.  So neither the omission of
+# the Sobolev index nor a change of configuration passes silently.
+#
+# PREDICTED: MATCH.
+variables:
+  n:
+    domain: positive
+  alpha:
+    domain: positive
+  s:
+    domain: positive
+start: "n**(-alpha/(s - 1/2))"
+operation: "substitute(alpha=8/25, s=3)"
+claimed_end: "n**(-16/125)"

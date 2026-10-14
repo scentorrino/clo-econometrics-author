@@ -1,5 +1,36 @@
+% ############################################################################
+% ##  SUPERSEDED 2026-08-03 -- NOT COMPILED BY ANY DOCUMENT. DO NOT EDIT.
+% ##
+% ##  This file is a per-theorem rendering from an ABANDONED architecture in
+% ##  which paper/main.tex would \input one file per result.  paper/main.tex
+% ##  DOES NOT EXIST.  The manuscript is paper/qmd/{main,supplement}.qmd, and
+% ##  both \input the theory corpus directly.  Verified 2026-08-03: neither
+% ##  .qmd references sections/theorems.
+% ##
+% ##  The text below is ROUND-2 vintage against a corpus now at dispatch 25.
+% ##  66-78% of its substantive lines no longer match the corpus -- that is old
+% ##  text the corpus has since revised, NOT unique work.  Every \label here is
+% ##  also declared in the live corpus.
+% ##
+% ##  SOURCE OF RECORD:
+% ##    statements  quality_reports/theory/panel-npiv-discrete/results.tex
+% ##    assumptions quality_reports/theory/panel-npiv-discrete/assumptions.tex
+% ##    proofs      quality_reports/theory/panel-npiv-discrete/proofs.tex
+% ##
+% ##  Kept rather than deleted because nothing in this repo is committed.
+% ##  Full rationale: paper/sections/theorems/_SUPERSEDED.md
+% ############################################################################
+
 % Dummy theorem for smoke-testing the theory-track pipeline.
 % Project: theory-track-smoke
+%
+% NOT PART OF panel-npiv-discrete, AND MUST NEVER BE \input ALONGSIDE IT.
+% The tags A1-A2 below belong to theory-track-smoke and collide with the
+% DECLARED-STABLE tag namespace of panel-npiv-discrete (assumptions.tex header),
+% where A1 is conditional exogeneity and A2 the source condition.  This file also
+% uses \mathbb{E} for the expectation, whereas panel-npiv-discrete uses a bare E
+% without exception.  Flagged by the notation-warden, dispatch 3; retained
+% because it is a pipeline fixture, not a manuscript file.
 
 \begin{theorem}\label{thm:dummy-wlln}
 The sample mean of iid integrable random variables is consistent.

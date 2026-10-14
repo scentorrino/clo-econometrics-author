@@ -1,0 +1,12 @@
+claim_id: nprate-p2-d3
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A4(iii), rate n^{-r/(2r+d_Z)})"
+# CLAIM.  The general nonparametric rate exponent -p/(2p+d) at p = 2, d = 3 is
+# -2/7, i.e. the rate is n^{-2/7}.
+variables:
+  p:
+    domain: positive
+  d:
+    domain: positive
+start: "-p/(2*p+d)"
+operation: "substitute(p=2, d=3)"
+claimed_end: "-2/7"

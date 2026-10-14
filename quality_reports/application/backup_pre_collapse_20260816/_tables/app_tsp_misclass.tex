@@ -1,0 +1,53 @@
+\begin{tabular}{lrrrr}
+\toprule
+& $n$ & First stage & $F$ & Wald ratio $\times 10^{3}$ (SE) \\
+\midrule
+\multicolumn{5}{l}{\textit{Probe 1: constancy of the Wald ratio across strata}} \\
+\midrule
+\multicolumn{5}{l}{\textit{By baseline TSP quartile}} \\
+\quad 1 & 246 & 17.16 & 12.2 & 2.90 (1.78) \\
+\quad 2 & 246 & 5.55 & 4.7 & 11.84 (6.42) \\
+\quad 3 & 245 & 5.59 & 8.2 & 12.02 (4.68) \\
+\quad 4 & 246 & 6.57 & 1.7 & 4.96 (5.37) \\
+\quad Homogeneity $\chi^2_{3} = 4.71$ & & & & $p = 0.195$ \\
+\addlinespace
+\multicolumn{5}{l}{\textit{By census region}} \\
+\quad Midwest & 257 & -6.53 & 5.8 & 3.88 (2.75) \\
+\quad Northeast & 136 & -17.86 & 19.2 & -2.38 (1.79) \\
+\quad South & 407 & -16.09 & 22.1 & -1.03 (1.10) \\
+\quad West & 183 & 0.72 & 0.0 & 7.80 (60.75) \\
+\quad Homogeneity $\chi^2_{3} = 3.74$ & & & & $p = 0.291$ \\
+\addlinespace
+\multicolumn{5}{l}{\textit{By manufacturing-employment quartile}} \\
+\quad 1 & 246 & -15.09 & 28.6 & 2.09 (1.54) \\
+\quad 2 & 246 & -11.40 & 6.6 & -2.62 (2.44) \\
+\quad 3 & 245 & 0.30 & 0.0 & 394.55 (4074.43) \\
+\quad 4 & 246 & -6.96 & 6.6 & -4.90 (3.43) \\
+\quad Homogeneity $\chi^2_{3} = 5.04$ & & & & $p = 0.169$ \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Probe 2: $W$-contrast of the fitted residual CDF within strata}} \\
+\midrule
+Stratification & Strata & Statistic / null median & Valid size & $p$ \\
+\multicolumn{5}{l}{\textit{(a) Unconditional contrast $F_1 - F_0$, null by permutation of $W$ within stratum}} \\
+\quad Unconditional & 1 & 29.34 & -- & $<0.001$ \\
+\quad Baseline TSP quartile & 4 & 3.56 & -- & 0.008 \\
+\quad Census region & 4 & 3.76 & -- & 0.003 \\
+\quad Manufacturing quartile & 4 & 7.24 & -- & $<0.001$ \\
+\quad Income growth quartile & 4 & 5.46 & -- & $<0.001$ \\
+\addlinespace
+\multicolumn{5}{l}{\textit{(b) Conditional contrast in $\widetilde W$, null by $W^{*}\sim\mathrm{Bern}(\hat\varrho(\Delta Z))$}} \\
+\quad Unconditional & 1 & 8.87 & no & 0.013 \\
+\quad Baseline TSP quartile & 4 & 136.72 & yes & $<0.001$ \\
+\quad Census region & 4 & 16.88 & no & $<0.001$ \\
+\quad Manufacturing quartile & 4 & 2.78 & no & 0.042 \\
+\quad Income growth quartile & 4 & 5.02 & no & 0.002 \\
+\addlinespace
+\multicolumn{5}{l}{\textit{Probe 3: reduced form under flexible control for baseline TSP}} \\
+\midrule
+Polynomial degree in $X_1$ & & Coefficient on $W$ & & Robust SE \\
+\quad 0 (none) & & 0.0462 & & (0.0086) \\
+\quad 1 & & 0.0467 & & (0.0098) \\
+\quad 2 & & 0.0524 & & (0.0100) \\
+\quad 3 & & 0.0507 & & (0.0100) \\
+\bottomrule
+\end{tabular}

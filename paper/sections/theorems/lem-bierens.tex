@@ -1,0 +1,333 @@
+% ############################################################################
+% ##  SUPERSEDED 2026-08-03 -- NOT COMPILED BY ANY DOCUMENT. DO NOT EDIT.
+% ##
+% ##  This file is a per-theorem rendering from an ABANDONED architecture in
+% ##  which paper/main.tex would \input one file per result.  paper/main.tex
+% ##  DOES NOT EXIST.  The manuscript is paper/qmd/{main,supplement}.qmd, and
+% ##  both \input the theory corpus directly.  Verified 2026-08-03: neither
+% ##  .qmd references sections/theorems.
+% ##
+% ##  The text below is ROUND-2 vintage against a corpus now at dispatch 25.
+% ##  66-78% of its substantive lines no longer match the corpus -- that is old
+% ##  text the corpus has since revised, NOT unique work.  Every \label here is
+% ##  also declared in the live corpus.
+% ##
+% ##  SOURCE OF RECORD:
+% ##    statements  quality_reports/theory/panel-npiv-discrete/results.tex
+% ##    assumptions quality_reports/theory/panel-npiv-discrete/assumptions.tex
+% ##    proofs      quality_reports/theory/panel-npiv-discrete/proofs.tex
+% ##
+% ##  Kept rather than deleted because nothing in this repo is committed.
+% ##  Full rationale: paper/sections/theorems/_SUPERSEDED.md
+% ############################################################################
+
+% ============================================================================
+%  lem:bierens -- equivalence of the Delta-Z-conditional restriction (A) with
+%  the unconditional Bierens family {M(u,t)}.
+%  Project: panel-npiv-discrete.  Target of plan Sec.2.7; memo Sec.10 Step 2.
+%  ROUND 2: revised against the dispatch-1 critic report (56/100).  THAT REPORT
+%  IS NO LONGER AT THE PATH THIS HEADER USED TO NAME.  It was written as
+%  "proofs_review.md"; that file was later split into
+%    quality_reports/theory/panel-npiv-discrete/proofs_review_dispatch1.md
+%    quality_reports/theory/panel-npiv-discrete/proofs_review_dispatch2.md
+%  and no file called proofs_review.md exists.  A header that cites a dead path
+%  is the hand-maintained-header failure mode again (see the SYNC DISCIPLINE
+%  note in lem-adjoint.tex): it looks verifiable and is not.
+%
+%  ROUND-7 SYNC, 2026-07-29 -- THIS FILE IS RESYNCED ON ONE POINT AND ONE ONLY.
+%  ------------------------------------------------------------------------
+%  psi -> \mathsf L_\Gamma in the proof of lem:bierenscore (Steps 1-4).  Reason:
+%  psi is RESERVED for the moment function
+%      psi_i(theta, varphi, L) = Delta Z_i Delta U_i + Wtilde_i L(Delta U_i, Delta Z_i)
+%  (notation glossary Sec.4, C26), and rem-nophifree.tex uses it in exactly that
+%  reserved sense at seven sites.  SINCE ALL FOUR THEOREM FILES NOW COMPILE INTO
+%  ONE DOCUMENT, leaving the Laplace transform as psi put two meanings of one
+%  glyph inside a single artifact -- a live INV-7 collision, not a latent one.
+%  L_Gamma names the two-sided Laplace transform of the image measure Gamma
+%  built in Step 1, so NO NEW LETTER is introduced; sans-serif matches the
+%  \mathsf c / \mathsf k / \mathsf r family (glossary Sec.1.6).
+%
+%  NOTHING ELSE IN THIS FILE IS RESYNCED.  The statements and proofs below are
+%  the round-2 text and are correct as such; the Part C repairs of rounds 3-7
+%  (if any) are not reflected.  When Parts C, E and F are generated together
+%  after Step 4, this file must be regenerated MECHANICALLY from results.tex and
+%  proofs.tex and diffed, not retyped.
+%
+%  SCOPE.  (a) The F4 version only: per plan Sec.19.3 the strict-inclusion half
+%  -- R(A*_cond) strictly containing the range of the unconditional adjoint --
+%  is DROPPED and is not claimed here (see rem:Tcond).  (b) The weight is
+%  w = exp, per B1(ii).  A general real-analytic non-polynomial weight is NOT
+%  admissible against a bounded ODD transform; see rem:swintercept for the
+%  counterexample and for the intercept-indexed family that repairs it.
+%
+%  Source of record: quality_reports/theory/panel-npiv-discrete/{results,proofs}.tex
+%  Assumptions cited by tag; see .../assumptions.tex.
+%  Requires \IR, \un, \upmodels, \vdagger from preamble.tex.
+%
+%  DEPENDENCIES that must appear EARLIER in the compiled document:
+%    def:operator   -- M(u,t;varphi,theta) and T(varphi,theta), and Pi;
+%    def:admissible -- I and V_CI;
+%    lem:quantu     -- L-3, the binary identity and the single-null-set
+%                      extension (cited in Steps 3 and 5 below);
+%    lem:density    -- L-2 (cited in rem:Tcond only);
+%    lem:shiftinv   -- cited in the proof of cor:opsol.
+%  All five are in results.tex.  This file is not self-contained by design:
+%  the supporting lemmas belong to the section body, not to the theorem file.
+%
+%  THIS FILE IS AN ALTERNATIVE RENDERING of lem:bierenscore, lem:bierens and
+%  cor:opsol, carrying the same \label keys as results.tex.  The two must never
+%  be \input into the same document.
+% ============================================================================
+
+\begin{lemma}\label{lem:bierenscore}
+A bounded, one-to-one transform and the exponential weight convert a conditional moment restriction into
+an unconditional family indexed by a set of positive Lebesgue measure.
+Suppose Assumption B1(i)--(iii) holds, $V$ is a random vector in $\IR^{p}$, and $\varepsilon$ is a random
+variable with $E|\varepsilon|<\infty$. Then
+\[
+E\big[\varepsilon\mid V\big]=0\ \text{a.s.}
+\qquad\Longleftrightarrow\qquad
+E\big[\varepsilon\,e^{t'\Phi(V)}\big]=0\ \ \text{for every }t\in\mathcal T .
+\]
+\end{lemma}
+
+\begin{proof}
+The forward implication is immediate; the converse is proved in five steps.
+
+\emph{Step 0: the forward implication.}
+Suppose $E[\varepsilon\mid V]=0$ a.s. By B1(i)--(ii), $|e^{t'\Phi(V)}|\le\bar w(t)<\infty$ for every $t$,
+so $E|\varepsilon\,e^{t'\Phi(V)}|\le\bar w(t)E|\varepsilon|<\infty$ and the tower property gives
+$E[\varepsilon\,e^{t'\Phi(V)}]=E\big[E[\varepsilon\mid V]\,e^{t'\Phi(V)}\big]=0$. Boundedness of $\Phi$
+is doing the work: without it the product need not be integrable and the step fails absent a moment
+condition on $V$.
+
+\emph{Step 1: a compactly supported finite signed measure.}
+Define $\Gamma(B):=E[\varepsilon\,\un\{\Phi(V)\in B\}]$ for Borel $B\subseteq\IR^{p}$. Then $\Gamma$ is a
+finite signed measure with $|\Gamma|(\IR^{p})\le E|\varepsilon|<\infty$, and by B1(i) it is supported in
+the compact cube $[-c_\Phi,c_\Phi]^{p}$. By the change-of-variables formula for image measures,
+\begin{equation}\label{eq:laplace}
+\mathsf L_\Gamma(t)\;:=\;E\big[\varepsilon\,e^{t'\Phi(V)}\big]\;=\;\int_{[-c_\Phi,c_\Phi]^{p}}e^{t'v}\,\Gamma(dv),
+\qquad t\in\IR^{p},
+\end{equation}
+absolutely convergent for every $t$ because $|e^{t'v}|\le e^{c_\Phi\|t\|_1}$ on the cube.
+
+\emph{Step 2: $\mathsf L_\Gamma$ is real-analytic on $\IR^{p}$.}
+Write $\mathbf j=(j_1,\dots,j_p)$ for a tuple of nonnegative integers, with
+$t^{\mathbf j}:=\prod_{q\le p}t_q^{j_q}$, $|\mathbf j|:=\sum_q j_q$, $\mathbf j!:=\prod_q j_q!$ and
+$\partial^{\mathbf j}:=\partial^{j_1}_{t_1}\cdots\partial^{j_p}_{t_p}$ --- \emph{the multi-index carries
+no symbol, $\alpha$ being binding as the propensity rate exponent (glossary C72)}. Expand
+$e^{t'v}=\sum_{\mathbf j}t^{\mathbf j}v^{\mathbf j}/\mathbf j!$. Since
+$|v^{\mathbf j}|\le c_\Phi^{|\mathbf j|}$ on the cube,
+$\sum_{\mathbf j}(|t^{\mathbf j}|/\mathbf j!)\int|v^{\mathbf j}|\,|\Gamma|(dv)\le|\Gamma|(\IR^{p})e^{c_\Phi\|t\|_1}<\infty$
+for every $t$, so the series converges absolutely everywhere and may be integrated term by term in
+\eqref{eq:laplace} by dominated convergence. Hence $\mathsf L_\Gamma$ is real-analytic on $\IR^{p}$ with
+$\partial^{\mathbf j}\mathsf L_\Gamma(0)=\int v^{\mathbf j}\,\Gamma(dv)$.
+
+\emph{Step 3: $\mathsf L_\Gamma$ vanishes identically.}
+By hypothesis $\mathsf L_\Gamma=0$ on $\mathcal T$, and $\mathrm{Leb}(\mathcal T)>0$ by B1(iii). A
+real-analytic function on $\IR^{p}$ --- which is connected and open --- whose zero set has strictly
+positive Lebesgue measure vanishes identically on $\IR^{p}$; this is the identity theorem for
+real-analytic functions and is the step made in \citet[proof of Thm.~1]{bierens1990}. Hence
+$\mathsf L_\Gamma\equiv0$ on $\IR^{p}$.
+
+\emph{Step 4: all moments of $\Gamma$ vanish, hence $\Gamma=0$.}
+By Steps 2 and 3, $\int v^{\mathbf j}\,\Gamma(dv)=0$ for every $\mathbf j$, so $\int P\,d\Gamma=0$ for every
+polynomial $P$. By the Stone--Weierstrass theorem polynomials are uniformly dense in
+$C([-c_\Phi,c_\Phi]^{p})$ and $|\Gamma|$ is finite, so $\int f\,d\Gamma=0$ for every continuous $f$ on
+the cube; by the Riesz representation theorem for finite signed Borel measures on a compact metric space,
+$\Gamma=0$. This is the second place where boundedness of $\Phi$ is load-bearing: it makes $\Gamma$
+compactly supported, hence determined by its moments.
+
+\emph{Step 5: back to $V$.}
+$\Gamma=0$ means $E[\varepsilon\mid\Phi(V)]=0$ a.s. By B1(i), $\Phi$ is an injective Borel map between
+Polish spaces, hence bi-measurable by the Lusin--Souslin theorem, so $\sigma(\Phi(V))=\sigma(V)$ and
+$E[\varepsilon\mid V]=0$ a.s. (For the maintained choice $\Phi$ is a homeomorphism onto an open cube and
+bi-measurability is elementary.)
+\end{proof}
+
+\begin{lemma}\label{lem:bierens}
+The $\Delta Z$-conditional restriction \textup{(A)} is equivalent to the vanishing of the unconditional
+family $\{\mathcal M(u,t)\}$, so no conditional distribution given $\Delta Z$ ever has to be estimated.
+Suppose Assumptions B1(i)--(iv) hold. Then the following are equivalent:
+\begin{enumerate}
+\item[(a)] $\Delta U\upmodels W\mid\Delta Z$;
+\item[(b)] $E[\widetilde W\,\varsigma(\Delta U)\mid\Delta Z]=0$ a.s.\ for every bounded measurable $\varsigma$, that is, restriction \textup{(A)};
+\item[(c)] $\mathcal M(u,t)=0$ for every $(u,t)\in\IR\times\mathcal T$;
+\item[(d)] $T(\vdagger,\theta_\dagger)=0$ in $L^{2}(\Pi)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The strategy is $(a)\Rightarrow(b)\Rightarrow(c)\Rightarrow(a)$, then $(c)\Leftrightarrow(d)$.
+Throughout, $|\widetilde W|\le1$ almost surely --- free from $W\in\{0,1\}$ and $\varrho\in[0,1]$, with
+no overlap condition used --- and $E[\widetilde W\mid\Delta Z]=0$ by the definition of $\varrho$.
+
+\emph{Step 1: $(a)\Rightarrow(b)$.}
+Let $\varsigma$ be bounded and measurable. Under $(a)$, $\varsigma(\Delta U)$ and $W$ are conditionally
+independent given $\Delta Z$, so
+$E[\widetilde W\varsigma(\Delta U)\mid\Delta Z]=E[\widetilde W\mid\Delta Z]E[\varsigma(\Delta U)\mid\Delta Z]=0$.
+
+\emph{Step 2: $(b)\Rightarrow(c)$.}
+Fix $u$ and take $\varsigma=\un\{\cdot\le u\}$ in $(b)$. Fix $t\in\mathcal T$; the product
+$\widetilde W\un\{\Delta U\le u\}e^{t'\Phi(\Delta Z)}$ is integrable by B1(i)--(ii), and
+$e^{t'\Phi(\Delta Z)}$ is $\sigma(\Delta Z)$-measurable, so the tower property gives
+$\mathcal M(u,t)=E\big[e^{t'\Phi(\Delta Z)}\,E[\widetilde W\un\{\Delta U\le u\}\mid\Delta Z]\big]=0$.
+
+\emph{Step 3: $(c)\Rightarrow(a)$.}
+Fix $u\in\IR$ and set $\varepsilon:=\widetilde W\un\{\Delta U\le u\}$, so $|\varepsilon|\le1$ and
+$E|\varepsilon|<\infty$. By $(c)$, $E[\varepsilon\,e^{t'\Phi(\Delta Z)}]=0$ for every $t\in\mathcal T$,
+so \cref{lem:bierenscore} with $V=\Delta Z$ gives $E[\widetilde W\un\{\Delta U\le u\}\mid\Delta Z]=0$
+a.s. This holds for every $u\in\mathbb{Q}$, so by \cref{lem:quantu} applied at
+$(\theta,\varphi)=(\theta_\dagger,\vdagger)$, and writing $F_j:=F_j^{(\theta_\dagger,\vdagger)}$, there
+is a single null set $N$ outside which $\varrho(z)(1-\varrho(z))\{F_1(u\mid z)-F_0(u\mid z)\}=0$ for
+every $u\in\IR$. Fix $z\notin N$ and split on
+$\mathcal Z_0:=\{z:\varrho(z)(1-\varrho(z))=0\}$. If $z\notin\mathcal Z_0$ the
+prefactor is strictly positive, so $F_1(\cdot\mid z)=F_0(\cdot\mid z)$, which for binary $W$ is exactly
+conditional independence at $z$. If $z\in\mathcal Z_0$ then $P(W=1\mid\Delta Z=z)\in\{0,1\}$, so $W$ is
+conditionally degenerate at $z$ and conditional independence holds there automatically in the
+factorisation sense. Combining gives $(a)$. \emph{No overlap condition is used}: on the degenerate region
+$\widetilde W=0$ almost surely, so the restriction has no bite there --- but $(a)$ holds there regardless,
+so there is nothing to recover.
+
+\emph{Step 4: $(c)\Rightarrow(d)$.} Immediate.
+
+\emph{Step 5: $(d)\Rightarrow(c)$.}
+$T(\vdagger,\theta_\dagger)=0$ in $L^{2}(\Pi)$ means $\mathcal M=0$ $\Pi$-a.e. Since
+$\Pi=\Pi_u\otimes\Pi_t$, Fubini's theorem supplies a $\Pi_t$-null set $N_{\mathcal T}$ such that for
+every $t\notin N_{\mathcal T}$, $\mathcal M(u,t)=0$ for $\Pi_u$-a.e.\ $u$. Fix such a $t$ and let
+$Z_t:=\{u\in\IR:\mathcal M(u,t)=0\}$, so $\Pi_u(Z_t^{c})=0$. If $Z_t$ were not dense in $\IR$ there
+would be a nonempty open $O\subseteq Z_t^{c}$ with $\Pi_u(O)=0$, contradicting the full topological
+support of $\Pi_u$ assumed in B1(iv.a); so $Z_t$ is dense. The map $u\mapsto\mathcal M(u,t)$ is
+right-continuous, since $u_k\downarrow u$ gives $\un\{\Delta U\le u_k\}\downarrow\un\{\Delta U\le u\}$
+pointwise with integrand dominated by $\bar w(t)$. Choosing $u_k\in Z_t$ with $u_k\downarrow u$ gives
+$\mathcal M(\cdot,t)\equiv0$ on $\IR$.
+
+By B1(iv.b) there is a Borel $\mathcal T_0\subseteq\mathcal T$ with $\mathrm{Leb}|_{\mathcal T_0}$ and
+$\Pi_t|_{\mathcal T_0}$ not mutually singular. If $\mathrm{Leb}(\mathcal T_0\setminus N_{\mathcal T})=0$
+then $\mathrm{Leb}|_{\mathcal T_0}$ is concentrated on $N_{\mathcal T}$ while $\Pi_t|_{\mathcal T_0}$ is
+concentrated on its complement, making the two mutually singular --- a contradiction. Hence
+$\mathrm{Leb}(\mathcal T_0\setminus N_{\mathcal T})>0$, and running Step 3 with $\mathcal T$ replaced by
+$\mathcal T_0\setminus N_{\mathcal T}$ --- legitimate because \cref{lem:bierenscore} requires only
+positive Lebesgue measure of the index set --- delivers $(a)$. Then $(c)$ on all of $\mathcal T$ follows
+from Steps 1 and 2.
+\end{proof}
+
+\begin{corollary}[to \cref{lem:shiftinv} and \cref{lem:bierens}]\label{cor:opsol}
+The operator equation has the same solution set in $\varphi$ at every $\theta$, and that set is
+$\mathcal V_{CI}$.
+Suppose Assumptions B1(i)--(iv) hold. Then for every $\theta\in\IR^{p}$,
+\[
+\big\{\varphi\in\mathcal V:\ T(\varphi,\theta)=0\ \text{in }L^{2}(\Pi)\big\}\;=\;\mathcal V_{CI},
+\]
+and under Assumption A1b(iii) this set equals $\{\vdagger\}$.
+\end{corollary}
+
+\begin{proof}
+Fix $\theta\in\IR^{p}$ and $\varphi\in\mathcal V$. The proof of \cref{lem:bierens} uses no property of
+$(\vdagger,\theta_\dagger)$ beyond three facts: $|\widetilde W|\le1$; $E[\widetilde W\mid\Delta Z]=0$;
+and the applicability of \cref{lem:quantu} to the residual. All three hold at arbitrary trial values, and
+\cref{lem:quantu} is stated at arbitrary trial values for exactly this reason. Substituting
+$\Delta U(\theta,\varphi)$ for $\Delta U$ throughout that proof gives
+$T(\varphi,\theta)=0\Leftrightarrow\Delta U(\theta,\varphi)\upmodels W\mid\Delta Z\Leftrightarrow(\varphi,\theta)\in\mathcal I$.
+By \eqref{eq:shiftinv} of \cref{lem:shiftinv}, which holds with no assumption,
+$(\varphi,\theta)\in\mathcal I$ if and only if $\varphi\in\mathcal V_{CI}$, whatever the value of
+$\theta$. Under A1b(iii) that set is $\{\vdagger\}$.
+\end{proof}
+
+% NEITHER A1 NOR A4(i) IS A HYPOTHESIS of lem:bierens or cor:opsol.
+% A1 would make lem:bierens VACUOUS: A1's first clause IS statement (a), so
+% under A1 all four of (a)-(d) are true and the printed equivalence asserts
+% nothing.  A4(i) is idle: see Step 3.  What this buys is worth a sentence in
+% the paper -- the equivalence needs NO MOMENT CONDITION on Delta Y, Delta U or
+% Delta Z, and NO LEBESGUE DENSITY for Delta U or Delta Z.  That is what
+% boundedness of Phi purchases; see rem:Tcond.
+
+\begin{remark}\label{rem:swintercept}
+B1(ii) fixes $w=\exp$, and the restriction is substantive rather than expositional.
+
+\emph{The textbook condition is not enough.} Suppose $w$ were required only to be real-analytic and
+non-polynomial, as in the usual statement of the device. Take $V=\pm1$ with probability $\tfrac12$ each,
+let $\Phi$ be the maintained componentwise $\arctan$ --- an \emph{odd} function, so
+$\Phi(-1)=-\Phi(1)$
+--- and set $\varepsilon:=V$. Then $E|\varepsilon|<\infty$ and $E[\varepsilon\mid V]=V\neq0$, yet for
+$w=\cos$ and \emph{every} $t$,
+\[
+E\big[\varepsilon\,\cos\big(t\Phi(V)\big)\big]
+\;=\;\tfrac12\cos\big(t\,\Phi(1)\big)-\tfrac12\cos\big(-t\,\Phi(1)\big)\;=\;0 .
+\]
+B1(i)--(iii) hold and the converse direction of \cref{lem:bierenscore} fails. The mechanism is that an
+odd $\Phi$ against an even $w$ exposes only the even part of the image measure, so Step 4 of the proof
+recovers the even moments and no others. The failure is not confined to the abstract lemma: with
+$\Delta Z$ scalar and two-valued at $\pm c$,
+$\mathcal M(u,t)=\cos\big(t\,\Phi(c)\big)\,E[\widetilde W\un\{\Delta U\le u\}]$, so (c) of
+\cref{lem:bierens} holds
+whenever the \emph{unconditional} restriction does, while the $\Delta Z$-conditional restriction can fail
+through opposite-signed violations that cancel across the two values of $\Delta Z$.
+
+\emph{The correct general statement, and what it would cost.} The repair is not to strengthen $\Phi$ but
+to add an intercept. Index the family by $(t_0,t)$ over a subset of $\IR^{1+p}$ of positive Lebesgue
+measure and use $\{w(t_0+t'\Phi(z))\}$. For $w$ real-analytic and non-polynomial, each derivative
+$w^{(k)}$ is analytic and not identically zero --- otherwise $w$ is a polynomial --- so its zero set is
+discrete and hence countable; therefore all but countably many $c\in\IR$ satisfy $w^{(k)}(c)\neq0$ for
+every $k\ge0$, and the argument runs at such a $c$. This is the Stinchcombe--White family and the result
+is \citet[Thm.~3.1]{stinchcombewhite1998}. Adopting it would change the range space to
+$L^{2}(\IR\times\mathcal T^{+},\Pi)$ with $\mathcal T^{+}\subseteq\IR^{1+p}$, and would require the
+envelope bookkeeping of B1(iv)--(v) to be redone with
+$\bar w(t_0,t)=\sup_{|v|\le|t_0|+c_\Phi\|t\|_1}|w(v)|$.
+
+\emph{Why it is not adopted.} $w=\exp$ is the maintained choice of the estimator, it is what
+\citet[Thm.~1]{bierens1990} characterises, and the additional generality is consumed nowhere in the
+programme.
+\end{remark}
+
+\begin{remark}\label{rem:Tcond}
+Compactness of $\mathcal T$ is \emph{sufficient but not necessary} and should not be assumed. What the
+proofs use is B1(iv.c) and B1(v), which for $w=\exp$ read
+$\Pi_u(\IR)\int e^{2c_\Phi\|t\|_1}\Pi_t(dt)<\infty$ and $\int e^{c_\Phi\|t\|_1}|\gamma|(dt)<\infty$; a
+compact $\mathcal T$ carrying a finite $\Pi_t$ and a finite $\gamma$ satisfies both, but so do many
+unbounded index sets. Compactness was introduced in order to license differentiation under the
+$t$-integral, and B1(v) supplies that directly: differentiating
+$L(u,z)=\int_{\mathcal T}\lambda(u,t)w(t'\Phi(z))\gamma(dt)$ in $u$ under the integral sign is licensed
+by $|\partial_u\lambda(u,t)\,w(t'\Phi(z))|\le\Lambda_1(t)\bar w(t)$ together with
+$\int_{\mathcal T}\Lambda_1\bar w\,d|\gamma|<\infty$.
+
+Two clauses of B1(iv) are minimal and should not be strengthened back. Step 5 above consumes only
+(iv.a), full topological support of $\Pi_u$, and (iv.b), non-mutual-singularity of
+$\mathrm{Leb}|_{\mathcal T_0}$ and $\Pi_t|_{\mathcal T_0}$ --- exactly the statement that no
+$\Pi_t$-null set can swallow $\mathcal T_0$. By the Lebesgue decomposition, (iv.b) is equivalent to
+$\Pi_t$ having a nonzero absolutely continuous part, so it excludes \emph{every} Lebesgue-singular
+$\Pi_t$ and not merely the atomic ones: a Cantor measure is non-atomic and is excluded. It is also
+sufficient rather than necessary. What the argument needs is an analytic-uniqueness condition on
+$\operatorname{supp}\Pi_t$: by Step 2 of the proof of \cref{lem:bierenscore}, $t\mapsto\mathcal M(u,t)$ is
+real-analytic on $\IR^{p}$, so it suffices that its zero set cannot contain $\operatorname{supp}\Pi_t$ up to
+a $\Pi_t$-null set unless it vanishes identically. For $p=1$ this holds whenever the support has an
+accumulation point --- a Cantor measure included, since a Cantor set is perfect --- and
+\cref{lem:bierens} survives such a $\Pi_t$; for $p\ge2$ the requirement is that the support not lie in a
+proper real-analytic variety, which perfectness alone does not give. What (iv.b) excludes in every
+dimension is a finite grid. \emph{That was the ground on which the growing-family condition B1(vi) was
+classed an identification assumption rather than an approximation device, and B1(vi) is now
+\textbf{retired}} --- not because the classification was wrong but because the clause describes an estimator
+this programme does not implement: the operator integrates against $\Pi_t$ over all of $\mathcal T$ and never
+over a finite subfamily. \emph{Identification of $\vdagger$ here is A1b(iii), assumed outright}, and the
+sentence is kept in the corrected register rather than deleted so that the exclusion (iv.b) performs stays
+visible to a reader who reinstates the growing-grid design.
+
+It is also worth recording what the equivalence does \emph{not} need: no moment condition on $\Delta Y$,
+$\Delta U$ or $\Delta Z$, and no Lebesgue density for $\Delta U$ or $\Delta Z$. That is what boundedness
+of $\Phi$ purchases.
+
+The correction measure is in any case nearly moot on the $\theta$-side: by \cref{lem:density} the
+estimator \emph{solves for} $L$ inside a dense class rather than integrating a fixed weighting measure
+against a continuum, so no $t$-integral survives in the construction of $\hat L$. This is also the
+surviving argument against a continuum-GMM formulation: that would require choosing a weighting measure
+on $\mathcal T$ and regularising the inverse of its covariance operator, and the present construction
+requires no weighting-measure choice at all.
+
+Finally, \cref{lem:bierens} is stated at the equivalence, not at a strict inclusion. The claim that
+$\mathcal R(\mathcal A^\ast_{\mathrm{cond}})$ strictly contains the range of the unconditional adjoint is
+not proved here and is not claimed: with $W$ binary the two moment classes are not nested, since
+$\{g:E[g\mid\Delta U,\Delta Z]=0\}=\{\widetilde W\ell(\Delta U,\Delta Z)\}$ is an equality of sets, and
+the comparison across the two modelling assumptions is heuristic. The conditional route is defended on
+economic grounds and on internal consistency with the maintained exogeneity assumption, not on a weaker
+source condition.
+\end{remark}

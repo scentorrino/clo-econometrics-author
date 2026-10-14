@@ -1,0 +1,12 @@
+claim_id: a8-window-splines
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (A8 and its comment: 'splines L_x << n^{1/2} ==> window non-empty iff s > 1')"
+# CLAIM.  The sieve window n^{1/(2s)} << L_x << n^{1/2} is non-empty iff the
+# exponents are ordered, 1/(2s) < 1/2, i.e. iff s > 1.  Mechanised as
+#     1/2 - 1/(2s) = (s-1)/(2s),
+# whose sign is the sign of s - 1 because s > 0.
+variables:
+  s:
+    domain: positive
+start: "1/2 - 1/(2*s)"
+operation: none
+claimed_end: "(s-1)/(2*s)"

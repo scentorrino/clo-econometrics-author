@@ -1,0 +1,16 @@
+claim_id: frechet-lipschitz-homogeneity
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (rem:quadremainder, the step that applies eq:lipschitz at the increment varsigma*h)"
+# CLAIM (the one implicit step in the FTC argument).  eq:lipschitz is stated at
+# increment h; the segment argument applies it at increment varsigma*h for
+# varsigma in (0,1], which requires ||varsigma h|| = varsigma ||h||.  With
+# varsigma > 0 that is sqrt(varsigma^2) = varsigma.
+variables:
+  C_A:
+    domain: positive
+  Hn:
+    domain: positive
+  varsigma:
+    domain: positive
+start: "2*C_A*sqrt(varsigma**2)*Hn"
+operation: none
+claimed_end: "2*C_A*varsigma*Hn"

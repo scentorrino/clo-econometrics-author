@@ -1,0 +1,317 @@
+% =========================================================================
+%  working_notes.tex -- discussion moved OUT of the compiled supplement.
+%
+%  WHAT IS HERE.  Remarks that had been promoted from the project's working notes
+%  into printed text and that NOTHING in the corpus points at.  They are kept
+%  verbatim because several record why a route was DECLINED, which is what a
+%  referee asks and a later author re-derives at cost.
+%
+%  WHY ONLY THREE.  Twenty remarks were identified as working notes in printed
+%  form, 38.6 of the supplement's 434 pages.  Seventeen of them carry 174 PRINTED
+%  cross-references between them -- rem:pasrc alone is cited 48 times, rem:obligations
+%  22, rem:rootnscope 21, rem:lfnonlinear 20 -- so they are load-bearing in the
+%  corpus as it stands and cannot be moved without rewriting the sentences that
+%  cite them.  That is an authorial decision, not a mechanical one, and it is left
+%  open.  These three have ZERO printed references and moved cleanly.
+%
+%  INPUT BY NO DOCUMENT.  driver.tex inputs eight files and this is not among
+%  them, so it contributes to no counter and no label here is live.
+%
+%  Moved 2026-08-10.
+% =========================================================================
+
+
+%% ---- rem:ffcompare ----
+\begin{remark}[The Fève--Florens identification route, and why it does not transplant]\label{rem:ffcompare}
+\emph{Amended 2026-08-05.} This remark previously read the transplant of \citet[Prop.~2.2]{feve2014}
+to the conditional-independence design as a route that reaches the linearised condition at the cost of
+an excess, and priced the excess. \emph{That reading was wrong, and the direction of the error matters}:
+the transplanted hypothesis is not stronger than theirs, it is unsatisfiable. Their completeness
+condition is posed on $g\mapsto E[g\mid W]$, which does not annihilate constants. Its analogue here
+must be posed on $\Lambda\mapsto E[\widetilde W\Lambda\mid\Delta U,\Delta Z]$ ---
+\emph{$\IR^{\mathsf L-1}$-valued at every $\mathsf L$, one component per contrast, and scalar at
+$\mathsf L=2$; the argument below uses only that the map kills $\Lambda\equiv1$, which is a statement
+about every component at once} --- and $\widetilde W$ is
+centred given $\Delta Z$, so under A1 that operator kills every $\Lambda$ agreeing almost surely with a
+function of $(\Delta U,\Delta Z)$ --- the constants included. The condition fails at $\Lambda\equiv1$
+at every law A1 admits, hence at every law A1b(iii) admits. \Cref{lem:nusigma}\textup{(v)} is the
+unconditional shadow of the same identity and was in this corpus the whole time.
+The corollary that rested on it is withdrawn; see \cref{rem:a1cwithdrawn}. What follows is retained
+because the comparison with \citet{feve2014} is still the right way to see \emph{why} the two designs
+part company, but it should be read as an account of a closed route, not an available one.
+
+\emph{Notation, fixed once.} \Citet{feve2014} write the endogenous regressors as $Z_1,Z_2$ and the
+instrument as $W$; in this paper the endogenous regressors are $X_1,X_2$ and $Z$ is reserved for the
+exogenous controls. All quotations below are verbatim \emph{in their notation}; the translation is
+$Z_t\mapsto X_t$ throughout, and no symbol inside a quotation has been altered.
+
+\emph{What it delivers.} Their Proposition~2.2 states: ``Let $\varphi\in E$. If $(Z_1,Z_2)$ is strongly
+identified by $W$ and if $Z_1$ and $Z_2$ are measurably separated the function $\varphi$ is identified.''
+The two primitives would become A1d and A1b(ii) here, and the argument would run the same in outline:
+completeness removes the period difference
+from inside the conditional expectation, and measurable separability then forces the direction to be
+constant, which \cref{def:spaces} sets to zero because the direction lies in $\mathcal V$.
+\emph{The outline is where it stops.} The first primitive cannot be assumed in this design, so the
+argument has no starting point and A1c gains no primitive sufficient condition from it. Had it been
+available it would have converted the draft's condition \texttt{eq-condcomppanel} at \texttt{:127--130}
+from an unreconciled display into \cref{prp:kerchar}(c) --- with two corrections: the conditioning set
+must include $\Delta Z$, which the draft omits, and the statement is about the linearisation, not about
+the structural function.
+
+\emph{What it does not deliver, and why.} It does not reach A1b(iii). In \citet{feve2014} the
+restriction is a conditional mean and the operator is linear in $\varphi$, so injectivity of the operator
+\emph{is} identification. Under conditional independence the operator equation is nonlinear in $\varphi$,
+and the two statements separate. The obstruction is nameable: membership of $\mathcal V_{CI}$ is the
+family $E[\widetilde W\varsigma(\Delta Y-\Delta\varphi)\mid\Delta Z]=0$ indexed by test functions of the
+\emph{observed} residual at the trial value, whereas running the argument of \cref{prp:kerchar} globally
+would require the strictly larger family
+$E[\widetilde W\varsigma(\Delta Y-\Delta\varphi)\varkappa(\Delta U)\mid\Delta Z]=0$, indexed also by test
+functions of the \emph{true} residual, about which the restriction says nothing at a trial $\varphi$. The
+two families coincide at $\varphi=\vdagger$ and nowhere else, which is exactly the gap between
+first-order and global identification. \Cref{prp:compact} closes off the obvious repair: because
+$\mathcal A_{\mathrm{cond}}$ is compact it is not bounded below, so A1c does not even deliver a
+neighbourhood of uniqueness.
+
+\emph{Why recording the gap is the right response, and the precedent is sharper than a difficulty claim.}
+\citet{feve2014} reject the hypothesis of their own Proposition~2.2, and their stated reason is the
+excess A1d reproduces exactly: ``The assumption of Proposition 2.2 is too strong because it assumes that
+$E(g(Z_1,Z_2)\mid W)=0$ implies $g(Z_1,Z_2)=0$ a.s.\ for any $g$, and we only use this property for
+$g(Z_1,Z_2)$ of the form $\varphi(Z_2)-\varphi(Z_1)$.'' A1d has the same shape: it quantifies over every
+$\Lambda\in L^{2}(P_{X_1,X_2})$, while the corollary consumed it only at $\Lambda=\Delta h$, a
+difference. \emph{Both papers reach a completeness condition stated over a class strictly larger than the
+one the argument uses, and both decline to repair it by restricting the class} --- because injectivity of
+$\Lambda\mapsto E[\widetilde W\Lambda\mid\Delta U,\Delta Z]$ on differences alone is no longer a
+recognisable completeness condition and has no primitive characterisation of its own.
+\emph{The shapes coincide and the consequences do not.} Their excess is an excess: their condition is
+satisfiable and merely asks more than the argument consumes. Ours was not, and restricting the class
+would have been the only way to state anything satisfiable at all --- which is why the condition is
+withdrawn rather than weakened.
+
+\emph{The two asymmetries are not the same asymmetry, and the synthesis has to say so.} Theirs runs from
+the assumption to its use: the hypothesis is \emph{stronger than the argument consumes}. The one recorded
+in the previous paragraph runs the other way: the restriction supplies \emph{less information than the
+argument needs}, the $\varsigma$ family against the $(\varsigma,\varkappa)$ family. They are opposite
+inequalities and they meet at one point --- \emph{the recognisable completeness conditions available in
+either design are stated over a coarser class than the design's own information}, so an assumption
+calibrated to the class is too strong and the information calibrated to the class is too weak. \emph{That
+is where a future improvement would have to act, in either paper}: not by strengthening the completeness
+condition, but by finding a restriction on $P$ stated over exactly the class the argument uses.
+\emph{In this design that is not an improvement but the only possibility}, since the completeness
+condition stated over the coarser class is not merely too strong here --- it is unsatisfiable, the
+operator having the constants in its kernel. A1b(iii) is accordingly kept as an assumption with no
+primitive route offered, and the transplanted condition is recorded as closed rather than as taken.
+\end{remark}
+
+
+%% ---- rem:draftrec ----
+\begin{remark}[Two features of the linearisation that the derivation must not absorb]\label{rem:draftrec}
+\emph{(i) The operator's arguments.} In \eqref{eq:Mdef} the $(x_1,x_2)$-integration is an expectation,
+the $W$-argument is replaced by the contrast index $l$ --- legitimate because the $\mathsf L-1$
+contrasts \eqref{eq:contrast} span the conditionally centred functions of $W$, so nothing in the $W$
+direction is approximated --- and
+the $z$-argument is removed by the Bierens index $t$. What is left is indexed by $(u,t,l)$ with $u$
+scalar and $l$ ranging over a \emph{finite} set, which is why the existing Landweber--Fridman machinery
+carries over with an enlarged index set
+and no new curse of dimensionality. \emph{At $\mathsf L=2$ the index takes one value and the object is
+indexed by $(u,t)$ as earlier rounds printed.}
+
+\emph{(ii) Conditional versus unconditional centring.} A raw contrast between the $W$-cells,
+unconditional in $Z$, is \emph{not} the conditional operator reweighted by a scalar, and the two do not
+share a range or a kernel. \emph{The correct comparison is
+between kernels.} Write
+$f_j(u):=f_{\Delta U\mid X_1,X_2,\Delta Z,W}(u\mid\cdot,\cdot,\cdot,j)$, the same conditional density
+that appears in \eqref{eq:kernel}, and $p_{X,j}:=P(W=j\mid X_1,X_2,\Delta Z)$,
+$j\in\{0,\dots,\mathsf L-1\}$. The kernel of
+$\mathcal A_{\mathrm{cond}}$ in \eqref{eq:kernel} is built from
+\begin{equation}\label{eq:kernelcompare}
+E\big[\widetilde W_l\,f_{\Delta U\mid X_1,X_2,\Delta Z,W}(u)\,\big|\,X_1,X_2,\Delta Z\big]
+\;=\;p_{X,l}\,f_l(u)\;-\;\varrho_l\sum_{j=0}^{\mathsf L-1}p_{X,j}\,f_j(u),
+\end{equation}
+whereas the unconditional operator is built from the raw cell differences $f_l(u)-f_0(u)$ up to sign.
+\emph{The comparison is not the binary one, and the $\mathsf L\ge3$ correction is a matter of
+\textbf{which} differences appear and not only of a scalar factor.} Suppose $p_{X,j}=\varrho_j$ for
+every $j$ --- equivalently $W\upmodels(X_1,X_2)\mid\Delta Z$, which says that \emph{the instrument does
+not shift the endogenous regressor given $\Delta Z$}. Then, since $\sum_j\varrho_j=1$, the right-hand
+side of \eqref{eq:kernelcompare} becomes
+\begin{equation}\label{eq:kernelcompareci}
+\varrho_l\Big\{f_l(u)-\sum_{j=0}^{\mathsf L-1}\varrho_jf_j(u)\Big\}
+\;=\;\varrho_l\sum_{j=0}^{\mathsf L-1}\varrho_j\big\{f_l(u)-f_j(u)\big\} ,
+\end{equation}
+a $\varrho$-weighted combination of \emph{all} $\mathsf L-1$ raw differences available at $l$ --- cell
+$l$ against the $\varrho$-mixture of every cell --- and \textbf{not} a multiple of any single one.
+At $\mathsf L=2$ the sum has one nonvanishing term and \eqref{eq:kernelcompareci} is
+$\varrho_1\varrho_0\{f_1(u)-f_0(u)\}$, so there, and only there, do the two operators coincide up to the
+scalar $\varrho_1\varrho_0$, and there conditional independence is also \emph{necessary} for that
+coincidence, $p_{X,1}\varrho_0f_1-\varrho_1p_{X,0}f_0$ being proportional to $f_1-f_0$ exactly when
+$p_{X,1}=\varrho_1$. \emph{At $\mathsf L\ge3$ conditional independence does not deliver it}: what
+survives $p_X=\varrho$ is the choice of comparison cell, and \eqref{eq:kernelcompareci} is a scalar
+multiple of $f_l-f_0$ only under a further coincidence among the cell densities --- $f_j=f_0$ for every
+$j\notin\{0,l\}$ suffices and returns $\varrho_l(1-\varrho_l)\{f_l(u)-f_0(u)\}$ --- which is a
+restriction on the model and not on the instrument. \emph{Conditional independence must not be assumed in
+any case, and no equality of ranges or of kernels is claimed here.} The identity
+$E[\widetilde W_l\,g(W)\mid\Delta Z]=\varrho_l\{g_l-\sum_{j}\varrho_jg_j\}$, which is correct, holds at
+$\sigma(\Delta Z)$ and does not extend to $\sigma(X_1,X_2,\Delta Z)$; see convention (P4b) and its scope
+warning in \texttt{proofs.tex} --- \emph{(P4b) states it there in \textbf{this same general form}, at
+every $\mathsf L$ and cell by cell: (P4b)'s display is the mixture one, and the two-cell
+$\varrho(1-\varrho)\{g_1-g_0\}$ appears beside it only inline, as the $\mathsf L=2$ reduction. What
+separates (P4b) from \eqref{eq:kernelcompareci} is therefore \textbf{not} the number of cells --- the two
+right-hand sides are one object --- but the conditioning: (P4b) is the identity at $\sigma(\Delta Z)$,
+where the cell weights are the $\varrho_j$, whereas \eqref{eq:kernelcompare} is the corresponding object
+at $\sigma(X_1,X_2,\Delta Z)$, where they are the $p_{X,j}$ and where (P4b) is unavailable, and
+\eqref{eq:kernelcompareci} is what the latter collapses to when the two sets of weights agree. That is
+the whole content of this clause}.
+% RETYPED, PHASE 5a ROUND 2, under a named grant into this otherwise closed file.
+% This clause described (P4b) as stating the identity "in the two-cell form
+% varrho(1-varrho){g_1 - g_0}" and referred to "(P4b)'s two-cell display".  Both
+% were true before phase 5a and false after it: (P4b) now states the general
+% mixture form at every L and carries no two-cell display.  The clause was thus a
+% claim about proofs.tex that proofs.tex contradicted -- and proofs.tex, at
+% lem:pbinary, was simultaneously printing that this very deferral had been
+% DISCHARGED.  Both ends are corrected in one pass.  The sigma-field distinction,
+% which was and remains the load-bearing content, is preserved verbatim in
+% substance.
+The weights $p_{X,j}$ and $\varrho_l$ in \eqref{eq:kernelcompare} are
+bounded for free, every factor lying in $[0,1]$, and \emph{no prefactor is inverted anywhere in this
+development}: the one argument that used to divide by $\varrho(1-\varrho)$ --- \cref{lem:quantu}'s
+extension from a countable set of $u$ to all of $\IR$ --- now propagates a zero along a right-continuous
+function instead, bounding nothing and inverting nothing, so A4(i) is \textbf{not} among that lemma's
+hypotheses and no case split on the degenerate region is made there.
+\emph{That \cref{lem:quantu} has no proof-step consumer, and why it is kept notwithstanding, are recorded
+in its own statement} --- the single home for that status, on \cref{lem:nusigma}\textup{(ii)}'s model.
+% RETYPED, PHASE 5a ROUND 2, under the same named grant.  This sentence read: "what
+% A4(i) delivers is invertibility of the prefactor in the one place the prefactor
+% actually appears, namely at sigma(Delta Z) in lem:quantu."  Phase 5a round 1
+% repaired lem:quantu's Step 3 and the repaired proof prints the OPPOSITE -- "no
+% division by a prefactor" -- and A4(i) is not a hypothesis of lem:quantu at all.
+% ROUND-2's NOTE ON PLACEMENT IS SPENT, AND PHASE 5c's SUCCESSOR NOTE IS NOW SPENT
+% TOO.  Round 2 put the consumer-status note HERE only because its grant did not
+% reach the lemma body.  Phase 5c owned the body and put the note there, on
+% lem:nusigma(ii)'s model, but RETAINED the paragraph here as well and reported the
+% residual to the critic as a duplication rather than a contradiction.
+% PHASE 4c, 2026-08-10, CUTS IT, and the judgement is recorded because the
+% alternative was defensible.  THE GROUND IS NOT TIDINESS.  (1) Nothing in the cut
+% paragraph was unique: all three of its facts -- no consumer, why kept, not
+% available as an inherited step -- are in the lemma body, which is STRICTLY more
+% informative, naming rem:localise(1) as the replacement route where this paragraph
+% said only "a cell-factorisation route".  (2) The duplicated content is a DATED
+% STATUS FACT ("as of 2026-08-09").  A dated status printed twice, ~320 lines apart,
+% is a stale-claim generator: the pass that eventually gives lem:quantu a consumer
+% will update one copy and leave the other, and no string census finds that -- it is
+% the corpus's dominant defect species, manufactured on a timer.  (3) The reader is
+% not stranded and the lemma body's own claim stays TRUE: eq:kernelcompareci's
+% clause still cites lem:quantu in the sentence immediately above, so it still
+% "sends a reader there", and the pointer left behind says where the status lives.
+% BINARY GATE 1 IS UNAFFECTED: lem:quantu's statement and its proof both exist and
+% are matched by label.  "No consumer" is a fact about which STEPS cite it, not
+% about whether it is proved.
+There is in any case no second operator to reconcile with:
+$\mathcal A_{\mathrm{cond}}$ \emph{is} the operator governing $\hat\varphi$.
+
+\emph{(iii) The adjoint, and the factor that must not be cancelled.} The adjoint itself is
+\begin{equation}\label{eq:adjointdisplay}
+\begin{split}
+\big(\mathcal A^\ast_{\mathrm{cond}}\ell\big)(x)\;&=\;\sum_{l=1}^{\mathsf L-1}\varpi_{\mathsf w}(l)
+\int_{\IR\times\mathcal T}\mathsf k(u,t,l;x)\,\ell(u,t,l)\,\Pi_u(du)\,\Pi_t(dt)\\
+&=\;\frac{\nu_{\widetilde W'\,(\mathcal W\ell)}(x)}{\pi(x)}
+\qquad\text{with }\mathsf k\text{ from \eqref{eq:kernel}},
+\end{split}
+\end{equation}
+so that $\langle\mathcal A_{\mathrm{cond}}h,\ell\rangle_{L^2(\Pi)}=\langle h,\mathcal A^\ast_{\mathrm{cond}}\ell\rangle_{L^2(\pi)}$
+holds by construction; this is \cref{lem:adjoint}. \emph{Two things about
+\eqref{eq:adjointdisplay} are load-bearing.} First, in the \emph{pairing}
+$\langle\mathcal A h,\ell\rangle$ the $L^2(\pi)$ inner product contributes a factor $\pi$ and the
+adjoint's own formula contributes $\pi^{-1}$, and the two cancel; that is a trap, because a reader who
+cancels them concludes that the $L^2(\pi)$ weighting is immaterial, when the surviving $\pi^{-1}$ in
+\eqref{eq:adjointdisplay} is exactly why the source condition A2 is imposed on $\nu/\pi$ and not on
+$\nu$. Second, both subscripts $(\theta,\varphi)$ of the density are substantive:
+\cref{prp:frechet}(ii) shows the $\varphi$-dependence is real, the derivative map being Lipschitz in
+$\varphi$ with a nonzero constant; and \cref{rem:R1}(iv) records that the operator's singular values,
+degree of ill-posedness and source index are all $\theta$-specific, because \eqref{eq:Adef} evaluates
+the conditional density at a $\theta$-dependent point. \emph{What is $\theta$-free is a different object
+--- the solution set of \eqref{eq:opeq} in $\varphi$, by \cref{lem:shiftinv}. The operator is not
+$\theta$-free; only its zero set is.}
+
+\emph{(iv) Two symbols.} The kernel $\un(x\ge v)$ is the kernel of
+$\mathcal D^{-1}$, the integration operator of the derivative parameterisation; with the analysis
+conducted in levels it does not appear. The letter $\psi$ is reserved for the moment function, so a
+generic element of the range space is written $\ell$. \emph{And the range measure may not be left
+implicit}: without $\Pi$ there is nothing to fix the range space, and displays that differ in whether a
+$W$-argument survives silently use different ones. Under \cref{def:operator} the contrast vector
+$\widetilde W$ replaces the $W$-argument by the contrast index $l$ once and for all, $\Pi$ gains
+$\Pi_{\mathsf w}$ as its third factor, and the range is $L^{2}(\Pi)$ throughout.
+\end{remark}
+
+
+%% ---- rem:nophifree ----
+\begin{remark}[What the impossibility result says, and where it has been seen before]\label{rem:nophifree}
+\Cref{prp:nophifree} is the paper's negative result, and three readings of \eqref{eq:tilted} are worth
+separating.
+
+\emph{(i) The condition, in words.} Write $\tilde f^{\,g}_j(x):=E[g\mid X_j=x]f_{X_j}(x)$ for the
+$g$-tilted density of the endogenous regressor in period $j$ --- a signed density of total mass $E[g]$.
+Condition \eqref{eq:tilted} says $\tilde f^{\,g}_1=\tilde f^{\,g}_2$: \emph{the two periods' $g$-tilted
+marginals coincide.} At $g\equiv1$ this is marginal stationarity of $X$, so even the unweighted moment
+$E[\Delta U]$ is free of $\varphi$ only when the regressor's marginal law does not move between the two
+periods. At $g=\Delta Z_j$ it is $\nu\equiv0$, which is probe CP-1 and the design in which the debiasing
+weight degenerates to zero and the moment reduces to the differenced least-squares one. The failure of
+\eqref{eq:tilted} is therefore not a pathology to be assumed away: it is what makes the panel design
+informative in the first place, and a design in which it holds for the weights of interest is one in
+which there is nothing to debias.
+
+\emph{(ii) The same condition, reached independently in the linear case.} In the first-differenced panel
+with a conditional-mean restriction, \citet{feve2014} observe that the operator
+$\varphi\mapsto E[\varphi(X_2)-\varphi(X_1)\mid W]$ annihilates \emph{every} $\varphi$ when
+$(X_1,X_2,W)$ has the same law as $(X_2,X_1,W)$ --- exchangeability of the two periods given the
+instrument, which in particular equates the laws of $(X_1,W)$ and $(X_2,W)$. That is \eqref{eq:tilted}
+imposed simultaneously for every bounded $g=g(W)$, since
+$\nu_{g(W)}(x)=\sum_{j=0}^{\mathsf L-1}g(j)\{f_{X_2,W}(x,j)-f_{X_1,W}(x,j)\}$. Their Proposition~2.1 gives the
+adjoint of that operator as an integral against the same difference of joint densities over the same
+reference density; see \cref{rem:adjointreconcile}(iv). \emph{The difference structure is therefore not a
+device of this paper: it is inherited from first differencing and is shared with the linear
+conditional-mean design.} What \cref{prp:nophifree} adds is the one-weight-at-a-time equivalence --- their
+condition is the simultaneous one, and is correspondingly stronger --- and the enlargement of $g$ from
+functions of $W$ to functions of $(W,\Delta Z)$, which is the class the debiasing construction actually
+searches.
+
+\emph{(iii) What is new here, stated precisely.} The sharp difference from \citet{feve2014} is not that
+their operator is linear and ours is not, which is true but too coarse. It is that
+$\mathcal A_{\mathrm{cond}}$ is a \emph{Fr\'echet derivative of a nonlinear map} rather than a fixed
+linear conditional-expectation operator, and three consequences follow that have no counterpart there:
+the operator depends on the point of linearisation, with the Lipschitz modulus of
+\cref{prp:frechet}(ii); the sample operator is noisy \emph{as an operator}, which is why the
+regularisation conditions of this block --- A7, and the retired A6 before it --- are stated for
+$\hat T$ and not for $T$; and the moment carries a second-order term in $\varphi$, which is
+\cref{cor:udep}'s subject and which a linear operator equation does not produce.
+
+\emph{(iv) Why the negative result creates the rate requirement, and what the chain does not contain.}
+\Cref{cor:udep} closes the chain. If the debiasing weight ignored the residual, the moment would reduce
+to a $\sigma(W,\Delta Z)$-measurable weight times the residual, and orthogonality would then force
+\eqref{eq:tilted}; in any design where \eqref{eq:tilted} fails for such weights, the selected
+$\ell_\star$ must vary with the residual. That is what puts $\partial_u\ell_\star$ into the second-order
+term, and it is why a quadratic remainder in $\varphi$ is unavoidable within this moment class rather
+than an artefact of the expansion. \emph{Two things are not in the chain and should not be read into it.}
+First, $\partial_u\ell_\star\not\equiv0$ is \emph{necessary} for the second-order form to be nonzero and
+not sufficient: the conditional expectation
+$q(x_1,x_2)=E[\partial_u\ell_\star\,\widetilde W\mid X_1=x_1,X_2=x_2]\in\IR^{p}$ could still vanish by cancellation,
+and excluding that is a separate hypothesis. Second, \cref{prp:nophifree} is an equivalence, not an
+impossibility theorem: it does not assert that \eqref{eq:tilted} fails. Whether it fails is a property of
+the application, testable through the Picard diagnostic and through $\hat\nu_g$ directly, and the paper
+should report it rather than assert it.
+
+% EXTRACTED FROM THE STATEMENTS OF prp:nophifree AND cor:a1cprim on 2026-08-02.
+% Both carried a "not a hypothesis" paragraph inside the printed statement; both
+% paragraphs are about the hypothesis LIST and not about what is claimed.  The
+% clause is struck from neither list -- it was never in either -- so nothing about
+% either result changes.
+\emph{(v) A1b(i) is \textbf{not} a hypothesis of \cref{prp:nophifree}, and it is not one of
+the withdrawn corollary either.} For \cref{prp:nophifree}: the proof's third step upgrades
+``$\nu_g/\pi\perp\mathcal V$'' to ``$\nu_g\equiv0$'' using
+$L^{2}(\pi)=\mathcal V\oplus\{\text{constants}\}$ --- which is \cref{def:spaces} --- together with
+$\int_{\mathcal X}\nu_g\,dx=0$ from \cref{lem:nusigma}(iv); $\vdagger$ occurs nowhere in the statement or
+the proof, and the map is quantified over generic $\varphi,\varphi_0\in\mathcal V$. For
+the withdrawn corollary of \cref{rem:a1cwithdrawn}: the ``constant, hence zero'' step of \cref{lem:nusigma}\textup{(ii)} is
+\cref{def:spaces} and not that clause, and the conclusion is about a generic
+$h\in\ker\mathcal A_{\mathrm{cond}}\subseteq\mathcal V$.
+% ARCHAEOLOGY.  A1b(i) was listed as a hypothesis of both through round 7, and is
+% struck from both; cor:a1cprim inherited it from lem:nusigma(ii).
+\end{remark}

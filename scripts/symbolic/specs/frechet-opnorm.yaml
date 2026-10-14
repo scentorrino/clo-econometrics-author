@@ -1,0 +1,20 @@
+claim_id: frechet-opnorm
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:frechet Step 4); statement at results.tex"
+# CLAIM (Step 4).  |A_phi h(u,t)| <= bar-w(t) ||bar f_0||_inf (E[(Delta h)^2])^{1/2}
+#                                 <= 2 cpi^{1/2} ||bar f_0||_inf bar-w(t) ||h||,
+# hence ||A_phi|| <= 2 cpi^{1/2} ||bar f_0||_inf c_Pi.  The point of the check is
+# the square root: sqrt(4 cpi ||h||^2) = 2 cpi^{1/2} ||h|| -- note the constant
+# enters as cpi^{1/2} here and as cpi (no root) in C_A, because Step 3 uses
+# eq:deltahbound once and Step 4 uses its square root.
+variables:
+  cpi:
+    domain: positive
+  f0bar:
+    domain: positive
+  cPi:
+    domain: positive
+  Hn:
+    domain: positive
+start: "cPi*f0bar*sqrt(4*cpi*Hn**2)"
+operation: none
+claimed_end: "2*cpi**(1/2)*f0bar*cPi*Hn"

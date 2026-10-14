@@ -1,0 +1,10 @@
+claim_id: bandwidth-hu-pk8
+source: "quality_reports/theory/panel-npiv-discrete/assumptions.tex (C5'(i)) and ('At p_K = 8 and h_u ~ n^{-1/16} the two balance exactly at n^{-1/2}')"
+# CLAIM.  With kernel order p_K = 8 and h_u asymp n^{-1/16}, the smoothing bias
+# h_u^{p_K} is exactly n^{-1/2}: (n^{-1/16})^8 = n^{-8/16} = n^{-1/2}.
+variables:
+  n:
+    domain: positive
+start: "(n**(-1/16))**8"
+operation: none
+claimed_end: "n**(-1/2)"

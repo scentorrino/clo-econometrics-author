@@ -1,0 +1,18 @@
+claim_id: l19-effective-sample
+source: "quality_reports/theory/panel-npiv-discrete/proofs_partH.tex, proof of lem:unifop Step 3(c), and results_partH.tex rem:l19cost item (3) ('as alpha -> 1/2 the right-hand side of eq:entropy tends to 0')"
+# CLAIM.  The exponential side of the union bound is exp(-c n delta-hat_n^2),
+# and with delta-hat_n = n^{-alpha} the exponent is n^{1 - 2 alpha}.  Two
+# consequences the remark draws off this identity, and which the spec pins:
+#   (a) it is POSITIVE iff alpha < 1/2, which is why L-19 requires the propensity
+#       component to bind STRICTLY (rem:l19cost item 3);
+#   (b) it DECREASES in alpha, which is why a smoother propensity makes L-19
+#       harder (rem:l19cost item 2) -- the entropy side n^{(1/16+alpha)/s}
+#       increases in alpha at the same time.
+variables:
+  n:
+    domain: positive
+  alpha:
+    domain: positive
+start: "n * (n**(-alpha))**2"
+operation: none
+claimed_end: "n**(1 - 2*alpha)"

@@ -1,0 +1,28 @@
+claim_id: orthog-L-exactness
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:orthog Part (ii)); lem:secondord(ii)"
+# CLAIM.  In the debiasing-weight direction the moment is AFFINE, so
+# orthogonality is EXACT and not merely first-order:
+#   psi(t2) = dZ*dU + Wt*( Lstar + t2*D )   =>   psi(t2) - psi(0) = t2 * Wt * D,
+# whose expectation is t2 * E[Wtilde D] = 0 by A1 and (P3) -- for EVERY t2, not
+# only in the limit t2 -> 0.  The spec checks the affine structure, which is the
+# algebraic half; the probabilistic half (E[Wtilde D] = 0) is
+# orthog-L-conditional-zero.
+# WHY THIS MATTERS.  A first-order-only statement would leave a second-order
+# term in L; lem:secondord(ii) says there is none, and that is because the
+# t2-difference below is EXACTLY linear in t2 with no remainder.
+variables:
+  dZ:
+    domain: real
+  dU:
+    domain: real
+  Wt:
+    domain: real
+  Lstar:
+    domain: real
+  D:
+    domain: real
+  t2:
+    domain: real
+start: "(dZ*dU + Wt*(Lstar + t2*D)) - (dZ*dU + Wt*Lstar)"
+operation: expand
+claimed_end: "t2*Wt*D"

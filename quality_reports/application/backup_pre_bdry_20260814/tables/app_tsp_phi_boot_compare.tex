@@ -1,0 +1,39 @@
+\begin{tabular}{@{}p{0.29\textwidth}>{\raggedleft\arraybackslash}p{0.105\textwidth}>{\raggedleft\arraybackslash}p{0.105\textwidth}>{\raggedleft\arraybackslash}p{0.105\textwidth}>{\raggedleft\arraybackslash}p{0.105\textwidth}>{\raggedleft\arraybackslash}p{0.105\textwidth}@{}}
+\toprule
+& Full sample & Pairs (C0) & Multiplier (M) & \multicolumn{2}{c}{Subsample, no replacement} \\
+\cmidrule(lr){5-6}
+& point estimate & with replacement & $\mathrm{Exp}(1)$ weights & $n(1-e^{-1})$ & $n/2$ \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel A: what each scheme perturbs, and the stopping index it produces}} \\
+\midrule
+Counties entering a replication & 983 & 983 & 983 & 621 & 492 \\
+Distinct counties, i.e.\ distinct $X$ values & 983 & 621 (exp.) & 983 & 621 & 492 \\
+Kish effective sample size & 983 & 492 & 492 & 621 & 492 \\
+\addlinespace
+Replications drawn & -- & 99 & 99 & 24 & 24 \\
+Replications with a finite curve & -- & 99 & 99 & 24 & 24 \\
+Failures: error / non-finite & -- & 0 / 0 & 0 / 0 & 0 / 0 & 0 / 0 \\
+\addlinespace
+$\hat m_\varphi$: median & 60 & 60 & 60 & 60 & 60 \\
+$\hat m_\varphi$: [min, max] & -- & [60, 60] & [60, 60] & [60, 60] & [60, 60] \\
+Retained with $\hat m_\varphi = 1$ & -- & 0 & 0 & 0 & 0 \\
+Retained with $\hat m_\varphi = \bar m$ & -- & 99 & 99 & 24 & 24 \\
+Stopped before the cap, $\hat m_\varphi < \bar m$ (\%) & -- & 0.0 & 0.0 & 0.0 & 0.0 \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Panel B: the band}} \\
+\midrule
+Band width, median over the grid & -- & 0.046 & 0.043 & -- & -- \\
+Band width, first 25 replications & -- & 0.041 & 0.037 & -- & -- \\
+Deciles where 5--95 excludes zero (of 11) & -- & 0 & 1 & -- & -- \\
+Range of the curve & 0.035 & 0.036 & 0.037 & -- & -- \\
+Range as a share of the point estimate (\%) & 100.0 & 102.8 & 103.9 & -- & -- \\
+Median seconds per replication & -- & 69 & 46 & -- & -- \\
+\addlinespace
+\multicolumn{6}{l}{\textit{Panel C: the multiplier design's own side-arm}} \\
+\midrule
+Coordinate map rebuilt: replications & -- & -- & 25 & -- & -- \\
+Coordinate map rebuilt: at $\hat m_\varphi = 1$ / at $\bar m$ & -- & -- & 0 / 25 & -- & -- \\
+Coordinate map rebuilt: band width, 25 paired draws & -- & -- & 0.038 vs.\ 0.037 & -- & -- \\
+Weight s.d.\ (population value 1): median & -- & -- & 1.000 & -- & -- \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,100 @@
+# STATUS: THIS IS THE CURRENT BUILD PATH (since 2026-08-05).
+#
+# Quarto is the decided manuscript format. ALL THREE clashes below are cleared,
+# and the last of them was machine configuration rather than repository content.
+#
+#   1. unicode-math under xelatex ......... CLEARED (pdf-engine: pdflatex, below)
+#   2. titlesec, 'No format for this command' ... CLEARED 2026-07-31
+#         Pandoc's template redefines \paragraph BEFORE include-in-header splices
+#         this project's preamble in, so titlesec loaded against a \paragraph that
+#         was no longer \@startsection-shaped. Fixed in preamble.tex by restoring
+#         \paragraph and \subparagraph from pandoc's own saved originals just
+#         before \usepackage{titlesec} -- guarded, so both lines are no-ops on the
+#         LaTeX path. Verified A/B on a minimal probe and regression-checked
+#         against build.sh (still 312 pages, clean).
+#   3. ENGINE RESOLUTION .................. CLEARED 2026-07-31 (TinyTeX chosen)
+#         Two TeX distributions are installed. MacPorts (/opt/local/bin) comes
+#         first on PATH and HAS NO siunitx, which preamble.tex:91 loads
+#         unconditionally. TinyTeX (~/Library/TinyTeX, symlinked into
+#         /usr/local/bin) has it. build.sh survived only because `latexmk` exists
+#         solely in TinyTeX's tree and dragged TinyTeX's engines along with it,
+#         while `pdf-engine: pdflatex` below resolved to MacPorts and died on
+#         "siunitx.sty not found".
+#         DO NOT put an absolute engine path here -- machine paths do not belong
+#         in a committed template (meta-governance.md). Instead
+#         scripts/lib/tex-env.sh DISCOVERS TinyTeX and puts it first on PATH, and
+#         both build paths source it. RENDER VIA scripts/render-paper/render.sh,
+#         not bare `quarto render`, or you get whichever TeX PATH hands you.
+#
+# ALL THREE FINDINGS BELOW ARE CLOSED as of 2026-08-05. Both documents render
+# through this file, via scripts/render-paper/render.sh, with zero hard errors,
+# zero undefined references, zero multiply-defined labels, zero unresolved
+# cites and zero `??'. The history is kept because each fix is load-bearing:
+#   a. biber "Cannot find 'Bibliography_base.bib'" -- CLOSED. Bibliography_base.bib
+#      is kept as a header-only file rather than deleted, because preamble.tex:160
+#      is template-shared and biber aborts on a missing declared resource.
+#   b. "maximum number of runs (9) reached" -- CLOSED; cross-references converge.
+#   c. undefined references in the standalone supplement -- CLOSED by the split:
+#      the supplement \inputs the results_s2/s3/s4 and _supp mirrors alongside
+#      proofs.tex, so every \cref target is present in the document that needs it.
+#      Cross-DOCUMENT pointers are by name ("Table S23 of the supplement") and
+#      never \cref, since a cross-document \cref renders `??' at exit 0.
+#
+# The theory corpus also still builds standalone: scripts/build-theory/build.sh.
+#
+# Full decision, all three clashes, and the candidate fixes:
+#   quality_reports/decisions/manuscript-format-and-structure.md
+#
+# Quarto shell for panel-npiv-discrete.
+#
+# DESIGN, and the reason it is a shell rather than a translation.
+#
+# The theory corpus is LaTeX: 136 theorem-like environments and 2,038 \cref /
+# \eqref calls across results.tex, proofs.tex and assumptions.tex. Translating
+# that into markdown would destroy the cross-reference graph AND the tooling
+# built on it -- check_rendering_sync.py's label-based CHECK 1/4/6/8, the 117
+# symbolic specs' source pointers, and every narrow critic's line citations.
+#
+# So the .qmd files own the PROSE and \input the theory verbatim inside raw
+# LaTeX blocks. Quarto renders pdf via pandoc -> LaTeX -> xelatex, so raw blocks
+# pass through untouched and amsthm, cleveref and biblatex all behave as they do
+# in the scratch driver that already builds this corpus at 312 pages.
+#
+# DO NOT use Quarto's native theorem syntax (::: {#thm-foo}). It maintains its
+# own counter and its own \label scheme, and would collide with the 136 amsthm
+# environments and the \cref graph the corpus already has. One theorem system.
+project:
+  type: default
+  output-dir: _output
+
+format:
+  pdf:
+    # pdflatex, NOT the project's xelatex, and the reason is specific.
+    # Quarto's xelatex template loads unicode-math unconditionally (main.tex:16),
+    # which fights the project preamble's lmodern + T1 fontenc + amssymb + dsfont
+    # setup and dies on \g__um_prime_font_cmd_tl. That preamble is pdflatex-native
+    # and merely TOLERATES xelatex because the scratch driver never loads
+    # unicode-math. Under pdflatex, pandoc takes the \ifPDFTeX branch and the two
+    # agree. If the project ever needs xelatex here (system fonts, CJK), the fix
+    # is a custom pandoc template, not a preamble change -- the preamble is shared
+    # with the working build.
+    pdf-engine: pdflatex
+    documentclass: article
+    classoption: [12pt]
+    # The project preamble carries amsthm, the custom macros (\IR 315 uses,
+    # \vdagger 142, \upmodels 19), hyperref-then-cleveref ordering, and the
+    # working-paper layout required by .claude/rules/working-paper-format.md.
+    include-in-header:
+      - ../preambles/preamble.tex
+    # biblatex + biber, NOT pandoc's citeproc. INV-9 requires it, and the
+    # bibliography resolves 72 entries only through \addbibresource.
+    cite-method: biblatex
+    biblio-style: authoryear
+    keep-tex: true
+    # Keep the LaTeX .log. Quarto deletes intermediates by default, and the .log
+    # is the ONLY place undefined references, multiply-defined labels and
+    # unresolved citations are recorded -- all three are warnings, so quarto
+    # still exits 0 and the PDF still renders "[?]". scripts/render-paper/render.sh
+    # reads this file; without it that script is blind and says so.
+    latex-clean: false
+    number-sections: true

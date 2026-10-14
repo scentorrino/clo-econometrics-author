@@ -1,0 +1,139 @@
+% ############################################################################
+% ##  SUPERSEDED 2026-08-03 -- NOT COMPILED BY ANY DOCUMENT. DO NOT EDIT.
+% ##
+% ##  This file is a per-theorem rendering from an ABANDONED architecture in
+% ##  which paper/main.tex would \input one file per result.  paper/main.tex
+% ##  DOES NOT EXIST.  The manuscript is paper/qmd/{main,supplement}.qmd, and
+% ##  both \input the theory corpus directly.  Verified 2026-08-03: neither
+% ##  .qmd references sections/theorems.
+% ##
+% ##  The text below is ROUND-2 vintage against a corpus now at dispatch 25.
+% ##  66-78% of its substantive lines no longer match the corpus -- that is old
+% ##  text the corpus has since revised, NOT unique work.  Every \label here is
+% ##  also declared in the live corpus.
+% ##
+% ##  SOURCE OF RECORD:
+% ##    statements  quality_reports/theory/panel-npiv-discrete/results.tex
+% ##    assumptions quality_reports/theory/panel-npiv-discrete/assumptions.tex
+% ##    proofs      quality_reports/theory/panel-npiv-discrete/proofs.tex
+% ##
+% ##  Kept rather than deleted because nothing in this repo is committed.
+% ##  Full rationale: paper/sections/theorems/_SUPERSEDED.md
+% ############################################################################
+
+% ============================================================================
+%  lem:shiftinv -- Lemma L1, shift invariance.
+%  Project: panel-npiv-discrete.  Target of plan Sec.2.7; memo Sec.10 Step 2.
+%
+%  Source of record: quality_reports/theory/panel-npiv-discrete/{results,proofs}.tex
+%  Assumptions cited by tag; see .../assumptions.tex.
+%  Requires \IR, \un, \upmodels, \vdagger from preamble.tex.
+%
+%  DEPENDENCIES that must appear EARLIER in the compiled document (results.tex):
+%    def:model      -- Delta U(theta,varphi) = Delta Y - Delta varphi - Delta Z'theta;
+%    def:admissible -- I  = {(varphi,theta) : Delta U(theta,varphi) _||_ W | Delta Z}
+%                      and V_CI = {varphi in V : (varphi,0) in I};
+%    cor:opsol      -- cited in Remark R1(iv) only (forward reference).
+%  Assumption tags: A1 (conditional exogeneity); A1b(iii)-(iv) and A6/A7 are
+%  cited in the Remark only.  A0 is NOT used: the lemma is a statement about
+%  the population distribution and holds for a single observation.
+%
+%  THIS FILE IS AN ALTERNATIVE RENDERING of lem:shiftinv, carrying the same
+%  \label keys as quality_reports/theory/panel-npiv-discrete/results.tex.  The
+%  two must never be \input into the same document.
+% ============================================================================
+
+\begin{lemma}\label{lem:shiftinv}
+Restriction \textup{(A)} is invariant to the value of $\theta$, so it does not identify $\theta_\dagger$.
+The set $\mathcal I$ satisfies, with no assumption beyond its definition,
+\begin{equation}\label{eq:shiftinv}
+\mathcal I\;=\;\mathcal V_{CI}\times\IR^{p};
+\end{equation}
+and if in addition Assumption A1 holds, then $\vdagger\in\mathcal V_{CI}$, so
+$(\vdagger,\theta)\in\mathcal I$ for every $\theta\in\IR^{p}$.
+\end{lemma}
+
+\begin{proof}
+The proof is in two steps: $\mathcal I$ is invariant under translation of $\theta$; and that invariance
+forces the product structure.
+
+\emph{Step 1: $\mathcal I$ is closed under translation of $\theta$.}
+Let $(\varphi,\theta)\in\mathcal I$ and let $\theta'\in\IR^{p}$ be arbitrary. By the definition of the
+residual at trial values,
+\begin{equation}\label{eq:shift}
+\Delta U(\theta',\varphi)\;=\;\Delta U(\theta,\varphi)\;+\;\Delta Z'(\theta-\theta').
+\end{equation}
+Let $\varsigma:\IR\to\IR$ be bounded and measurable and put
+$\Lambda(v,z):=\varsigma\big(v+z'(\theta-\theta')\big)$, which is bounded and jointly measurable. Since
+$\Delta Z$ is measurable with respect to $\sigma(W,\Delta Z)$, \eqref{eq:shift} gives
+\[
+E\big[\varsigma\big(\Delta U(\theta',\varphi)\big)\,\big|\,W,\Delta Z\big]
+\;=\;E\big[\Lambda\big(\Delta U(\theta,\varphi),\Delta Z\big)\,\big|\,W,\Delta Z\big].
+\]
+Conditional independence $\Delta U(\theta,\varphi)\upmodels W\mid\Delta Z$ implies
+\[
+E\big[\Lambda\big(\Delta U(\theta,\varphi),\Delta Z\big)\mid W,\Delta Z\big]
+=E\big[\Lambda\big(\Delta U(\theta,\varphi),\Delta Z\big)\mid\Delta Z\big]
+\]
+for every bounded jointly measurable $\Lambda$: the identity holds for product functions
+$\Lambda(v,z)=\alpha(v)\beta(z)$, because $\beta(\Delta Z)$ factors out of both sides and conditional
+independence disposes of $\alpha$; the class of bounded $\Lambda$ for which it holds is a vector space
+closed under uniformly bounded monotone limits and contains that multiplicative class, so the functional
+monotone class theorem extends it to all bounded jointly measurable $\Lambda$. Consequently
+$E[\varsigma(\Delta U(\theta',\varphi))\mid W,\Delta Z]$ is $\sigma(\Delta Z)$-measurable for every
+bounded measurable $\varsigma$, which is $\Delta U(\theta',\varphi)\upmodels W\mid\Delta Z$, i.e.
+$(\varphi,\theta')\in\mathcal I$.
+
+\emph{Step 2: the product structure.}
+By Step 1, membership of $(\varphi,\theta)$ in $\mathcal I$ does not depend on $\theta$. Taking
+$\theta'=0$, $(\varphi,\theta)\in\mathcal I$ if and only if $(\varphi,0)\in\mathcal I$, that is, if and
+only if $\varphi\in\mathcal V_{CI}$. Hence $\mathcal I=\mathcal V_{CI}\times\IR^{p}$, which is
+\eqref{eq:shiftinv}. \emph{Steps 1 and 2 use only the definition of $\mathcal I$; no assumption has been
+invoked.}
+
+\emph{Step 3: the addendum under A1.}
+Assumption A1 states $(\vdagger,\theta_\dagger)\in\mathcal I$, so $\vdagger\in\mathcal V_{CI}$ and, by
+Step 1, $(\vdagger,\theta)\in\mathcal I$ for every $\theta\in\IR^{p}$. This is the only place A1 is used.
+\end{proof}
+
+\begin{remark}\label{rem:R1}
+Three things follow from \cref{lem:shiftinv}, and one does not.
+
+\emph{(i) What it establishes.} Restriction (A) carries no first-order information about
+$\theta_\dagger$: the set of pairs it admits is a product set, so no functional of the conditional law of
+the residual given $(W,\Delta Z)$ can distinguish $\theta_\dagger$ from any other $\theta$.
+
+\emph{(ii) What it does not establish.} It does not say that $\theta_\dagger$ is unidentified.
+$\theta_\dagger$ is identified by (B) alone: under A1 and A1b(iv),
+$\theta_\dagger=(E[\Delta Z\Delta Z'])^{-1}E[\Delta Z(\Delta Y-\Delta\vdagger)]$, the inverse existing by
+A1b(iv) and the expectations being finite by the moment clauses of that same assumption. \emph{This route
+uses neither A2 nor the retired A3.} A3 asserted nonsingularity of
+$J=E[\Delta Z\Delta Z']+E[\widetilde W\ell_\star\Delta Z']$ and was itself conditional on A2; routing
+identification of $\theta_\dagger$ through it would make identification contingent on a source condition,
+which it is not. \emph{Through dispatch~12 this passage went on to call $J$ ``the different matrix'', and
+that half is withdrawn}: the second summand is zero under A1, so $J$ is $E[\Delta Z\Delta Z']$ wherever it
+is defined, and A3 is retired as a consequence of A1 and A1b(iv). \emph{The separation this paragraph
+exists to make is unaffected and is in fact sharper}: what must not be routed through A2 is the
+\emph{existence} of $\ell_\star$, and the display above needs none of it. Nor does the lemma say that (A) is useless. A
+Neyman correction is mean-zero at the truth \emph{by construction} --- that is what makes it a correction
+rather than a new restriction --- so ``carries no information about $\theta$'' is a property of every
+Riesz representer \citep{chernozhukov2018dml}, not a defect peculiar to this model.
+
+\emph{(iii) What it costs.} Over-identification. Under an unconditional independence assumption one
+would have $\Delta Y-\Delta\vdagger-\Delta Z'\theta\not\upmodels W$ for $\theta\ne\theta_\dagger$
+whenever $\Delta Z\not\upmodels W$, so (A) would carry information about $\theta$ and deliver a testable
+restriction. Under A1 as stated, $\theta_\dagger$ is \emph{exactly} identified by (B) and (A) is a pure
+debiasing device: there is no specification test to be had from it.
+
+\emph{(iv) A population consequence, and a conditional algorithmic one.} By \cref{cor:opsol} the solution
+set of the operator equation in $\varphi$ is $\mathcal V_{CI}$ at every $\theta$, so \emph{as a
+population statement} the first stage may be posed at any fixed $\theta$, including $\theta=0$. Two
+qualifications are required before this says anything about the estimator. First, ``targets $\vdagger$''
+needs $\mathcal V_{CI}=\{\vdagger\}$, i.e.\ A1b(iii); without it the first stage targets a set. Second,
+consistency of the \emph{regularised sample} solve is not delivered by \cref{cor:opsol}: it requires A6
+and A7 to hold at the running value of $\theta$, and those are conditions on $\hat T(\cdot,\theta)$, not
+on $T$. What is $\theta$-free is the population solution set. What is emphatically not $\theta$-free is
+the conditioning of the inverse problem: the Fr\'echet derivative evaluates the conditional density at a
+$\theta$-dependent point, so the singular values, the degree of ill-posedness and the source index are
+all $\theta$-specific.
+\end{remark}

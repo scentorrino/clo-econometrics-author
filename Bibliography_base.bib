@@ -1,31 +1,31 @@
-% ==============================================================================
-% Bibliography Template
-% ==============================================================================
+% ============================================================================
+%  Bibliography_base.bib — INTENTIONALLY CARRIES NO ENTRIES.
 %
-% Add your project bibliography entries here.
-% This file is referenced by Paper/main.tex and Paper/talks/.
+%  CONSOLIDATED 2026-08-03. This project keeps exactly ONE file with entries:
+%      quality_reports/literature/panel-npiv-discrete/references.bib
+%  Its two former entries (Angrist & Pischke 2009; Imbens 2004) were moved there
+%  verbatim, in a marked block. Nothing was lost and neither was ever cited.
 %
-% Naming convention: AuthorYear_keyword
-% Example: Angrist2009_mostly_harmless
+%  WHY THE FILE STILL EXISTS AND MUST NOT BE DELETED.
+%  paper/preambles/preamble.tex:160 declares \addbibresource{Bibliography_base.bib},
+%  and that preamble is SHARED ACROSS PROJECTS — its own comment says naming one
+%  project's bibliography there "would break the rest". So the declaration stays,
+%  which means the file must exist and parse: biber aborts on a missing resource,
+%  and an aborted biber leaves a zero-byte .bbl and renders every citation as bare
+%  key text in a document that still exits 0. That failure mode has already cost
+%  this project weeks, which is why render.sh and build.sh check for it directly.
 %
-% ==============================================================================
-
-% --- Example entries (replace with your own) ---
-
-@book{Angrist2009_mostly_harmless,
-  author    = {Angrist, Joshua D. and Pischke, J{\"o}rn-Steffen},
-  title     = {Mostly Harmless Econometrics: An Empiricist's Companion},
-  publisher = {Princeton University Press},
-  year      = {2009},
-  address   = {Princeton, NJ}
-}
-
-@article{Imbens2004_nonparametric,
-  author  = {Imbens, Guido W.},
-  title   = {Nonparametric Estimation of Average Treatment Effects Under Exogeneity: A Review},
-  journal = {Review of Economics and Statistics},
-  volume  = {86},
-  number  = {1},
-  pages   = {4--29},
-  year    = {2004}
-}
+%  WHERE TO ADD AN ENTRY.
+%  In the PROJECT file named above, never here. Two files both resolving meant two
+%  places to look and two places to get wrong; an entry added here would resolve,
+%  which is precisely what made the split hard to notice rather than easy.
+%
+%  N-21 STILL APPLIES WHEREVER YOU ADD ONE. Copy the BibTeX verbatim from the
+%  author's master bibliographies under ~/Library/CloudStorage/Dropbox/**/*.bib
+%  when the work is already there. Never compose an entry from recall: this
+%  project has produced six wrong locators that way, every one of them plausible.
+%
+%  A FORK STARTING FROM THE TEMPLATE should either put its own entries here and
+%  delete this notice, or do what this project did and point at a per-project
+%  file. Either is fine. Two live files is what is not.
+% ============================================================================

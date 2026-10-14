@@ -1,0 +1,25 @@
+claim_id: compact-hs-dims-numeric
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:compact Steps 1 and 3)"
+# DIMENSION CHECK for the finite-dimensional HS model of compact-hs-piweight.
+# The operator maps the domain space (m grid points, weight matrix Dq, m x m)
+# into the range space (M grid points, weight matrix DP, M x M) through the
+# kernel matrix K (M x m).  The Gram matrix whose trace is the HS norm squared
+# is (SP*K*Sq)' (SP*K*Sq), of size m x m.  This spec exists so dim_check.py can
+# confirm the flow M x m -> m x m independently of any simplification.
+variables:
+  SP:
+    domain: matrix
+    dims: [3, 3]
+  K:
+    domain: matrix
+    dims: [3, 2]
+  Sq:
+    domain: matrix
+    dims: [2, 2]
+start: "(SP*K*Sq).T*(SP*K*Sq)"
+operation: none
+claimed_end: "Sq.T*K.T*SP.T*SP*K*Sq"
+# NOTE: numeric-shape twin of compact-hs-dims.yaml.  verify.py cannot run the
+# symbolic-shape version (SymPy's MatrixExpr.equals falls back to as_explicit,
+# which is undefined for symbolic shapes); with concrete shapes 3x3, 3x2, 2x2
+# the same identity is decidable.  dim_check.py handles the symbolic version.

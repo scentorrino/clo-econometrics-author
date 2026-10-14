@@ -1,0 +1,980 @@
+% ============================================================================
+%  *** STALE MERGE RECORD.  DO NOT COMPILE AND DO NOT EDIT. ***
+%  Merged into proofs.tex on 2026-07-29 and SUPERSEDED there by the dispatch-7
+%  fix pass the same day.  Its proofs of prp:tccfails, prp:tccrepair,
+%  prp:norangeinv, lem:srctransfer and prp:phirate have all been rewritten, and
+%  its citation note lacks item (F-f).  THE LIVE TEXT IS proofs.tex PART H.
+% ============================================================================
+%  PROOFS -- PART H -- project `panel-npiv-discrete`
+%  Stage 3, dispatch 4: proof_strategy_memo.md Sec.10, STEP 6.
+%  Produced by the theorist, 2026-07-29.  NEW CONTENT.
+%
+%  DRAFT OF THE NEXT SECTION OF proofs.tex.  Merge: append after the proof of
+%  prp:sharpquad (proofs.tex:2635), before the change logs.  The five locked
+%  files are owned by a parallel dispatch and are NOT edited here; everything
+%  this part needs appended or amended in them is listed at the head of
+%  results_partH.tex, items A--E.
+%
+%  ONE REMARK LIVES IN THIS FILE, AND THAT FOLLOWS PRECEDENT.  rem:h6bandwidth
+%  sits after the proof of prp:phirate rather than in results_partH.tex, because
+%  it unpacks a hypothesis in bandwidth-explicit form and the proposition is
+%  stated in the rate variables delta-hat_n, delta_n, gamma_n.  results.tex's
+%  header records the same arrangement for rem:quadremainder, which follows
+%  prp:frechet in proofs.tex.  Every other Part-H remark is in results_partH.tex.
+%
+%  STANDING CONVENTIONS.  (P1)--(P7) of proofs.tex are used unchanged and are
+%  cited by tag.  Two further conventions are local to Part H and are stated
+%  once here rather than repeated.
+%
+%    (H1c)  CONDITIONING ON THE AUXILIARY FOLD.  Every O_P and every
+%           expectation below is conditional on sigma(I_a) unless said
+%           otherwise, so that varrho-hat is frozen wherever it appears.  This
+%           is lem:balance's convention, extended to the varphi-step, and A0
+%           supplies the independence of the folds.  Unconditional O_P
+%           statements follow because a bound that is O_P(a_n) conditionally on
+%           a sigma-field, with a bounding constant that is itself O_P(1),
+%           is O_P(a_n).
+%
+%    (H2c)  THE KERNEL AS A FUNCTION OF THE SCALED ARGUMENT.  Throughout,
+%              Theta_{s_0}(varsigma) := C_h(h varsigma, s_0),
+%           for whichever of h = h_u, h_x is in force.  C3(ii) says exactly
+%           that Theta_{s_0} is supported in [-c_C, c_C] (intersected with
+%           [(s_0-1)/h, s_0/h], which contains [-c_C,c_C] for h small at
+%           s_0 = 1) and is bounded there by c_2, UNIFORMLY IN h AND s_0; C3(i)
+%           says it is of order p_K, i.e.
+%              int Theta_{s_0} = 1,  int varsigma^j Theta_{s_0} = 0 for
+%              1 <= j <= p_K - 1,   int |varsigma|^{p_K} |Theta_{s_0}| < oo;
+%           C3(iii) says Theta_1 is symmetric and Lipschitz, with constant c_4.
+%           TWO READING NOTES, BOTH FLAGGED IN step6_memo.md AND NEITHER
+%           EXPLOITED.  (a) C3 does not print the normalisation int Theta = 1;
+%           it is what "of order p_K" means for a generalized kernel and it is
+%           used at lem:intker(i),(iii),(iv).  It should be printed.  (b) At
+%           s_0 = 1 the support clause reads [0, 1/h] intersect [-c_C, c_C] =
+%           [0, c_C] for small h, which is ONE-SIDED, while C3(iii) calls
+%           C_h(.,1) SYMMETRIC.  The two cannot both hold literally.  Nothing
+%           below depends on which is meant: every use is of the intersection
+%           [-c_C, c_C] and of the order conditions, both of which hold on
+%           either reading.  The clash is inherited from the draft's assapp3a
+%           and is reported, not repaired here.
+% ============================================================================
+
+% ===========================================================================
+%  PART H.1 -- (O4), EXHIBITION HALF
+% ===========================================================================
+
+\begin{proof}[Proof of \cref{lem:intker}]
+Write $\Theta_{s_0}$ as in (H2c) and note $\mathsf C_{h}(v;s_0)=\int_{-\infty}^{v/h}\Theta_{s_0}(\varsigma)\,d\varsigma$
+by the change of variable $\varsigma=w/h$ in \eqref{eq:intker}.
+
+\emph{(i).} If $v\le -c_Ch$ then $v/h\le-c_C$ and the integrand vanishes on $(-\infty,v/h]$ by (H2c),
+so $\mathsf C_h(v)=0$. If $v\ge c_Ch$ then the range of integration contains the support of $\Theta_1$,
+so $\mathsf C_h(v)=\int_\IR\Theta_1=1$ by the order-$p_K$ normalisation. For $|v|<c_Ch$,
+$|\mathsf C_h(v)|\le\int_{-c_C}^{c_C}|\Theta_1|\le2c_C\mathsf c_2$. Combining the three ranges gives
+$0\le\mathsf C_h\le\mathsf c_3:=1\vee2c_C\mathsf c_2$; nonnegativity is not claimed for a
+higher-order kernel and is not used --- only the two-sided bound is.
+
+\emph{(ii).} $\Theta_1$ is continuous (being Lipschitz, C3(iii)) and compactly supported, so the
+integral defining $\mathsf C_h$ is differentiable in $v$ with
+$\partial_v\mathsf C_h(v)=h^{-1}\Theta_1(v/h)=h^{-1}C_h(v,1)$, continuous, and bounded by
+$\mathsf c_2h^{-1}$. For $v,v'$,
+$|\partial_v\mathsf C_h(v)-\partial_v\mathsf C_h(v')|=h^{-1}|\Theta_1(v/h)-\Theta_1(v'/h)|
+\le h^{-1}\mathsf c_4|v-v'|/h$, which is the stated Lipschitz constant. The second-order display is
+the first-order Taylor formula with integral remainder,
+$\mathsf C_h(v+\varDelta)-\mathsf C_h(v)-\partial_v\mathsf C_h(v)\varDelta
+=\int_0^1[\partial_v\mathsf C_h(v+\varsigma\varDelta)-\partial_v\mathsf C_h(v)]\varDelta\,d\varsigma$,
+whose modulus is at most $\int_0^1\mathsf c_4h^{-2}\varsigma\varDelta^2d\varsigma=\tfrac12\mathsf c_4h^{-2}\varDelta^2$.
+\emph{This is the only place a ``second derivative'' would have been used, and it is not used.}
+
+\emph{(iii).} With $g:=G'$, Tonelli applied to
+$(\varsigma,a)\mapsto|\Theta_1(\varsigma)|\un\{\varsigma\le(u-a)/h\}g(a)$ --- legitimate because
+$|\Theta_1|$ is bounded with compact support and $g\ge0$ integrates to $1$ --- gives
+\[
+\int_\IR\mathsf C_h(u-a)\,g(a)\,da
+=\int_\IR\Theta_1(\varsigma)\Big[\int_\IR\un\{a\le u-h\varsigma\}g(a)\,da\Big]d\varsigma
+=\int_\IR\Theta_1(\varsigma)\,G(u-h\varsigma)\,d\varsigma .
+\]
+Taylor $G$ to order $p_K$ about $u$ with Lagrange remainder, use $\int\Theta_1=1$ and
+$\int\varsigma^{j}\Theta_1=0$ for $1\le j\le p_K-1$, and bound the remainder by
+$(p_K!)^{-1}\|G^{(p_K)}\|_\infty h^{p_K}\int|\varsigma|^{p_K}|\Theta_1(\varsigma)|d\varsigma$, which is
+the claim with $\mathsf c_5$ as defined; $\mathsf c_5<\infty$ and is uniform in $h$ because
+$|\Theta_1|\le\mathsf c_2$ on $[-c_C,c_C]$ and vanishes off it.
+
+\emph{(iv).} Substituting $x=x^\ast+h_x\varsigma$,
+$h_x^{-1}\int_{\mathcal X}C_{h_x}(x-x^\ast,s_0)dx=\int_{(\underline x-x^\ast)/h_x}^{(\bar x-x^\ast)/h_x}\Theta_{s_0}(\varsigma)\,d\varsigma$.
+If $x^\ast$ is at distance at least $c_Ch_x$ from both endpoints of $\mathcal X$ --- which is an
+interval, by A0 --- the range of integration contains $[-c_C,c_C]$ and hence the support of
+$\Theta_1$, so the integral is $\int_\IR\Theta_1=1$ and $s_0=1$ serves. Otherwise C3(ii) supplies, for
+each $s_0\in[0,1]$, a $\Theta_{s_0}$ supported in $[(s_0-1)/h_x,s_0/h_x]$; choosing
+$s_0=(x^\ast-\underline x)/(\bar x-\underline x)$ places that support inside
+$[(\underline x-x^\ast)/h_x,(\bar x-x^\ast)/h_x]$ after the rescaling implicit in C3(ii), and the
+order-$p_K$ normalisation of $\Theta_{s_0}$ then gives the value $1$. \emph{This is precisely what a
+boundary-adjusted generalized kernel is for, and it is the only clause of C3(ii) beyond the support
+bound that Part H consumes.}
+\end{proof}
+
+\begin{proof}[Proof of \cref{prp:hatAprop}]
+Throughout, the sample is fixed; every statement is conditional on it, and (H1c) is not needed for this
+proposition. Write $\Theta$ for $\Theta_1$ and put, for $i\in\mathcal I_m$,
+$\varpi^{\mathrm{d}}_i(x):=h_x^{-1}[C_{h_x}(x-X_{i2},s_{0,i2})-C_{h_x}(x-X_{i1},s_{0,i1})]$, so that
+$\Delta_{h_x}v_i=\int_{\mathcal X}\mathsf d_i v\,dx$ and
+$\hat\nu_{u,t}=n_{\mathrm m}^{-1}\sum_i\hat g_{u,t,i}\mathsf d_i$.
+\emph{(Sans-serif $\mathsf d$ reads ``difference'' and is a Sec.1.6 local, declared at item A of the
+results header. The slot was swept: italic $d$ occurs only as $d_Z$, an integer, and as the
+differentials $dx,du$; upright $\mathrm d$ occurs only in $\mathrm d\hat T_\varphi[\cdot]$, always
+adjacent to $\hat T$. \textbf{A superscripted $\varpi$ was drafted and rejected}: C19 reserves
+$\varpi$ for the \emph{range}-side densities $\varpi_u,\varpi_t$ and requires the variable subscript,
+and $\mathsf d_i$ is a \emph{domain}-side object indexed by a unit --- the reservation is about which
+side of the problem the letter lives on, and a superscript does not move it.)}
+
+\emph{Step 1: two elementary bounds, used four times each.}
+\begin{align}
+\big\|\hat g_{\cdot,\cdot,i}\big\|_{L^{2}(\Pi)}
+&\;\le\;\frac{\mathsf c_2}{h_u}\Big(\Pi_u(\IR)\!\int_{\mathcal T}\!\bar w(t)^{2}\Pi_t(dt)\Big)^{1/2}
+\;=\;\frac{\mathsf c_2\,c_\Pi}{h_u},
+\label{eq:hstep1a}\\
+\big\|\mathsf d_i\big\|_{L^{2}(dx)}
+&\;\le\;\frac{2}{h_x}\Big(\int_{\mathcal X}C_{h_x}(x-X_{i1},s_{0,i1})^{2}dx\Big)^{1/2}
+\;\le\;\frac{2}{h_x}\big(2c_C\mathsf c_2^{2}h_x\big)^{1/2}
+\;=\;2\,(2c_C)^{1/2}\,\mathsf c_2\,h_x^{-1/2}.
+\label{eq:hstep1b}
+\end{align}
+\eqref{eq:hstep1a} uses $|\widehat{\widetilde W}_i|\le1$ by (P1) and the construction convention of
+\cref{def:hatTexp}, $|w(t'\Phi(z))|\le\bar w(t)$ by (P2), $|C_{h_u}(\cdot,1)|\le\mathsf c_2$ by (H2c),
+and B1(iv.c) for $c_\Pi$. \eqref{eq:hstep1b} uses the triangle inequality, the substitution
+$x=X_{ij}+h_x\varsigma$, and $|\Theta_{s_0}|\le\mathsf c_2$ on a set of length $2c_C$.
+
+\emph{Step 2: clause (i).} By \eqref{eq:hatAcon}, the triangle inequality in $L^{2}(\Pi)$,
+\eqref{eq:hstep1a}, Cauchy--Schwarz in $L^{2}(dx)$, \eqref{eq:hstep1b} and
+$\|h\|_{L^{2}(dx)}\le\|1/\pi\|_\infty^{1/2}\|h\|_{L^{2}(\pi)}$ (C1(ii)),
+\[
+\big\|\hat{\mathcal A}_\varphi h\big\|_{L^{2}(\Pi)}
+\le\frac1{n_{\mathrm m}}\sum_{i}\big\|\hat g_{\cdot,\cdot,i}\big\|_{L^{2}(\Pi)}\big|\Delta_{h_x}h_i\big|
+\le\frac{\mathsf c_2c_\Pi}{h_u}\cdot 2(2c_C)^{1/2}\mathsf c_2h_x^{-1/2}\|1/\pi\|_\infty^{1/2}\|h\|_{L^{2}(\pi)},
+\]
+which is the stated bound. Linearity is immediate from \eqref{eq:hatAcon}.
+
+\emph{Step 3: clause (ii).} \eqref{eq:hatAcon} exhibits $\hat{\mathcal A}_\varphi$ as
+$n_{\mathrm m}^{-1}\sum_{i\in\mathcal I_m}\hat g_{\cdot,\cdot,i}\otimes\mathsf d_i$, a sum of
+$n_{\mathrm m}$ rank-one operators, so the rank is at most $n_{\mathrm m}$ and the operator is
+Hilbert--Schmidt. Its kernel contains $\bigcap_{i\in\mathcal I_m}\{h\in\mathcal V:\int\mathsf d_ih\,dx=0\}$,
+an intersection of $n_{\mathrm m}$ closed hyperplanes of the infinite-dimensional space $\mathcal V$,
+hence of codimension at most $n_{\mathrm m}$ and therefore infinite-dimensional.
+\emph{$\mathcal V$ is infinite-dimensional because $\mathcal X$ is a non-degenerate interval by A0 and
+$\pi$ is bounded above and below by C1(ii).}
+
+\emph{Step 4: clause (iii).} By \cref{lem:intker}(iv), $\int_{\mathcal X}\mathsf d_i\,dx=1-1=0$
+for each $i$, so $\int_{\mathcal X}\hat\nu_{u,t}(x)\,dx=0$ for every $(u,t)$. For $\alpha\in L^{2}(\Pi)$
+the function $(u,t,x)\mapsto\hat\nu_{u,t}(x)\alpha(u,t)$ is $\Pi\otimes\mathrm{Leb}$-integrable, because
+$|\hat\nu_{u,t}(x)|\le\mathsf c_2h_u^{-1}\bar w(t)\cdot\sup_i\|\mathsf d_i\|_\infty$ with
+$\|\mathsf d_i\|_\infty\le2\mathsf c_2h_x^{-1}$, $\mathcal X$ is bounded, $\Pi$ is finite and
+$\bar w\in L^{2}(\Pi_t)$ by B1(iv.c), so $\alpha\bar w\in L^{1}(\Pi)$ by Cauchy--Schwarz. Fubini
+therefore gives both
+$\int_{\mathcal X}\big(\hat{\mathcal A}^\ast_\varphi\alpha\big)\pi\,dx
+=\int\alpha(u,t)\big[\int_{\mathcal X}\hat\nu_{u,t}\,dx\big]\Pi(du\,dt)=0$, so
+$\hat{\mathcal A}^\ast_\varphi\alpha\in\mathcal V$, and
+\[
+\big\langle\hat{\mathcal A}_\varphi h,\alpha\big\rangle_{L^{2}(\Pi)}
+=\int\!\!\Big[\int_{\mathcal X}\hat\nu_{u,t}h\,dx\Big]\alpha\,d\Pi
+=\int_{\mathcal X}h(x)\Big[\int\hat\nu_{u,t}(x)\alpha\,d\Pi\Big]dx
+=\big\langle\hat{\mathcal A}^\ast_\varphi\alpha,h\big\rangle_{L^{2}(\pi)},
+\]
+the last equality by \eqref{eq:hatAadj} and cancellation of $\pi$. \emph{Where the boundary index is
+load-bearing:} if $s_{0,ij}\equiv1$ were used at a design point within $c_Ch_x$ of an endpoint, then
+$h_x^{-1}\int_{\mathcal X}C_{h_x}(x-X_{ij},1)dx=\int_{(\underline x-X_{ij})/h_x}^{(\bar x-X_{ij})/h_x}\Theta_1$
+differs from $1$ by an amount that does not vanish as $h_x\downarrow0$ when the design point is within
+$O(h_x)$ of the endpoint, the two terms of $\mathsf d_i$ no longer cancel, and
+$\hat{\mathcal A}^\ast_\varphi\alpha\notin\mathcal V$. \emph{The failure is confined to an $O(h_x)$
+fraction of the sample and is therefore invisible in a rate; it is nevertheless a type error, since
+def:spaces fixes the codomain of every adjoint at $\mathcal V$.}
+
+\emph{Step 5: clause (iv).} Fix $\varphi,v$ and write $\mathsf u_i:=u-\Delta Y_{i,\theta}+\Delta_{h_x}\varphi_i$,
+so that $\hat T_{h_x}(\varphi+v,\theta)(u,t)-\hat T_{h_x}(\varphi,\theta)(u,t)
+=n_{\mathrm m}^{-1}\sum_i\widehat{\widetilde W}_iw(t'\Phi(\Delta Z_i))\{\mathsf C_{h_u}(\mathsf u_i+\Delta_{h_x}v_i)-\mathsf C_{h_u}(\mathsf u_i)\}$
+by linearity of $v\mapsto\Delta_{h_x}v_i$. By \cref{lem:intker}(ii), each summand differs from
+$\widehat{\widetilde W}_iw(t'\Phi(\Delta Z_i))\,h_u^{-1}C_{h_u}(\mathsf u_i,1)\Delta_{h_x}v_i
+=\hat g_{u,t,i}(\varphi,\theta)\Delta_{h_x}v_i$ --- note that $\mathsf u_i$ is exactly the residual appearing in
+\eqref{eq:hatg} --- by at most $\tfrac12\mathsf c_4h_u^{-2}(\Delta_{h_x}v_i)^{2}\bar w(t)$ in modulus,
+using (P1) and (P2). Summing, taking the $L^{2}(\Pi)$ norm and using B1(iv.c),
+\[
+\big\|\hat T_{h_x}(\varphi+v,\theta)-\hat T_{h_x}(\varphi,\theta)-\hat{\mathcal A}_\varphi v\big\|_{L^{2}(\Pi)}
+\;\le\;\frac{\mathsf c_4c_\Pi}{2h_u^{2}}\cdot\frac1{n_{\mathrm m}}\sum_{i\in\mathcal I_m}\big(\Delta_{h_x}v_i\big)^{2},
+\]
+which is \eqref{eq:hatTxrem}. Since the right-hand side is $O(\|v\|^{2}_{L^{2}(\pi)})$ by
+\eqref{eq:hstep1b}, $\hat{\mathcal A}_\varphi$ is the Fr\'echet derivative; twice differentiability
+follows because $v\mapsto\hat{\mathcal A}_{\varphi+v}$ is itself differentiable, $\mathsf C_{h_u}$
+being $C^1$ with Lipschitz derivative, and no third-order statement is made or needed.
+
+\emph{Step 6: clause (v), the Gateaux derivative, its formula.} For fixed $v$ and scalar $\tau$,
+$\hat T(\varphi+\tau v,\theta)(u,t)=n_{\mathrm m}^{-1}\sum_i\widehat{\widetilde W}_iw_i
+\mathsf C_{h_u}(u-\Delta U_i(\theta,\varphi)+\tau\Delta v_i)$ with $\Delta v_i=v(X_{i2})-v(X_{i1})$,
+which is a finite sum of $C^1$ functions of $\tau$; differentiating at $\tau=0$ gives
+\eqref{eq:gateaux}, and the convergence of the difference quotient is uniform in $(u,t)$ up to
+$\bar w(t)$ by \cref{lem:intker}(ii), hence holds in $L^{2}(\Pi)$.
+
+\emph{Step 7: clause (v), unboundedness --- and it is the engine of \cref{prp:tccfails}.}
+$X$ is continuously distributed by \cref{def:model}, so almost surely the $2n$ points $X_{ij}$ are
+pairwise distinct; fix a realisation with this property and with $\widehat{\widetilde W}_{i^\ast}\ne0$
+for some $i^\ast\in\mathcal I_m$, which holds almost surely because $\widehat{\widetilde W}_{i}=0$
+requires $\hat\varrho(\Delta Z_{i})\in\{0,1\}$ and $W_i$ to match it. Let
+$\epsilon_k\downarrow0$ be smaller than half the minimum interpoint distance and than the distance from
+$X_{i^\ast2}$ to $\partial\mathcal X$, and let $\varTheta_k$ be the triangular spike of height $1$ and
+base $[X_{i^\ast2}-\epsilon_k,X_{i^\ast2}+\epsilon_k]$; set
+$v_k:=\varTheta_k-\int\varTheta_k\,d\pi\in\mathcal V$. Then
+\[
+\|v_k\|_{L^{2}(\pi)}\le2\|\varTheta_k\|_{L^{2}(\pi)}\le2\|\pi\|_\infty^{1/2}\big(\tfrac23\epsilon_k\big)^{1/2}\longrightarrow0,
+\]
+while $\Delta v_{k,i^\ast}=v_k(X_{i^\ast2})-v_k(X_{i^\ast1})=1-0=1+O(\epsilon_k)$ and
+$\Delta v_{k,i}=O(\epsilon_k)$ for $i\ne i^\ast$, because the spike's support meets no other design
+point. Hence, by \eqref{eq:gateaux},
+$\mathrm d\hat T_\varphi[v_k]\to n_{\mathrm m}^{-1}\hat g_{\cdot,\cdot,i^\ast}$ in $L^{2}(\Pi)$, whose
+norm is bounded below by
+\[
+\frac{|\widehat{\widetilde W}_{i^\ast}|}{n_{\mathrm m}h_u}
+\Big(\int_{\IR}C_{h_u}\big(u-\Delta U_{i^\ast},1\big)^{2}\Pi_u(du)\int_{\mathcal T}w\big(t'\Phi(\Delta Z_{i^\ast})\big)^{2}\Pi_t(dt)\Big)^{1/2}
+\;=:\;\mathsf c\;>\;0 ,
+\]
+strictly positive because $\varpi_u>0$ everywhere by B1(iv.a) --- so the $u$-integral of a nonnegative
+function that is not Lebesgue-a.e. zero is positive --- and because $w=\exp>0$ with
+$\Pi_t(\mathcal T)>0$ by B1(iv.b). So $\|v_k\|_{L^{2}(\pi)}\to0$ with
+$\|\mathrm d\hat T_\varphi[v_k]\|_{L^{2}(\Pi)}\to\mathsf c>0$: the linear map
+$v\mapsto\mathrm d\hat T_\varphi[v]$ is unbounded. A Fr\'echet derivative is by definition a bounded
+linear operator, and a Fr\'echet derivative that exists must agree with the Gateaux derivative; so
+$\hat T(\cdot,\theta)$ has no Fr\'echet derivative at any $\varphi\in\mathcal V$.
+\emph{The obstruction is that $v\mapsto\Delta v_i$ is a difference of point evaluations, and point
+evaluation is not continuous on $L^{2}$. It is not an artefact of the spike: any sequence
+$L^{2}$-convergent to $0$ but not uniformly convergent will do.}
+\end{proof}
+
+% ===========================================================================
+%  PART H.2 -- (O4), VERIFICATION HALF
+% ===========================================================================
+
+\begin{proof}[Proof of \cref{prp:tccfails}]
+The strategy is Step 7 of \cref{prp:hatAprop}'s proof, read against A6's inequality rather than against
+the definition of a derivative: the spike moves $\hat T$ by an $O(1/n_{\mathrm m})$ amount and moves
+$\hat{\mathcal A}_{\tilde\varphi}$ by nothing, so A6's left-hand side converges to its own right-hand
+side divided by $\eta_{\mathrm{TCC}}$.
+
+Fix a realisation of the sample on which the $2n$ points $X_{ij}$ are pairwise distinct and
+$\widehat{\widetilde W}_{i^\ast}\ne0$ for some $i^\ast\in\mathcal I_m$; by \cref{prp:hatAprop} Step 7
+this set has probability one, using $A4(i)$ for the second property, which under overlap holds for
+every $i$. Fix $\tilde\varphi\in\mathcal V$, $\bar\rho>0$ and $\eta_{\mathrm{TCC}}<1$. Let $v_k$ be the
+centred triangular spike of \cref{prp:hatAprop} Step 7, at base half-width $\epsilon_k\downarrow0$
+small enough that its support contains no design point other than $X_{i^\ast2}$ and lies in the
+interior of $\mathcal X$, and put $\varphi_k:=\tilde\varphi+v_k$. Then
+$\|v_k\|_{L^{2}(\pi)}\to0$, so $\|\varphi_k-\tilde\varphi\|_{L^{2}(\pi)}\le\bar\rho$ for all large $k$.
+
+\emph{Step 1: the operator term vanishes.} $|\Delta_{h_x}v_{k,i}|\le\|\mathsf d_i\|_\infty\int_{\mathcal X}|v_k|\,dx
+\le2\mathsf c_2h_x^{-1}\big(\epsilon_k+\|\pi\|_\infty\epsilon_k(\bar x-\underline x)\big)\to0$ for every
+$i$, so by \eqref{eq:hatAcon} and \eqref{eq:hstep1a},
+$\|\hat{\mathcal A}_{\tilde\varphi}v_k\|_{L^{2}(\Pi)}\le(\mathsf c_2c_\Pi/h_u)\max_i|\Delta_{h_x}v_{k,i}|\to0$.
+\emph{This is the whole point: $\hat{\mathcal A}_{\tilde\varphi}$ sees $v_k$ only through the smoothed
+functionals, and a spike of vanishing width is invisible to them.}
+
+\emph{Step 2: the operator-equation term does not.} With $\mathsf u_i:=u-\Delta U_i(\theta,\tilde\varphi)$ the
+raw residual,
+\[
+\hat T(\varphi_k,\theta)-\hat T(\tilde\varphi,\theta)
+=\frac1{n_{\mathrm m}}\sum_{i\in\mathcal I_m}\widehat{\widetilde W}_i\,w\big(t'\Phi(\Delta Z_i)\big)
+\Big\{\mathsf C_{h_u}\big(\mathsf u_i+\Delta v_{k,i}\big)-\mathsf C_{h_u}(\mathsf u_i)\Big\},
+\]
+and $\Delta v_{k,i^\ast}=1-v_k(X_{i^\ast1})\to1$ while $\Delta v_{k,i}\to0$ for $i\ne i^\ast$, because
+the spike's support meets no other design point and its $\pi$-mean is $O(\epsilon_k)$. Since
+$\mathsf C_{h_u}$ is Lipschitz and bounded by $\mathsf c_3$ (\cref{lem:intker}(i)--(ii)) and
+$\Pi$ is finite, dominated convergence gives, in $L^{2}(\Pi)$,
+\[
+\hat T(\varphi_k,\theta)-\hat T(\tilde\varphi,\theta)\;\longrightarrow\;
+\Xi_\ast:=\frac{\widehat{\widetilde W}_{i^\ast}}{n_{\mathrm m}}\,w\big(t'\Phi(\Delta Z_{i^\ast})\big)
+\Big\{\mathsf C_{h_u}\big(\mathsf u_{i^\ast}+1\big)-\mathsf C_{h_u}\big(\mathsf u_{i^\ast}\big)\Big\} .
+\]
+
+\emph{Step 3: $\|\Xi_\ast\|_{L^{2}(\Pi)}>0$.} Suppose $h_u<1/(2c_C)$, which holds for all large $n$ by
+C5$'$(i). By \cref{lem:intker}(i), $\mathsf C_{h_u}(w+1)-\mathsf C_{h_u}(w)=1-0=1$ for every
+$w\in[-1+c_Ch_u,\,-c_Ch_u]$, an interval of length $1-2c_Ch_u>0$. In the variable $u$ this is an
+interval of the same length, on which $\varpi_u$ is strictly positive by B1(iv.a); so
+$\int_{\IR}\{\mathsf C_{h_u}(\mathsf u_{i^\ast}+1)-\mathsf C_{h_u}(\mathsf u_{i^\ast})\}^{2}\Pi_u(du)>0$. And
+$\int_{\mathcal T}w(t'\Phi(\Delta Z_{i^\ast}))^{2}\Pi_t(dt)>0$ because $w=\exp>0$ by B1(ii) and
+$\Pi_t(\mathcal T)>0$ by B1(iv.b). Finally $\widehat{\widetilde W}_{i^\ast}\ne0$. Hence
+$\|\Xi_\ast\|_{L^{2}(\Pi)}>0$ by Tonelli on the product measure $\Pi=\Pi_u\otimes\Pi_t$.
+
+\emph{Step 4: conclusion.} By Steps 1--3,
+\[
+\big\|\hat T(\varphi_k,\theta)-\hat T(\tilde\varphi,\theta)-\hat{\mathcal A}_{\tilde\varphi}v_k\big\|
+\;\longrightarrow\;\|\Xi_\ast\|,
+\qquad
+\eta_{\mathrm{TCC}}\big\|\hat T(\varphi_k,\theta)-\hat T(\tilde\varphi,\theta)\big\|
+\;\longrightarrow\;\eta_{\mathrm{TCC}}\|\Xi_\ast\| ,
+\]
+and $\eta_{\mathrm{TCC}}\|\Xi_\ast\|<\|\Xi_\ast\|$ because $\eta_{\mathrm{TCC}}<1$ and
+$\|\Xi_\ast\|>0$. So for all large $k$ the pair $(\varphi_k,\tilde\varphi)$ violates A6's inequality
+while lying in the $\bar\rho$-ball around $\tilde\varphi$. Since $\tilde\varphi$, $\bar\rho$ and
+$\eta_{\mathrm{TCC}}<1$ were arbitrary, and since the realisation was arbitrary in a set of probability
+one, A6's event is null for every $n$.
+
+\emph{Two remarks on the scope of what has just been proved.} \emph{(a)} A6 requires
+$\eta_{\mathrm{TCC}}<\tfrac12$; the proof needs only $\eta_{\mathrm{TCC}}<1$, so it refutes a strictly
+weaker condition too. \emph{(b)} The proof does not use $\theta=\theta_\dagger$, does not use
+$\tilde\varphi=\vdagger$, and does not use A1, A2 or any source condition. \emph{It is a statement
+about the two \textup{maps}, not about the model}, which is why no strengthening of the model's
+hypotheses can repair it.
+\end{proof}
+
+\begin{proof}[Proof of \cref{prp:tccrepair}]
+\emph{(i).} Fix $\varphi,\tilde\varphi\in\mathcal V_n$, put $v:=\varphi-\tilde\varphi$,
+$\mathsf A:=\hat{\mathcal A}_{\tilde\varphi}v$ and
+$\mathsf T:=\hat T_{h_x}(\varphi,\theta)-\hat T_{h_x}(\tilde\varphi,\theta)$, all norms $L^{2}(\Pi)$.
+A6b reads $\|\mathsf T-\mathsf A\|\le\frac{\eta}{1+\eta}\|\mathsf A\|$. Then
+$\|\mathsf A\|\le\|\mathsf T\|+\frac{\eta}{1+\eta}\|\mathsf A\|$, so
+$\|\mathsf A\|\le(1+\eta)\|\mathsf T\|$, which is the right-hand inequality of (i); substituting it
+back into A6b gives $\|\mathsf T-\mathsf A\|\le\eta\|\mathsf T\|$, which is A6 verbatim at
+$\eta_{\mathrm{TCC}}=\eta$ with $\hat T$ replaced by $\hat T_{h_x}$. For the left-hand inequality,
+$\|\mathsf T\|\le\|\mathsf A\|+\frac{\eta}{1+\eta}\|\mathsf A\|=\frac{1+2\eta}{1+\eta}\|\mathsf A\|$,
+and $\frac{1+\eta}{1+2\eta}\ge1-\eta$ because $(1+\eta)-(1-\eta)(1+2\eta)=2\eta^{2}\ge0$.
+
+\emph{(ii).} Write $\Delta_{h_x}v=(\Delta_{h_x}v_i)_i\in\IR^{n_{\mathrm m}}$. By \eqref{eq:hatAcon} and
+the definition \eqref{eq:gram},
+\begin{equation}\label{eq:gramlow}
+\big\|\hat{\mathcal A}_{\tilde\varphi}v\big\|_{L^{2}(\Pi)}^{2}
+=\frac1{n_{\mathrm m}^{2}}\,(\Delta_{h_x}v)'\,\mathbf G_n\,(\Delta_{h_x}v)
+\;\ge\;\frac{\lambda_{\min}(\mathbf G_n)}{n_{\mathrm m}^{2}}\big\|\Delta_{h_x}v\big\|_{2}^{2} ,
+\end{equation}
+$\mathbf G_n$ being symmetric positive semi-definite as a Gram matrix and positive definite by
+hypothesis. \emph{This display also proves (iii)}: it is an equality before the eigenvalue bound, and
+the bound is attained at the eigenvector of $\lambda_{\min}(\mathbf G_n)$, so
+$n_{\mathrm m}^{-1}\lambda_{\min}(\mathbf G_n)^{1/2}$ is exactly the infimum of
+$\|\hat{\mathcal A}_{\tilde\varphi}v\|/\|\Delta_{h_x}v\|_2$ over $v$ with $\Delta_{h_x}v\ne0$.
+
+By \eqref{eq:hatTxrem} the left-hand side of \eqref{eq:a6b} is at most
+$\tfrac12\mathsf c_4c_\Pi h_u^{-2}n_{\mathrm m}^{-1}\|\Delta_{h_x}v\|_2^{2}$; by \eqref{eq:gramlow} its
+right-hand side is at least
+$\tfrac{\eta}{1+\eta}n_{\mathrm m}^{-1}\lambda_{\min}(\mathbf G_n)^{1/2}\|\Delta_{h_x}v\|_2$. So
+\eqref{eq:a6b} holds as soon as
+\begin{equation}\label{eq:tccb}
+\big\|\Delta_{h_x}v\big\|_{2}\;\le\;\frac{2\eta}{1+\eta}\cdot\frac{h_u^{2}\,\lambda_{\min}(\mathbf G_n)^{1/2}}{\mathsf c_4\,c_\Pi} .
+\end{equation}
+By \eqref{eq:hstep1b} and Cauchy--Schwarz, $|\Delta_{h_x}v_i|\le2(2c_C)^{1/2}\mathsf c_2h_x^{-1/2}\|1/\pi\|_\infty^{1/2}\|v\|_{L^{2}(\pi)}$
+for every $i$, so $\|\Delta_{h_x}v\|_2\le 2(2c_C)^{1/2}\mathsf c_2 (n_{\mathrm m}/h_x)^{1/2}\|1/\pi\|_\infty^{1/2}\|v\|_{L^{2}(\pi)}$.
+Substituting into \eqref{eq:tccb} and solving for $\|v\|_{L^{2}(\pi)}$ gives exactly
+$\|v\|_{L^{2}(\pi)}\le\bar\rho_n$ with $\bar\rho_n$ of \eqref{eq:tccrad}. Since $\varphi,\tilde\varphi$
+both lie in the $\bar\rho_n$-ball around $\tilde\varphi$ --- the ball is centred at $\tilde\varphi$, so
+$\|v\|\le\bar\rho_n$ --- the condition holds for every admissible pair, and A6b follows.
+\emph{The $\ell_\infty\to\ell_2$ step is crude by a factor $n_{\mathrm m}^{1/2}$ and can be improved by
+exploiting that the $\mathsf d_i$ have supports of width $2c_Ch_x$, so that at most
+$O(nh_x)$ of them overlap at any $x$; the improvement is not claimed because no conclusion uses it.}
+\end{proof}
+
+\begin{proof}[Proof of \cref{prp:norangeinv}]
+\emph{(i).} If $\hat{\mathcal A}_\varphi=\mathcal R\hat{\mathcal A}_{\tilde\varphi}$ then
+$\mathcal R(\hat{\mathcal A}_\varphi)\subseteq\mathcal R(\hat{\mathcal A}_{\tilde\varphi})$ trivially. If in
+addition $\|\mathcal R-I\|\le\mathsf c\|\varphi-\tilde\varphi\|_{L^{2}(\pi)}<1$ then $\mathcal R$ is
+boundedly invertible by the Neumann series, so
+$\hat{\mathcal A}_{\tilde\varphi}=\mathcal R^{-1}\hat{\mathcal A}_\varphi$ and the reverse inclusion
+holds too. Hence the two ranges coincide.
+
+\emph{(ii).} The range of $\hat{\mathcal A}_\varphi$ is
+$\operatorname{span}\{\hat g_{\cdot,\cdot,i}(\varphi,\theta):i\in\mathcal I_m\}$, by
+\eqref{eq:hatAcon} and because the functionals $v\mapsto\Delta_{h_x}v_i$ are jointly surjective onto
+$\IR^{n_{\mathrm m}}$ (they are $n_{\mathrm m}$ linearly independent bounded functionals on the
+infinite-dimensional $\mathcal V$, linear independence holding almost surely because the $X_{ij}$ are
+distinct). By \eqref{eq:hatg},
+$\hat g_{u,t,i}(\varphi,\theta)=\widehat{\widetilde W}_iw(t'\Phi(\Delta Z_i))h_u^{-1}\Theta_1\big((u-\Delta Y_{i,\theta}+\Delta_{h_x}\varphi_i)/h_u\big)$
+is, in $u$, a translate of $\Theta_1(\cdot/h_u)$ by $\Delta Y_{i,\theta}-\Delta_{h_x}\varphi_i$.
+
+Pick $i^\ast\in\mathcal I_m$ and $v\in\mathcal V$ with $\Delta_{h_x}v_{i}=0$ for $i\ne i^\ast$ and
+$\Delta_{h_x}v_{i^\ast}=2c_Ch_u$; such a $v$ exists because the $n_{\mathrm m}$ functionals are
+linearly independent, and it may be taken with
+$\|v\|_{L^{2}(\pi)}\le\mathsf c_9h_uh_x^{1/2}$ by \eqref{eq:hstep1b}, which is inside $\mathcal B$ by
+hypothesis. Put $\varphi:=\tilde\varphi+v$. Then $\hat g_{\cdot,\cdot,i}(\varphi,\theta)=\hat g_{\cdot,\cdot,i}(\tilde\varphi,\theta)$
+for $i\ne i^\ast$, while $\hat g_{\cdot,\cdot,i^\ast}(\varphi,\theta)$ is
+$\hat g_{\cdot,\cdot,i^\ast}(\tilde\varphi,\theta)$ translated in $u$ by $2c_Ch_u$, which exceeds the
+support width $2c_Ch_u$ of $\Theta_1(\cdot/h_u)$ --- so the two translates have disjoint interiors of
+support and, both being nonzero in $L^{2}(\Pi_u)$ by B1(iv.a), are linearly independent. Since the
+remaining $n_{\mathrm m}-1$ spanning functions are common to both operators and
+$\hat g_{\cdot,\cdot,i^\ast}(\varphi,\theta)$ is supported where none of them and
+$\hat g_{\cdot,\cdot,i^\ast}(\tilde\varphi,\theta)$ need be, the two spans differ for a generic
+configuration of $(\Delta Y_{i,\theta})_i$, which occurs with probability one because $\Delta Y$ is
+continuously distributed. Hence $\mathcal R(\hat{\mathcal A}_\varphi)\ne\mathcal R(\hat{\mathcal A}_{\tilde\varphi})$,
+contradicting (i).
+
+\emph{The population statement.} By \eqref{eq:Adef} and the shift identity of (P6),
+$\mathcal A_\varphi h(u,t)=E[\widetilde W\,w(t'\Phi(\Delta Z))\,f_{\Delta Y_\theta-\Delta\tilde\varphi\mid\mathcal F_{XZW}}(u+\Delta(\varphi-\tilde\varphi))\Delta h]$,
+so the base point enters as an argument shift \emph{inside} the expectation, with a \emph{random} shift
+$\Delta(\varphi-\tilde\varphi)$. A fixed operator $\mathcal R$ acting on the $(u,t)$ side can reproduce a
+common shift and cannot reproduce a shift that varies with the integrand, which is why the population
+route fails for the same reason and not merely by analogy. \emph{The strategy memo's one-round cap on
+this route is hereby spent, with a proof rather than a report.}
+\end{proof}
+
+% ===========================================================================
+%  PART H.3 -- THE NOISE LEVEL
+% ===========================================================================
+
+\begin{proof}[Proof of \cref{lem:opnoise}]
+Throughout, (H1c) is in force: $\hat\varrho$ is $\sigma(\mathcal I_a)$-measurable and every expectation
+is over $\mathcal I_m$ with $\hat\varrho$ frozen.
+
+\emph{Step 0: $T(\vdagger,\theta_\dagger)=0$, and it is A1 that does it.} By \cref{def:operator},
+$\mathcal M(u,t)=E[\widetilde W\un\{\Delta U\le u\}w(t'\Phi(\Delta Z))]$. Conditioning on $\Delta Z$ and
+using A1's conditional independence $\Delta U\upmodels W\mid\Delta Z$,
+$E[\widetilde W\un\{\Delta U\le u\}\mid\Delta Z]=E[\widetilde W\mid\Delta Z]\,P(\Delta U\le u\mid\Delta Z)=0$
+by (P3). Multiplying by the $\sigma(\Delta Z)$-measurable $w(t'\Phi(\Delta Z))$ and taking expectations
+gives $\mathcal M(\cdot,\cdot)\equiv0$, hence $T(\vdagger,\theta_\dagger)=0$ in $L^{2}(\Pi)$. The
+integrability needed for the conditioning is (P1) and (P2) with B1(iv.c).
+
+\emph{Step 1: the decomposition.} Write
+$\hat T(\vdagger,\theta_\dagger)=\{\hat T-\bar T\}+\{\bar T-E\bar T\}+\{E\bar T-T(\vdagger,\theta_\dagger)\}$,
+the three brackets being (iii), (i) and (ii). \emph{This is a decomposition and not an approximation:
+no cross term is discarded.}
+
+\emph{Step 2: clause (i).} Put
+$\xi_i:=\widetilde W_i\mathsf C_{h_u}(\cdot-\Delta U_i)w(t'\Phi(\Delta Z_i))\in L^{2}(\Pi)$, so that
+$\bar T=n_{\mathrm m}^{-1}\sum_{i\in\mathcal I_m}\xi_i$ with $\xi_i$ i.i.d.\ by A0 and, by (P1), (P2),
+\cref{lem:intker}(i) and B1(iv.c),
+$\|\xi_i\|_{L^{2}(\Pi)}\le\mathsf c_3\big(\Pi_u(\IR)\int\bar w^{2}d\Pi_t\big)^{1/2}=\mathsf c_3c_\Pi$
+almost surely. In particular $\xi_i$ is Bochner integrable and $E\xi_i=E\bar T$. Because $L^{2}(\Pi)$
+is a Hilbert space and the $\xi_i-E\xi_i$ are independent with mean zero,
+\[
+E\Big\|\frac1{n_{\mathrm m}}\sum_{i}(\xi_i-E\xi_i)\Big\|^{2}
+=\frac1{n_{\mathrm m}^{2}}\sum_i E\|\xi_i-E\xi_i\|^{2}
+=\frac{E\|\xi_1-E\xi_1\|^{2}}{n_{\mathrm m}}\le\frac{\mathsf c_3^{2}c_\Pi^{2}}{n_{\mathrm m}} ,
+\]
+the cross terms vanishing because $E\langle\xi_i-E\xi_i,\xi_k-E\xi_k\rangle=\langle E(\xi_i-E\xi_i),E(\xi_k-E\xi_k)\rangle=0$
+for $i\ne k$ by independence and Fubini for Bochner integrals. Chebyshev's inequality applied to the
+real random variable $\|\bar T-E\bar T\|$ gives the second display, and $O_P(n^{-1/2})$ follows.
+\emph{Nothing here is uniform in $(u,t)$; the norm does the work that a supremum would otherwise do,
+and that is why no logarithm appears.}
+
+\emph{Step 3: clause (ii).} Fix $t$ and let $\mathcal G_t(a):=\mathcal M(a,t)$, which by
+\cref{def:operator} is the difference of the two nondecreasing functions
+$a\mapsto E[W\un\{\Delta U\le a\}w(t'\Phi(\Delta Z))]$ and
+$a\mapsto E[\varrho(\Delta Z)\un\{\Delta U\le a\}w(t'\Phi(\Delta Z))]$, each of total variation at most
+$\bar w(t)$ by (P2); so $d\mathcal G_t$ is a finite signed measure of total variation at most
+$2\bar w(t)$. The Tonelli computation of \cref{lem:intker}(iii), applied to the positive and negative
+parts of $d\mathcal G_t$ separately, gives
+$E\bar T(u,t)=\int_\IR\Theta_1(\varsigma)\,\mathcal M(u-h_u\varsigma,t)\,d\varsigma$. By C2$'$(ii),
+$u\mapsto\mathcal M(u,t)$ is $p_K$ times continuously differentiable with
+$\sup_u|\partial_u^{p_K}\mathcal M(u,t)|\le\mathfrak m_{p_K}\bar w(t)$, so the Taylor argument of
+\cref{lem:intker}(iii) gives
+$|E\bar T(u,t)-\mathcal M(u,t)|\le\mathsf c_5\mathfrak m_{p_K}\bar w(t)h_u^{p_K}$ for every $(u,t)$.
+Taking $L^{2}(\Pi)$ norms and using B1(iv.c) gives the stated bound; under C5$'$(i), $p_K=8$ and
+$h_u\asymp\mathrm{sd}(\Delta U)n^{-1/16}$ make it $O(n^{-1/2})$.
+
+\emph{Step 4: clause (iii).} $\hat T-\bar T=-n_{\mathrm m}^{-1}\sum_i\{\hat\varrho(\Delta Z_i)-\varrho(\Delta Z_i)\}
+\mathsf C_{h_u}(\cdot-\Delta U_i)w(t'\Phi(\Delta Z_i))$, so by \cref{lem:intker}(i), (P2) and B1(iv.c)
+its $L^{2}(\Pi)$ norm is at most $\mathsf c_3c_\Pi n_{\mathrm m}^{-1}\sum_i|\hat\varrho(\Delta Z_i)-\varrho(\Delta Z_i)|$.
+Under (H1c), $E\big[n_{\mathrm m}^{-1}\sum_i|\hat\varrho-\varrho|(\Delta Z_i)\,\big|\,\sigma(\mathcal I_a)\big]
+=E|\hat\varrho-\varrho|(\Delta Z)\le\|\hat\varrho-\varrho\|_{L^{2}}$ by Jensen's inequality, and the
+right-hand side is $O_P(r_n)$ by A4(iii). Conditional Markov and (H1c)'s last sentence give
+$n_{\mathrm m}^{-1}\sum_i|\hat\varrho-\varrho|(\Delta Z_i)=O_P(r_n)$.
+
+\emph{Step 5: assembly.} Adding the three bounds and using $n_{\mathrm m}\asymp n$,
+$\|\hat T(\vdagger,\theta_\dagger)\|=O_P(n^{-1/2})+O(h_u^{p_K})+O_P(r_n)$. Under C5$'$(i) the second is
+$O(n^{-1/2})$, and $\hat\delta_n=\max\{n^{-1/2}\sqrt{\ln n},r_n\}$ dominates all three, which is
+\eqref{eq:opnoise}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{lem:aerr}]
+The operator norm is bounded by the Hilbert--Schmidt norm in the $L^{2}(\pi)$--$L^{2}(\Pi)$ pairing,
+and both operators are integral operators with kernels $\hat\nu_{u,t}/\pi$ and $\nu_{g_{u,t}}/\pi$ by
+\eqref{eq:hatAcon} and \cref{prp:compact}, so
+\begin{equation}\label{eq:hsred}
+\big\|\hat{\mathcal A}_\varphi-\mathcal A_\varphi\big\|^{2}
+\;\le\;\int\!\!\int_{\mathcal X}\Big|\frac{\hat\nu_{u,t}(x)-\nu_{g_{u,t}}(x)}{\pi(x)}\Big|^{2}\pi(x)\,dx\,\Pi(du\,dt)
+\;\le\;\Big\|\frac1\pi\Big\|_\infty\!\int\!\!\int_{\mathcal X}\big|\hat\nu_{u,t}-\nu_{g_{u,t}}\big|^{2}dx\,d\Pi ,
+\end{equation}
+with $\|1/\pi\|_\infty<\infty$ by C1(ii). It therefore suffices to bound the right-hand side at a fixed
+$\varphi$ and then to chain over $\mathcal V_n$.
+
+\emph{Step 1: variance.} Let $\breve\nu_{u,t}$ be \eqref{eq:hatnu} with $\varrho$ in place of
+$\hat\varrho$. Under (H1c) the summands of $\breve\nu$ are i.i.d., so
+$\int\!\int E|\breve\nu-E\breve\nu|^{2}dx\,d\Pi
+\le n_{\mathrm m}^{-1}\int\!\int E\big[\hat g_{u,t,1}^{2}\mathsf d_1(x)^{2}\big]dx\,d\Pi$
+(with $\varrho$ inside $\hat g$). Bound the two factors separately and deterministically:
+$\int_{\mathcal X}\mathsf d_1(x)^{2}dx\le8c_C\mathsf c_2^{2}h_x^{-1}$ by \eqref{eq:hstep1b},
+and, using $\Pi_u(du)=\varpi_u(u)du$ from (P7) with $\|\varpi_u\|_\infty<\infty$ by B1(iv.a),
+\[
+\int\hat g_{u,t,1}^{2}\,\Pi(du\,dt)
+\le\frac{1}{h_u^{2}}\Big(\int_\IR C_{h_u}(u-\Delta U_1,1)^{2}\varpi_u(u)\,du\Big)\!\int_{\mathcal T}\!\bar w(t)^{2}\Pi_t(dt)
+\le\frac{2c_C\mathsf c_2^{2}\|\varpi_u\|_\infty}{h_u}\int_{\mathcal T}\bar w^{2}\,d\Pi_t ,
+\]
+the middle step by the substitution $u=\Delta U_1+h_u\varsigma$ and (H2c). Multiplying,
+$\int\!\int E|\breve\nu-E\breve\nu|^{2}dx\,d\Pi=O\big((n\,h_x\,h_u)^{-1}\big)$, so by Markov the
+corresponding contribution to \eqref{eq:hsred} is $O_P\big((nh_xh_u)^{-1/2}\big)$.
+
+\emph{Step 2: bias, and it has exactly two sources.} $E\breve\nu_{u,t}(x)-\nu_{g_{u,t}}(x)$ decomposes
+as
+\[
+\underbrace{E\breve\nu_{u,t}(x)-\nu_{\breve g_{u,t}}(x)}_{\text{$x$-smoothing}}
+\;+\;\underbrace{\nu_{\breve g_{u,t}}(x)-\nu_{g_{u,t}}(x)}_{\text{$u$-smoothing}},
+\qquad
+\breve g_{u,t}:=\widetilde W\,w(t'\Phi(\Delta Z))\,\tfrac1{h_u}C_{h_u}\big(u-\Delta U(\theta,\varphi),1\big).
+\]
+The first is the classical kernel bias of an order-$p_K$ generalized kernel for the two products
+$E[\breve g\mid X_j=x]f_{X_j}(x)$, which are $p_K$ times continuously differentiable and uniformly
+bounded by C1(i); it is $O(h_x^{p_K})$ uniformly in $(u,t,x)$ up to $\bar w(t)$, by the argument of
+\cref{lem:intker}(iii) with $G$ replaced by those products and with the boundary index of
+\cref{lem:intker}(iv) removing the endpoint effect. The second replaces the conditional density
+$f_{\Delta Y_\theta-\Delta\varphi\mid\mathcal F_{XZW}}(u)$ inside $g_{u,t}$ by its $C_{h_u}$-smoothed
+version; by C2$'$(i) that density has $p_K-1$ derivatives with integrable envelopes and, after the one
+$u$-integration implicit in $\partial_u\mathsf C_{h_u}$, the smoothing bias is $O(h_u^{p_K})$ uniformly
+in $(u,t,x)$ up to $\bar w(t)$. Integrating $\bar w^{2}$ against $\Pi_t$ and $dx$ over the bounded
+$\mathcal X$ gives an $L^{2}(\Pi\otimes dx)$ bias of order $h_x^{p_K}+h_u^{p_K}$.
+
+\emph{Step 3: propensity, and it carries the bandwidth factor.} $\hat\nu-\breve\nu$ replaces
+$\widetilde W_i$ by $\widehat{\widetilde W}_i$ inside $\hat g$, so
+\[
+\big\|\hat\nu-\breve\nu\big\|_{L^{2}(\Pi\otimes dx)}
+\le\frac1{n_{\mathrm m}}\sum_{i\in\mathcal I_m}\big|(\hat\varrho-\varrho)(\Delta Z_i)\big|\cdot
+\Big\|\tfrac1{h_u}C_{h_u}(\cdot-\Delta U_i,1)\,w(t'\Phi(\Delta Z_i))\Big\|_{L^{2}(\Pi)}
+\cdot\big\|\mathsf d_i\big\|_{L^{2}(dx)} .
+\]
+By the computation of Step 1, the second factor is $O(h_u^{-1/2})$ and the third is $O(h_x^{-1/2})$ by
+\eqref{eq:hstep1b}; and $n_{\mathrm m}^{-1}\sum_i|(\hat\varrho-\varrho)(\Delta Z_i)|=O_P(r_n)$ by
+\cref{lem:opnoise} Step 4. Hence the contribution to \eqref{eq:hsred} is
+$O_P\big(r_n(h_xh_u)^{-1/2}\big)$, which is the fourth term of \eqref{eq:gamman}.
+\emph{The bandwidth factors do \textbf{not} cancel here, and an earlier draft of this step asserted
+that they did.} The scaling is displayed in the spec \texttt{aerr-propensity-scaling}. \emph{What is
+true, and is why the bound is likely loose}: $E[\hat\nu-\breve\nu]$ equals a $\nu$-functional of
+$(\varrho-\hat\varrho)\,\breve g$, which \cref{lem:nusigma} bounds by $O(\|\hat\varrho-\varrho\|_{L^{2}})=O(r_n)$
+with no bandwidth; only the fluctuation about that mean carries $(h_xh_u)^{-1/2}$, and bounding it
+sharply would need $\|\hat\varrho-\varrho\|_\infty$, which no clause of the block prices.
+
+\emph{Step 4: uniformity over $\mathcal V_n$.} The map $\varphi\mapsto\hat{\mathcal A}_\varphi$ is
+Lipschitz in $\|\cdot\|_\infty$: by \eqref{eq:hatg}, (H2c) and \eqref{eq:hstep1b},
+$\|\hat{\mathcal A}_\varphi-\hat{\mathcal A}_{\varphi'}\|\le\mathsf c\,h_u^{-2}h_x^{-1/2}\|\varphi-\varphi'\|_\infty$,
+the $h_u^{-2}$ coming from the Lipschitz constant of $\partial_v\mathsf C_{h_u}$
+(\cref{lem:intker}(ii)) and the $h_x^{-1/2}$ from \eqref{eq:hstep1b}; the same bound holds for
+$\varphi\mapsto\mathcal A_\varphi$ with $h_u^{-2}$ replaced by $\|\bar f_1\|_\infty$ (C2$'$(i)), which
+is smaller. Cover $\mathcal V_n$ by brackets of $\|\cdot\|_\infty$-radius
+$\epsilon_0:=\gamma_nh_u^{2}h_x^{1/2}/(2\mathsf c)$, apply Steps 1--3 with Chebyshev at each bracket
+centre, and take a union bound: the failure probability is at most
+$N_{[\,]}(\epsilon_0)\cdot\mathsf c'/(n h_xh_u\gamma_n^{2})$, which vanishes exactly under
+\eqref{eq:entropyA}.
+
+\emph{Step 5: the three readings.} (i) The exponents in \eqref{eq:gamman} are read off Step 1: one
+$h_x^{-1}$ from $\int(\mathsf d)^{2}dx$ and one $h_u^{-1}$ from
+$\int\hat g^{2}d\Pi$. C5$'$(ii)'s $h_x^{2}h_u^{3}$ would be the correct pairing for an estimator of a
+\emph{derivative} of a density in $x$ and a \emph{second} derivative in $u$, which is what the
+cross-sectional companion estimates; $\hat{\mathcal A}_\varphi$ estimates neither. C5$'$(ii) implies
+$(nh_xh_u)^{-1}\ln n\to0$ whenever $h_x,h_u\le1$, so nothing proved under the relaxed condition is lost.
+(ii) is arithmetic and is proved where it is used, at \cref{prp:phirate} Step 3. (iii) is Step 4: at a
+fixed $\varphi$ no bracketing is needed and Chebyshev alone gives $O_P((nh_xh_u)^{-1/2})$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{prp:stopfeas}]
+\emph{(i).} By \cref{lem:opnoise} Steps 2--3, $\|\bar T(\vdagger,\theta_\dagger)\|\le\|\bar T-E\bar T\|+\mathsf c_5\mathfrak m_{p_K}c_\Pi h_u^{p_K}$,
+and the second term is at most $\tfrac12\tau\hat\delta_n^{(T)}$ for all large $n$ under C5$'$(i),
+because $h_u^{p_K}\asymp n^{-1/2}=o(n^{-1/2}\sqrt{\ln n})$. For the first, Chebyshev at
+$\mathsf s=\tfrac12\tau n^{-1/2}\sqrt{\ln n}$ gives
+$P(\|\bar T-E\bar T\|\ge\mathsf s)\le 4\mathsf c_3^{2}c_\Pi^{2}n/(n_{\mathrm m}\tau^{2}\ln n)\to0$ for
+every fixed $\tau>0$, using $n_{\mathrm m}\asymp n$. The stated $\tau\ge4\mathsf c_3c_\Pi$ is a
+convenient sufficient choice and any fixed $\tau>0$ serves asymptotically.
+\emph{The logarithm is doing exactly one thing here: it makes a second-moment bound into a
+vanishing-probability statement at a fixed multiple.}
+
+\emph{(ii).} A4(iii) says $\|\hat\varrho-\varrho\|_{L^{2}}=O_P(r_n)$, i.e.\ for every $\epsilon>0$ there
+is $\mathsf M_\epsilon$ with $\limsup_nP(\|\hat\varrho-\varrho\|_{L^{2}}>\mathsf M_\epsilon r_n)<\epsilon$.
+This is consistent with $P(\|\hat\varrho-\varrho\|_{L^{2}}>\tau r_n)\to c(\tau)>0$ for every fixed
+$\tau$: take $\hat\varrho-\varrho$ equal to $\mathsf Z r_n$ times a fixed unit-norm function with
+$\mathsf Z$ a standard half-normal variable independent of $n$; then $\|\hat\varrho-\varrho\|_{L^2}=O_P(r_n)$
+and $P(\|\hat\varrho-\varrho\|_{L^{2}}>\tau r_n)=P(\mathsf Z>\tau)>0$ for every $\tau$, not tending to
+zero. So no fixed-constant conclusion follows from the hypothesis, and \cref{lem:opnoise}(iii) is the
+best available. \emph{This is a statement about what A4(iii) entails and not a claim that the
+propensity estimator misbehaves.}
+
+\emph{(iii).} Under the strengthened A4(iii), $P(\|\hat T-\bar T\|>\mathsf c_3c_\Pi\mathsf c\,r_n)\to0$
+by \cref{lem:opnoise} Step 4 with Markov replaced by the assumed bound, and adding (i) gives A7 at
+$\tau_{\mathrm{DP}}=\max\{4\mathsf c_3c_\Pi,\ \mathsf c_3c_\Pi\mathsf c\}$. Under A4(iii) as written,
+$\|\hat T(\vdagger,\theta_\dagger)\|=O_P(\hat\delta_n)$ by \cref{lem:opnoise}, and for any
+$O_P(\hat\delta_n)$ sequence $\mathsf V_n$ and any divergent $\mathsf a_n$,
+$P(\mathsf V_n>\mathsf a_n\hat\delta_n)\to0$: given $\epsilon>0$ pick $\mathsf M_\epsilon$ from the
+$O_P$ statement and note $\{\mathsf V_n>\mathsf a_n\hat\delta_n\}\subseteq\{\mathsf V_n>\mathsf M_\epsilon\hat\delta_n\}$
+for all $n$ with $\mathsf a_n\ge\mathsf M_\epsilon$. Taking $\mathsf a_n=\tau_{\mathrm{DP}}\ln n$ gives
+\eqref{eq:a7amend}.
+
+\emph{(iv).} Suppose $\tfrac{2\mu}{2\mu+1}\cdot\tfrac{r}{2r+d_Z}=\tfrac14+\varepsilon$ with
+$\varepsilon>0$, which is \eqref{eq:frontier}. Then
+$(\hat\delta_n\ln n)^{2\mu/(2\mu+1)}=n^{-1/4-\varepsilon}(\ln n)^{2\mu/(2\mu+1)}$, and
+$n^{-\varepsilon}(\ln n)^{2\mu/(2\mu+1)}\to0$ because $2\mu/(2\mu+1)<1$ and any positive power of $n$
+dominates any power of $\ln n$. Hence the amended $\delta_n$ is still $o(n^{-1/4})$.
+\emph{The strictness of \eqref{eq:frontier} is used and nothing else is}; at equality the argument
+fails, which is one more reason the frontier is stated strictly.
+\end{proof}
+
+% ===========================================================================
+%  PART H.4 -- L-19
+%
+%  ON CITATIONS, PART H.  Part G's practice is followed: a classical fact is
+%  proved inline at the strength the step consumes, and where that is not
+%  feasible the intended pin is NAMED in a comment so the bibliography pass has
+%  a target.  Two facts arise here.
+%    (F-d)  A BOUNDED-DIFFERENCE INEQUALITY for a function of independent
+%           variables.  PROVED INLINE, as lem:bdiff, from Hoeffding's lemma and
+%           the Azuma argument, over the reals, in the one form consumed.
+%           Intended pin, for the eventual paper: McDiarmid (1989); or
+%           Boucheron, Lugosi & Massart (2013), Thm 6.2.
+%    (F-e)  THE SUP-NORM ENTROPY OF A SOBOLEV BALL,
+%           log N(eps, {||f||_{H^s} <= R}, ||.||_inf) <= c (R/eps)^{1/s} on a
+%           compact interval, valid for s > 1/2.  NOT PROVED HERE.  Intended
+%           pin: Birman & Solomjak (1967); Kolmogorov & Tikhomirov (1961);
+%           or van der Vaart & Wellner (1996), Thm 2.7.1 (stated there for
+%           Holder balls, which suffices after the embedding H^s -> C^{s-1/2}).
+%           IT IS USED ONLY IN CLAUSE (a) OF lem:unifop.  Clause (b), the sieve
+%           version, is what prp:phirate consumes and rests on an ELEMENTARY
+%           volumetric bound proved inline.  So no conclusion of Part H depends
+%           on an unpinned entropy theorem, and that separation is deliberate.
+% ===========================================================================
+
+\begin{lemma}[Bounded differences, in the one form Part H consumes]\label{lem:bdiff}
+Let $\zeta_1,\dots,\zeta_N$ be independent random elements of a measurable space and let
+$F(\zeta_1,\dots,\zeta_N)$ be a real, bounded, measurable function such that changing one argument
+changes $F$ by at most $\mathsf b$. Then, for every $\mathsf s>0$,
+$P\big(F-EF\ge\mathsf s\big)\le\exp\!\big(-2\mathsf s^{2}/(N\mathsf b^{2})\big)$.
+\end{lemma}
+
+\begin{proof}[Proof of \cref{lem:bdiff}]
+\emph{Step 1 (Hoeffding's lemma).} Let $V$ be a real random variable with $EV=0$ and
+$V\in[\mathsf a_1,\mathsf a_2]$ almost surely. Put $\psi(\lambda):=\log Ee^{\lambda V}$, finite for all
+$\lambda$ since $V$ is bounded. Then $\psi(0)=0$, $\psi'(0)=EV=0$, and
+$\psi''(\lambda)=\mathrm{Var}_{Q_\lambda}(V)$ where $dQ_\lambda\propto e^{\lambda V}dP$; a random
+variable supported in an interval of length $\mathsf a_2-\mathsf a_1$ has variance at most
+$(\mathsf a_2-\mathsf a_1)^{2}/4$, so $\psi''\le(\mathsf a_2-\mathsf a_1)^{2}/4$ and Taylor's theorem
+gives $\psi(\lambda)\le\lambda^{2}(\mathsf a_2-\mathsf a_1)^{2}/8$.
+
+\emph{Step 2 (the Doob martingale).} Let $\mathcal H_k:=\sigma(\zeta_1,\dots,\zeta_k)$ and
+$M_k:=E[F\mid\mathcal H_k]$, so $M_0=EF$, $M_N=F$, and $\Delta_k:=M_k-M_{k-1}$ is a martingale
+difference. By independence and the bounded-difference hypothesis, conditionally on
+$\mathcal H_{k-1}$ the variable $\Delta_k$ lies in an interval of length at most $\mathsf b$: writing
+$\Delta_k=\int\{F(\dots,\zeta_k,\dots)-F(\dots,z,\dots)\}\,dP_{\zeta_k}(z)$ evaluated under
+$E[\cdot\mid\mathcal H_k]$, its conditional range is contained in
+$[\inf_{z}-\sup_{z'},\ \sup_z-\inf_{z'}]$ of a quantity varying by at most $\mathsf b$.
+
+\emph{Step 3 (iterate).} By Step 1 applied conditionally,
+$E[e^{\lambda\Delta_k}\mid\mathcal H_{k-1}]\le e^{\lambda^{2}\mathsf b^{2}/8}$; iterating the tower
+property gives $Ee^{\lambda(F-EF)}\le e^{N\lambda^{2}\mathsf b^{2}/8}$. Markov's inequality gives
+$P(F-EF\ge\mathsf s)\le\exp(N\lambda^{2}\mathsf b^{2}/8-\lambda\mathsf s)$, minimised at
+$\lambda=4\mathsf s/(N\mathsf b^{2})$, which yields the claim.
+\end{proof}
+
+\begin{proof}[Proof of \cref{lem:unifop}]
+Decompose, uniformly in $\varphi$,
+$\hat T(\varphi)-T(\varphi)=\{\hat T(\varphi)-\bar T(\varphi)\}+\{\bar T(\varphi)-E\bar T(\varphi)\}+\{E\bar T(\varphi)-T(\varphi)\}$,
+the three brackets being handled in Steps 1--3. Throughout, (H1c) is in force and
+$\theta=\theta_\dagger$ is fixed.
+
+\emph{Step 1: the propensity term is uniform for free.} By the display in \cref{lem:opnoise} Step 4,
+$\|\hat T(\varphi)-\bar T(\varphi)\|_{L^{2}(\Pi)}\le\mathsf c_3c_\Pi n_{\mathrm m}^{-1}\sum_i|\hat\varrho-\varrho|(\Delta Z_i)$,
+and the bound does not involve $\varphi$ at all, because $|\mathsf C_{h_u}|\le\mathsf c_3$ whatever its
+argument. So $\sup_{\varphi\in\mathcal V_n}\|\hat T(\varphi)-\bar T(\varphi)\|=O_P(r_n)=O_P(\hat\delta_n)$.
+
+\emph{Step 2: the bias term is uniform, and C2$'$(i) is what makes it so.} Fix $\varphi\in\mathcal V_n$.
+The computation of \cref{lem:opnoise} Step 3 applies verbatim with $\mathcal M(\cdot,t)$ replaced by
+$\mathcal M(\cdot,t;\varphi,\theta_\dagger)$, and gives
+$|E\bar T(\varphi)(u,t)-\mathcal M(u,t;\varphi,\theta_\dagger)|\le\mathsf c_5h_u^{p_K}\sup_u|\partial_u^{p_K}\mathcal M(u,t;\varphi,\theta_\dagger)|$.
+By (P6)'s substitution lemma and the shift identity,
+$\mathcal M(u,t;\varphi,\theta)=E[\widetilde W\,w(t'\Phi(\Delta Z))\,G_{\varphi}(u)]$ with
+$G_\varphi(u)=G_{0}(u+\Delta\varphi)$, so for $1\le k\le p_K$
+\[
+\big|\partial_u^{k}\mathcal M(u,t;\varphi,\theta)\big|
+=\Big|E\Big[\widetilde W\,w(t'\Phi(\Delta Z))\,\partial_u^{k-1}f_{\Delta Y_\theta\mid\mathcal F_{XZW}}(u+\Delta\varphi)\Big]\Big|
+\;\le\;\bar w(t)\,E\big[\bar f_{k-1}\big],
+\]
+by (P1), (P2) and C2$'$(i)'s envelopes, \emph{and the right-hand side does not depend on $\varphi$},
+because the envelope $\bar f_{k-1}$ is a supremum over the first argument. Differentiation under the
+expectation is licensed by the same envelopes. Hence
+$\sup_{\varphi\in\mathcal V_n}\|E\bar T(\varphi)-T(\varphi)\|_{L^{2}(\Pi)}\le\mathsf c_5c_\Pi\max_{k\le p_K-1}E[\bar f_k]\,h_u^{p_K}=O(n^{-1/2})$
+under C5$'$(i). \emph{This is a free uniformity and it is worth naming: C2$'$(i) was introduced for
+\cref{prp:frechet}, and it pays a second time here.}
+
+\emph{Step 3: the centred empirical term, by discretisation and \cref{lem:bdiff}.}
+\emph{(3a) Lipschitz continuity in the sup-norm.} For $\varphi,\varphi'$, by \cref{lem:intker}(ii),
+(P1), (P2) and B1(iv.c),
+\[
+\big\|\bar T(\varphi)-\bar T(\varphi')\big\|_{L^{2}(\Pi)}
+\le\frac{\mathsf c_2c_\Pi}{h_u}\max_{i\in\mathcal I_m}\big|\Delta\varphi_i-\Delta\varphi'_i\big|
+\le\frac{2\mathsf c_2c_\Pi}{h_u}\big\|\varphi-\varphi'\big\|_\infty ,
+\]
+and the same bound holds for $E\bar T$ by Jensen; so
+$\varphi\mapsto\bar T(\varphi)-E\bar T(\varphi)$ is $\mathsf c_{10}h_u^{-1}$-Lipschitz in
+$\|\cdot\|_\infty$ with $\mathsf c_{10}:=4\mathsf c_2c_\Pi$.
+
+\emph{(3b) The tail at a fixed $\varphi$.} Put $Z(\varphi):=\|\bar T(\varphi)-E\bar T(\varphi)\|_{L^{2}(\Pi)}$.
+By \cref{lem:opnoise} Step 2, $EZ(\varphi)\le(EZ(\varphi)^{2})^{1/2}\le\mathsf c_3c_\Pi n_{\mathrm m}^{-1/2}$.
+Changing one observation in $\mathcal I_m$ changes $\bar T(\varphi)$ by at most
+$2\mathsf c_3c_\Pi/n_{\mathrm m}$ in $L^{2}(\Pi)$, hence changes $Z(\varphi)$ by at most that; so
+\cref{lem:bdiff} with $N=n_{\mathrm m}$ and $\mathsf b=2\mathsf c_3c_\Pi/n_{\mathrm m}$ gives, for
+$\mathsf s\ge2\mathsf c_3c_\Pi n_{\mathrm m}^{-1/2}$,
+\begin{equation}\label{eq:bdtail}
+P\big(Z(\varphi)\ge\mathsf s\big)\le P\big(Z(\varphi)-EZ(\varphi)\ge\mathsf s/2\big)
+\le\exp\Big(-\frac{n_{\mathrm m}\mathsf s^{2}}{8\mathsf c_3^{2}c_\Pi^{2}}\Big).
+\end{equation}
+
+\emph{(3c) Discretisation and the union bound --- clause (a).} Let
+$\epsilon_0:=h_u\hat\delta_n/(4\mathsf c_{10})$ and let $\varphi_1,\dots,\varphi_N$ be an
+$\epsilon_0$-net of $\mathcal V_n$ in $\|\cdot\|_\infty$, with
+$\log N\le\mathsf c_6(\mathsf R/\epsilon_0)^{1/s}$ by (F-e) --- available because $s>\tfrac12$, and a
+sup-norm net is a bracketing net, the brackets being $[\varphi_j-\epsilon_0,\varphi_j+\epsilon_0]$. By
+(3a), $\sup_{\mathcal V_n}Z\le\max_{j\le N}Z(\varphi_j)+\hat\delta_n/4$, and by \eqref{eq:bdtail} with
+$\mathsf s=\hat\delta_n/2$ and a union bound,
+\[
+P\Big(\sup_{\mathcal V_n}Z\ge\tfrac34\hat\delta_n\Big)
+\;\le\;\exp\Big(\mathsf c_6\Big(\frac{\mathsf R}{\epsilon_0}\Big)^{1/s}-\frac{n_{\mathrm m}\hat\delta_n^{2}}{32\mathsf c_3^{2}c_\Pi^{2}}\Big),
+\]
+which tends to $0$ precisely when $(\mathsf R/\epsilon_0)^{1/s}=o(n\hat\delta_n^{2})$. Substituting
+$\epsilon_0\asymp h_u\hat\delta_n$, $h_u\asymp n^{-1/16}$ (C5$'$(i)) and $\hat\delta_n=n^{-\alpha}$
+turns this into $n^{(1/16+\alpha)/s}=o(n^{1-2\alpha})$, which is \eqref{eq:entropy}. Combining with
+Steps 1--2 gives \eqref{eq:unifop}. \emph{The condition $\mathsf s\ge2\mathsf c_3c_\Pi n_{\mathrm m}^{-1/2}$
+required by \eqref{eq:bdtail} holds because $\hat\delta_n\ge n^{-1/2}\sqrt{\ln n}$.}
+
+\emph{(3d) Clause (b), the sieve version, with no classical entropy bound.}
+$\mathcal V_n\cap\mathcal S_n$ is contained in an $L^{2}(\pi)$-ball of radius $\bar\rho$ inside the
+$L_x$-dimensional space $\mathcal S_n$. On a quasi-uniform mesh the B-spline basis of A8 satisfies
+$\|\zeta\|_\infty\le\mathsf c_{11}L_x^{1/2}\|\zeta\|_{L^{2}(\pi)}$ for $\zeta\in\mathcal S_n$, so the set
+is contained in a $\|\cdot\|_\infty$-ball of radius $\mathsf c_{11}L_x^{1/2}\bar\rho$ in an
+$L_x$-dimensional normed space, whose $\epsilon$-covering number is at most
+$(1+2\mathsf c_{11}L_x^{1/2}\bar\rho/\epsilon)^{L_x}$ by the standard volumetric argument. Hence
+$\log N(\epsilon_0)\le L_x\log(1+2\mathsf c_{11}L_x^{1/2}\bar\rho/\epsilon_0)=O(L_x\ln n)$, since
+$\epsilon_0$ and $L_x$ are polynomial in $n$. The display of (3c) then vanishes exactly under
+\eqref{eq:entropysieve}. \emph{No Sobolev entropy bound is used in this clause, which is why it and not
+clause (a) is what \cref{prp:phirate} consumes.}
+
+\emph{Step 4: the $\hat T_{h_x}$ version.} $\hat T_{h_x}(\varphi)-\hat T(\varphi)$ is bounded, by
+\cref{lem:intker}(ii), (P1), (P2) and B1(iv.c), by
+$\mathsf c_2c_\Pi h_u^{-1}\max_i|\Delta_{h_x}\varphi_i-\Delta\varphi_i|$; and
+$|\Delta_{h_x}\varphi_i-\Delta\varphi_i|\le2\sup_x|\varphi_{h_x}(x)-\varphi(x)|
+\le\mathsf c_{12}\mathsf R\,h_x^{s-1/2}$ for $\varphi-\vdagger$ in the $H^{s}$-ball, by the order-$p_K$
+kernel bias and the Sobolev embedding $H^{s}\hookrightarrow C^{0,s-1/2}$ valid for $s>\tfrac12$, where
+$\varphi_{h_x}(x):=h_x^{-1}\int_{\mathcal X}C_{h_x}(x'-x,s_0(x))\varphi(x')dx'$ is the smoothing implicit
+in \eqref{eq:smdiff}, so that $\Delta_{h_x}\varphi_i=\Delta(\varphi_{h_x})_i$. \emph{The same displacement is
+present at $\varphi=\vdagger$ and is not a discretisation of the parameter but a bias of the
+$x$-smoothing}, which is why the hypothesis $\mathsf R h_x^{s-1/2}=O(\hat\delta_n)$ is stated
+separately rather than folded into \eqref{eq:entropy}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{lem:pathcont}]
+The $L^{2}(\pi)$ constraint at each stage is \cref{prp:phirate} Step 4, which gives
+$\|\hat\varphi^{(k)}-\vdagger\|_{L^{2}(\pi)}=O_P(\delta_n^{(k)})$ with $\delta_n^{(k)}$ nonincreasing
+in $k$ and $\delta_n^{(0)}=o_P(1)$; so $\max_{k\le\bar k}\|\hat\varphi^{(k)}-\vdagger\|_{L^{2}(\pi)}\le\bar\rho$
+with probability tending to one for any fixed $\bar\rho>0$, $\bar k$ being finite and not depending on
+$n$. \emph{The argument is not circular}: \cref{prp:phirate} Step 4's induction assumes containment at
+stage $k-1$ and derives it at stage $k$, and the base case is the hypothesis on $\hat\varphi^{(0)}$.
+The sieve constraint is by construction. The $H^{s}$ constraint is A5(vi), assumed at each stage; a
+finite union of $O_P(1)$ statements is $O_P(1)$, so the $H^{s}$ half holds with probability tending to
+one for $\mathsf R$ fixed and large.
+
+\emph{The within-stage bound, recorded because the memo's mechanism gives it and not the containment.}
+Under the normalisation $\|\hat{\mathcal A}_\varphi|_{\mathcal S_n}\|\le1$ of \cref{def:lfstep} and with
+$v_0=0$, $\|v_{m+1}-v_m\|_{L^{2}(\pi)}=\|\hat{\mathcal A}^\ast[\hat{\mathcal A}v_m+\hat T_{h_x}]\|
+\le\|\hat{\mathcal A}v_m+\hat T_{h_x}\|$, and the Landweber residual is nonincreasing in $m$ for a
+linear equation under that normalisation, so
+$\|v_m\|\le m\|\hat T_{h_x}(\hat\varphi^{(k-1)})\|\le 2m\mathsf c_3c_\Pi$, using
+\cref{lem:intker}(i), (P1), (P2) and B1(iv.c). \emph{This bounds the path linearly in the cap
+$\bar m_n$ and therefore does not by itself place the path in a ball of fixed radius}; it is the
+stopping rule that does, through Step 4.
+\end{proof}
+
+% ===========================================================================
+%  PART H.5 -- THE RATE
+% ===========================================================================
+
+\begin{proof}[Proof of \cref{lem:srctransfer}]
+\emph{(i).} Let $\mathcal P:=\mathcal A^\ast\mathcal A$ and $\hat{\mathcal P}:=\hat{\mathcal A}^\ast\hat{\mathcal A}$,
+both bounded, self-adjoint and positive on $\mathcal V$. For every $\zeta$,
+$\big|\|\mathcal A\zeta\|-\|\hat{\mathcal A}\zeta\|\big|\le\gamma\|\zeta\|$, i.e.
+$\langle\mathcal P\zeta,\zeta\rangle^{1/2}\le\langle\hat{\mathcal P}\zeta,\zeta\rangle^{1/2}+\gamma\|\zeta\|$,
+so $\mathcal P\preceq(\hat{\mathcal P}^{1/2}+\gamma I)^{2}\preceq2\hat{\mathcal P}+2\gamma^{2}I$ in the
+operator order. \emph{Heinz's inequality} --- if $0\preceq\mathcal Q_1\preceq\mathcal Q_2$ then
+$\mathcal Q_1^{\varkappa}\preceq\mathcal Q_2^{\varkappa}$ for $\varkappa\in[0,1]$, which is operator
+monotonicity of $z\mapsto z^{\varkappa}$ and \emph{fails for $\varkappa>1$} --- applied with
+$\varkappa=2\mu\le1$ gives $\mathcal P^{2\mu}\preceq(2\hat{\mathcal P}+2\gamma^{2}I)^{2\mu}
+\preceq2^{2\mu}(\hat{\mathcal P}^{2\mu}+\gamma^{4\mu}I)$. Writing
+$v=\mathcal P^{\mu}\varsigma$ and using
+$\|\mathcal P^{\mu}\varsigma\|^{2}=\langle\mathcal P^{2\mu}\varsigma,\varsigma\rangle$ together with the
+displayed dominance yields the decomposition $v=\hat{\mathcal P}^{\mu}\tilde\varsigma+\varkappa$ with
+$\|\tilde\varsigma\|\le2^{\mu}\mathsf R$ and $\|\varkappa\|\le2^{\mu}\mathsf R\gamma^{2\mu}$, by the
+standard interpolation of a positive operator inequality into a range inclusion with a residual; set
+$\mathsf c_8:=2^{\mu}$. \emph{The only step that restricts $\mu$ is Heinz, and it restricts it to
+$2\mu\le1$.}
+
+\emph{(ii).} Take $\mathcal V=\ell^{2}$, $\mathcal A=\operatorname{diag}(\sigma_j)$ with
+$\sigma_j=j^{-a}$, and $\hat{\mathcal A}=\operatorname{diag}(\hat\sigma_j)$ with $\hat\sigma_j=\sigma_j$
+for $j\ne J$ and $\hat\sigma_J=\sigma_J+\gamma$. Then $\|\hat{\mathcal A}-\mathcal A\|=\gamma$, which
+may be made arbitrarily small. Take $v=\sigma_J^{2\mu}e_J$, which satisfies
+$v=(\mathcal A^\ast\mathcal A)^{\mu}e_J$ with $\|e_J\|=1$. Membership in
+$\{(\hat{\mathcal A}^\ast\hat{\mathcal A})^{\mu}\tilde\varsigma:\|\tilde\varsigma\|\le\mathsf M\}$
+requires $\sigma_J^{2\mu}\le\mathsf M(\sigma_J+\gamma)^{2\mu}$, which holds; so a single coordinate is
+not enough, and the counterexample must be spread. Take instead $\hat\sigma_j=\sigma_j+\gamma$ for
+\emph{all} $j$ and $v=\sum_j\sigma_j^{2\mu}\varsigma_je_j$ with $\varsigma\in\ell^{2}$, $\|\varsigma\|\le\mathsf R$.
+Membership requires $\sum_j\sigma_j^{4\mu}\varsigma_j^{2}(\sigma_j+\gamma)^{-4\mu}\le\mathsf M^{2}$,
+and since $\sigma_j\downarrow0$ the ratio $\sigma_j^{4\mu}/(\sigma_j+\gamma)^{4\mu}\to0$; the
+\emph{distance} to the set is then bounded below by the tail of $v$ beyond the index at which
+$\sigma_j<\gamma$, which for $\varsigma$ concentrated on that tail is at least $\tfrac12\|v\|$ for
+every $\mathsf M$ once $\gamma$ is fixed. Choosing $\varsigma$ so concentrated gives the claim.
+\emph{The failure is not an artefact of the diagonal example: it is the statement that a perturbation
+of size $\gamma$ destroys all information about singular directions with $\sigma_j\ll\gamma$, and a
+source condition of index $\mu>\tfrac12$ is precisely a statement about those directions.}
+
+\emph{(iii).} $\|v\|_{H^{s}}\le\mathsf R$ mentions no operator, so it transfers trivially. That a
+finite-rank operator cannot satisfy $\|\hat{\mathcal A}\zeta\|\asymp\|\zeta\|_{H^{-a}}$ on all of
+$\mathcal V$ is immediate: the left side vanishes on the infinite-dimensional
+$\ker\hat{\mathcal A}$ of \cref{prp:hatAprop}(ii), and the right side does not vanish on any nonzero
+$\zeta$, the $H^{-a}$ norm being a norm. Restricting to $\mathcal S_n$, of dimension $L_x$, removes the
+obstruction whenever $L_x\le\operatorname{rank}\hat{\mathcal A}_\varphi$, for which
+$L_x\ll n^{1/2}\le n_{\mathrm m}$ (A8) is sufficient in generic position.
+\end{proof}
+
+\begin{proof}[Proof of \cref{prp:phirate}]
+The strategy is one sentence: \emph{at each stage, solve a linear ill-posed equation whose data error
+is the operator noise plus the previous stage's squared error, and iterate the resulting recursion to
+its fixed point}, which exists and is \eqref{eq:phirate} exactly when $\mu>\tfrac12$.
+
+\emph{Step 1: the linearised equation and its exact data error.} Fix a stage $k$ and write
+$\varphi_\circ:=\hat\varphi^{(k-1)}$, $v_\dagger:=\vdagger-\varphi_\circ$ and
+$\varepsilon:=\|v_\dagger\|_{L^{2}(\pi)}$. Then, in $L^{2}(\Pi)$,
+\begin{align}
+\hat{\mathcal A}_{\varphi_\circ}v_\dagger+\hat T_{h_x}(\varphi_\circ,\theta_\dagger)
+&=\underbrace{\hat T_{h_x}(\vdagger,\theta_\dagger)}_{\text{(N1)}}
+\;-\;\underbrace{\Big\{\hat T_{h_x}(\vdagger,\theta_\dagger)-\hat T_{h_x}(\varphi_\circ,\theta_\dagger)-\hat{\mathcal A}_{\varphi_\circ}v_\dagger\Big\}}_{\text{(N2)}} .
+\label{eq:stagedecomp}
+\end{align}
+\emph{This is an identity, not an approximation.} (N1) is the operator noise at the truth and is
+$O_P(\hat\delta_n)$ by \cref{lem:opnoise} together with \cref{lem:unifop} Step 4, which prices
+$\hat T_{h_x}-\hat T$ at $\mathsf Rh_x^{s-1/2}=O(\hat\delta_n)$. (N2) is the exact Taylor remainder of
+$\hat T_{h_x}$ and is bounded by \eqref{eq:hatTxrem}, hence by
+$\tfrac12\mathsf c_4c_\Pi h_u^{-2}\cdot n_{\mathrm m}^{-1}\sum_{i}(\Delta_{h_x}v_{\dagger,i})^{2}$.
+\emph{That empirical second moment carries no bandwidth}, and the point is worth isolating: writing
+$v_{h_x}$ for the smoothing of \cref{lem:unifop} Step 4, so that
+$\Delta_{h_x}v_i=\Delta(v_{h_x})_i$, Young's inequality gives
+$\|v_{h_x}\|_{L^{2}(dx)}\le\big(h_x^{-1}\!\int|C_{h_x}(w,\cdot)|dw\big)\|v\|_{L^{2}(dx)}
+\le2c_C\mathsf c_2\|v\|_{L^{2}(dx)}$, and then \cref{lem:nusigma}(i) gives
+$E[(\Delta_{h_x}v)^{2}]\le4\bar c_\pi(2c_C\mathsf c_2)^{2}\|1/\pi\|_\infty\|v\|^{2}_{L^{2}(\pi)}$.
+A Markov bound at each point of an $\epsilon$-net of the $L_x$-dimensional $\mathcal S_n$, with the
+volumetric entropy of \cref{lem:unifop} (3d), upgrades this to
+$\sup_{v\in\mathcal S_n\setminus\{0\}}n_{\mathrm m}^{-1}\sum_i(\Delta_{h_x}v_i)^{2}/\|v\|^{2}_{L^{2}(\pi)}=O_P(1)$
+under A8's upper end $L_x\ll n^{1/2}$. Hence (N2) $=O_P(h_u^{-2}\varepsilon^{2})$.
+\emph{The crude route --- $\|\Delta_{h_x}v\|_2^{2}\le n_{\mathrm m}\max_i(\Delta_{h_x}v_i)^{2}$ with
+\eqref{eq:hstep1b} --- would give $h_u^{-2}h_x^{-1}\varepsilon^{2}$, and the spurious $h_x^{-1}$ would
+make the condition of \cref{rem:h6bandwidth} fail at every configuration of interest.}
+\emph{So $v_\dagger$ solves the linear equation of \cref{def:lfstep}(a) up to a data error of size}
+\begin{equation}\label{eq:effnoise}
+\hat\delta_n^{\mathrm{eff}}\;:=\;\mathsf c_{14}\Big(\hat\delta_n\ln n\;+\;h_u^{-2}\varepsilon^{2}\Big) .
+\end{equation}
+\emph{The bandwidth factor $h_u^{-2}$ is carried explicitly here and nowhere else};
+\cref{rem:h6bandwidth} records what it costs and how it is paid.
+
+\emph{Step 2: linear Landweber--Fridman with the discrepancy principle, applied to that equation.}
+The equation of \cref{def:lfstep}(a) is \emph{linear} in $v$, its operator
+$\hat{\mathcal A}_{\varphi_\circ}$ is bounded with norm at most one by the normalisation, and its data
+error is \eqref{eq:effnoise}. Under (P-a) the source condition of index $\mu$ holds for $v_\dagger$ in
+the Hilbert scale, and by \cref{lem:srctransfer}(iii) the link condition transfers it to the singular
+system of $\hat{\mathcal A}_{\varphi_\circ}$ restricted to $\mathcal S_n$. \emph{Linear
+Landweber--Fridman with the discrepancy principle at level $\tau_{\mathrm{DP}}\hat\delta^{\mathrm{eff}}_n$,
+$\tau_{\mathrm{DP}}>2$, and a source condition of index $\mu>0$, delivers}
+\begin{equation}\label{eq:linlf}
+\big\|v_{\hat m^{(k)}}-v_\dagger\big\|_{L^{2}(\pi)}
+\;=\;O_P\Big(\big(\hat\delta^{\mathrm{eff}}_n\big)^{2\mu/(2\mu+1)}\Big)\;+\;O_P\big(\mathsf R L_x^{-s}\big)
+\;+\;O_P\big(\gamma_n\varepsilon\big),
+\end{equation}
+the second term being the sieve approximation error and the third the operator error
+$\|\hat{\mathcal A}_{\varphi_\circ}-\mathcal A_{\varphi_\circ}\|\,\|v_\dagger\|$ from \cref{lem:aerr}.
+\emph{Linear Landweber does not saturate}: the exponent $2\mu/(2\mu+1)$ is available for every
+$\mu>0$, which is the single property of the linear theory that the whole proposition turns on, and it
+is the property the nonlinear theory does not have. Under (P-c) the second term is $O(\hat\delta_n)$
+and hence negligible against the first; under (P-b) with $\varepsilon=O(\delta_n)$ the third is
+$O(\hat\delta_n^{1/(2\mu+1)}\delta_n)=O(\hat\delta_n^{1/(2\mu+1)}\hat\delta_n^{2\mu/(2\mu+1)})=O(\hat\delta_n)$,
+also negligible. The stopping rule is feasible w.p.$\to1$ by (P-e) and \cref{prp:stopfeas}(iii), and
+the residual it targets is transferred from $\hat T_{h_x}$ to $T$ by \cref{lem:unifop} clause (b),
+which is where L-19 is consumed.
+
+\emph{Step 3: the recursion.} Substituting \eqref{eq:effnoise} into \eqref{eq:linlf} and writing
+$\delta_n^{(k)}$ for a bound on $\|\hat\varphi^{(k)}-\vdagger\|_{L^{2}(\pi)}$,
+\begin{equation}\label{eq:fixedpoint}
+\delta_n^{(k)}\;\le\;\mathsf c_{15}\Big(\hat\delta_n\ln n+h_u^{-2}\big(\delta_n^{(k-1)}\big)^{2}\Big)^{\kappa},
+\qquad \kappa:=\frac{2\mu}{2\mu+1}\in\big(\tfrac12,1\big)\ \text{ by }\eqref{eq:muhalf}.
+\end{equation}
+
+\emph{Step 4: the recursion contracts, and $\mu>\tfrac12$ is exactly what makes it do so.} Two regimes.
+\emph{(a) While $h_u^{-2}(\delta_n^{(k-1)})^{2}\ge\hat\delta_n\ln n$}, \eqref{eq:fixedpoint}
+gives $\delta_n^{(k)}\le(2\mathsf c_{15})^{\kappa}h_u^{-2\kappa}(\delta_n^{(k-1)})^{2\kappa}$,
+and $2\kappa>1$ if and only if $4\mu>2\mu+1$, i.e.\ if and only if $\mu>\tfrac12$. So, once
+$\delta_n^{(k-1)}$ is below the fixed point of $\varepsilon\mapsto\mathsf c\varepsilon^{2\kappa}$ ---
+which it is for $n$ large, because $\delta_n^{(0)}=o_P(1)$ and the bandwidth factor is polynomially
+small in $n$ while $\delta_n^{(0)}$ is $o_P(1)$ only, so the head of the recursion is entered after a
+number of stages depending on the rate of $\delta_n^{(0)}$ and on $\kappa$ and not on $n$ --- the
+errors decrease at the superlinear order $2\kappa$ and reach the second regime in
+$\bar k=\lceil\log_{2\kappa}\log(1/\hat\delta_n)/\log(1/\delta_n^{(0)})\rceil$ stages, a quantity that
+is bounded in $n$ whenever $\delta_n^{(0)}=O_P(n^{-\varsigma})$ for some $\varsigma>0$ and is otherwise
+$O(\log\log n)$.
+\emph{(b) Once $h_u^{-2}(\delta_n^{(k-1)})^{2}\le\hat\delta_n\ln n$}, \eqref{eq:fixedpoint}
+gives $\delta_n^{(k)}\le(2\mathsf c_{15})^{\kappa}(\hat\delta_n\ln n)^{\kappa}=O(\delta_n)$, and the
+regime is self-sustaining: $h_u^{-2}\delta_n^{2}=h_u^{-2}(\hat\delta_n\ln n)^{2\kappa}\le\hat\delta_n\ln n$
+if and only if $(\hat\delta_n\ln n)^{2\kappa-1}\le h_u^{2}$, which is hypothesis (P-f) and is discussed
+in \cref{rem:h6bandwidth}. Hence the fixed point is $\delta_n=(\hat\delta_n\ln n)^{\kappa}$ and it is
+attained at stage $\bar k$.
+\emph{If $\mu=\tfrac12$ exactly, $2\kappa=1$ and the recursion neither contracts nor diverges; if
+$\mu<\tfrac12$ it diverges. That is the same threshold at which the inherited nonlinear route
+saturates, approached from the other side.}
+
+\emph{Step 5: containment, and the absence of circularity.} Steps 1--4 assume
+$\hat\varphi^{(k-1)}\in\mathcal V_n\cap\mathcal S_n$, which \cref{lem:pathcont} supplies by induction
+on $k$ with base case (P-a)'s consistency of $\hat\varphi^{(0)}$; and \cref{lem:pathcont} in turn cites
+Step 4 for stage $k$ given stage $k-1$. \emph{The induction is on $k$ and $\bar k$ is finite, so the
+mutual reference is a simultaneous induction and not a circle.}
+
+\emph{Step 6: the conclusion, and what A5 gains.} \eqref{eq:phirate} is Step 4(b) at $k=\bar k$.
+A5(ii)'s $\delta_n=o_P(n^{-1/4})$ is \cref{prp:stopfeas}(iv) under \eqref{eq:frontier}; A5(i)'s two
+components are \cref{lem:opnoise}(i)--(iii); A5(iii) is the arithmetic already in the block.
+\emph{A5(vi) is not discharged: it is consumed, at \cref{lem:pathcont}(c).} A5(iv) and A5(v) concern
+$\hat\ell$ and the plug-in and are untouched here.
+\end{proof}
+
+\begin{remark}[(P-f): the one bandwidth-explicit condition, and the case for re-tuning $h_u$]\label{rem:h6bandwidth}
+Hypothesis (P-f) is $\delta_n^{2}=O\big(h_u^{2}\,\hat\delta_n\ln n\big)$, equivalently
+$(\hat\delta_n\ln n)^{2\kappa-1}=O(h_u^{2})$. \emph{It is the only condition in Part H in which a
+bandwidth appears that is not already in C5$'$}, and it is stated in \cref{prp:phirate} in the rate
+variables and unpacked only here, so that the proposition reads in $\hat\delta_n,\delta_n,\gamma_n$.
+Write $\hat\delta_n=n^{-\alpha}$, $\alpha=r/(2r+d_Z)$, and ignore logarithms.
+
+\emph{(1) At C5$'$(i)'s bandwidth the condition binds, and at low $\mu$ it fails.} With
+$h_u\asymp n^{-1/16}$, (P-f) reads $\alpha(2\kappa-1)\ge\tfrac18$. At $\mu=1$ ($\kappa=\tfrac23$,
+$2\kappa-1=\tfrac13$) this is $\alpha\ge\tfrac38$, i.e.\ exactly $r\ge4.5$ at $d_Z=3$ --- the frontier
+value, so the two conditions meet at a point. At $\mu=2$ ($2\kappa-1=\tfrac35$) it is
+$\alpha\ge\tfrac5{24}\approx0.208$, comfortably implied by the frontier's $r>2.5$ at $d_Z=3$
+($\alpha>0.3125$). At $\mu=\tfrac34$ ($2\kappa-1=\tfrac15$) it is $\alpha\ge\tfrac58$, which is
+\emph{impossible} because $\alpha<\tfrac12$ always. \emph{So at C5$'$(i)'s bandwidth, (P-f) fails for
+$\mu$ near $\tfrac12$ and holds with room for $\mu\ge2$.}
+
+\emph{(2) And C5$'$(i)'s bandwidth is tuned to the wrong target, which is the deliverable.} C5$'$(i)
+sets $h_u\asymp n^{-1/16}$ by matching the smoothing bias $h_u^{p_K}$ to the \emph{stochastic floor}
+$n^{-1/2}$, and the block's own comment guards that choice against a reader who would ``correct'' $16$
+to $17$. \emph{But the target Step 6 needs the bias to meet is $\hat\delta_n$, not $n^{-1/2}$}, and
+$\hat\delta_n\gg n^{-1/2}$ in every configuration A5(i) calls of interest. Taking the largest
+admissible bandwidth, $h_u\asymp\hat\delta_n^{1/p_K}=n^{-\alpha/8}$, leaves \cref{lem:opnoise}(ii)
+intact --- the bias is then $O(\hat\delta_n)$, which is all \eqref{eq:opnoise} needs --- and turns
+(P-f) into $\alpha(2\kappa-1)\ge\alpha/4$, i.e.\ into a condition free of $\alpha$ altogether:
+\begin{equation}\label{eq:muthreshold}
+2\kappa-1\;\ge\;\tfrac14
+\qquad\Longleftrightarrow\qquad
+\kappa\ge\tfrac58
+\qquad\Longleftrightarrow\qquad
+\mu\;\ge\;\tfrac56 .
+\end{equation}
+\emph{So re-tuning $h_u$ converts a joint restriction on $(\mu,\alpha)$ into a clean threshold on $\mu$
+alone}, and the threshold is $\tfrac56$, above \eqref{eq:muhalf}'s $\tfrac12$ and below the $\mu=1$ row
+of the frontier table. Under H1 and plan \S2.6's scope $s>a+\tfrac12$, which gives
+$\mu>\tfrac12+\tfrac1{4a}$, \eqref{eq:muthreshold} is \emph{implied} whenever $a\le\tfrac34$ and is an
+additional restriction otherwise.
+
+\emph{(3) What this asks of the block.} Either C5$'$(i) is amended to
+$h_u\asymp\mathrm{sd}(\Delta U)\,\hat\delta_n^{1/p_K}$ --- with the guard rewritten, since the guard
+protects a matching to the wrong target --- and $\mu\ge\tfrac56$ is added to the budget table; or
+C5$'$(i) is kept and (P-f) is carried as the joint condition $\alpha(2\kappa-1)\ge\tfrac18$, which
+excludes $\mu$ below roughly $0.9$ at $d_Z=3$. \emph{The first is recommended and is cheap; the second
+is a real loss.} Either way this is the fourth new line Step 6 charges --- after \eqref{eq:entropy},
+(P-b) and A5(vi)'s route change --- and it is the one the coordinator should settle before Step 7,
+because \texttt{thm:rootn} reads $\delta_n$ off A5(ii) and A5(ii) is now discharged subject to it.
+\end{remark}
+
+% ============================================================================
+%  END OF PART H PROOFS.
+% ============================================================================

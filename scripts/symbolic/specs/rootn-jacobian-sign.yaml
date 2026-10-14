@@ -1,0 +1,141 @@
+claim_id: rootn-jacobian-sign
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (def:onestep: eq:Jhat, 'so that partial_theta bar-psi_n(theta) = -hat J(theta) identically', and eq:onestep, 'hat theta := hat theta^{(0)} + hat J^{-1} bar-psi_n(hat theta^{(0)})'); proofs.tex (thm:rootn Step 1: the Taylor identity 'bar-psi_n(theta_dagger) = bar-psi_n(hat theta^{(0)}) - hat J (theta_dagger - hat theta^{(0)}) + Psi^theta_n' and its consequence eq:rootnid, 'hat theta - theta_dagger = hat J^{-1}[bar-psi_n(theta_dagger) - Psi^theta_n]  exactly'); results.tex (eq:rootn, with J^{-1} and not -J^{-1}); results.tex (lem:momzero(iii): 'partial_theta E[psi(theta, zeta_star)] at theta_dagger = -J'); results.tex (eq:JSig, J with a PLUS between its two summands)"
+# WHY THIS SPEC EXISTS.  A sign error in the Jacobian convention is invisible in the
+# limit law -- the sandwich J^{-1} Sigma J^{-1'} is unchanged by J -> -J -- and
+# fatal in a simulation, because it sends the one-step update in the wrong
+# direction.  The review kept it for exactly that reason.  This file mechanises the
+# LINK from the sign convention to the estimator, which is where the damage would
+# be done and which no existing spec covers.
+#
+# THE THREE LINKS, AND WHICH ONE THIS IS.  The claim
+# "partial_theta E[psi] = -J, hence +hat J^{-1} in eq:onestep and J^{-1} in eq:rootn"
+# has three parts and this suite covers them in three files:
+#   1. THE DERIVATIVE.  d psi / d theta = -dZ^2 - Wt ell dZ, by the chain rule through
+#      the affine map theta -> Delta U(theta, phi).  That is jacobian-scalar-chain
+#      (already MATCH).
+#   2. THE CONVENTION.  J := -E[partial_theta psi], so that eq:JSig's PLUS is
+#      correct.  That is jacobian-sign-convention (already MATCH).
+#   3. THE PROPAGATION.  Given partial_theta bar-psi_n = -hat J, the PLUS sign in
+#      eq:onestep is what makes the preliminary error CANCEL rather than double, and
+#      what makes eq:rootnid carry +hat J^{-1} and eq:rootn carry +J^{-1}.
+#      THAT IS THIS FILE, and it was not covered.
+# The three together are the claim; none alone is.  This one is the one a simulation
+# codes.
+#
+# THE SURROGATE, AND WHY IT IS THE RIGHT ONE.  verify.py's grammar has no generic
+# function, so bar-psi_n is instantiated as the QUADRATIC
+#
+#     bar-psi_n(t)  =  Psi0 - Jc t - Hc t^2 / 2 ,
+#
+# scalar (p = 1).  Three things this buys, and they are why the surrogate is
+# quadratic and not affine:
+#   (i)  hat J is DERIVED, not asserted.  `start` contains
+#        -diff(Psi0 - Jc*t0 - Hc*t0**2/2, t0), which evaluates at parse time to
+#        Jc + Hc t0.  So the file performs the differentiation AND applies the minus
+#        of def:onestep's "partial_theta bar-psi_n = -hat J", rather than writing
+#        hat J down by hand.  The Jacobian is therefore evaluated AT hat theta^{(0)},
+#        matching eq:Jhat's hat J := hat J(hat theta^{(0)}), and the surrogate is
+#        theta-dependent so that the evaluation point is testable at all.
+#   (ii) Psi^theta_n is GENERATED, not symbolised.  For a quadratic the Taylor
+#        expansion of Step 1 is exact and returns Psi^theta_n = -Hc (td - t0)^2 / 2,
+#        which is the paper's second-order remainder with its 1/2 and its sign, and
+#        which is bounded in norm by (1/2)|Hc| |td - t0|^2 -- exactly Step 1's
+#        display with Hc standing for the Hessian envelope
+#        (max_k ||partial_u hat-ell^{(-k)}||_inf) E_n||Delta Z||^2.  An affine
+#        surrogate would set Psi^theta_n = 0 and the file would not test the term
+#        Step 2 is about.
+#   (iii) The whole chain is ONE expression, so a sign flip anywhere in it moves the
+#        residual.
+#
+# THE IDENTITY.  With t0 = hat theta^{(0)}, td = theta_dagger and the surrogate
+# above, Step 1's rearrangement is
+#
+#     hat theta - theta_dagger
+#        =  t0 - td + hat J^{-1} bar-psi_n(t0)                       [eq:onestep]
+#        =  hat J^{-1} [ bar-psi_n(td) - Psi^theta_n ]               [eq:rootnid]
+#
+# and with hat J = Jc + Hc t0, bar-psi_n(td) = Psi0 - Jc td - Hc td^2/2 and
+# Psi^theta_n = -Hc (td - t0)^2/2 the right-hand side is
+#
+#     ( Psi0 - Jc td - Hc td^2/2 + Hc (td - t0)^2/2 ) / ( Jc + Hc t0 ) ,
+#
+# which is `claimed_end`.  Clearing the denominator, both numerators equal
+# Psi0 - Jc td - Hc t0 td + Hc t0^2/2, so the identity is exact -- verified by hand
+# before it was written down, and the harness is being asked to confirm arithmetic
+# that is already checked, which is the standard this suite holds itself to.
+#
+# WHAT A SIGN ERROR DOES, STATED SO A SIMULATION CAN BE READ AGAINST IT.  If the
+# convention were taken as partial_theta bar-psi_n = +hat J, the same assembly gives
+#
+#     hat theta - theta_dagger  =  2 (hat theta^{(0)} - theta_dagger)
+#                                  +  hat J^{-1}[bar-psi_n(td) - Psi^theta_n] ,
+#
+# i.e. the preliminary error is DOUBLED instead of removed.  The one-step would then
+# inherit O_P(n^{-1/2} + delta_n) -- lem:prelimtheta(i)'s rate -- instead of
+# improving on it, so sqrt(n)(hat theta - theta_dagger) would diverge at any
+# configuration with delta_n >> n^{-1/2}, which lem:prelimtheta's closing paragraph
+# says is EVERY configuration the block admits (kappa alpha < 1/2).  That is a
+# visible simulation failure and an invisible one in the limit law, which is the
+# review's point in one sentence.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.
+# (a) IT IS SCALAR.  p = 1, so it cannot test that hat J^{-1} stands on the LEFT of
+#     bar-psi_n throughout.  In the p > 1 case the typing forbids the error --
+#     bar-psi_n is p x 1 and hat J is p x p, so right multiplication is not
+#     well formed -- and jacobian-dims-numeric is the file that checks the typing.
+#     Sign is dimension-free; ORDER is not, and this file says nothing about order.
+# (b) It does not derive partial_theta E[psi(theta, zeta_star)] = -J from
+#     partial_theta psi = -(dZ dZ' + Wt ell dZ').  That interchange of derivative and
+#     expectation is lem:momzero(iii), licensed by A2'(i.a) and (i.b) through
+#     cor:elldiff's sup-norm budgets and dominated convergence; it is an ANALYTIC
+#     step and not an identity.  The file certifies the SAMPLE chain, which is the
+#     one an estimator executes.
+# (c) It does not verify that a quadratic is the right surrogate for bar-psi_n.  It
+#     is not: bar-psi_n is only twice continuously differentiable, and Psi^theta_n is
+#     the integral remainder.  But eq:rootnid is a FORMAL rearrangement -- given
+#     bar-psi_n(td) = bar-psi_n(t0) - hat J (td - t0) + Psi^theta_n as the DEFINITION
+#     of Psi^theta_n, the assembly follows with no smoothness at all.  The quadratic
+#     is chosen because it makes Psi^theta_n nonzero and explicit, not because the
+#     identity needs it.
+# (d) The step Jc + Hc t0 cancelling against its own inverse assumes hat J != 0,
+#     which SymPy performs automatically.  The paper carries the same assumption
+#     explicitly, as the event {hat J nonsingular}, on which eq:onestep and
+#     eq:rootnid are both stated and whose probability tends to one by
+#     lem:sandwich(i).  The file inherits that restriction silently and this
+#     sentence is the record of it.
+#
+# FALSIFICATION (hand-computed).
+#   * start with "+diff(...)" in place of "-diff(...)" -- i.e. hat J := +partial_theta
+#     bar-psi_n, the convention jacobian-sign-convention exists to forbid -- leaves
+#     residual -2 (Psi0 - Jc t0 - Hc t0^2/2)/(Jc + Hc t0), i.e. minus twice the
+#     one-step correction; MISMATCH.  The residual IS the diagnosis.
+#   * claimed_end negated, "-(Psi0 - Jc*td - Hc*td**2/2 + Hc*(td - t0)**2/2)/(Jc + Hc*t0)"
+#     -- the -J^{-1} misreading of eq:rootn -- leaves residual twice claimed_end;
+#     MISMATCH.
+#   * claimed_end with "- Hc*(td - t0)**2/2" in place of "+ Hc*(td - t0)**2/2" -- the
+#     remainder ADDED rather than subtracted in eq:rootnid -- leaves residual
+#     Hc (td - t0)^2/(Jc + Hc t0), nonzero for Hc != 0 and td != t0; MISMATCH.
+#   * claimed_end denominator "(Jc + Hc*td)" in place of "(Jc + Hc*t0)" -- the
+#     Jacobian evaluated at theta_dagger rather than at hat theta^{(0)}, which is the
+#     error def:onestep's closing sentence warns against ("The Jacobian is evaluated
+#     at hat theta^{(0)} and not at hat theta, which is what makes eq:onestep a
+#     closed-form estimator") -- leaves a nonzero rational residual with denominator
+#     (Jc + Hc t0)(Jc + Hc td), vanishing only on t0 = td; MISMATCH.
+#
+# PREDICTED: MATCH.  After the parse-time differentiation the difference is a single
+# rational function whose numerator is identically zero; sp.simplify reaches it, and
+# sp.cancel and sp.together each reach it independently.
+variables:
+  t0:
+    domain: real
+  td:
+    domain: real
+  Psi0:
+    domain: real
+  Jc:
+    domain: real
+  Hc:
+    domain: real
+start: "t0 - td + (Psi0 - Jc*t0 - Hc*t0**2/2)/(-diff(Psi0 - Jc*t0 - Hc*t0**2/2, t0))"
+operation: "simplify"
+claimed_end: "(Psi0 - Jc*td - Hc*td**2/2 + Hc*(td - t0)**2/2)/(Jc + Hc*t0)"

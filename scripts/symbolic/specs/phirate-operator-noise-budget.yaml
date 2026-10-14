@@ -1,0 +1,87 @@
+claim_id: phirate-operator-noise-budget
+source: "*** SUBJECT WITHDRAWN: (P-b) IS STRUCK FROM THE PAPER. THIS SPEC IS A RETIREMENT RECORD, NOT COVERAGE. *** The struck hypothesis is at quality_reports/theory/panel-npiv-discrete/results.tex ('(P-b) [struck] --- through round 9 this read gamma_n = O(hat-delta_n^{1/(2 mu + 1)}), the operator-estimation budget of lem:aerr. It belonged to the perturbation-of-A route, which Step 0 of the proof does not take; the label is kept empty rather than renumbered so that a round-9 citation of (P-b) lands here'). lem:aerr is now declared consumer-free at results.tex."
+# ===========================================================================
+# ===  RETIRED SPEC.  DO NOT COUNT THIS TOWARD VERIFICATION COVERAGE.       ===
+# ===  IT WILL REPORT MATCH FOREVER, AND THE MATCH MEANS NOTHING ABOUT      ===
+# ===  THE CURRENT PAPER, BECAUSE THE HYPOTHESIS IT PRICES NO LONGER        ===
+# ===  EXISTS.  Retired round 12.                                           ===
+# ===========================================================================
+#
+# WHAT HAPPENED.  This spec verified the exponent arithmetic behind hypothesis
+# (P-b) of prp:phirate.  (P-b) has been STRUCK.  Two changes did it, in the same
+# round:
+#
+#   1. (P-a) was restated SPECTRALLY AND AT THE COMPRESSION, as (P-a.3)
+#      (results.tex).  The proof of prp:phirate now applies the linear
+#      regularisation theory CONDITIONALLY ON THE SAMPLE, at the realised operator
+#      hat-A restricted to S_n, so no transfer of a source condition from A to
+#      hat-A is needed and the perturbation-of-A route Step 0 declines is not taken.
+#   2. lem:aerr, which supplied gamma_n, is now declared CONSUMER-FREE in its own
+#      statement: "Consumers: none.  This lemma, together with eq:gamman and
+#      eq:entropyA, is consumed by no result in this file, and the
+#      assumption-auditor should read it that way" (results.tex).  It is
+#      retained as the re-derivation C5'(ii) asks for and as the price tag on the
+#      declined route -- not as a rate the proof consumes.
+#
+# So there is no live hypothesis of the form gamma_n = O(hat-delta_n^{1/(2 mu + 1)})
+# anywhere in the paper, and no result consumes gamma_n at all.
+#
+# WHY IT IS RETAINED RATHER THAN DELETED -- THE DECISION AND THE REASON.
+# Retained, with this annotation, for four reasons.
+#
+#   (a) THE PAPER ITSELF DOES EXACTLY THIS.  results.tex keeps the (P-b)
+#       LABEL in place, marked "[struck]", explicitly "so that a round-9 citation
+#       of (P-b) lands here" rather than renumbering (P-c)...(P-g).  Deleting the
+#       spec would destroy, on the verification side, the property the paper
+#       deliberately preserves on the exposition side: that a stale citation lands
+#       on a notice instead of on nothing.  Matching the paper's own retirement
+#       discipline is the house style, and this is the case that most directly
+#       tests it.
+#   (b) THERE ARE LIVE INBOUND CITATIONS.  theory_memo.md:2418 and
+#       step6_memo.md:145 both list this spec as the mechanisation of budget line
+#       N-2, and theory_memo.md:2283 / step6_memo.md:10 list its path among the
+#       artefacts of an earlier dispatch.  A deleted file makes those three
+#       citations dangle silently; an annotated file answers them.
+#   (c) THE ARITHMETIC IS STILL TRUE AND STILL DESCRIBES SOMETHING.  lem:aerr
+#       reading (ii) (results.tex) still says gamma_n "would multiply
+#       ||v_dagger - varphi|| wherever it appeared, entering an effective noise
+#       level at gamma_n delta_n and not at gamma_n."  The identity below is what
+#       that reading costs IF the perturbation route were ever taken.  It is the
+#       price tag on a declined route, which is precisely the reason lem:aerr is
+#       itself retained.  Deleting it would discard the one mechanised part of a
+#       route the paper says it wants a reader to be able to price.
+#   (d) A RETIREMENT IS EVIDENCE.  The record that this budget line was priced and
+#       then withdrawn is worth more to the next dispatch than the absence of a
+#       file, because absence is indistinguishable from never having checked.
+#
+# THE COST OF RETAINING IT, STATED PLAINLY.  verify.py has no RETIRED exit status:
+# this spec will exit 0 on every run and inflate any raw MATCH count.  That is a
+# real defect and the annotation is the mitigation, not a fix.  Three mitigations
+# are in place: the `source` field opens with the withdrawal in capitals, so every
+# single run prints it immediately under the report header; the banner above is the
+# first thing a reader of the file sees; and this paragraph names the counting
+# hazard explicitly.  ANY TALLY OF THIS SUITE MUST REPORT IT AS
+# "n MATCH, of which 1 RETIRED", not as n MATCH.  If verify.py later gains a
+# `status: retired` key (exit 4, say), this spec is the first that should carry it.
+#
+# ---------------------------------------------------------------------------
+# THE ORIGINAL CLAIM, PRESERVED VERBATIM FOR THE RECORD.
+# The operator error enters the linearised stage MULTIPLIED by the current error,
+# as gamma_n * delta_n, and is negligible against the noise level hat-delta_n
+# exactly when gamma_n * delta_n = O(hat-delta_n).  At the fixed point
+# delta_n = hat-delta_n^{2 mu/(2 mu + 1)}, so the requirement is
+#     gamma_n <= hat-delta_n^{1 - 2 mu/(2 mu + 1)} = hat-delta_n^{1/(2 mu + 1)} .
+# The spec verifies the exponent arithmetic 1 - 2 mu/(2 mu + 1) = 1/(2 mu + 1),
+# which is what made (P-b) WEAKER than gamma_n = O(hat-delta_n) (since
+# hat-delta_n -> 0 and 1/(2 mu + 1) < 1 for mu > 0).
+# ---------------------------------------------------------------------------
+#
+# PREDICTED: MATCH -- and the MATCH certifies only the displayed rational identity,
+# which is elementary and was never in doubt.  It certifies NOTHING about the
+# paper as it now stands.
+variables:
+  mu:
+    domain: positive
+start: "1 - 2*mu/(2*mu+1)"
+operation: none
+claimed_end: "1/(2*mu+1)"

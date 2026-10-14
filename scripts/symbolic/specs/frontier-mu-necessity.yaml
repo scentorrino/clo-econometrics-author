@@ -1,0 +1,15 @@
+claim_id: frontier-mu-necessity
+source: quality_reports/theory/panel-npiv-discrete/assumptions.tex ("which in particular requires mu > 1/2, whatever the value of r")
+# CLAIM.  mu > 1/2 is necessary, at every r.  Mechanised in two identities:
+#   (a) [this spec] the supremum over r of the left-hand side is mu/(2mu+1)
+#       (attained only in the r -> oo limit), and mu/(2mu+1) - 1/4 =
+#       (2mu-1)/(4(2mu+1)), whose sign is the sign of 2mu-1.  Hence at
+#       mu <= 1/2 the frontier is infeasible at every r.
+#   (b) frontier-sup-gap.yaml: the gap to that supremum is strictly positive at
+#       every finite r, so the bound in (a) is strict.
+variables:
+  mu:
+    domain: positive
+start: "mu/(2*mu+1) - 1/4"
+operation: none
+claimed_end: "(2*mu-1)/(4*(2*mu+1))"

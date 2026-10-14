@@ -1,0 +1,44 @@
+claim_id: sharpquad-symnorm-strictly-below
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (prp:sharpquad(ii), eq:bracket, outermost inequality)"
+# WHAT THIS CHECKS, AND WHY THE WITNESS MATTERS MORE THAN THE INEQUALITY.
+#
+# eq:bracket's outermost member says ||B_sym|| <= ||B||, so that (1/2)||B|| is an
+# UPPER bound on the sharp constant and not the constant.  The INEQUALITY is
+# one line (||(B+B*)/2|| <= (||B|| + ||B*||)/2 = ||B||) and needs no spec.  What
+# needs a witness is that it can be STRICT -- because if it were always an
+# equality, printing (1/2)||B|| as the sharp constant would be harmless, and the
+# round-6 sites MAJ-3 corrected would have been wrong only in wording.
+#
+# THIS IS THE SECOND OF TWO THINGS THE DISPATCH SAYS MUST NOT SLIP.  The first --
+# that ||vartheta' sigma_q / pi||_inf is a LOWER bound and not the sharp constant
+# -- is witnessed by the compression argument in lem:formstruct(iii).  This spec
+# witnesses the other end of eq:bracket.
+#
+# THE WITNESS.  B = [[1, 2], [0, 1]] on R^2, a bounded operator that is not
+# self-adjoint, in the same shape as the paper's B: a self-adjoint part plus a
+# genuinely non-symmetric piece.
+#   B_sym = (B + B')/2 = [[1, 1], [1, 1]], eigenvalues 0 and 2, so ||B_sym|| = 2.
+#   B'B = [[1, 2], [2, 5]], eigenvalues 3 +- 2 sqrt(2), so
+#         ||B|| = sqrt(3 + 2 sqrt(2)) = 1 + sqrt(2), since
+#         (1 + sqrt 2)^2 = 3 + 2 sqrt 2.
+# The gap is therefore ||B|| - ||B_sym|| = sqrt(2) - 1 > 0: STRICT.
+#
+# WHAT IS CHECKED.  The spec evaluates sqrt(3 + 2 sqrt(2)) - 2 and claims
+# sqrt(2) - 1.  A MATCH certifies BOTH the arithmetic of the witness (the nested
+# radical really does denest to 1 + sqrt 2) and the strictness (the difference is
+# a positive number, not zero).  `simplify` is needed because SymPy does not
+# denest sqrt(3 + 2*sqrt(2)) under `expand`.
+#
+# WHAT THIS DOES NOT CLAIM.  It does not claim the paper's B has a strict gap --
+# that depends on q and is not a fact about the model.  It claims the inequality
+# CAN be strict, which is all that is needed to forbid printing (1/2)||B|| as the
+# constant.
+#
+# PREDICTED: MATCH, via sqrt denesting.  If SymPy declines to denest, the report
+# will read MISMATCH with residual sqrt(3 + 2 sqrt 2) - 1 - sqrt 2, which is a
+# HARNESS limitation and not a defect in the claim; the check by squaring is
+# two lines and is written out above.
+variables: {}
+start: "sqrt(3 + 2*sqrt(2)) - 2"
+operation: simplify
+claimed_end: "sqrt(2) - 1"

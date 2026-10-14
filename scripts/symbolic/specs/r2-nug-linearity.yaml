@@ -1,0 +1,22 @@
+claim_id: r2-nug-linearity
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (cor:udep Step 3, equivalence (a) <=> (c))"
+# CLAIM.  g |-> nu_g is linear, so with g = Delta Z + Wtilde c(Delta Z),
+#     nu_g = nu_{Delta Z} + nu_{Wtilde c} = nu + nu_{Wtilde c},
+# and nu_g == 0 says exactly nu_{Wtilde c} = -nu, i.e. -nu lies in the set
+#     N_0 := { nu_{Wtilde c(Delta Z)} : c admissible }
+# of difference functionals reachable by weights that IGNORE THE RESIDUAL.
+# THIS IS THE SHARP FORM OF O-11.  The u-constant escape route is not closed by
+# fiat: it is closed exactly when -nu is outside N_0, which is a RANGE condition
+# of the same kind as A2 but on a far smaller set -- A2 restricted to
+# representers that do not vary in u.  N_0 = {0} whenever
+# W is independent of (X_1, X_2) given Delta Z, which is the instrument
+# irrelevance condition rejected at rem:draftrec(ii); under instrument relevance
+# N_0 is non-trivial and membership must be checked rather than assumed.
+variables:
+  nu:
+    domain: real
+  nuWc:
+    domain: real
+start: "nu + nuWc"
+operation: "substitute(nuWc=-nu)"
+claimed_end: "0"

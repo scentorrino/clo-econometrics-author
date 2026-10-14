@@ -1,0 +1,43 @@
+claim_id: solset-sigmaq-not-sufficient
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (lem:solset(iii)); RE-AIMED after the round-3 critic showed the previous version certified the wrong claim"
+# WHAT THE PREVIOUS VERSION GOT WRONG, recorded because a passing spec aimed at
+# the wrong claim is worse than no spec.  It used q = [[0, c], [-c, 0]] against
+# f == 1.  That q is ANTI-symmetric and f is symmetric, so BOTH quadratic forms
+# are identically zero and the two selections give the SAME form.  It witnessed
+# only that q |-> sigma_q is non-injective, which is trivial and is not what
+# lem:solset(iii) needs.
+#
+# WHAT lem:solset(iii) ACTUALLY NEEDS.  That sigma_q does not determine the
+# second-order FORM -- i.e. that two selections can share sigma_q and differ in
+# the SYMMETRIC part of K, which is the only part a quadratic form sees.
+#
+# THE WITNESS.  Two-point model, X_1, X_2 in {1,2}, f_ab = 1 for all four cells.
+# The form is  sum_{a,b} q_ab f_ab (h_b - h_a)^2  -- this is E[q (Delta h)^2]
+# directly, since Delta h = h(X_2) - h(X_1), so with X_1 = a, X_2 = b it is
+# h_b - h_a.
+#   Selection 1:  q  = [[-c, c], [c, -c]].  Row sums and column sums are all
+#                 zero, so sigma_q == 0 at both points.
+#   Selection 2:  q' == 0.  Trivially sigma_q' == 0.
+# So sigma_q = sigma_q' identically.  But the forms differ: selection 2 gives 0,
+# while selection 1 gives
+#     q_12 (h_2-h_1)^2 + q_21 (h_1-h_2)^2 = 2c (h_1-h_2)^2,
+# the diagonal cells contributing nothing since h_a - h_a = 0.  Nonzero whenever
+# c != 0 and h_1 != h_2.  THIS is the separation lem:solset(iii) asserts.
+#
+# ARITHMETIC NOTE, flagged rather than silently reconciled.  The coordinator
+# reported this witness as giving -c(h_1-h_2)^2 and a numerical value of -4.0.
+# I get +2c(h_1-h_2)^2 with f_ab = 1, by the direct computation above and again
+# by the sigma_q - 2<Kh,h> route.  The difference is a normalisation: with the
+# four cells carrying f_ab = 1/4 (a probability measure) and c < 0 the two agree
+# in sign and magnitude.  The STRUCTURAL witness -- sigma_q shared, form
+# different -- is unaffected either way, and that is what this spec checks.
+variables:
+  c:
+    domain: real
+  h1:
+    domain: real
+  h2:
+    domain: real
+start: "(-c)*(h1-h1)**2 + c*(h2-h1)**2 + c*(h1-h2)**2 + (-c)*(h2-h2)**2"
+operation: expand
+claimed_end: "2*c*(h1-h2)**2"

@@ -1,0 +1,31 @@
+claim_id: r2-phi-linear-part
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:nophifree Steps 1-2)"
+# CLAIM.  With Delta U(theta, varphi) = Delta Y - Delta varphi - Delta Z' theta,
+#     E[g Delta U(theta, varphi)] = E[g Delta Y] - <nu_g, varphi> - E[g Delta Z'] theta,
+# so the map varphi |-> E[g Delta U] is AFFINE on V with linear part
+# -<nu_g, .>.  Perturbing varphi -> varphi + s h and differentiating in s at any
+# s returns -<nu_g, h>, which vanishes for every h in V if and only if nu_g is
+# orthogonal to V.  Here Ig stands for the linear functional
+# zeta |-> int nu_g zeta dx, so <nu_g, varphi + s h> is written Ig*(phi + s*h);
+# the surrogate is exact because the functional is linear and the spec is about
+# the AFFINE STRUCTURE IN s, which is what Step 2 relies on.
+# The theta-term is carried explicitly so that its independence of s -- the
+# "one and hence every theta" clause of prp:nophifree -- is visible.
+variables:
+  EgdY:
+    domain: real
+  Ig:
+    domain: real
+  phi:
+    domain: real
+  h:
+    domain: real
+  s:
+    domain: real
+  EgdZ:
+    domain: real
+  theta:
+    domain: real
+start: "EgdY - Ig*(phi + s*h) - EgdZ*theta"
+operation: "diff(s)"
+claimed_end: "-Ig*h"

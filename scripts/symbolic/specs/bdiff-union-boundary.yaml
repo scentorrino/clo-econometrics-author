@@ -1,0 +1,58 @@
+claim_id: bdiff-union-boundary
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (prp:phirate Step 1, (N2.3): the union bound 'tends to zero IF AND ONLY IF L_x^2 = o(n_m)'), and proofs.tex ('under the marginally stronger L_x << (n/ln n)^{1/2} it is O(n^{-c}) for every c')"
+# WHAT THIS CHECKS -- THE 'ONLY IF' HALF.  bdiff-union-exponent factorises the
+# union-bound exponent as L_x ( ln 9 - c_18 n_m/L_x^2 ) and reads the sufficiency
+# off it.  This spec pins the NECESSITY by exhibiting the exact scaling at which
+# the exponent vanishes: substituting
+#
+#     n_m  =  L_x^2 ln 9 / c_18
+#
+# into the factorised exponent gives L_x ( ln 9 - ln 9 ) = 0, so at that scaling
+# the union bound is exp(0) = 1 for every L_x.  Hence the bound does NOT tend to
+# zero when L_x^2 asymp n_m, and L_x^2 = o(n_m) cannot be weakened to
+# L_x^2 = O(n_m): the paper's "if and only if" is correct, and the threshold in the
+# SCALE of L_x^2 against n_m is exact.
+#
+# WHAT THE CONSTANT DOES.  c_18 = 3K/(8 (4 c_C c_2 c_11)^2) sets the LOCATION of
+# the boundary (n_m = L_x^2 ln 9/c_18) but not its EXISTENCE: for any c_18 > 0
+# there is such a scaling, so the condition L_x^2 = o(n_m) is constant-free while
+# the marginal case is not.  That is why A8's upper end L_x = o(n^{1/2}) is
+# quotable without knowing c_18, and why proofs.tex has to strengthen to
+# L_x << (n/ln n)^{1/2} to get a polynomially small bound rather than merely a
+# vanishing one.
+#
+# WHAT THIS DOES NOT CHECK -- DECLARED GAPS.  (a) The statement certified is about
+# the BOUND 9^{L_x} exp(-c_18 n_m/L_x), not about the probability it bounds: a
+# union bound failing to vanish does not show the underlying probability fails to
+# vanish.  The paper's sentence is about the bound, and so is this spec; neither
+# should be quoted as a lower bound on the probability.  (b) It does not check that
+# ln 9 is the right entropy constant (that is the 1/4-net's volumetric bound
+# N <= 9^{L_x}, lem:unifop(3d)) -- only that whatever that constant is, it fixes
+# the boundary scaling.  (c) As in bdiff-union-exponent, the step
+# 9^{L_x} = exp(L_x ln 9) is taken from the paper's own display and not re-verified.
+#
+# THE PARSE-TIME NOTE.  The substitution cancels c_18 against c_18 and L_x^2
+# against L_x^2 inside the bracket, so the report prints "Actual end: 0 /
+# Claimed end: 0 / MATCH".  The substantive content is that the cancellation is
+# EXACT -- that the bracket's two terms are the same number at this scaling -- and
+# the falsification below shows the form is not one that must produce 0.
+#
+# FALSIFICATION (hand-computed).  Substituting n_m = L_x**2*log(8)/c18 instead
+# leaves L_x*(log(9) - log(8)) = L_x*log(9/8), nonzero for L_x > 0; MISMATCH.
+# Substituting n_m = L_x*log(9)/c18 instead -- i.e. mis-reading the boundary as
+# L_x asymp n_m rather than L_x^2 asymp n_m -- leaves
+# L_x*(log(9) - log(9)/L_x) = (L_x - 1)*log(9), nonzero for L_x != 1; MISMATCH.
+# So the exponent 2 on L_x in the boundary scaling is exactly what is being tested,
+# and it is the quantity at issue.
+#
+# PREDICTED: MATCH.
+variables:
+  L_x:
+    domain: positive
+  n_m:
+    domain: positive
+  c18:
+    domain: positive
+start: "L_x*(log(9) - c18*n_m/L_x**2)"
+operation: "substitute(n_m=L_x**2*log(9)/c18)"
+claimed_end: "0"

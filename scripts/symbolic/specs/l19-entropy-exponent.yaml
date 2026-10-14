@@ -1,0 +1,20 @@
+claim_id: l19-entropy-exponent
+source: "quality_reports/theory/panel-npiv-discrete/proofs_partH.tex, proof of lem:unifop Step 3(c) ('Substituting eps_0 asymp h_u delta-hat_n, h_u asymp n^{-1/16} and delta-hat_n = n^{-alpha} turns this into n^{(1/16+alpha)/s} = o(n^{1-2 alpha})'), and results_partH.tex eq:entropy"
+# CLAIM.  The bracketing-entropy side of L-19 is
+#     (R / eps_0)^{1/s}  with  eps_0 asymp h_u * delta-hat_n,
+# and the exponential side is n * delta-hat_n^2.  With h_u = n^{-1/16} and
+# delta-hat_n = n^{-alpha}, the entropy side is n^{(1/16 + alpha)/s}.  This spec
+# verifies that exponent algebra: 1/(h_u delta-hat_n) = n^{1/16 + alpha}, raised
+# to 1/s.  The companion exponent n * delta-hat_n^2 = n^{1 - 2 alpha} is
+# verified in l19-effective-sample.yaml.  Together they give eq:entropy,
+#     (1/16 + alpha)/s  <  1 - 2 alpha.
+variables:
+  n:
+    domain: positive
+  alpha:
+    domain: positive
+  s:
+    domain: positive
+start: "(1/(n**(-1/16) * n**(-alpha)))**(1/s)"
+operation: none
+claimed_end: "n**((1/16 + alpha)/s)"

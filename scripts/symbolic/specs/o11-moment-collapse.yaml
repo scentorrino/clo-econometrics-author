@@ -1,0 +1,36 @@
+claim_id: o11-moment-collapse
+source: "quality_reports/theory/panel-npiv-discrete/proofs.tex (cor:udep Steps 1-2, O-11)"
+# CLAIM, in two halves, both checked here in one expression.
+#  (a) N1 pins the constant of integration.  If partial_u L = c(z) then
+#      L(u,z) = c(z) u + b(z); at the truth,
+#         E[L(Delta U, Delta Z) | Delta Z] = c * E[Delta U | Delta Z] + b = b,
+#      the first term vanishing by the SECOND clause of A1.  N1 sets this to
+#      zero, so b = 0.  Substituting EdU = 0 and b = 0 below performs both.
+#  (b) The moment then collapses to a (W, Delta Z)-measurable weight:
+#         psi = dZ * dU + Wt * L(dU, dZ) = dZ * dU + Wt * c * dU
+#             = (dZ + Wt * c) * dU,
+#      and dZ + Wt*c is sigma(W, Delta Z)-measurable because Wt = W - varrho(dZ).
+#      That is precisely the class prp:nophifree forbids from being varphi-free
+#      unless the g-tilted marginals coincide.
+# SCALAR SURROGATE, deliberately: the vector case reads coordinatewise, with
+# L and c taking values in R^p so that dZ + Wt*c is p x 1 -- see the typing note
+# at notation_glossary.md Sec.8.4.  No matrix object is used, so the harness's
+# symbolic-shape crash is avoided.
+variables:
+  dZ:
+    domain: real
+  dU:
+    domain: real
+  Wt:
+    domain: real
+  c:
+    domain: real
+  b:
+    domain: real
+start: "dZ*dU + Wt*(c*dU + b)"
+operation: "substitute(b=0)"
+claimed_end: "(dZ + Wt*c)*dU"
+# The b = 0 substitution is DISCHARGED by o11-N1-forces-b-zero, which is where
+# A1's second clause and N1 are consumed; here b = 0 is taken as given so that
+# this spec tests only the collapse.  Splitting them keeps one assumption
+# consumption per spec.

@@ -1,0 +1,23 @@
+claim_id: adjoint-pi-cancellation
+source: "quality_reports/theory/panel-npiv-discrete/results.tex (rem:draftrec(iii), defect 1); source draft Centorrino_panel.qmd:172-177"
+# CLAIM.  The draft's adjoint display carries pi(v) OUTSIDE the braces (from the
+# L^2(pi) pairing) and pi(v)^{-1} INSIDE them (from the adjoint's own formula).
+# The two cancel, and that is exactly the trap: the cancelled expression is the
+# PAIRING, a number, not the ADJOINT, an operator.  This spec records the
+# cancellation mechanically so that the diagnosis "category error, not
+# cancellation error" is checkable rather than asserted:
+#     <h, A* ell>_{L^2(pi)} = int (nu / pi) h pi dx = int nu h dx,
+# with NO pi surviving -- whereas
+#     (A* ell)(x) = nu(x) / pi(x),
+# with the pi^{-1} surviving.  It is the surviving pi^{-1} that forces the
+# source condition A2 onto nu/pi rather than nu (rem:nupi).
+variables:
+  nug:
+    domain: real
+  h:
+    domain: real
+  pival:
+    domain: positive
+start: "(nug/pival)*h*pival"
+operation: simplify
+claimed_end: "nug*h"

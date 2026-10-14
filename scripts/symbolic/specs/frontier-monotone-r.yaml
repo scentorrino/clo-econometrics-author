@@ -1,0 +1,16 @@
+claim_id: frontier-monotone-r
+source: quality_reports/theory/panel-npiv-discrete/assumptions.tex (A5(iii), eq:frontier)
+# CLAIM (implicit in reading the equivalence as a lower bound on r).  The
+# left-hand side is strictly increasing in r, so "> 1/4" is a lower-bound
+# condition on r and not an upper-bound or a two-sided one.  The derivative is
+# 2*mu*d_Z/((2mu+1)(2r+d_Z)^2), manifestly > 0 for mu, d_Z > 0.
+variables:
+  mu:
+    domain: positive
+  r:
+    domain: positive
+  d_Z:
+    domain: positive
+start: "2*mu/(2*mu+1) * r/(2*r+d_Z)"
+operation: "diff(r)"
+claimed_end: "2*mu*d_Z/((2*mu+1)*(2*r+d_Z)**2)"
